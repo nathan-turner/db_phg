@@ -1,0 +1,343 @@
+<script src="xsl/spcreate.js" language="JavaScript"></script>
+<SCRIPT LANGUAGE="javascript">
+//alert(window.location.search)
+var selindex=getqstringvalue("selindex",window.location.search)
+  if(selindex==""){ selindex = "0" }
+var specialty_id = getqstringvalue("specialty_id",window.location.search)
+  if(specialty_id==""){ specialty_id = "020" }
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+  var arrids = new Array()
+  arrids = parseqstring(specdisplay)
+
+var sortby=getqstringvalue("sortby",window.location.search)
+  if(sortby==""){ sortby = "state" }
+var selectfield=getqstringvalue("selectfield",window.location.search)
+var selectvalue=getqstringvalue("selectvalue",window.location.search)
+var extrasort=getqstringvalue("extrasort",window.location.search)
+var nodecount = 0
+
+// SET DATATYPE //
+var datatype = "number"
+//// ALL NON-NUMBER FIELDS ///
+if(sortby=="FREIDA"||sortby=="state"||sortby=="city"||sortby=="spec_ltr_code"||sortby=="prog_name"||sortby=="setting"||sortby=="most_taxing"||sortby=="multi_start"||sortby=="research"||sortby=="subspec"||sortby=="moonlighting"||sortby=="child"||sortby=="pt_shared"||sortby=="qual_imp"||sortby=="international"||sortby=="retreats"||sortby=="offcampus"||sortby=="hospice"||sortby=="cultcomp"||sortby=="nonenglish"||sortby=="alt_comp"||sortby=="MPH_MBA"||sortby=="PhD"||sortby=="additional_trng"||sortby=="req_add_trng"||sortby=="military"){
+  datatype = "text"
+}
+
+//alert(sortby)
+///////////// START DOCUMENT /////////////////////////////////
+document.write("<HTML><head>")
+document.write("        <STYLE>")
+document.write("          BODY {margin:0}")
+document.write("          .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("          .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("          .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("          .cssproghead {font: 10pt Arial, Helvetica, sans-serif;text-align:left;font-weight:700;color:#006A4D}")
+document.write("          .cssprogheadcenter {font: 10pt Arial, Helvetica, sans-serif;text-align:center;font-weight:700;color:#006A4D}")
+document.write("          .cssBHEAD {font:11pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+document.write("          .csslistbox {font: 10pt arial,helvetica,verdana, sans-serif;}")
+document.write("        </STYLE>")
+document.write("</head><body onLoad=\"doOnLoad();\" bgcolor=\"#ffffff\" LINK=\"#006A4D\" VLINK=\"#773377\" ALINK=\"#aa4433\">")
+
+
+////////////////////////////// SET UP PAGE ///////////////////////////////////
+document.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>")
+///
+if((sortby!="state")&&(sortby!="city")&&(sortby!="spec_ltr_code")&&(sortby!="prog_name")){
+  document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"5\" alt=\"\" /></td>")
+  document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"5\" alt=\"\" /></td>")
+}
+///
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("<td height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+document.write("</tr>")
+
+////////////////////////////// STEP 1 ////////////////////////////////////////
+//////////////////////// MERGE XML DATA //////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+var oSetupXml=new ActiveXObject("Microsoft.XMLDOM")
+oSetupXml.async = false;
+
+var oSpecSetupXsl = new ActiveXObject("Microsoft.XMLDOM");
+oSpecSetupXsl.async = false;
+var xslsetup = makesetupxsl(sortby)
+oSpecSetupXsl.loadXML(xslsetup);
+
+var body = ""
+for(i=0;i<arrids.length;i++){
+//  alert("specdisplay: " + specdisplay + "\nxmldata/" + " + arrids[i]+".xml")
+  oSetupXml.load("xmldata/" + arrids[i]+".xml")
+  if (oSetupXml.parseError==0){
+    body += oSetupXml.transformNode(oSpecSetupXsl.documentElement)
+  }
+  else{
+    alert("in oSetupXml: " + oSetupXml.parseError.reason)
+  }
+}
+
+body = "<listing_programs>" + body + "</listing_programs>"
+//top.header.display.showtext.value = body
+//alert(body)
+
+///////////////////////////// STEP 2 /////////////////////////////////////////
+////////////////////// SORT MERGED XML DATA //////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+var oSortXsl = new ActiveXObject("Microsoft.XMLDOM");
+oSortXsl.async = false;
+var xslbody = makesortxsl(sortby)
+//alert("SORT (sortby: "+sortby+"):\n" + xslbody)
+oSortXsl.loadXML(xslbody);
+//oSortXsl.load("xsl/sp"+sortby+".xsl");
+
+oSortXml=new ActiveXObject("Microsoft.XMLDOM")
+oSortXml.async = false;
+oSortXml.loadXML(body)
+if (oSortXml.parseError==0){
+  body = oSortXml.transformNode(oSortXsl.documentElement)
+}
+else{
+  alert("in oSortXml: " + oSortXml.parseError.reason)
+}
+//alert(body)
+////////////////////////////// STEP 3 ////////////////////////////////////////
+///////////////////// OUTPUT SORTED XML DATA /////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+var elementname = "state"
+var oHTMLstyle = new ActiveXObject("Microsoft.XMLDOM");
+oHTMLstyle.async = false;
+var xslhtml = makehtmlxsl(sortby)
+oHTMLstyle.loadXML(xslhtml);
+
+oNew=new ActiveXObject("Microsoft.XMLDOM")
+oNew.async = false;
+oNew.loadXML(body)
+if (oNew.parseError==0){
+  var Nodes = oNew.documentElement.selectNodes("program/"+elementname)
+//  getcount(Nodes) -- DOESN'T WORK
+  outputlistingbylisting(Nodes,elementname,specialty_id)
+}
+else{
+  alert("in oNew: " + oNew.parseError.reason)
+}
+
+function getcount(Nodes){
+  var parentnode = Nodes.item(0).parentNode
+  var grandparent = parentnode.parentNode
+  var lastchild = grandparent.lastChild
+//  var childnumber = ChildNumber(lastchild)
+//  alert(ChildNumber(lastchild))
+}
+
+
+
+//////////////////// PAGE FUNCTIONS ///////////////////////
+function doOnLoad(){
+//alert("IN speclty.htm: "btnbarsp.htm?specdisplay="+specdisplay+"&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue+"&selectscreen=specialty")
+    top.btnbar.location.href = "btnbarsp.htm?specdisplay="+specdisplay+"&extrasort="+extrasort+"&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue+"&selectscreen=specialty&nodecount="+nodecount
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+function outputlistingbylisting(Nodes,elementname,specialty_id){
+
+  document.write("<tr><td class=\"cssproghead\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+  ///
+  if(extrasort!=""){
+    var strlabel = getextrasortlabel(extrasort)
+    document.write("<td class=\"cssprogheadcenter\">" + strlabel + "</td>")
+    document.write("<td class=\"cssproghead\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+  }
+  ///
+  document.write("<td class=\"cssproghead\" valign=\"bottom\"><a href=\"javascript:top.btnbar.sort('state')\">State</a></td>")
+  document.write("<td class=\"cssproghead\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+  document.write("<td class=\"cssproghead\" valign=\"bottom\"><a href=\"javascript:top.btnbar.sort('city')\">City</a></td>")
+  document.write("<td class=\"cssproghead\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+  document.write("<td class=\"cssproghead\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+  document.write("<td class=\"cssproghead\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+  document.write("<td class=\"cssproghead\" valign=\"bottom\"><a href=\"javascript:top.btnbar.sort('spec_ltr_code')\">Code</a></td>")
+  document.write("<td class=\"cssproghead\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" alt=\"\" /></td>")
+  document.write("<td class=\"cssproghead\" valign=\"bottom\"><a href=\"javascript:top.btnbar.sort('prog_name')\">Program Name</a></td>")
+  document.write("</tr>")
+
+  for(i=0;i<Nodes.length;i++){
+//      writeListingfromnode(Nodes.item(i))
+    writeListingfromparentnode(Nodes.item(i))
+  }
+  document.write("</table></body></HTML>")
+}
+
+////////////////////////////////////////////////////////////////////////////
+function writeListingfromparentnode(currentnode){
+//  alert(currentnode.nodeName)
+//alert("specdisplay: " + specdisplay + " currentnode.text: " + currentnode.text + " indexOf: " + specdisplay.indexOf(currentnode.text))
+//  var bMatchspec = verifyshowspec(currentnode)
+//  if(bMatchspec){
+    if(selectfield!=""){
+      var bMatch = verifynode(currentnode)
+    }
+    if(selectfield=="" || bMatch){
+      paintlisting(currentnode.parentNode)
+    }
+//  }
+}
+
+function verifyshowspec(currentnode){
+  var bMatchspec = false;
+  if(specdisplay.indexOf(currentnode.text) >= 0) { bMatchspec=true }
+  var nextnode = currentnode.nextSibling
+  while(nextnode.nextSibling){
+    if(specdisplay.indexOf(nextnode.text) >= 0){ bMatchspec=true }
+    nextnode = nextnode.nextSibling
+//alert("specdisplay: " + specdisplay + " nextnode.text: " + nextnode.text + " indexOf: " + specdisplay.indexOf(nextnode.text))
+  }
+    if(specdisplay.indexOf(nextnode.text) >= 0){ bMatchspec=true } //ONE LAST TIME, TO GET FINAL ONE
+//alert("specdisplay: " + specdisplay + " - " + bMatchspec)
+  return bMatchspec
+}
+
+function verifynode(currentnode){
+  var bMatch = false;
+  if(currentnode.nodeName==selectfield){
+    if(currentnode.text==selectvalue){ bMatch=true }
+  }
+  var nextnode = currentnode.nextSibling
+  while(nextnode.nextSibling){
+//alert("nextnode.nodeName: " + currentnode.nodeName + " sortby: " + sortby)
+    if(nextnode.nodeName==selectfield){
+      if(nextnode.text==selectvalue){ bMatch=true }
+    }
+    nextnode = nextnode.nextSibling
+  }
+  if(nextnode.nodeName==selectfield){
+    if(nextnode.text==selectvalue){ bMatch=true } //ONE LAST TIME, TO GET FINAL ONE
+  }
+  return bMatch
+}
+
+function writeListingfromnode(currentnode){
+//alert(currentnode.nodeName)
+    paintlisting(currentnode)
+  var nextnode = currentnode.nextSibling
+  while(nextnode.nextSibling){
+      paintlisting(nextnode)
+    nextnode = nextnode.nextSibling
+  }
+    paintlisting(nextnode) //ONE LAST TIME, TO GET FINAL ONE
+}
+
+function paintlisting(paintnode){
+//    alert(paintnode.nodeName)
+  nodecount++
+  switch(paintnode.nodeName){
+    default: document.write(paintnode.transformNode(oHTMLstyle.documentElement));
+         break;
+  }
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+function parseqstring(inpara){
+  var arrids = new Array()
+  var startpos = 0
+  var intindex = 0
+  var indexpos = inpara.indexOf(",",startpos)
+  if(indexpos==-1){
+    arrids[0] = inpara
+  }
+  else{
+    while (indexpos!=-1){
+      arrids[intindex] = inpara.slice(startpos,indexpos)
+//      alert(arrids[intindex])
+      intindex++
+      startpos = indexpos + 1
+      indexpos = inpara.indexOf(",",startpos)
+    }
+  arrids[intindex] = inpara.slice(startpos,inpara.length)
+//  alert(arrids[intindex])
+  }
+  return arrids
+}
+
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+function getextrasortlabel(extrasort){
+//  return "Additional"
+  if(extrasort=="setting"){ return "Setting" }
+  if(extrasort=="prog_length"){ return "Pgm Length" }
+  if(extrasort=="years_required"){ return "Pgm Years Req" }
+  if(extrasort=="positions"){ return "Pgm Size" }
+//  if(extrasort=="positions_gy1"){ return "GY-1 Pos" }
+  if(extrasort=="prev_yrs_req"){ return "Pgm Prelim Years Reqd" }
+  if(extrasort=="hours_week"){ return "Avg Hrs/ Wk duty" }
+  if(extrasort=="hours_consec"){ return "Max Hrs/ Wk Consec" }
+  if(extrasort=="most_taxing"){ return "Most Taxing Call Schd" }
+  if(extrasort=="moonlighting"){ return "Moonlighting Allowed" }
+  if(extrasort=="salary"){ return "Salary Pgm Year One" }
+  if(extrasort=="child"){ return "Onsite child care" }
+  if(extrasort=="pt_shared"){ return "PT/Shared Pos Avail" }
+  if(extrasort=="multi_start"){ return "Multi-Strt Avail" }
+  if(extrasort=="qual_imp"){ return "Cont Qual Imp" }
+  if(extrasort=="international"){ return "International Experience" }
+  if(extrasort=="retreats"){ return "Resident/ Fellow Retreats" }
+  if(extrasort=="offcampus"){ return "Off-campus Electives" }
+  if(extrasort=="hospice"){ return "Hospice/ Home Care Exp" }
+  if(extrasort=="cultcomp"){ return "Cltrl Cmp Aware" }
+  if(extrasort=="nonenglish"){ return "Non-Eng Lang Instr" }
+  if(extrasort=="alt_comp"){ return "Alt/ Comp Med" }
+  if(extrasort=="research"){ return "Research Rotn/Dur" }
+  if(extrasort=="MPH_MBA"){ return "MPH/ MBA Trng" }
+  if(extrasort=="PhD"){ return "PhD Trng" }
+  if(extrasort=="additional_trng"){ return "Offers Addl Trng" }
+  if(extrasort=="req_add_trng"){ return "Reqs Addl Trng" }
+  if(extrasort=="add_trng_length"){ return "Addl Trng Len" }
+  if(extrasort=="military"){ return "Military" }
+  if(extrasort=="subspec"){ return "Subspclty Codes" }
+  if(extrasort=="FREIDA"){ return "FREIDA" }
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+</SCRIPT>
+
+

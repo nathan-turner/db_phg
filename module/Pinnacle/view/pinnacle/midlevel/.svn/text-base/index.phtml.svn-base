@@ -1,0 +1,85 @@
+<?php
+// module/Pinnacle/view/pinnacle/midlevel/index.phtml:
+// Contract Search
+
+$title = 'Midlevel Lookup';
+$this->headTitle($title);
+$this->inlineScript()->appendFile($this->basePath() . '/js/midlevels.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    $form->get('submit')->setAttribute('type','button');
+    if( strpos($phguser->dept,'R') !== false ) {
+        //$form->get('ph_recruiter')->setValue($phguser->uid);
+        $form->get('an_status')->setValue(1);
+    }
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+?>
+<div class="row">
+    <div class="span4">
+        <?php echo $this->formRow($form->get('an_id')); ?>
+        <?php echo $this->formRow($form->get('an_lname')); ?>
+        <?php echo $this->formRow($form->get('an_fname')); ?>
+        <?php echo $this->formRow($form->get('an_type0')); ?><br>
+        <?php echo $this->formSelect($form->get('an_type')); ?>
+        <?php echo $this->formRow($form->get('an_locums')); ?>
+        <?php echo $this->formRow($form->get('instant')); ?>
+    </div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('an_status')); ?>
+        <?php echo $this->formRow($form->get('an_citizen')); ?>
+        <?php echo $this->formRow($form->get('an_licenses')); ?>
+        <?php echo $this->formRow($form->get('ctct_st_code')); ?>
+        <?php echo $this->formRow($form->get('an_pref_state')); ?>
+        <?php echo $this->formRow($form->get('an_experience')); ?>
+    </div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('date1')); ?>
+        <?php echo $this->formRow($form->get('date2')); ?>
+        <?php echo $this->formRow($form->get('an_date_add')); ?>
+        <?php echo $this->formRow($form->get('an_dea')); ?>
+        <br><br>
+        <?php echo $this->formInput($form->get('submit')) ?>
+        &nbsp; <a href="<?php echo $this->url('midlevel') ?>" id="resetbutton" class="btn btn-danger btn-large">Reset</a>
+        <br><br>
+        <?php echo $this->formRow($form->get('pg_size')); ?> <span id="pagespan">25</span>
+    </div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+<div class="row">
+    <div class="span2"><a href="<?php echo $this->url('midlevel',array('action'=>'add')) ?>">Add New Midlevel</a></div>
+    <div class="span2" id="searchstatus"></div>
+    <div class="span7 phg-rite" id="mdl-pages">
+        Please start typing
+    </div>
+</div>
+<div class="hide" id="atb-div"><?php echo $atb ?></div>
+<hr>
+<table class="table report">
+    <thead><tr>
+        <th>ID#</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>City, State</th>
+        <th>Status</th>
+    </tr></thead>
+    <tbody id="mdl-tbody">
+        <tr><td colspan="5"><i>Waiting for input...</i> </td></tr>
+    </tbody>
+</table>
+<?php
+
+$url = $this->url('resort', array('action'=>'midlevels'));
+$redir = $this->url('login');
+$scrip = "mdlInit(\"#mdl-tbody\",\"#mdl-pages\", \"$url\", \"$redir\", $atc);\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

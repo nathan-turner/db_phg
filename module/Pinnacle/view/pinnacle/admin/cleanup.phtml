@@ -1,0 +1,60 @@
+<?php
+// module/Pinnacle/view/pinnacle/admin/cleanup.phtml:
+
+$title = 'Database Cleanup';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+    if( $messages ) {
+        echo '<p class="alert alert-warning">';
+        foreach($messages as $msg)
+            echo $this->escapeHtml($msg).'<br>';
+        echo '</p>';
+    }
+    if( $phguser->access > 1 ) {
+        $formUrl = $this->url('admin', array('action' => 'cleanup', 'part' => $part, 'id' => $id));
+        if( $form ) { ?>
+<p>Enter either a Client/Physician/Midlevel ID# or Contract # to <span class="text-error"><b>Delete</b></span> (You will have a chance to review the record):</p>
+<?php
+            $form->setAttribute('action', $formUrl );
+            $form->prepare();
+            echo $this->form()->openTag($form);
+            echo $this->formRow($form->get('part'));
+            echo $this->formRow($form->get('no'));
+            echo $this->formRow($form->get('csrf'));
+            echo '<br> ';
+            echo $this->formSubmit($form->get('submit'));
+?> <a class="btn btn-large btn-danger" href="<?php echo $this->url('admin') ?>">Cancel</a>
+<?php
+            echo $this->form()->closeTag();
+        } // form
+        elseif( $record ) {
+            // confirm delete  ?>
+<form action="<?php echo $formUrl; ?>" method="post">
+<p class="alert alert-warning"><strong>Confirm deletion of a record and all related information:</strong></p>
+<p><?php echo $this->escapeHtml($record->verbose.'# ');
+            echo $this->escapeHtml($record->part === 'ctr'?$record->no:$record->id);
+            echo $this->escapeHtml(': '.$record->name) ?>,
+   <?php echo $this->escapeHtml($record->city) ?>, <?php echo $this->escapeHtml($record->state); if( $record->spec ) echo $this->escapeHtml(' - '.$record->spec); ?></p>
+<div>
+    <input class="btn btn-danger" type="submit" name="confirm" value="Yes" />
+    <input class="btn btn-success" type="submit" name="confirm" value="No" />
+</div>
+</form>
+<?php
+        } // record
+        else { // nobody is supposed to get here!
+    ?>
+<p>DEBUG INFO: ID= <?php echo $this->escapeHtml($id); ?>
+PART= <?php echo $this->escapeHtml($part); ?></p>
+<?php
+        }
+    } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+    } /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

@@ -1,0 +1,556 @@
+#contacts {
+    border-top: 1px solid #eee;
+}
+
+#contacts-main {
+    position: relative;
+    overflow: auto;
+}
+#contacts-grid {
+    height: 100%;
+}
+
+#contacts-grid-groups,
+#contacts-grid-left,
+#contacts-grid-center {
+    position: relative;
+    vertical-align: top;
+    height: 100%;
+}
+
+#contacts-grid-groups-wrapper {
+    position: relative;
+    width: 198px;
+    height: 100%;
+}
+
+#contacts-grid-groups {
+    background-color: #fafafa;
+}
+
+#my-contacts-header,
+#shared-contacts-header {
+    position: relative;
+    background-color: #f3f3f3;
+    padding: 12px 4px;
+    border-bottom: 1px solid #ddd;
+    height: 16px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #666;
+}
+
+#shared-contacts-header {
+    border-top: 1px solid #ddd;
+    padding: 12px;
+}
+
+#my-contacts-header .header-tool-buttons {
+    float: left;
+    margin: -3px 3px;
+}
+
+#contacts-grid-left {
+    border: 1px solid #eee;
+}
+
+#contacts-list-wrapper {
+    position: relative;
+    width: 275px;
+}
+
+#contacts-list {
+    position: relative;
+    overflow: auto;
+}
+
+#contacts-list-index-table {
+    height: 100%;
+}
+
+#contacts-list-index {
+    width: 26px;
+    position: fixed;
+    top: 0;
+    left: 198px;
+}
+
+#contacts-list-index-table td {
+    border: 1px solid #ddd;
+    height: 1%; /* equal cell height hack */
+    text-align: center;
+    vertical-align: middle;
+    font-size: 10px;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#contacts-list-index-table td:hover {
+    background-color: #eee;
+}
+
+#contacts-search-wrapper {
+    position: relative;
+    background-color: #f3f3f3;
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+    height: 28px;
+    z-index: 100;
+}
+
+
+
+#sidebar-add-contact {
+    margin: -2px 2px;
+    cursor: pointer;
+}
+
+#contacts-search {
+    color: #999;
+    width: 225px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 5px 2px !important;
+    border: 1px solid #ddd;
+}
+
+/*** contacts-nav ***/
+#contacts-nav {
+    border-bottom: 1px solid #eee;
+    padding: 6px 12px;
+    height: 28px;
+    text-align: center;
+}
+
+#contacts-nav .ui-btn {
+
+}
+
+#contacts-list {
+
+}
+
+#contacts-list-content {
+    margin-left: 24px;
+}
+
+.letter-contacts li {
+    padding-left: 3px;
+}
+
+#indexed-contacts-list .contact {
+    border-top: 1px solid #eee;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+    padding: 13px;
+}
+
+#indexed-contacts-list .contact:first-child {
+    border: none;
+}
+
+#indexed-contacts-list .contact.selected {
+    background-color: #c8e0f0;
+}
+
+.drag-active {
+    background-color: #c8e0f0 !important;
+    border: 1px solid #eee !important;
+}
+
+#indexed-contacts-list .contact .ui-icon {
+    float: right;
+    margin: -2px;
+}
+
+#indexed-contacts-list h2 {
+    font-weight: bold;
+    color: #444;
+    font-size: 12px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 1px;
+}
+
+/*** contact-form ***/
+
+#contact-form-wrapper {
+    margin: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+#contact-form-wrapper h1 {
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    margin: 6px 0;
+    padding: 1px;
+    color: #444;
+}
+
+#contact-form-table {
+    width: 800px;
+    margin: 0 15px;
+}
+
+#contact-form-table.display-contact-form td {
+    padding: 13px;
+}
+
+#contact-form-table td {
+    padding: 9px;
+    vertical-align: middle;
+}
+
+#contact-form-header {
+    padding: 0 33px;
+}
+
+#contact-form-photo {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+#remove-contact-photo {
+    position: absolute;
+    visibility: hidden;
+}
+
+#contact-form-group-tags {
+    margin-left: 20px;
+}
+
+#contact-group-tags li {
+    position: relative;
+    float: left;
+    margin: 4px;
+    color: #666;
+    font-weight: bold;
+    border: 1px solid #eee;
+    padding: 5px 22px;
+}
+
+#contact-group-tags li:last-child {
+
+}
+
+#contact-group-tags li .ui-icon {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+}
+
+#contact-group-tags li #edit-contact-groups {
+    top: 30%;
+    right: 30%;
+}
+
+.contact-form-section-cell {
+    width: 50%;
+    vertical-align: top !important;
+}
+
+.separate {
+    height: 100%;
+}
+
+.separator {
+    height: 100%;
+    width: 2px;
+    margin: 0 auto;
+    border-right: 1px solid #eee;
+}
+
+.contact-form-section-table caption {
+    text-align: left;
+    color: #999;
+    border-bottom: 1px solid #eee;
+    margin: 10px;
+    padding: 10px;
+}
+
+.contact-form-section-table td:first-child {
+    font-weight: bold;
+    color: #444;
+    text-align: right;
+    width: 90px;
+}
+
+#contact-form-table input[type='text'],
+#contact-form-table textarea {
+    width: 225px;
+    padding: 4px !important;
+}
+
+#contact-form-table textarea {
+    height: 39px;
+}
+
+.contact-form-buttons {
+    text-align: right;
+    padding: 6px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+}
+
+.contact-form-buttons.bottom {
+    border-bottom: 0;
+    border-top: 1px solid #eee;
+}
+
+#contacts-sub-nav {
+    position: relative;
+    padding: 6px 16px;
+    border-bottom: 1px solid #ddd;
+    height: 29px;
+}
+
+#contacts-sub-nav-title {
+    font-size: 19px;
+    font-weight: normal;
+    color: #666;
+    margin: 5px;
+    display: inline-block;
+}
+
+#contacts-nav-buttons {
+    float: right;
+}
+
+#contacts-upcoming-appts-list caption {
+    padding: 10px 20px;
+    text-align: left;
+    color: #666;
+    font-size: 13px;
+}
+
+
+#contacts-upcoming-appts-list td {
+    padding: 10px 20px;
+}
+
+#contacts-upcoming-appts-list td.spc-event.agenda {
+    border-bottom: 1px dashed #eee;
+}
+
+#contacts-create-appt {
+    float: right;
+}
+
+#contact-form-notes {
+    width: 100% !important;
+    height: 150px !important;
+}
+
+#add-contact-group-dialog input {
+    width: 250px;
+}
+
+#my-contacts-list,
+#shared-contacts-list {
+    height: 250px;
+    overflow: auto;
+}
+
+.contact-group {
+    cursor: pointer;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+    color: #444;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.contact-group .contact-count {
+    color: #777;
+    font-size: 11px;
+}
+
+.selected-contact-group {
+    background-color: #acc9dc;
+}
+
+.contact-group-buttons {
+    float: right;
+    margin: -2px;
+}
+
+#edit-contact-groups-dialog-tag-list {
+    max-height: 300px;
+    overflow: auto;
+}
+
+#edit-contact-groups-dialog-tag-list li {
+    padding: 2px;
+    margin: 2px;
+    width: 200px;
+}
+
+#upload-contact-photo-dialog {
+    padding: 20px;
+}
+
+/*** contact appointments grid ***/
+#contact-appt-grid {
+    height: 100%;
+}
+
+#contact-appt-grid .spc-agenda-date {
+    color: #666;
+}
+
+#contact-appt-grid .spc-event.agenda {
+    padding: 9px;
+}
+
+#contact-appt-grid-body td {
+    padding: 9px;
+}
+
+#contact-appt-grid-body .spc-agenda-date {
+    padding: 6px 22px;
+}
+
+#contact-appt-nav {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 15px 22px;
+}
+
+#contact-appt-grid td {
+    vertical-align: top;
+}
+
+#contact-appt-grid-right {
+    width: 250px;
+    border-left: 1px solid #eee;
+    padding: 10px;
+    font-size: 11px !important;
+    background-color: #fafafa;
+}
+
+#contact-appt-grid-right .spc-agenda-title {
+    width: 90%;
+}
+
+#contacts-create-appt {
+    float: right;
+}
+
+#contact-appt-grid input[type="text"] {
+    width: 90px !important;
+    padding: 3px;
+}
+
+#contact-appt-grid-body {
+    margin: 10px 0;
+}
+
+#contact-appt-grid-right h1 {
+    color: #444;
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+#contact-appt-grid-upcoming-appts td {
+    padding: 6px;
+}
+
+#edit-contact-group-dialog-grid td,
+#edit-shared-contact-group-dialog-grid td {
+    padding: 6px;
+}
+
+#share-contact-group-form {
+    margin-top: 15px;
+    height: 300px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#share-contact-group-grid {
+    width: 565px;
+}
+
+#share-contact-group-grid caption {
+    border-bottom: 1px solid #eee;
+    padding: 6px 0;
+}
+
+#share-contact-group-grid caption,
+#share-contact-group-grid th {
+    text-align: left;
+}
+
+#share-contact-group-grid th {
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    padding: 9px;
+}
+
+#share-contact-group-grid th,
+#share-contact-group-grid td {
+    padding: 7px;
+}
+
+#edit-contact-group-dialog-group-name {
+    width: 90% !important;
+}
+
+/*** Org-Chart ***/
+
+#init-org-chart-box {
+    color: #999;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.drag-contact {
+    cursor: move;
+    width: 200px;
+    z-index: 10000;
+    padding: 10px 20px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    text-align: center;
+    color: #666;
+    font-weight: bold;
+    font-family: Arial;
+    font-size: 12px;
+}
+
+#contacts-tools {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+#contacts-tools div {
+    float: left;
+    padding: 3px 4px;
+    cursor: pointer;
+    border-right-width: 0;
+}
+
+#contacts-tools div:last-child {
+    border-right-width: 1px;
+}
+
+#import-contacts-dialog {
+    padding: 20px;
+}

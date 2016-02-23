@@ -1,0 +1,96 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/view.phtml:
+// Client Search
+
+$title = 'Sourcing' ;
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+h1 { text-align: center }
+#contact_tbl td { border: 1px solid black; background-color: white; padding: 5px; }
+table h3 { font-size: 14px; line-height: 16px; }
+
+</style>
+
+<div style="float: right">
+<a href="<?php echo $this->basePath(); ?>/contract/sourcemod">Add New Source</a><br/>
+</div>
+<h1>Manage Sources</h1>
+<hr/>
+
+ 
+<?php
+	
+	foreach ($sourcetypes as $keys=>$types)
+	{
+		echo "<h3>".$types['srt_id']."-".$types['srt_name']."</h3><div >";		
+		
+		$ar_sources = $sources[$types['srt_id']];
+		for ($i=0; $i<count($ar_sources); $i++)
+		{
+			//if($ar_sources[$i]["src_sp_code"]=='---' || strpos($ar_sources[$i]["src_sp_code"],$ar['ctr_spec'])!==false)
+			//{
+				
+				echo "<a href='".$this->basePath()."/contract/sourcemod/".$ar_sources[$i]["src_id"]."'>".$ar_sources[$i]["src_name"]."</a>&nbsp;";
+				for($k=1;$k<=$ar_sources[$i]["src_rating"];$k++)
+				{
+					echo '<img src="'.$this->basePath().'/img/star.png" alt="*" width="16" height="16" border="0" title="Rating: '.$ar_sources[$i]["src_rating"].'">&nbsp;';
+				}
+				if($ar_sources[$i]["src_rating"]<=0)
+					echo '<img src="'.$this->basePath().'/img/star0.png" alt="*" width="16" height="16" border="0" title="Rating: '.$ar_sources[$i]["src_rating"].'">&nbsp;';
+				
+				if($ar_sources[$i]["src_price"]>0)
+					echo " $".(int)$ar_sources[$i]["src_price"]." / ".(int)$ar_sources[$i]["src_pricing"];
+				if($ar_sources[$i]["src_sp_code"]!='---')
+					echo " Specialty: <strong>".$ar_sources[$i]["src_sp_code"]."</strong>";
+				echo "<br/>";
+			//}
+		}		
+		echo "</div><br/><br/>";
+	}	
+	
+?>
+ 
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    //echo $this->form()->openTag($form);
+	
+	
+?>
+
+
+
+
+
+
+
+
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    //echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+<?php
+
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-ctr'));

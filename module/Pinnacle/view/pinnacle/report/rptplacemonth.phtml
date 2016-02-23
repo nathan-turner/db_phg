@@ -1,0 +1,218 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/rptpresents.phtml:
+// Summary report
+
+$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
+
+$currentmo = date('m');
+$currentyr = date('Y');
+
+if($_POST["mon"]=="")
+	$mon = $currentmo;
+else
+	$mon = $_POST["mon"];
+
+$title = 'Monthly Placement Report';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			//$( "#startdatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#startdate"});
+			//$( "#enddatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#enddate"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+.nobg td { padding: 2px; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'rptplacemonth')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	//$start  = mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
+	
+	
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="post">
+	<label>State: </label>
+	<select name="state" id="state">
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$ar["ctct_st_code"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+	
+	<label>Specialty: </label><select  name="spec" class="cour">
+	<option value=""> All </option>
+   <option value="---"> Mid-Levels </option>
+	<?php	
+	//echo var_dump($specs);
+	$nbsp = array();
+	$nbsp[0] = "&nbsp;&nbsp;&nbsp;";
+	$nbsp[1] = "&nbsp;&nbsp;";
+	$nbsp[2] = "&nbsp;";
+	$nbsp[3] = "";
+	
+			foreach ($specs as $key=>$val)
+			{		//(RS("skill") = "--" and IsNull(RS0("ph_skill")) OR RS0("ph_skill")=RS("skill") OR RS("skill") = "  " and IsNull(RS0("ph_skill"))
+				$code = $val["sp_code"].$nbsp[strlen($val["sp_code"])];
+				echo "<option value='".$code.$val["skill"]."'";
+				if(strtoupper($val["sp_code"])==strtoupper($ar["ph_spec_main"]) && ($val["skill"]=="--" && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) || $ar["ph_skill"]==$val["skill"] || $ar["ph_skill"] == "  " && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) ))
+				//if($val["sp_code"]==$ar["ph_spec_main"])
+					echo "selected";
+				echo ">";				
+				echo $code."&nbsp;".$val['spec'];
+				echo "</option>";
+			}
+?>
+</select>
+	
+<label>Year:</label>
+<input type="text" name="year" id="year" class="" value="<?php if($_POST["year"]==''){ echo $currentyr;} else{ echo $_POST["year"]; } ?>" />
+	
+	
+<input type="submit" value="Submit" name="submitdate" class="btn" />
+	</form>
+
+<br/><br/>
+	
+<table class="nobg" width="100%" border=1 cellspacing=0 cellpadding=1><thead><tr><td>&nbsp;</td>
+<td class="bld ctr">Facility</td><td class="bld ctr">Marketer</td>
+<td class="bld ctr">Contract</td><td class="bld ctr">Date</td><td class="bld ctr">Spec</td>
+<td class="bld ctr">Placement</td><td class="bld ctr">Date</td>
+<td class="bld ctr" title="Search to Placement">S-PL</td>
+<td class="bld ctr">Salary</td>
+<td class="bld ctr">Recruiter</td>
+</tr></thead><tbody>
+ 
+<?php
+
+foreach($ar as $key=>$val)
+{
+	$tcnt = $tcnt + 1;
+	if(date('n', strtotime($val["pl_date"]))!=$prevmon){
+		$icnt = 0;
+		$prevmon = date('n', strtotime($val["pl_date"]));
+?>
+<tr><td colspan="11" class="bld"><?php echo $months[$prevmon]; ?></td></tr>
+<?php
+	}//end if
+	
+	if($val["ctr_nurse"]==1)
+		$spec = $val["at_abbr"];
+	else
+		$spec = $val["ctr_spec"];
+	
+	if($val["emp_uname"]!= $prevuname)
+	{
+			$scnt = $scnt + $icnt;
+            $icnt = 0;
+            $prevuname = $val["emp_uname"];
+	
+?>	
+<!--<tr><td class="bld" colspan=9><?php //echo $prevuname; ?></td></tr>-->
+
+<?php		
+}//end if
+	$icnt = $icnt + 1;
+?>
+
+
+<tr>
+<td class="ctr"><?php echo $icnt; ?>&nbsp;</td>
+<td><a class="ndec" href="<?php echo $this->basePath(); ?>/client/view/<?php echo $val["cli_id"]; ?>"><?php echo $val["ctct_name"]; ?></a> <?php echo $val["ctr_location_c"]; ?>, <?php echo $val["ctr_location_s"]; ?></td>
+<td class="ctr"><?php echo $val["mark_uname"]; ?></td>
+<td class="ctr"><a class="ndec" href="<?php echo $this->basePath(); ?>/contract/view/<?php echo $val["ctr_id"]; ?>"><?php echo $val["ctr_no"]; ?></a></td>
+<td class="ctr"><?php echo date('Y-m-d', strtotime($val["ctr_date"])); ?></td>
+<td class="ctr"><?php echo $spec; ?></td>
+<td><a class="ndec" href="<?php echo $this->basePath(); ?>/report/placement2/<?php echo $val["pl_id"]; ?>"><?php echo $val["st_name"]; ?></a>
+<?php echo $val["ph_name"]; ?> of <?php echo $val["ph_city"]; ?>, <?php echo $val["ph_state"]; ?></td>
+<td class="ctr"><?php echo date('Y-m-d', strtotime($val["pl_date"])); ?></td>
+<td class="ctr" title="Search to Placement"><?php echo $val["s2pl"]; ?></td>
+<td class="ctr"><?php echo round($val["pl_annual"],2); ?></td>
+<td class="ctr"><?php echo $val["emp_uname"]; ?>
+<?php  if($val["pl_split_emp"]!=''){ echo ", ".$val["split_uname"];} ?>
+</td>
+
+</tr>
+
+
+<?php	
+	
+}
+//$scnt = $scnt + $icnt;
+?>
+<tr><td class="bld ctr" colspan=9>Total Presents: <?php echo $tcnt; ?></td></tr>
+</tbody></table>
+
+
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

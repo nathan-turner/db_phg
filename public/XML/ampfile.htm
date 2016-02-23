@@ -1,0 +1,78 @@
+<script language="javascript">
+<!--
+var ampfile=getqstringvalue("ampfile",window.location.search)
+//alert(ampfile)
+
+var elementname = "ampfile"
+var Nodes
+
+oAmpXml=new ActiveXObject("Microsoft.XMLDOM")
+oAmpXml.async = false;
+oAmpXml.load("xmldata/ampfile.xml")
+
+var oAmpXsl = new ActiveXObject("Microsoft.XMLDOM");
+oAmpXsl.async = false;
+oAmpXsl.load("xsl/ampfile.xsl");
+
+if (oAmpXml.parseError==0){
+///////////////////////////// DATA DUMP: //////////////////////////////////
+//  document.write(oAmpXml.transformNode(oAmpXsl.documentElement))
+///////////////////////////////////////////////////////////////////////////
+  Nodes = oAmpXml.documentElement.selectNodes("label/"+elementname)
+  selectListings(Nodes,elementname,"")
+}
+else{
+  alert("oAmpXml: " + oAmpXml.parseError.reason)
+}
+
+//document.write("</table>")
+//document.write("</body>")
+//document.write("</HTML>")
+///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+function selectListings(Nodes,elementname,arrinprogid){
+  for(i=0;i<Nodes.length;i++){
+//alert("Nodes.item(i).text: " + Nodes.item(i).text + "\nNodes.length: " + Nodes.length + "\ni: " + i)
+    if(verifyvalue(Nodes.item(i))) {
+      document.write(Nodes.item(i).parentNode.transformNode(oAmpXsl.documentElement));
+      i = Nodes.length
+    }
+  }
+}
+
+function verifyvalue(Node){
+  var bMatch = false
+//  alert("ampfile: " + ampfile + "\nNode.text: " + Node.text)
+  if(ampfile==Node.text) {
+    bMatch = true
+  }
+  return bMatch
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      return unescape(inpara.substring(indexvalue,indexvalueend))
+  }
+  else{
+    return ""
+  }
+}
+///////////////////////////////////////////////////////////////////////////
+//-->
+</script>
+
+

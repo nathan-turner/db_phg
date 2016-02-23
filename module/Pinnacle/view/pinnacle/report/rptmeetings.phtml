@@ -1,0 +1,159 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/rptmeetings.phtml:
+// Summary report
+$title='Meetings By Marketer';
+   
+   
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			$( "#startdatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#startdate"});
+			$( "#enddatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#enddate"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+</script>
+<style type="text/css">
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; font-size: 10pt; }
+label { display: inline; }
+@media print { 
+ a[href]:after {
+    content: none !important;
+  }  
+#noprintfrm { display:none; }
+input, label, select, br { display:none; font-weight: bold; }
+}
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'rptmeetings')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	$start  = mktime(0, 0, 0, date("m")  , date("d")-14, date("Y"));
+	
+	$end = mktime(0, 0, 0, date("m")  , date("d")+14, date("Y")); //time();
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<div id="noprintfrm">
+	
+<input type="hidden" name="filter" value="<?php echo $filter; ?>">
+	
+	<label>Marketer: </label>
+	
+	<select name="mark" id="empid">
+	<option value="0" <?php if($_POST["mark"]==0){ echo "selected"; } ?> > (Me) </option>
+	<option value="-1" <?php if($_POST["mark"]==-1){ echo "selected"; } ?> > All </option>
+	<option value="-2" <?php if($_POST["mark"]==-2){ echo "selected"; } ?> > Fuzion Callers </option>
+	<?php
+	//echo var_dump($emps);
+			foreach ($emps as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$_POST["mark"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+	
+	<label>State: </label>
+	<select name="stat" id="state">
+	<option value=""> All </option>
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$ar["ctct_st_code"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+	
+	<input type="radio" name="coors" <?php if($_POST["coors"]!=1){ echo "checked"; }?> value="0">&nbsp;Marketer
+      <input type="radio" name="coors" <?php if($_POST["coors"]==1){ echo "checked"; }?> value="1">&nbsp;Set by&hellip;<br/><br/>
+	
+	<label>Start Date:</label>
+<input type="text" name="startdatetxt" id="startdatetxt" class="datefld" value="<?php if($_POST["startdatetxt"]==''){ echo date('m/d/Y', $start);}else{ echo date('m/d/Y', strtotime($_POST["startdatetxt"])); } //if($ar["ph_avail"]!=""){echo date('m/d/Y', strtotime($ar["ph_avail"]));} ?>" />
+<input type="hidden" name="startdate" id="startdate" value="<?php if($_POST["startdatetxt"]==''){ echo date('Y-m-d', $start);} else { echo date('Y-m-d', strtotime($_POST["startdatetxt"]));} //echo $ar["ph_avail"]; ?>">	
+
+<label>End Date:</label>
+<input type="text" name="enddatetxt" id="enddatetxt" class="datefld" value="<?php if($_POST["enddatetxt"]==''){ echo date('m/d/Y', $end);} else{ echo date('m/d/Y', strtotime($_POST["enddatetxt"])); }//if($ar["ph_avail"]!=""){echo date('m/d/Y', strtotime($ar["ph_avail"]));} ?>" />
+<input type="hidden" name="enddate" id="enddate" value="<?php if($_POST["enddatetxt"]==''){ echo date('Y-m-d', $end);} else { echo date('Y-m-d', strtotime($_POST["enddatetxt"]));}//echo $ar["ph_avail"]; ?>">	
+	
+<label>System:</label>	
+	<input name="cli_sys" type="text" id="cli_sys" value="<?php echo $_POST["cli_sys"]; ?>">
+	
+<input type="submit" value="Submit" name="submitbtn" class="btn" /></div>
+	
+
+<br/><br/>
+<?php //echo "HERE"; ?>	
+
+ <?php echo $table; ?>
+ 
+
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

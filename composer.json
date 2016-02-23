@@ -1,0 +1,23 @@
+{
+    "name": "phg-application",
+    "description": "PHG Database for ZF2",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "zf2"
+    ],
+    "homepage": "http://framework.zend.com/",
+    "repositories": [
+      {
+        "type": "composer",
+        "url": "http://packages.zendframework.com/"
+      }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
+        "zendframework/zendpdf": "2.*",
+		"zendframework/zendservice-livedocx": ">=1",
+		"sendgrid/sendgrid": "2.2.1"
+    }
+}

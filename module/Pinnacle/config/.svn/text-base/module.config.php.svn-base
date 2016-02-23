@@ -1,0 +1,161 @@
+<?php
+// module/Pinnacle/config/module.config.php:
+return array(
+    'controllers' => array(
+        'invokables' => array(
+            'Pinnacle\Controller\Admin'    => 'Pinnacle\Controller\AdminController',
+            'Pinnacle\Controller\Client'   => 'Pinnacle\Controller\ClientController',
+            'Pinnacle\Controller\Contract' => 'Pinnacle\Controller\ContractController',
+            'Pinnacle\Controller\Lookup'   => 'Pinnacle\Controller\LookupController',
+            'Pinnacle\Controller\Mail'     => 'Pinnacle\Controller\MailController',
+            'Pinnacle\Controller\Midlevel' => 'Pinnacle\Controller\MidlevelController',
+            'Pinnacle\Controller\Physician'=> 'Pinnacle\Controller\PhysicianController',
+            'Pinnacle\Controller\Report'   => 'Pinnacle\Controller\ReportController',
+            'Pinnacle\Controller\Resort'   => 'Pinnacle\Controller\ResortController',
+        ),
+    ),
+
+    'router' => array(
+        'routes' => array(
+            'lookup' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/lookup[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Lookup',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/admin[/:action][/:part][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'part' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Admin',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'mail' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/mail[/:action][/:part][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'part' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Mail',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'report' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/report[/:action][/:part][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'part' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Report',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'client' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/client[/:action][/:id][/:part]', // id/part!!
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'part' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Client',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'contract' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/contract[/:action][/:id][/:part]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'part' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Contract',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'midlevel' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/midlevel[/:action][/:id][/:part]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'part' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Midlevel',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'physician' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/physician[/:action][/:id][/:part]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'part' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Physician',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'resort' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/resort[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Pinnacle\Controller\Resort',
+                    ),
+                ),
+            ),
+        ),
+    ),
+
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'pinnacle' => __DIR__ . '/../view',
+        ),
+    ),
+);
+

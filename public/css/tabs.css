@@ -1,0 +1,22 @@
+.tabs li {
+				list-style:none;
+				display:inline;
+			}
+
+			.tabs a {
+				padding:5px 10px;
+				display:inline-block;
+				background:#666;
+				color:#fff;
+				text-decoration:none;
+			}
+
+			.tabs a.active {
+				background:#fff;
+				color:#000;
+			}
+input[type=radio] { margin: 0px;  }
+
+.rate { width: 80px;  }
+.checklist .span4 { margin-bottom: 10px; }
+.datehours { width: 50px; margin-left: 10px; }

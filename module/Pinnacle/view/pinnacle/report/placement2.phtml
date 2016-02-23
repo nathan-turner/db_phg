@@ -1,0 +1,303 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/placement2.phtml:
+// Marketing report
+
+$title = 'Placement Report';
+$this->headTitle($title);
+
+$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'placement')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+?>
+<TABLE BORDER=0 width="100%">
+<tr>
+ <td><b>Recruiter:</b></td>
+ <?php
+    if ($arr["pl_split_emp"]==''||$arr["pl_split_emp"]==0){
+ ?><td colspan=4>&nbsp; <?php echo $arr["req_name"]; ?></td>
+ <?php 
+    }else{ ?>
+ <td colspan=4>&frac12; <?php echo $arr["req_name"]; ?>; &frac12; <?php echo $arr["split_name"]; ?></td>
+ <?php } ?>
+</tr><tr>
+ <td><b>Client name:</b></td><td colspan=4>&nbsp; <?php echo $arr["cli_name"]; ?> <a class="ndec" href="<?php echo $this->basePath();?>/client/view/<?php echo $arr["cli_id"]; ?>">#<?php echo $arr["cli_id"]; ?></a>
+ <?php 
+ if($arr["ctr_cli_bill"]!=''){
+ ?>
+  and <a class="ndec" href="<?php echo $this->basePath();?>/client/view/<?php echo $arr["ctr_cli_bill"]; ?>">#<?php echo $arr["ctr_cli_bill"]; ?></a>
+  <?php } ?>
+ </td>
+</tr><tr>
+ <td><b>Practice type:</b></td><td colspan=4>&nbsp; 
+ <?php
+	if($arr["cli_type"] != 1 && $arr["cli_type"] != "1")
+		echo $arr["ct_name"];
+ ?>
+</td>
+</tr><tr>
+ <td><b>City, state:</b></td><td colspan=2>&nbsp; <?php echo $arr["cli_city"]; ?>, <?php echo $arr["cli_state"]; ?></td>
+ <td><b>Population:</b></td><td colspan=2>&nbsp; <?php echo $arr["cli_population"]; ?></td>
+</tr><tr>
+ <td><b>Contract #:</b></td><td colspan=2>&nbsp; <?php echo $arr["ctr_no"]; ?></td><td><b>Specialty:</b></td><td>&nbsp; <?php echo $arr["sp_name"]; ?></td>
+</tr><tr>
+ <td><b>Source of Placement:</b></td><td colspan=4>
+  <?php
+	if($arr["pl_source"] =="")
+		echo $arr["src_name"];
+ ?>
+ &nbsp;
+  <?php echo $arr["pl_source"]; ?></td>
+</tr><tr>
+ <td><b>Profile Date:</b></td><td colspan=2>&nbsp; <?php echo $arr["ctr_pro_date"]; ?></td><td><b>Placement Date:</b></td><td>&nbsp; <?php echo $arr["pl_date"]; ?></td>
+</tr><tr>
+ <td colspan=2><b>Search to Placement (Days):</b></td><td colspan=3>&nbsp; <?php echo $arr["s2pl"]; ?></td>
+</tr><tr>
+ <td><b>Candidate:</b></td><td colspan=3>&nbsp; <?php echo $arr["ph_name"]; ?></td>
+ <td>#<a href="<?php echo $this->basePath();?>/<?php if($arr["pipl_nurse"]==1){ echo "midlevel/view/";} else{ echo "physician/view/"; } ?><?php echo $arr["ph_id"]; ?>" class="ndec"><?php echo $arr["ph_id"]; ?></a></td>
+</tr><tr>
+ <td colspan=3><b>Candidate's Location prior to Relocation:</b></td><td colspan=2><?php echo $arr["ph_city"]; ?>, <?php echo $arr["ph_state"]; ?></td>
+</tr><tr>
+ <td rowspan=4 valign="top"><b>Candidate Statistics:</b></td><td colspan=4>&nbsp;</td>
+</tr><tr>
+ <td><b>Age:</b></td><td>&nbsp; 
+ <?php
+ if($arr["ph_DOB"]!='')
+ {
+  echo $arr["pl_date"]." - ".$arr["ph_DOB"];
+ }
+ ?>
+</td><td><b>Sex:</b></td><td>&nbsp; 
+ <?php
+ if($arr["ph_sex"]!='' && $arr["ph_sex"]==1) 
+  echo "Male";
+ else
+  echo "Female";
+ ?>
+</td>
+</tr><tr>
+ <td><b>MD/DO:</b></td><td>&nbsp; <?php echo $arr["ph_MD"]; ?></td><td><b>BC/BE:</b></td><td>&nbsp; 
+  <?php
+ if($arr["ph_spm_bc"]=='') 
+	echo "Not Eligible";
+ else
+	echo $arr["ph_spm_bc"];
+ 
+ ?>
+</td>
+</tr><tr>
+ <td><b>AMG/IMG:</b></td><td>
+ <?php
+ if($arr["pipl_nurse"]==1)
+ {
+	switch($arr["ph_citizen"])
+	{
+		case 5:
+			$visas = "No visa";
+			break;
+		case 4:
+			$visas = "Other visa";
+			break;
+		case 3:
+			$visas = "H visa";
+			break;
+		case 2:
+			$visas = "Perm. Res.";
+			break;
+		case 1:
+			$visas = "US Citizen";
+			break;
+		default:
+			$visas = "Unknown";
+			break;
+	}
+	echo "N/A";
+ 
+ }
+ else{
+	$visas = $arr["ph_citizen"];
+	if($visas=="AMG")
+		echo "AMG";
+	else
+		echo "IMG";
+ }
+ 
+ ?>
+ 
+ </td>
+ <td><b>Visa Info:</b></td><td>&nbsp; 
+ <?php
+ if($visas=="J1" || $visas=="H1B" || $arr["pipl_nurse"]==1){ echo $visas; } elseif ($visas=="IMG") { echo "N/A"; } 
+ ?>
+</td>
+</tr><tr>
+ <td>&nbsp;</td><td colspan=3><b>Years of work experience after training:</b>
+ </td><td>&nbsp; <?php echo $arr["pl_exp_years"]; ?></td>
+</tr>
+</table>
+
+<h2 style="border-bottom: 3px double black; margin-bottom: 0">FINANCIAL INFORMATION</h2>
+<TABLE BORDER=0 width="100%">
+<tr>
+ <td width=30%><b>Contract Term (Years):</b></td><td colspan=3>&nbsp; <?php echo $arr["pl_term"]; ?></td>
+</tr><tr>
+ <td width=30%><b>Annual Salary:</b></td><td width=20%>&nbsp; <?php echo number_format($arr["pl_annual"]); ?></td>
+ <td width=30%><b>Signing Bonus:</b></td><td width=20%>&nbsp; <?php echo number_format($arr["pl_signing"]); ?></td>
+</tr><tr>
+ <td width=30%><b>Guarantee:</b></td><td width=20%>&nbsp; 
+ <?php
+	$net0="";
+	$gro0="";
+	if($arr["pl_guar_net"]==1)
+		$net0="Net";
+	if($arr["pl_guar_gross"]==1)
+		$gro0="Gross";
+	if($net0!='' && $gro0!='') 
+		$net0=$net0." &amp; ";
+	echo $net0.$gro0;
+ ?>
+ </td><td width=30%><b>Guarantee Amount:</b></td><td width=20%>&nbsp; <?php echo number_format($arr["pl_guar"]); ?></td>
+</tr><tr valign="top">
+ <td width=30%><b>Incentive Compensation:</b></td><td width=20%>&nbsp; 
+ <?php
+	if($arr["pl_incent"]==1){ echo "Yes"; } else { echo "No"; }
+ ?>
+ 
+</td><td width=20%><b>Method:</b></td><td width=30%>&nbsp; 
+<?php
+$met0=array();
+$met1=0;
+if($arr["pl_met_coll"]==1){
+	$met0[$met1] = "Collections";
+	$met1+=1;
+}
+if($arr["pl_met_pro"]==1){
+	$met0[$met1] = "Profit";
+	$met1+=1;
+}
+if($arr["pl_met_num"]==1){
+	$met0[$met1] = "Number of visits";
+	$met1+=1;
+}
+if($arr["pl_met_oth"]==1 && $arr["pl_met_oth"]!=''){
+	$met0[$met1] = $arr["pl_met_oth"];
+	$met1+=1;
+}
+echo implode(", ", $met0);
+?>
+</td>
+</tr><tr>
+ <td width=30%><b>Partnership:</b></td><td width=20%>&nbsp; <?php if($arr["pl_partner"]==1){ echo "Yes"; } else { echo "No"; } ?></td><td width=30%><b>Years to Partnership:</b></td><td width=20%>&nbsp; <?php echo $arr["pl_partner_yrs"]; ?></td>
+</tr><tr valign="top">
+ <td width=30%><b>Buy-In ($):</b></td><td width=20%>&nbsp; <?php echo $arr["pl_buyin"]; ?></td><td width=20%><b>Based On:</b></td><td width=30%>&nbsp; 
+ <?php
+$bas0=array();
+$bas1=0;
+if($arr["pl_based_ass"]==1){
+	$bas0[$bas1] = "Assets";
+	$bas1+=1;
+}
+if($arr["pl_based_rec"]==1){
+	$bas0[$bas1] = "Receivables";
+	$bas1+=1;
+}
+if($arr["pl_based_sto"]==1){
+	$bas0[$bas1] = "Stock Purchase";
+	$bas1+=1;
+}
+if($arr["pl_based_oth"]!='' && $arr["pl_based_oth"]!=null){
+	$bas0[$bas1] = $arr["pl_based_oth"];
+	$bas1+=1;
+}
+echo implode(", ", $bas0);
+?>
+</td>
+</tr>
+</table>
+
+<h2 style="border-bottom: 3px double black; margin-bottom: 0">BENEFITS INFORMATION</h2>
+<TABLE BORDER=0 width="100%">
+<tr valign="top">
+ <td width=25%><b>Insurance:</b></td><td colspan=3>&nbsp; 
+ <?php
+$ins0=array();
+$ins1=0;
+if($arr["pl_health"]==1){
+	$ins0[] = "Health";
+	$ins1+=1;
+}
+if($arr["pl_dental"]==1){
+	$ins0[] = "Dental";
+	$ins1+=1;
+}
+if($arr["pl_fam_health"]==1){
+	$ins0[] = "Family Health";
+	$ins1+=1;
+}
+if($arr["pl_fam_dental"]==1){
+	$ins0[] = "Family Dental";
+	$ins1+=1;
+}
+if($arr["pl_life"]==1){
+	$ins0[] = "Life";
+	$ins1+=1;
+}
+if($arr["pl_st_dis"]==1){
+	$ins0[] = "ST DIS";
+	$ins1+=1;
+}
+if($arr["pl_lt_dis"]==1){
+	$ins0[] = "LT DIS";
+	$ins1+=1;
+}
+
+echo implode(", ", $ins0);
+?>
+ 
+ </td>
+</tr><tr>
+ <td width=25%><b>Vacation (Weeks):</b></td><td colspan=3>&nbsp; <?php echo $arr["pl_vacat"]; ?></td>
+</tr><tr>
+ <td width=25%><b>CME (Weeks):</b></td><td width=25%>&nbsp; <?php echo $arr["pl_cme_wks"]; ?></td><td width=25%><b>CME ($):</b></td><td width=25%>&nbsp; <?php echo number_format($arr["pl_cme"]); ?></td>
+</tr><tr>
+ <td width=25%><b>Loan Assistance:</b></td><td colspan=3>&nbsp; <?php if($arr["pl_loan"]==1){ echo "Yes"; } else { echo "No"; } ?></td>
+</tr><tr>
+ <td width=25%><b>Relocation ($):</b></td><td colspan=3>&nbsp; <?php echo number_format($arr["pl_reloc"]); ?></td>
+</tr><tr valign="top">
+ <td width=25%><b>Other Benefits:</b></td><td colspan=3>&nbsp; <?php echo number_format($arr["pl_oth_ben"]); ?></td>
+</tr><tr>
+ <td colspan=4>&nbsp;</td>
+</tr><tr>
+ <td width=25%><b>Referral Paid To:</b></td><td colspan=3>&nbsp; <?php if($arr["pl_ref_emp"]!=31){ echo $arr["ref_name"]; }  ?></td>
+</tr>
+</table>
+
+<h2 style="border-bottom: 3px double black; margin-bottom: 0">SUCCESS STORY DATA</h2>
+<TABLE BORDER=0 width="100%">
+<tr>
+ <td width=25%><b>Why did client need a provider, and what were the special needs/requirements of the facility, if there're any?</b></td><td width="75%">&nbsp; <?php echo $arr["pl_text1"]; ?></td>
+</tr><tr>
+ <td width=25%><b>How sourcing was initiated for this opportunity? What were the techniques used, and what was the most effective?</b></td><td>&nbsp; <?php echo $arr["pl_text2"]; ?></td>
+</tr><tr valign="top">
+ <td width=25%><b>What were the challenges and how did recruiter overcame them?</b></td><td>&nbsp; <?php echo $arr["pl_text3"]; ?></td>
+</tr><tr>
+ <td width=25%><b>Why did the candidate want the position, and how did the candidate exceed client expectations?</b></td><td>&nbsp; <?php echo $arr["pl_text4"]; ?></td>
+</tr>
+</table>
+
+<?php
+    echo $this->form()->closeTag();
+?>
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

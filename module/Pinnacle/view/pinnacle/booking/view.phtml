@@ -1,0 +1,623 @@
+<?php
+// module/Pinnacle/view/pinnacle/booking/view.phtml:
+// booking view
+
+$title = 'Booking View';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+//$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/layout.css');
+ 
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-1.9.1.js');//
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+//$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+//$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/jquery.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');
+//$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/layout.js?ver=1.0.2', 'text/javascript');
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+$this->headScript()->appendFile($this->basePath() . '/js/tabs.js', 'text/javascript');
+$this->headLink()->prependStylesheet($this->basePath() .'/css/tabs.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+	/*if($_POST["running_dates"]=="")
+		$running_dates = "['2014-03-13', '2014-02-02', '2014-02-03', '2014-02-05']";
+	else
+		$running_dates = $_POST["running_dates"];*/
+		
+		//$running_dates = "['2014-03-13', '2014-02-02', '2014-02-03', '2014-02-05']"; 
+?>
+<style type="text/css">
+ .ui-autocomplete-loading { 
+background: white url('/public/img/images/ui-anim_basic_16x16.gif') right center no-repeat;
+}
+</style>
+<script>
+<?php if(isset($_POST)) { ?>
+var running_dates = <?php echo $_POST["running_dates"]; ?>;
+var overtime_dates = <?php echo $_POST["overtime_dates"]; ?>;
+var night_dates = <?php echo $_POST["night_dates"]; ?>;
+var weekend_dates = <?php echo $_POST["weekend_dates"]; ?>;
+var holiday_dates = <?php echo $_POST["holiday_dates"]; ?>;
+<?php } ?>
+
+function pageLoad() { //need to force calendar load
+            //$( "#date" ).datepicker({altFormat: "yy-mm-dd",  altField: "#hidden_date"});
+			
+			$( "#depart_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#depart_date"});
+			$( "#return_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#return_date"});
+			
+		$('#bookingform').on('submit', function(e){        
+			if(!validateForm())
+				e.preventDefault();		
+		});
+		
+		//autocomplete for phys
+		$( "#physician" ).autocomplete({
+		source: function( request, response ) {//"/public/ajax/searchPhys", 
+		
+		$.ajax({    
+	type: "GET",
+	data: { term: $('#physician').val()	},
+    url: "<?php echo $this->basePath();?>/ajax/searchPhys",	
+    // The key needs to match your method's input parameter (case-sensitive).    
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){  
+	response( $.map( data, function(item) {
+                // your operation on data
+				 return {
+				id: item.id,
+				label: item.label,
+				value: item.value
+				}
+            }));
+	},
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+		},//end source
+		 select: function( event, ui ) {
+			//alert(ui.item.id);
+			$( "#physid" ).val(ui.item.id);
+		},
+		minLength: 3,
+		 open: function() {
+			$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		},
+		close: function() {
+			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		}
+});
+
+//autocomplete for client
+$( "#client" ).autocomplete({
+		source: function( request, response ) {//"/public/ajax/searchCli", 
+		
+		$.ajax({    
+	type: "GET",
+	data: { term: $('#client').val()	},
+    url: "<?php echo $this->basePath();?>/ajax/searchCli",	
+    // The key needs to match your method's input parameter (case-sensitive).    
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){  
+	response( $.map( data, function(item) {
+                // your operation on data
+				 return {
+				id: item.id,
+				label: item.label,
+				value: item.value
+				}
+            }));
+	},
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+		},//end source
+		 select: function( event, ui ) {
+			//alert(ui.item.id);
+			$( "#clientid" ).val(ui.item.id);
+		},
+		minLength: 3,
+		 open: function() {
+			$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		},
+		close: function() {
+			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		}
+});
+			
+}
+		
+function validateForm()
+{
+	var valid=true;
+	if($( "#physician" ).val()==""){
+		valid=false;
+		alert('You need to select a physician');
+		
+	}	
+	if($( "#billable:checked" ).val()!=1 && $( "#billable:checked" ).val()!=0){
+		alert('You need to select billable/non-billable');
+		valid=false;
+	}
+	if($( "#client" ).val()==""){
+		valid=false;
+		alert('You need to select a client');
+		
+	}
+	if($( "#client" ).val()==""){
+		valid=false;
+		alert('You need to enter a city');		
+	}
+	
+	if(valid==true)
+		return true;
+	else
+		return false; //return false to prevent postback
+}
+
+</script>
+
+<a id="top" name="top" ></a>
+
+	<a href="<?php echo $this->basePath(); ?>/booking">Back to Bookings</a>
+	
+<h1 ><?php //echo $this->escapeHtml($title); ?></h1>
+<br/>
+<?php
+    
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($_POST);
+?>
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+  <ul class='tabs'>
+    <li><a href='#tab1'>Details</a></li>
+	<li><a href='#tab2'>Rates</a></li>
+    <li><a href='#tab3'>Dates</a></li>
+    <li><a href='#tab4'>Checklist</a></li>
+	<li><a href='#tab5'>Arrangements</a></li>
+  </ul>
+  
+  
+ <div id='tab1'>
+ <h3>Details</h3>
+ <div class="row">
+    <div class="span4">
+        <label>Physician:</label> <input type="text" name="physician" id="physician" value="<?php echo $_POST["physician"];?>" />
+    </div>
+    <div class="span4">
+        <label>Billable:</label> <input type="radio" name="billable" id="billable" value="0" <?php if($_POST["billable"]==0){ echo "checked"; }?>/> No &nbsp;
+		<input type="radio" name="billable" id="billable" value="1" <?php if($_POST["billable"]==1){ echo "checked"; }?>/> Yes
+    </div>
+	<div class="span4">
+        
+    </div>
+</div>
+<div class="row">
+    <div class="span4">
+        <label>Recruiter:</label> <select name="recruiter"  >
+		<?php 
+		//echo var_dump($marketers);
+		foreach ($rec as $key=>$val)
+		{
+			echo "<option value='".$key."' ";
+			if($_POST["recruiter"]==$key)
+				echo "selected";
+			echo ">".$val."</option>";
+		}
+		?>
+		</select>
+    </div>
+	<div class="span4">
+        <label>Marketer:</label> <select  name="marketer"  >
+		<?php 
+		//echo var_dump($marketers);
+		foreach ($marketers as $key=>$val)
+		{
+			echo "<option value='".$key."' ";
+			if($_POST["marketer"]==$key)
+				echo "selected";
+			echo ">".$val."</option>";
+		}
+		?>
+		</select>
+    </div>
+</div>
+ <div class="row">
+    <div class="span4">
+        <label>Client/Facility:</label> <input type="text" name="client" id="client" value="<?php echo $_POST["client"];?>" />
+    </div>
+	<div class="span4">
+        <label>Credentialing Manager:</label> <input type="text" name="credentialing_manager" value="<?php echo $_POST["credentialing_manager"];?>" />
+    </div>
+</div>
+ <div class="row">
+    <div class="span4">
+        <label>City:</label> <input type="text" name="city" value="<?php echo $_POST["city"];?>" />
+    </div>
+    <div class="span4">
+        <label>State:</label> <select type="text" name="state"  >
+		<?php 
+		//echo var_dump($marketers);
+		foreach ($states as $key=>$val)
+		{
+			echo "<option value='".$key."' ";
+			if($_POST["state"]==$key)
+				echo "selected";
+			echo ">".$val."</option>";
+		}
+		?>
+		</select>
+    </div>
+	<div class="span4">
+        
+    </div>
+</div>
+ <!--<input type="text" name="date" id="date" />
+ <input type="hidden" name="hidden_date" id="hidden_date" />-->
+<div class="row">  
+    <div class="span4">
+        <label>Status:</label> <select name="book_status"  >
+			<option value="Pending" <?php if($_POST["book_status"]=='Pending'){ echo "selected"; } ?> >Pending</option>
+			<option value="Confirmed" <?php if($_POST["book_status"]=='Confirmed'){ echo "selected"; } ?> >Confirmed</option>
+		</select>
+	</div>
+</div>
+ 
+ </div>
+ 
+ <div id='tab2'>
+ <h3>Rates</h3>
+<div class="row">
+	<div class="span1">
+        &nbsp;
+    </div>
+    <div class="span2">
+        <strong>Doc Rate</strong>
+    </div>
+    <div class="span2">
+        <strong>Client Rate</strong>
+    </div>
+	
+</div>
+<div class="row">
+    <div class="span1">
+        <label class="rate">Per Diem:</label> 
+    </div>
+    <div class="span2">
+        <input type="text" name="phys_per_diem" class="rate" value="<?php echo $_POST["phys_per_diem"];?>" />
+    </div>
+	<div class="span2">
+        <input type="text" name="bill_per_diem" class="rate" value="<?php echo $_POST["bill_per_diem"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span1">
+        <label class="rate">Normal rate:</label> 
+    </div>
+    <div class="span2">
+        <input type="text" name="dr_rate" class="rate" value="<?php echo $_POST["dr_rate"];?>" />
+    </div>
+	<div class="span2">
+        <input type="text" name="cli_rate" class="rate" value="<?php echo $_POST["cli_rate"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span1">
+        <label class="rate">Holiday:</label> 
+    </div>
+    <div class="span2">
+        <input type="text" name="dr_holiday_rate" class="rate" value="<?php echo $_POST["dr_holiday_rate"];?>" />
+    </div>
+	<div class="span2">
+        <input type="text" name="cli_holiday_rate" class="rate" value="<?php echo $_POST["cli_holiday_rate"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span1">
+        <label class="rate">Overtime:</label> 
+    </div>
+    <div class="span2">
+        <input type="text" name="dr_overtime_rate" class="rate" value="<?php echo $_POST["dr_overtime_rate"];?>" />
+    </div>
+	<div class="span2">
+        <input type="text" name="cli_overtime_rate" class="rate" value="<?php echo $_POST["cli_overtime_rate"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span1">
+        <label class="rate">Night Call:</label> 
+    </div>
+    <div class="span2">
+        <input type="text" name="dr_night_rate" class="rate" value="<?php echo $_POST["dr_night_rate"];?>" />
+    </div>
+	<div class="span2">
+        <input type="text" name="cli_night_rate" class="rate" value="<?php echo $_POST["cli_night_rate"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span1">
+        <label class="rate">Weekend Call:</label> 
+    </div>
+    <div class="span2">
+        <input type="text" name="dr_weekend_rate" class="rate" value="<?php echo $_POST["dr_weekend_rate"];?>" />
+    </div>
+	<div class="span2">
+        <input type="text" name="cli_weekend_rate" class="rate" value="<?php echo $_POST["cli_weekend_rate"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span1">
+        <label class="rate">Mileage:</label> 
+    </div>
+    <div class="span2">
+        <input type="text" name="dr_mileage" class="rate" value="<?php echo $_POST["dr_mileage"];?>" />
+    </div>
+	<div class="span2">
+        <input type="text" name="cli_mileage" class="rate" value="<?php echo $_POST["cli_mileage"];?>" />
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="span4">
+        
+    </div>
+    <div class="span4">
+        
+    </div>
+	<div class="span4">
+        
+    </div>
+</div>
+</div>
+
+ <div id='tab3'>
+ 
+ <h3>Running Dates</h3>
+<input type="hidden" name="clientid" id="clientid" value="<?php echo $_POST["clientid"];?>"/>
+<input type="hidden" name="physid" id="physid" value="<?php echo $_POST["physid"];?>"/>
+
+<input type="hidden" name="running_dates" id="running_dates" value="<?php echo $_POST["running_dates"];?>"/>
+<input type="hidden" name="overtime_dates" id="overtime_dates" value="<?php echo $_POST["overtime_dates"];?>"/>
+<input type="hidden" name="night_dates" id="night_dates" value="<?php echo $_POST["night_dates"];?>"/>
+<input type="hidden" name="weekend_dates" id="weekend_dates" value="<?php echo $_POST["weekend_dates"];?>"/>
+<input type="hidden" name="holiday_dates" id="holiday_dates" value="<?php echo $_POST["holiday_dates"];?>"/>
+
+
+<p id="date2"></p>
+
+<a id="clearSelection">Clear Dates</a>
+
+
+<div id="runningdates_box"><?php echo $_POST["running_html"];?></div>
+
+
+<div class="row">
+<div class="span3">
+<h3>Overtime Dates</h3>
+<p id="overtime_date"></p>
+<a id="clearSelection2">Clear Overtime Dates</a>
+<div id="overtimedates_box"><?php echo $_POST["overtime_html"];?></div>
+</div>
+<div class="span3">
+<h3>Night Call</h3>
+<p id="night_date"></p>
+<a id="clearSelection3">Clear Night Dates</a>
+<div id="nightdates_box"><?php echo $_POST["night_html"];?></div>
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<h3>Weekend Call</h3>
+<p id="weekend_date"></p>
+<a id="clearSelection4">Clear Weekend Dates</a>
+<div id="weekenddates_box"><?php echo $_POST["weekend_html"];?></div>
+</div>
+<div class="span3">
+<h3>Holiday Dates</h3>
+<p id="holiday_date"></p>
+<a id="clearSelection5">Clear Holiday Dates</a>
+<div id="holidaydates_box"><?php echo $_POST["holiday_html"];?></div>
+</div>
+</div>
+
+
+
+</div><!--end tab //-->
+
+
+ <div id='tab4' class="checklist">
+ <h3>Checklist</h3>
+	
+	<div class="row">
+    <div class="span4">
+    <label>Contract Attached:</label> <input type="radio" name="contract_attached" value="1" <?php if($_POST["contract_attached"]==1){ echo "checked"; }?>/> Complete &nbsp;
+	<input type="radio" name="contract_attached" value="0" <?php if($_POST["contract_attached"]==0){ echo "checked"; }?>/> Not Needed    
+    </div>    
+	
+    <div class="span4">
+    <label>Dr. Confirmed:</label> <input type="radio" name="dr_confirmed" value="1" <?php if($_POST["dr_confirmed"]==1){ echo "checked"; }?>/> Complete &nbsp;
+	<input type="radio" name="dr_confirmed" value="0" <?php if($_POST["dr_confirmed"]==0){ echo "checked"; }?>/> Not Needed    
+    </div>    
+	</div>
+	<div class="row">
+    <div class="span4">
+    <label>Timesheets:</label> <input type="radio" name="timesheets" value="1" <?php if($_POST["timesheets"]==1){ echo "checked"; }?>/> Complete &nbsp;
+	<input type="radio" name="timesheets" value="0" <?php if($_POST["timesheets"]==0){ echo "checked"; }?>/> Not Needed    
+    </div>    
+	
+    <div class="span4">
+    <label>Malpractice Insurance:</label> <input type="radio" name="malpractice_ins" value="1" <?php if($_POST["malpractice_ins"]==1){ echo "checked"; }?>/> Complete &nbsp;
+	<input type="radio" name="malpractice_ins" value="0" <?php if($_POST["malpractice_ins"]==0){ echo "checked"; }?>/> Not Needed    
+    </div>    
+	</div>
+	<div class="row">
+    <div class="span4">
+    <label>Credentials for Facility:</label> <input type="radio" name="credentials" value="1" <?php if($_POST["credentials"]==1){ echo "checked"; }?>/> Complete &nbsp;
+	<input type="radio" name="credentials" value="0" <?php if($_POST["credentials"]==0){ echo "checked"; }?>/> Not Needed    
+    </div>    
+	
+    <div class="span4">
+    <label>Pay Addendum:</label> <input type="radio" name="addendum" value="1" <?php if($_POST["addendum"]==1){ echo "checked"; }?>/> Complete &nbsp;
+	<input type="radio" name="addendum" value="0" <?php if($_POST["addendum"]==0){ echo "checked"; }?>/> Not Needed    
+    </div>    
+	</div>
+	<div class="row">
+    <div class="span4">
+    <label>Contract Extension:</label> <input type="radio" name="contract_ext" value="1" <?php if($_POST["contract_ext"]==1){ echo "checked"; }?>/> Complete &nbsp;
+	<input type="radio" name="contract_ext" value="0" <?php if($_POST["contract_ext"]==0){ echo "checked"; }?> /> Not Needed    
+    </div>    
+	</div>
+	
+	<div class="row">
+    <div class="span4">
+    <label>Work Site Address:</label> <input type="text" name="work_address" value="<?php echo $_POST["work_address"];?>" />
+    </div>   
+	<div class="span4">
+    <label>Assignment #:</label> <input type="text" name="assignment" value="<?php echo $_POST["assignment"];?>" />
+    </div>  	
+	</div>
+	
+	
+	
+	<div class="row">
+    <div class="span4">
+    <label>Deposit:</label> <input type="radio" name="deposit" value="1" <?php if($_POST["deposit"]==1){ echo "checked"; }?>/> Yes &nbsp;
+	<input type="radio" name="deposit" value="0" <?php if($_POST["deposit"]==0){ echo "checked"; }?> /> No    
+    </div> 
+	<div class="span4">
+    <label>Amount:</label> <input type="text" name="deposit_amt" class="rate" value="<?php echo $_POST["deposit_amt"];?>" />
+    </div>
+	</div>
+	
+	<div class="row">
+    <div class="span4">
+    <label>Prepay:</label> <input type="radio" name="prepay" value="1" <?php if($_POST["prepay"]==1){ echo "checked"; }?>/> Yes &nbsp;
+	<input type="radio" name="prepay" value="0" <?php if($_POST["prepay"]==0){ echo "checked"; }?> /> No    
+    </div> 
+	<div class="span4">
+    <label>Amount:</label> <input type="text" name="prepay_amt" class="rate" value="<?php echo $_POST["prepay_amt"];?>" />
+    </div>
+	</div>
+	
+	
+	
+</div>
+
+<div id='tab5'>
+ <h3>Arrangements</h3>
+
+ <strong>Flight Arrangements</strong>
+	<div class="row">
+    <div class="span3">
+    <label>Arranged by:</label> <input type="text" name="flight_arranged_by" value="<?php echo $_POST["flight_arranged_by"];?>" />
+    </div>   
+		
+	</div>
+	
+	<div class="row">
+    <div class="span3">
+    <label>Fly From (City/State):</label> <input type="text" name="fly_from" value="<?php echo $_POST["fly_from"];?>" />
+    </div>   
+	<div class="span3">
+    <label>Fly To (City/State):</label> <input type="text" name="fly_to" value="<?php echo $_POST["fly_to"];?>" />
+    </div>  	
+	</div>
+	
+	<div class="row">
+    <div class="span3">
+    <label>Depart Date:</label> <input type="text" name="depart_date" id="depart_datetxt" value="<?php if($_POST["depart_date"]!=""){echo date('m/d/Y', strtotime($_POST["depart_date"]));} ?>" />
+	<input type="hidden" name="depart_date" id="depart_date" value="<?php if($_POST["depart_date"]!=""){echo date('Y-m-d', strtotime($_POST["depart_date"]));} ?>"/>
+    </div>   
+	<div class="span3">
+    <label>Return Date:</label> <input type="text" name="return_date" id="return_datetxt" value="<?php if($_POST["return_date"]!=""){echo date('m/d/Y', strtotime($_POST["return_date"]));} ?>" />
+	<input type="hidden" name="return_date" id="return_date" value="<?php if($_POST["return_date"]!=""){echo date('Y-m-d', strtotime($_POST["return_date"]));} ?>" />
+    </div>  	
+	</div>
+ <hr/>
+ <strong>Car Rental</strong>
+	<div class="row">
+    <div class="span3">
+    <label>Arranged by:</label> <input type="text" name="car_arranged_by" value="<?php echo $_POST["car_arranged_by"];?>" />
+    </div>   
+	<div class="span3">
+    <label>Agency:</label> <input type="text" name="car_agency" value="<?php echo $_POST["car_agency"];?>" />
+    </div>	
+	</div>
+	<div class="row">
+    <div class="span3">
+    <label>Pickup Location:</label> <input type="text" name="pickup_loc" value="<?php echo $_POST["pickup_loc"];?>" />
+    </div>   
+	<div class="span3">
+    <label>Drop off Location:</label> <input type="text" name="dropoff_loc" value="<?php echo $_POST["dropoff_loc"];?>" />
+    </div>	
+	</div>
+ <hr/>
+ <strong>Housing</strong>
+	<div class="row">
+    <div class="span3">
+    <label>Arranged by:</label> <input type="text" name="housing_arranged_by" value="<?php echo $_POST["housing_arranged_by"];?>" />
+    </div>   
+	<div class="span3">
+    <label>Name of Location:</label> <input type="text" name="housing_location" value="<?php echo $_POST["housing_location"];?>" />
+    </div>	
+	</div>
+	<div class="row">
+    <div class="span3">
+    <label>City/State:</label> <input type="text" name="location_city" value="<?php echo $_POST["location_city"];?>" />
+    </div>   
+	<div class="span3">
+    <label>Pets:</label> <input type="radio" name="pets" value="1" <?php if($_POST["pets"]==1){ echo "checked"; }?>/> Yes &nbsp;
+	<input type="radio" name="pets" value="0" <?php if($_POST["pets"]==0){ echo "checked"; }?>/> No 
+    </div>	
+	</div>
+	<div class="row">
+	<div class="span3">
+    <label>Family Members:</label> <input type="text" name="family_members" value="<?php echo $_POST["family_members"];?>" />
+    </div>	
+    <div class="span3">
+    <label>Smoking/Non:</label> <input type="radio" name="smoking" value="1" <?php if($_POST["smoking"]==1){ echo "checked"; }?> /> Yes &nbsp;<input type="radio" name="smoking" value="0" <?php if($_POST["smoking"]==0){ echo "checked"; }?>/> No 
+    </div>   	
+	</div>
+ 
+
+</div>
+
+
+<br/>
+<p id="date22"></p>
+<a href="#top">Back to Top</a><br/><br/>
+
+<input type="submit" value="Submit Changes" name="submit" id="submit" class="btn btn-large" />
+<input type="button" value="Cancel" class="btn btn-large" id="cancel"/>  
+
+<script>
+pageLoad();
+
+</script>
+
+
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

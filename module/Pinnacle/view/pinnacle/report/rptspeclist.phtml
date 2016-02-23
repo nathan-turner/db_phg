@@ -1,0 +1,200 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/rptspeclist.phtml:
+// Summary report
+
+$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
+$start  = mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
+$currentmo = date('m');
+$currentyr = date('Y');
+
+if($_POST["mon"]=="")
+	$mon = $currentmo;
+else
+	$mon = $_POST["mon"];
+
+$title = 'Specialty Maillist
+';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			$( "#startdatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#startdate"});
+			//$( "#enddatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#enddate"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+.nobg td { padding: 2px; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rptspeclist')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    //echo $this->form()->openTag($form); ///disabled form to enable custom stuff
+	//echo var_dump($arr);
+
+?>
+
+
+<div class="row">
+    <div class="span12">
+	<form action="<?php echo $this->basePath(); ?>/download_emaillist.php" method="post">
+	
+		
+	
+	<div class="row">
+	<div class="span2"><label>Physician Specialty: </label></div>
+	<div class="span8">
+	<select  name="spec" class="cour">
+	<!--<option value=""> All </option>
+   <option value="---"> Mid-Levels </option>-->
+	<?php	
+	//echo var_dump($specs);
+	$nbsp = array();
+	$nbsp[0] = "&nbsp;&nbsp;&nbsp;";
+	$nbsp[1] = "&nbsp;&nbsp;";
+	$nbsp[2] = "&nbsp;";
+	$nbsp[3] = "";
+	
+			foreach ($specs as $key=>$val)
+			{		//(RS("skill") = "--" and IsNull(RS0("ph_skill")) OR RS0("ph_skill")=RS("skill") OR RS("skill") = "  " and IsNull(RS0("ph_skill"))
+				//$code = $val["sp_code"].$nbsp[strlen($val["sp_code"])];
+				$code = $val["sp_code"];
+				echo "<option value='".$code.$val["skill"]."'";
+				if(strtoupper($val["sp_code"])==strtoupper($ar["ph_spec_main"]) && ($val["skill"]=="--" && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) || $ar["ph_skill"]==$val["skill"] || $ar["ph_skill"] == "  " && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) ))
+				//if($val["sp_code"]==$ar["ph_spec_main"])
+					echo "selected";
+				echo ">";				
+				echo $code."&nbsp;".$val['spec'];
+				echo "</option>";
+			}
+?>
+</select>
+</div>
+	</div>
+	
+	<div class="row">
+	<div class="span2"><label>or Mid-Level Category: </label></div>
+	<div class="span8">
+	<select size="1" name="nut"  id="nutype" class="cour" ><!-- &&&&&&&&&&&&&&&&&&&&&&&&&& ALLIED TYPE &&&&&&&&&&&&&& -->
+	<?php //echo $mid; 
+		foreach ($mid as $key=>$val)
+			{		
+				//$code = $key.$nbsp[strlen($key)];
+				/*$code = $val["at_code"].$nbsp[strlen($val["at_code"])];
+				echo "<option value='".$val["at_code"]."'";				
+				echo ">";				
+				echo $code."&nbsp;".$val['at_name'];
+				echo "</option>";*/
+				echo "<option value='".$key."'";				
+				echo ">";				
+				echo "&nbsp;".str_replace("=","&nbsp;",$val);
+				echo "</option>";
+			}
+	?>
+	</select>
+	</div>
+	</div>
+	
+	
+	<div class="row">
+	<div class="span2"><label>Licensed In: </label></div>
+	<div class="span8">
+	<select name="state" id="state">
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$ar["ctct_st_code"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+	
+	<br/>
+	
+	</div>
+	</div>
+	
+	<div class="row">
+	<div class="span2"><label>Start Date: </label></div>
+	<div class="span8">
+	<input type="text" name="startdatetxt" id="startdatetxt" class="datefld" value="<?php if($_POST["startdatetxt"]==''){ echo date('m/d/Y', $start);}else{ echo date('m/d/Y', strtotime($_POST["startdatetxt"])); } //if($ar["ph_avail"]!=""){echo date('m/d/Y', strtotime($ar["ph_avail"]));} ?>" />
+<input type="hidden" name="startdate" id="startdate" value="<?php if($_POST["startdatetxt"]==''){ echo date('Y-m-d', $start);} else { echo date('Y-m-d', strtotime($_POST["startdatetxt"]));} //echo $ar["ph_avail"]; ?>">
+
+	</div>
+	</div>
+	
+		
+	<div class="row">
+	<div class="span12">
+	<label>It's a PLT Campaign: </label> <input type="checkbox" name="locum" value="1"><br/>
+	<label>It's a Physician Career Campaign: </label> <input type="checkbox" name="pcareer" value="1">
+	</div>
+	</div>
+	
+	<br/><br/>
+<input type="submit" value="Submit" name="submitbtn" class="btn" />
+	</form>
+
+<br/><br/>
+	
+
+
+
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+   // echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

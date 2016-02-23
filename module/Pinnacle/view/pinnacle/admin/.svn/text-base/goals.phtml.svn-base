@@ -1,0 +1,119 @@
+<?php
+// module/Pinnacle/view/pinnacle/admin/goals.phtml:
+
+$title = 'Manage Goals';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+if( $phguser->access > 1 ) { 
+    if( $messages ) {
+        echo '<p class="alert alert-warning">';
+        foreach($messages as $msg)
+            echo $this->escapeHtml($msg).'<br>';
+        echo '</p>';
+    }
+?>
+<div class="row">
+    <div class="span2">
+        <?php
+        $curname = '';
+        if( $part === 'list' ) $part = 'Y'.date('Y');
+        if( $users ) foreach ($users as $user) {
+            // list all
+            ?><a href="<?php echo $this->url('admin',
+                array('action'=>'goals', 'id' => $user->emp_id, 'part' => $part)) ?>">
+<?php       $rn = $this->escapeHtml($user->emp_realname);
+            if( $id == $user->emp_id ) {
+                $curname = $rn;
+                $rn = "<b>$rn</b>";
+            }
+            echo $user->emp_status? $rn: "<i>$rn</i>"; ?></a><br>
+<?php
+        } // users
+        $ipart = (int) substr($part,1,4);
+        $partP = $ipart -1; $partN = $ipart +1;
+        ?>
+    </div>
+    <div class="span8">
+        <p>Select Year: <a href="<?php echo $this->url('admin',
+                array('action'=>'goals', 'id' => $id, 'part' => 'Y'.$partP)) ?>"><?php echo $partP ?> &laquo;&mdash;</a>  <b><?php echo $this->escapeHtml($ipart); ?></b>
+         <a href="<?php echo $this->url('admin',
+                array('action'=>'goals', 'id' => $id, 'part' => 'Y'.$partN)) ?>">&mdash;&raquo; <?php echo $partN ?></a></p>
+<?php
+        if( $id && $form && !empty($curname) ) {
+?>
+        <h2><?php echo $this->escapeHtml($ipart); ?> Goals for <?php echo $curname; ?></h2>
+
+        <?php
+$form->setAttribute('action', $this->url('admin',
+                        array('action' => 'goals', 'part' => $part, 'id' => $id)));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('g_emp_id')->setValue($id));
+echo $this->formHidden($form->get('g_year')->setValue($ipart));
+echo $this->formHidden($form->get('man_mode'));
+$mon = array(null,'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+?><table class="table">
+  <tr>
+    <th>Month</th>
+    <th>Goal 1</th> <th>Goal 2</th> <th>Goal 3</th> <th>Goal 4</th>
+  </tr>
+  <tr>
+    <td><b>Recruiting</b></td>
+    <td>Placements</td>
+    <td>Interviews</td>
+    <td>[Presents]</td>
+    <td>[Retainers - Repeat]</td>
+  </tr>
+  <tr>
+    <td><b>Marketing</b></td>
+    <td>Retainers</td>
+    <td>Meetings</td>
+    <td>Retainers - New</td>
+    <td>Retainers - Repeat</td>
+  </tr>
+  <tr>
+    <td><b>MA</b></td>
+    <td>Retainers - New</td>
+    <td>Meetings Scheduled</td>
+    <td>Calls</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Class:</td>
+    <td colspan=4>
+        <?php echo $this->formSelect($form->get('g_class')) ?>
+    </td>
+  </tr>
+<?php for( $j = 1; $j <= 12; $j++ ) : ?>
+<tr>
+    <td><?php echo $mon[$j] ?></td>
+    <td><?php echo $this->formNumber($form->get("g_1_$j")) ?></td>
+    <td><?php echo $this->formNumber($form->get("g_2_$j")) ?></td>
+    <td><?php echo $this->formNumber($form->get("g_3_$j")) ?></td>
+    <td><?php echo $this->formNumber($form->get("g_4_$j")) ?></td>
+</tr>
+<?php endfor ?>
+  </table>
+<?php
+echo $this->formSubmit($form->get('submit'));
+?> <a class="btn btn-large btn-danger" href="<?php echo $this->url('admin') ?>">Cancel</a>
+<?php
+echo $this->form()->closeTag(); 
+
+        } else { // id, form, & curname ?>
+        <p class="alert alert-error">Please pick a user on the left!</p>
+        <?php } // no id or curname ?>
+    </div>
+</div>
+
+<?php } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+} /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

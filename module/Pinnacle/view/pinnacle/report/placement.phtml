@@ -1,0 +1,132 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/placement.phtml:
+// Marketing report
+
+$title = 'Placements by State And Specialty';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			$( "#my-date1" ).datepicker({altFormat: "yy-mm-dd",  altField: "#date1txt"});
+			$( "#my-date2" ).datepicker({altFormat: "yy-mm-dd",  altField: "#date2txt"});
+			$( "#my-date1" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+			$( "#my-date2" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+}
+</script>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'placement')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+?>
+<div class="row">
+    <div class="span3">
+        <?php echo $this->formRow($form->get('st_code')); ?>
+        <?php echo $this->formRow($form->get('date1')); ?>
+		<input type="hidden" name="date1txt" id="date1txt" />
+    </div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('spec')); ?>
+        <?php echo $this->formRow($form->get('date2')); ?>
+		<input type="hidden" name="date2txt"  id="date2txt" />
+    </div>
+    <div class="span2"><div style="margin-top: 55px">
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div></div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+<table class="table report">
+    <thead><tr>
+        <th> </th>
+        <th>Facility</th>
+        <th>Marketer</th>
+        <th>Contract</th>
+        <th>Date</th>
+        <th>Spec</th>
+        <th>Placement</th>
+        <th>Date</th>
+        <th title="Search to Placement">S-PL</th>
+        <th>Recruiter</th>
+    </tr></thead>
+    <tbody>
+        <?php if( $report ) foreach ($report as $row):
+            $tcnt++;
+            if( $row->cli_id != $prevcliid ):
+                $icnt++;
+                $prevcliid = (int) $row->cli_id;
+                $scls = '';
+        ?>
+                <tr>
+            <td><?php echo $this->escapeHtml($icnt); ?></td>
+            <td><a href="<?php echo $this->url('client', array('action'=>'view', 'part'=>'go', 'id' => $row->cli_id)) ?>"><?php echo $this->escapeHtml($row->ctct_name); ?></a>,
+                <?php echo $this->escapeHtml($row->ctr_location_c).', '
+                    .$this->escapeHtml($row->ctr_location_s).'. Ph:&nbsp;';
+                    echo $this->escapeHtml($row->formatPhone($row->ctct_phone)).' ';
+                    if( !empty($row->cli_sys) )
+                        echo '<b>System:</b> '.$this->escapeHtml($row->cli_sys);
+                ?>
+            </td>
+            <td><?php echo $this->escapeHtml($row->mark_uname); ?></td>
+            <?php else:
+                $scls = 'class="phg-noline"';
+            ?>
+                <tr>
+                    <td class="phg-noline" colspan="3"> </td>
+            <?php endif;
+            $spec = $row->ctr_nurse? $row->at_abbr: $row->ctr_spec;
+            ?>
+            <td <?php echo $scls ?>><a href="<?php echo $this->url('contract', array('action'=>'view', 'part'=>'go', 'id' => $row->ctr_id)) ?>"><?php echo $this->escapeHtml($row->ctr_no); ?></a></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->formatDate($row->ctr_date)); ?></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($spec); ?></td>
+            <td <?php echo $scls ?>><a href="<?php echo $this->url('report', array('action'=>'placement2', 'part'=>'go', 'id' => $row->pl_id)) ?>"><?php echo $this->escapeHtml($row->st_name); ?></a></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->formatDate($row->pl_date)); ?></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->s2pl); ?></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->emp_uname);
+            if( $row->pl_split_emp ) echo ', '.$this->escapeHtml($row->split_uname);
+            ?></td>
+        </tr>
+        <?php endforeach;
+        if( $tcnt ): ?>
+        <tr>
+            <td colspan="3"><b>Total placements:</b></td>
+            <td colspan="7"><b><?php echo $this->escapeHtml($tcnt); ?></b></td>
+        </tr>
+        <?php else: ?>
+        <tr><td colspan="10" class="alert-danger">No placements in the range!</td></tr>
+        <?php endif ?>
+    </tbody>
+</table>
+<script>
+pageLoad();
+</script>
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

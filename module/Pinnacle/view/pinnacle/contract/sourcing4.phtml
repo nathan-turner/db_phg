@@ -1,0 +1,213 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/sourcing4.phtml:
+// Contract approve
+
+$title = 'Approve Contract Sourcing';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#phystable { width: 70% }
+#datetable, #spectable, #phystable, .historytable { border: 1px solid black }
+#datetable td, #spectable td, .historytable td { border: 1px solid black }
+#phystable td { border: 1px solid black; background-color: #ffffff; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#physician_pass_div { display: none; }
+#sched_activity_div { display: none; }
+.date { width: 110px; }
+.time { width: 60px; }
+h3 { font-size: 12pt; }
+</style>
+
+
+<?php
+$type = $ar["chg_type"];	//$_GET["type"];
+$ctr_id = $ar["ctr_id"]; //$_GET["ctr_id"];
+$pipl_id = $_GET["pipl_id"];
+$chg_id = $ar["chg_id"];
+
+
+?>
+
+<h1 ><?php echo $this->escapeHtml($title); ?></h1>
+<br/>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+?>
+
+
+<?php
+if($ar["ctr_status"]!=1) 
+ echo '<h3 class="alert">Warning: Not an active contract</h3>';
+
+$termd = $ar["ctr_src_termdt"]; 
+if($ar["ctr_nurse"] || $ar["ctr_nurse"]==1)
+	$spec = "Mid-level";
+else
+	$spec = $ar["ctr_spec"];
+	
+echo '<h2>'.$ar["ctr_no"].' '.$spec.' - '.$ar["ctr_location_c"].', '.$ar["ctr_location_s"].'</h2>';	
+	
+echo '<h3>'.$ar["ctr_src_term"].'-Month Sourcing Campaign Start: '.date('m-d-Y',strtotime($termd)).'</h3>';
+
+$mm0 = $ar["ctr_src_term"];
+	
+?>
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+
+<INPUT type="hidden" name="ctr_id" value="<?php echo $id; ?>">
+
+<Table border="1" cellspacing=1 class="nobg">
+<TR VALIGN="bottom">
+<TD ALIGN="center"><B>Source</B></TD>
+<TD ALIGN="center"><B>Client Approved</B></TD>
+<TD ALIGN="left"><B>Price</B></TD><td colspan="<?php echo $mm0; ?>"> <?php echo date('M',strtotime($termd)); ?>&hellip;</td></TR>
+<?php
+
+foreach($rs as $key=>$val)
+{
+	 $csrid = $val["csr_id"];
+     $amaa = 0;
+?>	
+	<TR>
+<TD ALIGN="left"><a href="<?php echo $this->basePath(); ?>/contract/source/<?php echo $val["src_id"]; ?>" target="_blank"><?php echo $val["src_name"]; ?></a> 
+<?php
+if($val["src_type"]==1){
+	
+	echo $val["csr_dm_code"]." (".$val["csr_dm_count"]."x $".number_format($val["csr_dm_piece"])."+";
+	if($val["csr_dm_ama"]==null || $val["csr_dm_ama"]==0){
+		echo "AMA";
+		$amaa = 0;
+	}
+	else{
+		echo "$".$val["csr_dm_ama"];
+		$amaa = $val["csr_dm_ama"];
+	}
+	echo ")";	
+}	
+?>
+</td>
+<TD ALIGN="center">
+<?php
+if($val["csr_appr_date"]=='' || $val["csr_appr_date"]=='0000-00-00 00:00:00'){
+	echo '<input type="text" name="da_'.$csrid.'" title="MM/DD/YYYY" value="'.date('Y-m-d').'" />';
+}
+else{
+	echo $val["csr_appr_date"];
+	$wereform = true;
+}
+	
+?>
+</td>
+<TD ALIGN="center">
+<?php
+if($val["src_quota"]!=0 && $val["csr_price"]==0){
+	echo "Quote Required";
+}
+else{
+	echo $val["csr_price"]+$amaa;	
+}	
+?>
+</td>
+<?php
+	$shed = $val["csr_schedule"]; 
+	$syer = $val["csr_startyear"]; 
+	for($ii=1; $ii<=$mm0; $ii++)
+	{
+		$mi = date('n',$termd)+$ii-1;
+		if ( $mi > 12 )
+			$mii = $mi-12;
+		else
+			$mii = $mi;
+		
+		$mms = chr(64+ $mi); 
+		echo '<td title="'.$mii.'">';
+		if(strrpos($shed,$mms)!==false || $val["src_id"]==764)
+		{
+			echo "&radic;";
+		}
+		else { echo "&nbsp;"; }
+		echo '</td>';	
+	}//end for
+	
+	
+?>
+
+</tr>
+<?php
+}	//end for
+
+?>
+
+</table>
+
+<p class="bld"><input type="checkbox" name="act" value="src4form"> Yes, client has approved these changes
+
+<br><input type="checkbox" name="donotemail" value="1"> Data Correction - Do not send email notifications
+
+</p>
+
+<div class="row">
+    <div class="span12">
+	
+    </div>    
+</div>
+
+
+
+
+
+<br/>
+<input type="submit" name="approvebtn" value="Approve" class="btn btn-large" />
+<input type="submit" name="declinebtn" value="Decline" class="btn btn-large" />
+
+
+
+
+
+
+
+
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

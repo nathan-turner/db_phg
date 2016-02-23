@@ -1,0 +1,20 @@
+<?php
+// module/Pinnacle/view/pinnacle/admin/sources.phtml:
+
+$title = 'Manage Sources';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php if( $phguser->access > 1 ) { ?>
+
+<p>ID: <?php echo $this->escapeHtml($id); ?><br>
+PART: <?php echo $this->escapeHtml($part); ?></p>
+
+<?php } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+    } /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

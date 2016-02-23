@@ -1,0 +1,102 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/importnur.phtml:
+// Summary report
+
+
+
+$title = 'Import Mid-level providers';
+
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+
+<style>
+h1 { font-size: 20px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+.nobg td { padding: 2px; }
+.cour { font-family: courier new; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rptspeclist')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    //echo $this->form()->openTag($form); ///disabled form to enable custom stuff
+	//echo var_dump($arr); 
+	
+	//import_doc.php
+
+?>
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="post">
+	
+	<table border="1" width="100%" cellspacing="1" class="nobg">
+  <tr>
+    <td><b>Data Format:</b></td>
+    <td><input type="radio" name="dataform" value=1 checked /> Absolutely Healthcare</td>
+    <td><b>Separator:</b></td>
+    <td><input type="radio" name="separator" value=1 checked /> Tab <input type="radio" name="separator" value=2 /> Comma <input type="radio" name="separator" value=3 /> Semicolon </td>
+  </tr>
+  <tr>
+    <td><b>Paste Data Here:</b></td>
+    <td colspan="2"><textarea name="rawdata" cols="170" rows="8" style="width: 700px;"></textarea></td>
+    <td><button type="button" class="btn"  tabindex="47">&nbsp;Cancel</button> 
+    <button type="submit" name="submit" class="btn" tabindex="48">&nbsp;Submit</button></td>
+  </tr>
+ 
+  <tr>   
+    <td colspan="4" align="center">Mid-level category code replaces &quot;Position Type&quot; in spreadsheet. Either numeric or sym code will work.
+</td>
+  </tr>
+</table>
+	
+
+	</form>
+
+<br/><br/>
+	
+<?php echo $table; ?>
+
+
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+
+<?php
+
+   // echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

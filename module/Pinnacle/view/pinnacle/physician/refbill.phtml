@@ -1,0 +1,105 @@
+<?php
+// module/Pinnacle/view/pinnacle/physician/refbill.phtml:
+// Contract Search
+
+$title = 'References Billing Form '.$ar["ctr_no"];
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#phystable { width: 70% }
+#datetable, #spectable, #phystable, .historytable { border: 1px solid black }
+#datetable td, #spectable td, .historytable td { border: 1px solid black }
+#phystable td { border: 1px solid black; background-color: #ffffff; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#physician_pass_div { display: none; }
+#sched_activity_div { display: none; }
+.date { width: 110px; }
+.time { width: 60px; }
+.questions { width: 300px; }
+</style>
+
+<script>
+function pageLoad() { //need to force calendar load            
+			
+			$( "#as_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#as_date"});			
+			
+}
+
+</script>
+
+
+<h1 ><?php echo $this->escapeHtml($title); ?></h1>
+<br/>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+		
+	
+?>
+
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+
+<input type="hidden" name="ctr_id" value="">
+<input type="hidden" name="ph_id" value="<?php echo $id; ?>">
+<input type="hidden" name="nut" value="0">
+
+<div id="spacer">
+<h1 align="center" style="border: thin double black "> Completed References </h1>
+<p><strong>To</strong>: Accounting Department </p>
+<p> <strong>From</strong>: Credentialing Department </p>
+<p><strong>RE</strong>: Billing for Completed References </p>
+<hr>
+<p> Please bill. </p>
+<p>&nbsp;</p>
+<hr><hr>
+<p>References obtained on behalf of: <?php echo $ar["pn"]; ?></p>
+<p>Contract #: <?php echo $ar["no"]; ?> Spec: <?php echo $ar["sp"]; ?> </p>
+<p>City: <?php echo $ar["cc"]; ?> State: <?php echo $ar["cs"]; ?> </p>
+<p>Recruiter: <?php echo $ar["rn"]; ?> </p>
+<p>&nbsp; </p>
+<hr><hr>
+<p>Reference 1: <?php echo $ar["n1"]; ?> ( <?php echo date('Y-m-d'); ?> , <?php echo $ar["o1"]; ?> ) </p>
+<p>Reference 2: <?php echo $ar["n2"]; ?> ( <?php echo date('Y-m-d'); ?> , <?php echo $ar["o2"]; ?> ) </p>
+<p>Reference 3: <?php echo $ar["n3"]; ?> ( <?php echo date('Y-m-d'); ?> , <?php echo $ar["o3"]; ?> ) </p>
+</div>
+
+<p>To return to a provider record, <a href="<?php echo $this->basePath(); ?>/physician/view/<?php echo $id; ?>">click here</a>.</p>	
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

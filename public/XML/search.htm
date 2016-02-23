@@ -1,0 +1,207 @@
+<SCRIPT LANGUAGE="javascript">
+var specialty_id = getqstringvalue("specialty_id",window.location.search)
+  if(specialty_id==""){ specialty_id = "020" }
+var statedisplay=getqstringvalue("statedisplay",window.location.search)
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+var states = getqstringvalue("states",window.location.search)
+
+var search=getqstringvalue("search",window.location.search)
+var srchinstitution=getqstringvalue("srchinstitution",window.location.search)
+
+///////////// START DOCUMENT /////////////////////////////////
+document.write("<HTML><head>")
+document.write("        <STYLE>")
+document.write("          BODY {margin:0}")
+document.write("          .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("          .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("          .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("          .cssproghead {font: 10pt Arial, Helvetica, sans-serif;text-align:left;font-weight:700;color:#229922}")
+document.write("          .cssBHEAD {font:12pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+document.write("          .csslistbox {font: 10pt arial,helvetica,verdana, sans-serif;}")
+document.write("        </STYLE>")
+document.write("</head><body onLoad=\"doOnLoad();\" bgcolor=\"#eeeeee\" LINK=\"#008840\" VLINK=\"#008840\" ALINK=\"#008840\">")
+document.write("<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">")
+document.write(" <tr>")
+document.write("   <td width=\"2%\"  height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" /></td>")
+document.write("   <td width=\"10%\" height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" /></td>")
+document.write("   <td width=\"3%\"  height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" /></td>")
+document.write("   <td width=\"85%\" height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" /></td>")
+document.write(" </tr>")
+document.write("<tr><form name=\"searchform\"><td img src=\"images/transpix.gif\"></td><td class=\"csstext\"><input name=\"searchstring\" size=\"25\" class=\"csstext\" value=\""+srchinstitution+"\"></td>")
+document.write("<td img src=\"images/transpix.gif\"></td><td class=\"csstext\"><input onClick=\"doSearch();\"  type=\"button\" value=\"Search\" class=\"csstextCENTER\"></td>")
+document.write("</form></tr>")
+
+if(search=="on"){
+  //////// MAKE ONE XML FILE AND PARSE THE NODES ////////////////////////
+  var oInstsXml=new ActiveXObject("Microsoft.XMLDOM")
+  oInstsXml.async = false;
+  oInstsXml.load("xmldata/Insts_alabamaonly.xml")
+//  oInstsXml.load("xmldata/insts.xml")
+
+  var oInstsXsl = new ActiveXObject("Microsoft.XMLDOM");
+  oInstsXsl.async = false;
+  oInstsXsl.load("xsl/sthtml.xsl");
+
+  if (oInstsXml.parseError==0){
+  ///////////////////////////// DATA DUMP: //////////////////////////////////
+  //    document.write(oInstsXml.transformNode(oInstsXsl.documentElement))
+  ///////////////////////////////////////////////////////////////////////////
+    var elementname = "Inst_Name"
+    var Nodes = oInstsXml.documentElement.selectNodes("institution/" + elementname)
+    selectListings(Nodes,elementname,"")
+  }
+  else{
+    alert("oInstsXml: " + oInstsXml.parseError.reason)
+  }
+}
+
+document.write("</table>")
+document.write("</body>")
+document.write("</HTML>")
+
+
+
+
+//////////////////// PAGE FUNCTIONS ///////////////////////
+function doOnLoad(){
+//alert("IN SPECIALTY.HTM: "btnbarst.htm?statedisplay="+statedisplay+"&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue+"&selectscreen=state")
+  top.btnbar.location.href = "btnbarst.htm?statedisplay="+statedisplay+"&selectscreen=state&states="+states
+}
+
+function doSearch(){
+  var searchstring = searchform.searchstring.value
+  location.href = "search.htm?search=on&srchinstitution=" + searchstring
+}
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+function selectListings(Nodes,elementname,arrids){
+  for(i=0;i<Nodes.length;i++){
+    if(verifyvalue(Nodes.item(i))) {
+//alert(Nodes.item(i).text)
+      document.write(Nodes.item(i).parentNode.transformNode(oInstsXsl.documentElement));
+    }
+  }
+}
+
+function verifyvalue(Node){
+  var bMatch = false
+//alert(srchinstitution + "\n" + Node.text + "\n" + Node.text.indexOf(srchinstitution))
+  if(Node.text.indexOf(srchinstitution)>=0) {
+    bMatch = true
+  }
+  return bMatch
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+function parseqstring(inpara){
+  var arrids = new Array()
+  var startpos = 0
+  var intindex = 0
+  var indexpos = inpara.indexOf(",",startpos)
+  if(indexpos==-1){
+    arrids[0] = inpara
+  }
+  else{
+    while (indexpos!=-1){
+      arrids[intindex] = inpara.slice(startpos,indexpos)
+//      alert(arrids[intindex])
+      intindex++
+      startpos = indexpos + 1
+      indexpos = inpara.indexOf(",",startpos)
+    }
+  arrids[intindex] = inpara.slice(startpos,inpara.length)
+//  alert(arrids[intindex])
+  }
+  return arrids
+}
+
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//////////////// UNUSED CODE FOR ADDING AN ATTRIBUTE ///////////////////////////////////
+function getprogname(specsibprogid,prognameNodes){
+//alert("in getprogname: " + specsibprogid)
+  var progname = ""
+  for(y=0;y<prognameNodes.length;y++){
+    if(specsibprogid.indexOf(prognameNodes.item(y).text)>=0) {
+alert(prognameNodes.item(y).nextSibling.text)
+      progname = prognameNodes.item(y).nextSibling.text
+    }
+  }
+  return progname
+}
+
+function appendprogname(Node){
+//alert(Node.nodeName + " " + Node.text)
+  var specsib,specsibprogid,progname
+  var oPrognameXml=new ActiveXObject("Microsoft.XMLDOM")
+  oPrognameXml.async = false;
+  oPrognameXml.load("xmldata/prog_names.xml")
+  if (oPrognameXml.parseError==0){
+    var prognameNodes = oPrognameXml.documentElement.selectNodes("program/prog_id")
+
+    var nextsib = Node.nextSibling
+//alert(nextsib.nodeName)
+    if(nextsib.nodeName=="participating" || nextsib.nodeName=="sponsors" || nextsib.nodeName=="clin_site"){
+      specsib = nextsib.firstChild
+alert(specsib.nodeName)
+      if(specsib.nodeName=="spec"){
+        specsibprogid = specsib.lastChild
+alert(specsibprogid.text) 
+        progname = getprogname(specsibprogid.text,prognameNodes)
+        Node.setAttribute("progname", progname)
+      }
+    }
+////////// WORKS /////////////////////////////////////////////////////////////////////////////////////
+//  Node.setAttribute("progname", "2")
+//   alert(Node.attributes(0).name + " " + Node.attributes(0).value + "\n" + Node.attributes(1).name + " " + Node.attributes(1).value)
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+  }
+  else{
+    alert("oPrognameXml: " + oPrognameXml.parseError.reason)
+  }
+  return Node
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+</SCRIPT>
+
+

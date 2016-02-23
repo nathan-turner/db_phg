@@ -1,0 +1,771 @@
+/* Ajax loader message */
+
+#spc-ajax-loader {
+    position: fixed;
+    display: inline-block;
+    top: 46%;
+    left: 46%;
+    width: 46px;
+    height: 46px;
+    background: #000 url('../img/l.gif') no-repeat center center;
+    padding: 2px;
+    -moz-border-radius: 60px;
+    -webkit-border-radius: 60px;
+    border-radius: 60px;
+    font-family: Corbel, Helvetica, Arial, sans-serif, Verdana;
+    font-size: 11px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    z-index: 10000;
+    display: none;
+}
+
+.spc-box-shadow {
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+
+    -moz-box-shadow: 0 7px 7px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0 7px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 7px 7px rgba(0, 0, 0, 0.3);
+}
+
+.ui-icon {
+    display: inline-block !important;
+}
+
+/*------------------------------------------------------------------------------
+  Smart PHP Calendar - Events Calendar Plugin (Monthly Sidebar Calendar)
+------------------------------------------------------------------------------*/
+
+.spc-event-list-event {
+    cursor: pointer;
+}
+
+table.spc-datepicker {
+    width: 100%;
+    border-collapse: collapse;
+    color: #333;
+    font-family: "open sans", Arial, sans-serif, Verdana;
+    font-size: 12px;
+    line-height: 22px;
+    cursor: default;
+    border: 1px solid #C2C2C2;
+    margin: 3px 0;
+    border-radius: 2px;
+}
+
+.spc-datepicker-nav-date {
+    position: relative;
+    color: #666;
+    border: 1px solid #C2C2C2;
+    border-bottom: none;
+    background-color: #eee;
+    background-image: linear-gradient(to bottom, #eee, #E5E5E5 90%, #ddd);
+    padding: 3px 0;
+    border-radius: 3px 3px 0 0;
+}
+
+.spc-datepicker th {
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    background-color: #F3F3F3;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.8);
+    font-weight: normal;
+}
+
+.spc-datepicker-navdate {
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.spc-datepicker-prev {
+    float: left;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.spc-datepicker-next {
+    float: right;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.spc-datepicker-nav-date .ui-icon {
+    margin-top: 3px;
+}
+
+.spc-datepicker-day {
+    border: 1px solid #C2C2C2;
+    text-align: center;
+    padding: 6px;
+    font-family: "open sans";
+    font-size: 11px;
+    color: #666;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.spc-datepicker-day-active {
+    background-image: linear-gradient(to bottom, #EAEAEA, #E5E5E5 60%, #D9D9D9);
+    box-shadow: 1px 1px rgba(255, 255, 255, 0.5) ;
+}
+
+.spc-datepicker-day-passive {
+    color: #B3B3B3;
+    background: none;
+}
+
+.spc-datepicker-day-hover {
+    background-image: none;
+    background-color: #f3f3f3 !important;
+    color: #666 !important;
+    text-shadow: none;
+}
+
+.spc-datepicker-day-clicked {
+    background-image: none;
+    background-color: #6eac2c !important;
+    color: #f3f3f3;
+    text-shadow: none;
+}
+
+.spc-datepicker-signed-day {
+    background: none repeat scroll 0 0 #9FC6E7;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05) ;
+    background-color: #DBE6EA;
+    color: #444;
+    text-shadow: 1px 1px #f3f3f3;
+}
+
+.spc-datepicker-today {
+    background: none repeat scroll 0 0 #9FC6E7;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05) ;
+    background-color: #9CC089 !important;
+    color: #333;
+    text-shadow: 1px 1px #f3f3f3;
+}
+
+.spc-datepicker .popup-events-box {
+    display: none;
+    text-align: left;
+    position: absolute;
+    left: -1px;
+    width: 100%;
+    border: 1px solid #c2c2c2;
+    background-color: #fff;
+    z-index: 9997;
+    max-height: 300px;
+    overflow: auto;
+    overflow-x: hidden;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.spc-datepicker .popup-events-box .popup-events-box-content {
+    margin: 0;
+    padding: 0;
+}
+
+.popup-events-box .spc-event-list-item {
+    margin: 0 !important;
+}
+
+.popup-events-box .spc-upcoming-events {
+    margin: 0 !important;
+}
+
+.popup-events-box .spc-event-list-item {
+    margin: 0;
+}
+
+.popup-events-box  .spc-upcoming-events-title {
+    margin: 0;
+}
+
+.popup-events-box .spc-upcoming-events .spc-event-list-date {
+    margin: 0;
+    padding: 4px 3px;
+    background-color: #f3f3f3;
+    color: #444;
+    font-size: 12px;
+}
+
+/*------------------------------------------------------------------------------
+ Smart PHP Calendar - Events List Plugin
+------------------------------------------------------------------------------*/
+.spc-event-list-event-title {
+    word-wrap: break-word;
+}
+
+.spc-event-list {
+    font-family: Arial, sans-serif, Verdana;
+    font-size: 12px;
+    line-height: 22px;
+    color: #333;
+}
+
+.spc-event-list-nav {
+    font-weight: bold;
+    position: relative;
+    background-color: #f3f3f3;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    padding: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+.spc-event-list-navdate {
+    display: inline-block;
+    margin: 0 10px;
+    color: #666;
+}
+
+.spc-event-list-nav .ui-icon {
+    display: inline-block;
+    cursor: pointer;
+    height: 13px !important;
+}
+
+.spc-event-list-today {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.spc-event-list .spc-event-list-item {
+    padding: 0;
+    margin: 10px 3px;
+}
+
+.spc-event-list-event.odd {
+    background-color: #f9f9f9;
+}
+
+.spc-event-list .spc-event-list-event {
+    position: relative;
+    padding: 2px 4px;
+    margin: 2px 0;
+    border-radius: 2px;
+    width: 97%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.spc-event-list .spc-event-list-date {
+    font-size: 13px;
+    margin: 0;
+    padding: 2px 0 0 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color: #444;
+}
+
+.spc-event-list .spc-event-list-event-time {
+    display: inline-block;
+    width: 130px;
+    color: #444;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.spc-event-list .spc-event-list-event-title {
+    cursor: pointer;
+    width: 100%;
+    white-space: nowrap;
+}
+
+/*** Blog Style Event List ***/
+
+.spc-event-list .spc-event-list-blog-event {
+    margin: 30px 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 35px;
+}
+
+.spc-event-list-blog-event-calendar-color-box {
+   font-weight: bold;
+   font-size: 10px;
+   float: right;
+}
+
+.spc-event-list .spc-event-list-event-date.blog {
+    font-weight: bold;
+    color: #666;
+    font-size: 12px;
+}
+
+.spc-event-list .spc-event-list-event-title.blog {
+    color: #444444;
+    font-size: 19px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 6px;
+    display: inline-block;
+}
+
+.spc-event-list .spc-event-list-event-description.blog {
+    font-family: Arial, Helvetica, sans-serif, verdana;
+    color: #333;
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 20px;
+}
+
+.spc-event-list .spc-event-list-blog-event a.location {
+    color: black;
+}
+
+/*** Blog Style Event List with Images ***/
+
+.spc-event-list .spc-event-list-blog-event-image-wrapper {
+    width: 100%;
+    margin: 30px 0;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.spc-event-list .spc-event-list-blog-event-image-wrapper .spc-event-list-blog-event {
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+.spc-event-list .spc-event-list-blog-event-image {
+    float: left;
+    width: 130px;
+    margin: 3px;
+}
+
+.spc-event-list .spc-event-list-blog-event-image img {
+    max-width: 128px;
+    max-height: 128px;
+}
+
+.spc-event-list .spc-event-list-blog-event.image {
+    float: left;
+    width: 76%;
+    margin: 0 10px;
+}
+
+.no-events-text {
+    margin: 10px 0;
+    color: #666;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/*------------------------------------------------------------------------------
+  Smart PHP Calendar - Upcoming Events Plugin
+------------------------------------------------------------------------------*/
+
+.spc-upcoming-events {
+    font-family: Arial, sans-serif, Verdana;
+    font-size: 12px;
+    line-height: 22px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.spc-upcoming-events .spc-event-list-item {
+    margin-top: 15px;
+}
+
+.spc-upcoming-events .spc-event-list-event {
+    position: relative;
+    padding: 1px 4px;
+    margin: 4px 0;
+    border-radius: 2px;
+}
+
+/* header title for the plugin */
+.spc-upcoming-events .spc-upcoming-events-title {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.spc-upcoming-events .spc-event-list-event-title {
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.spc-upcoming-events .spc-event-list-date {
+    font-size: 12px;
+    margin: 10px 0 3px 0;
+    padding: 0;
+    border-bottom: 1px solid #ddd;
+    color: #444;
+}
+
+.spc-event-list-stripped-row.odd {
+    background-color: #f7f7f7;
+}
+
+.spc-upcoming-events .spc-event-list-event-time {
+    display: inline-block;
+    font-size: 10px;
+    color: #666;
+    white-space: nowrap;
+    margin: 0 4px;
+    font-weight: bold;
+}
+
+/*------------------------------------------------------------------------------
+  Smart PHP Calendar - Events Search Plugin
+------------------------------------------------------------------------------*/
+
+#spc-events-search-wrapper {
+    position: relative;
+    width: 100%;
+    font-family: Arial, sans-serif, Verdana;
+    font-size: 12px;
+}
+
+#spc-events-search-form {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+#spc-events-search-input {
+    width: 70%;
+    margin: 1px 0 0 3px;
+    border: 0;
+    background: none;
+    outline: none;
+    border-right: 0;
+    float: left;
+    height: 25px;
+}
+
+.spc-events-search-input-placeholder-text {
+    color: #666;
+}
+
+#spc-events-search-submit {
+    color: #777;
+    font-size: 12px;
+    cursor: pointer;
+    width: 28%;
+    border: 1px solid #ddd;
+    border-left: 0;
+    float: right;
+    padding: 4px;
+    height: 28px;
+}
+
+#spc-events-search-results {
+    display: none;
+    min-height: 26px;
+    background-color: #fff;
+    z-index: 10;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    margin: 1px 0;
+    border: 2px solid #ddd;
+}
+
+#spc-events-search-results-content {
+    margin: 6px;
+    max-height: 200px;
+    overflow: auto;
+}
+
+#spc-events-search-close-wrapper {
+    border-bottom: 1px solid #eee;
+    background-color: #f6f6f6;
+}
+
+#spc-events-search-title {
+    display: inline-block;
+    font-weight: bold;
+    margin: 6px;
+}
+
+#spc-events-search-close {
+    cursor: pointer;
+    float: right;
+    margin: 2px 2px;
+}
+
+/*------------------------------------------------------------------------------
+  Smart PHP Calendar - Calendars Plugin
+------------------------------------------------------------------------------*/
+
+#spc-calendars {
+    list-style-type: none;
+    font-family: Arial, sans-serif, Verdana;
+    font-size: 12px;
+    line-height: 18px;
+    margin: 10px 0;
+    padding: 2px 4px;
+}
+
+#spc-calendars .title {
+    font-weight: bold;
+    margin: 1px;
+}
+
+#spc-calendars .spc-calendar {
+    display: inline-block;
+    width: 80%;
+    cursor: pointer;
+    color: #333 !important;
+    font-size: 11px;
+    margin: 2px 0;
+    padding: 1px 6px;
+    border-radius: 1px;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    font-weight: bold;
+    border-left-width: 7px !important;
+}
+
+/*------------------------------------------------------------------------------
+  Smart PHP Calendar - Display Public Event Box
+------------------------------------------------------------------------------*/
+
+#spc-display-event-box {
+    -moz-box-shadow: 0 7px 7px rgba(0, 0, 0, 0.3) !important;
+	-webkit-box-shadow: 0 7px 7px rgba(0, 0, 0, 0.3) !important;
+	box-shadow: 0 7px 7px rgba(0, 0, 0, 0.3) !important;
+}
+
+#spc-display-event-box-header {
+    background-color: #eee;
+    padding: 4px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+#spc-display-event-box-content {
+    font-family: Arial, sans-serif, Verdana;
+    font-size: 12px;
+    line-height: 18px;
+    color: #333;
+}
+
+#spc-display-event-box-content .image {
+    width: 100%;
+    max-height: 600px;
+}
+
+#spc-display-event-box-footer {
+    position: absolute;
+    bottom: 0;
+    height: 23px;
+    width: 100%;
+    border-top: 1px solid #ddd;
+    background-color: #eee;
+}
+
+.spc-public-event-content-wrapper {
+    height: 100%;
+}
+
+.spc-public-event-content-wrapper .event-content {
+    padding: 9px !important;
+    height: 93%;
+    overflow: auto;
+}
+
+#spc-display-event-box .title {
+    font-size: 12px;
+    margin-left: 6px;
+}
+
+#spc-display-event-box .date {
+    position: absolute;
+    bottom: 0;
+    left: 6px;
+    font-size: 11px;
+    margin-right: 22px;
+    color: #666;
+}
+
+#spc-display-event-box .description {
+    margin: 0 0 6px 0;
+}
+
+#spc-display-event-box .field-label {
+    display: block;
+}
+
+#spc-display-event-box .location {
+    color: #333;
+}
+
+#spc-public-event-tools {
+    float: right;
+    width: 100%;
+    text-align: right;
+}
+
+.spc-public-event-tool {
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    margin: 0 4px;
+}
+
+/*** Templates ***/
+
+/*** START: Event List Template 1 ***/
+
+#spc-event-list-1 {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    color: #444;
+    font-size: 12px;
+    margin: 5px 0;
+    line-height: 18px;
+}
+
+#spc-event-list-1 td {
+    padding: 10px 0;
+    vertical-align: top;
+    border-bottom: 1px solid #f6f6f6;
+}
+
+#spc-event-list-1 .spc-event-list-event:hover {
+    background-color: #f9f9f9;
+}
+
+#spc-event-list-1 tr:last-child td {
+    border-bottom: none;
+}
+
+#spc-event-list-1 td.date-cell {
+    width: 80px;
+    text-align: center;
+}
+
+#spc-event-list-1 .date div {
+    padding: 3px 3px 9px 3px;
+}
+
+#spc-event-list-1 .date div:last-child {
+    border-bottom: none;
+}
+
+#spc-event-list-1 .date {
+    width: 50px;
+    border: 1px solid #ddd;
+    background-color: #fafafa;
+    border-radius: 2px;
+    padding: 3px;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 3px;
+}
+
+#spc-event-list-1 .month {
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+#spc-event-list-1 .day {
+    font-size: 30px;
+}
+
+#spc-event-list-1 .time {
+    font-size: 11px;
+    color: #666;
+    font-weight: normal;
+}
+
+#spc-event-list-1 .title {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#spc-event-list-1 .description {
+
+}
+
+#spc-event-list-1 .main-cell {
+
+}
+
+#spc-event-list-1 .main-cell div {
+    padding: 3px 0;
+}
+
+#spc-event-list-1 .img-cell {
+    width: 120px;
+    text-align: right;
+    padding: 3px;
+}
+
+#spc-event-list-1 .img {
+    width: 120px;
+    height: 70px;
+    border-radius: 3px;
+    margin: 3px auto;
+}
+
+/*** END: Event List Template 1 ***/
+
+/*** START: Datepicker Template 1 ***/
+
+#spc-month-cal-theme-1 * {
+    color: #4D4D4D;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    font-size: 12px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#spc-month-cal-theme-1  .spc-datepicker-nav-date,
+#spc-month-cal-theme-1 td,
+#spc-month-cal-theme-1 th {
+    background: none !important;
+    background-image: none !important;
+    background-color: #fff !important;
+}
+
+#spc-month-cal-theme-1.datepicker-wrapper {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow:  0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#spc-month-cal-theme-1 .spc-datepicker-nav-date {
+    border: none;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    padding: 6px;
+}
+
+#spc-month-cal-theme-1 .spc-datepicker {
+    border: none !important;
+}
+
+#spc-month-cal-theme-1 th {
+    font-weight: bold;
+    font-size: 11px;
+}
+
+#spc-month-cal-theme-1 td {
+    border: none !important;
+    font-weight: normal;
+    font-size: 11px;
+    padding: 9px 6px;
+}
+
+#spc-month-cal-theme-1 .spc-datepicker-day-passive {
+    color: #949494;
+}
+
+#spc-month-cal-theme-1 .spc-datepicker-signed-day {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/*** END: Datepicker Template 1 ***/

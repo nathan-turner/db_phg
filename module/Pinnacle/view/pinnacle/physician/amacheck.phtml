@@ -1,0 +1,99 @@
+<?php
+// module/Pinnacle/view/pinnacle/physician/refbill.phtml:
+// Contract Search
+
+$title = 'AMA Check Request Form '.$ar["ctr_no"];
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#phystable { width: 70% }
+#datetable, #spectable, #phystable, .historytable { border: 1px solid black }
+#datetable td, #spectable td, .historytable td { border: 1px solid black }
+#phystable td { border: 1px solid black; background-color: #ffffff; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#physician_pass_div { display: none; }
+#sched_activity_div { display: none; }
+.date { width: 110px; }
+.time { width: 60px; }
+.questions { width: 300px; }
+@media print { 
+hr, footer, #hide { display:none; }
+h1 { margin-top:-20px; }
+p, table { font-size: 14px; } 
+}
+</style>
+<h1 ><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+		
+	
+?>
+
+<div id="spacer">
+<h1> Request for AMA/Federation Checks </h1>
+<h2>Part I:</h2>
+<p>Recruiter: <?php echo $ar["req_name"]; ?> Date: 5/19/2009</p>
+<p>Specialty: <?php echo $ar["sp_name"]; ?> ( <?php echo $ar["ctr_spec"]; ?>) Contract #: <?php echo $ar["ctr_no"]; ?></p>
+<p>Client City &amp; State: <?php echo $ar["cli_city"]; ?>, <?php echo $ar["cli_state"]; ?> </p>
+<p>Client Name: <?php echo $ar["cli_name"]; ?> </p>
+<h2>Part II:</h2>
+<p>Doctor Name: <?php echo $ar["ph_name"]; ?>&nbsp;<?php echo $ar["ph_title"]; ?></p>
+<p>Date of Birth: <?php echo $ar["ph_DOB"]; ?> </p>
+<p>Professional Address: <?php echo $ar["ph_addr1"]; ?> <?php echo $ar["ph_addr2"]; ?> </p>
+<p>City, State, Zip: <?php echo $ar["ph_city"]; ?>, <?php echo $ar["ph_state"]; ?>, <?php echo $ar["ph_zip"]; ?> </p>
+<p>Medical School of Graduation: <?php echo $ar["ph_med_school"]; ?> </p>
+<p>Year of Graduation: <?php echo $ar["ph_spm_year"]; ?> </p>
+<h2>Part III:</h2>
+<p>If any of the following answers are &quot;YES&quot; please give details on back of this page. (Circle One)</p>
+<table width="80%" border="0">
+<tr><td>Have you ever applied for licensure and been denied?</td><td> <strong>YES</strong> &ensp; <strong>NO</strong> &ensp;</td></tr>
+<tr><td>Has your medical license ever been suspended, restricted or revoked?</td><td> <strong>YES</strong> &ensp; <strong>NO</strong> &ensp;</td></tr>
+<tr><td>Have your hospital privileges ever been suspended, restricted, or revoked?</td><td> <strong>YES</strong> &ensp; <strong>NO</strong> &ensp;</td></tr>
+<tr><td>Has your DEA license ever been suspended, restricted or revoked?</td><td> <strong>YES</strong> &ensp; <strong>NO</strong> &ensp;</td></tr>
+<tr><td>Have you ever been the subject of a disciplinary hearing?</td><td> <strong>YES</strong> &ensp; <strong>NO</strong> &ensp;</td></tr>
+<tr><td>Have you ever been named in a malpractice suit &ndash; either pending or settled?</td><td> <strong>YES</strong> &ensp; <strong>NO</strong> &ensp;</td></tr></table>
+<p align="center" style="border:thin solid black "> PLEASE COMPLETE <strong>ALL</strong> QUESTIONS BEFORE SUBMITTING TO SUPPORT DEPARTMENT </p>
+
+
+</div>
+
+<p id="hide">To return to a provider record, <a href="<?php echo $this->basePath(); ?>/physician/view/<?php echo $id; ?>">click here</a>.</p>	
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

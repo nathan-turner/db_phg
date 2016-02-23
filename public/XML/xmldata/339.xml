@@ -1,0 +1,2798 @@
+
+<?xml version="1.0"?>
+ <?xml-stylesheet type="text/xml" href="../xsl/program.xsl"?>
+ <?xml-stylesheet type="text/xsl" href="../xsl/program.xsl"?>
+
+<listing_programs>
+<program>
+
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">California</state>
+  <city label="City">Torrance</city>
+
+  <prog_name label="Name" ampfile="pgmname">Los Angeles County-Harbor-UCLA Medical Center Program</prog_name>
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Los Angeles County-Harbor-UCLA Medical Center</sponsor>
+
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>LAC+USC Medical Center</particips>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-05-13-003</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Carol Berkowitz, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Harbor-UCLA Medical Center</address1>
+    <address2 label="Director's street address 2">1000 West Carson Street</address2>
+
+    <address3 label="Director's street address 3">Box 437</address3>
+    <dir_city label="Director's city">Torrance</dir_city>
+    <dir_state label="Director's state">CA</dir_state>
+
+    <dir_zip label="Director's zip code">90509</dir_zip>
+  </address>
+  <dir_phone label="Tel">310 222-3091</dir_phone>
+
+  <dir_fax label="Fax">310 533-8579</dir_fax>
+  <dir_email label="Director's e-mail">carolb@pol.net</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset">Comm/Univ</setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength">3</prog_length>
+
+  <years_required label="Years required" ampfile="reqlength">3</years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">Yes</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq">3</prev_yrs_req>
+  <accepting_apps>Yes</accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs">50</hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs">12</hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing">NA</most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting">Yes</moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1">57419</salary>
+  <pt_shared label="Part-time/shared positions">Yes</pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking">Yes</parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance">Yes</job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents">Paid by institution</major_med>
+
+  <depend_med label="Medical insurance-dependents">Paid by institution</depend_med>
+  <ment_hlth label="Outpatient mental health insurance">Paid by institution</ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance">Available not paid</in_ment_hlth>
+
+  <group_life label="Group life insurance">Paid by institution</group_life>
+  <dental_ins label="Dental insurance">Paid by institution</dental_ins>
+  <dis_ins label="Disability insurance">Paid by institution</dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV">Paid by institution</dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins">When resident starts</ins_begins>
+  <paid_leave label="Max number paid days family/medical leave">Negotiable</paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave">Negotiable</unpaid_leave>
+  <med_profess label="Medical professionalism">Yes</med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills">Yes</teach_skills>
+  <mentoring label="Formal mentoring program">Yes</mentoring>
+  <teamwork label="Interdisciplinary teamwork">Yes</teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt">Yes</qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives">Yes</offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness">Yes</cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research">Length negotiable</research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system">Yes</portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Illinois</state>
+
+  <city label="City">Chicago</city>
+  <prog_name label="Name" ampfile="pgmname">John H Stroger Hospital of Cook County Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">John H Stroger Hospital of Cook County</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>Chicago Children's Advocacy Center</particips>
+
+    <particips>Division of Child Protection Services/John H. Stroger, Jr. H</particips>
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-16-32-012</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Michele A Lorand, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Department of Pediatrics/John H Stroger Hospital</address1>
+    <address2 label="Director's street address 2">1900 W Polk Street, 11th Floor</address2>
+
+    <address3 label="Director's street address 3">Room 1132</address3>
+    <dir_city label="Director's city">Chicago</dir_city>
+    <dir_state label="Director's state">IL</dir_state>
+
+    <dir_zip label="Director's zip code">60612</dir_zip>
+  </address>
+  <dir_phone label="Tel">312 864-4141</dir_phone>
+
+  <dir_fax label="Fax">312 864-9629</dir_fax>
+  <dir_email label="Director's e-mail">mlorand@cookcountyhhs.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset"></setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength"></prog_length>
+
+  <years_required label="Years required" ampfile="reqlength"></years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">No</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq"></prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing"></most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting"></moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1"></salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents"></major_med>
+
+  <depend_med label="Medical insurance-dependents"></depend_med>
+  <ment_hlth label="Outpatient mental health insurance"></ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance"></in_ment_hlth>
+
+  <group_life label="Group life insurance"></group_life>
+  <dental_ins label="Dental insurance"></dental_ins>
+  <dis_ins label="Disability insurance"></dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV"></dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins"></ins_begins>
+  <paid_leave label="Max number paid days family/medical leave"></paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave"></unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills"></teach_skills>
+  <mentoring label="Formal mentoring program"></mentoring>
+  <teamwork label="Interdisciplinary teamwork"></teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt"></qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research"></research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Indiana</state>
+
+  <city label="City">Indianapolis</city>
+  <prog_name label="Name" ampfile="pgmname">Indiana University School of Medicine Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Indiana University School of Medicine</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>Clarian Methodist Hospital</particips>
+
+    <particips>Riley Hospital for Children at Indiana University Health</particips>
+    <particips>William N Wishard Memorial Hospital</particips>
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-17-32-007</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Antoinette L Laskey, MD, MPH</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Indiana University School of Medicine</address1>
+    <address2 label="Director's street address 2">410 West 10th Street</address2>
+
+    <address3 label="Director's street address 3">Suite 1020</address3>
+    <dir_city label="Director's city">Indianapolis</dir_city>
+    <dir_state label="Director's state">IN</dir_state>
+
+    <dir_zip label="Director's zip code">46202</dir_zip>
+  </address>
+  <dir_phone label="Tel">317 278-0552</dir_phone>
+
+  <dir_fax label="Fax">317 278-0456</dir_fax>
+  <dir_email label="Director's e-mail">alaskey@iupui.edu</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset">Univ</setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength">3</prog_length>
+
+  <years_required label="Years required" ampfile="reqlength">3</years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">Yes</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq">3</prev_yrs_req>
+  <accepting_apps>Yes</accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs">50</hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing">NA</most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting">No</moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1">52856</salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking">Yes</parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents">Paid by institution</major_med>
+
+  <depend_med label="Medical insurance-dependents">Paid by institution</depend_med>
+  <ment_hlth label="Outpatient mental health insurance">Paid by institution</ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance">Paid by institution</in_ment_hlth>
+
+  <group_life label="Group life insurance">Paid by institution</group_life>
+  <dental_ins label="Dental insurance">Paid by institution</dental_ins>
+  <dis_ins label="Disability insurance">Paid by institution</dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV">Paid by institution</dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins">When resident starts</ins_begins>
+  <paid_leave label="Max number paid days family/medical leave">42</paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave">42</unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills">Yes</teach_skills>
+  <mentoring label="Formal mentoring program">Yes</mentoring>
+  <teamwork label="Interdisciplinary teamwork">Yes</teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt">Yes</qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives">Yes</offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research">Length negotiable</research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA">Yes</MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship">Yes</research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA">
+  Yes; click link and enter Program Number</FREIDA>
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">New York</state>
+
+  <city label="City">Brooklyn</city>
+  <prog_name label="Name" ampfile="pgmname">Maimonides Medical Center/Infants and Children's Hospital of Brooklyn Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Maimonides Medical Center</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>Bellevue Hospital Center</particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-35-32-017</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Danielle Laraque, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Maimonides Infants and Children's Hospital</address1>
+    <address2 label="Director's street address 2">4802 Tenth Avenue</address2>
+
+
+    <dir_city label="Director's city">Brooklyn</dir_city>
+    <dir_state label="Director's state">NY</dir_state>
+
+    <dir_zip label="Director's zip code">11219</dir_zip>
+  </address>
+  <dir_phone label="Tel">718 283-6150</dir_phone>
+
+  <dir_fax label="Fax">718 283-7005</dir_fax>
+  <dir_email label="Director's e-mail">ndisponzio@maimonidesmed.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset"></setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength"></prog_length>
+
+  <years_required label="Years required" ampfile="reqlength"></years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">No</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq"></prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing"></most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting"></moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1"></salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents"></major_med>
+
+  <depend_med label="Medical insurance-dependents"></depend_med>
+  <ment_hlth label="Outpatient mental health insurance"></ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance"></in_ment_hlth>
+
+  <group_life label="Group life insurance"></group_life>
+  <dental_ins label="Dental insurance"></dental_ins>
+  <dis_ins label="Disability insurance"></dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV"></dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins"></ins_begins>
+  <paid_leave label="Max number paid days family/medical leave"></paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave"></unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills"></teach_skills>
+  <mentoring label="Formal mentoring program"></mentoring>
+  <teamwork label="Interdisciplinary teamwork"></teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt"></qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research"></research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">New York</state>
+
+  <city label="City">Valhalla</city>
+  <prog_name label="Name" ampfile="pgmname">New York Medical College at Westchester Medical Center Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">New York Medical College</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips></particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-35-21-002</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Jennifer Canter, MD, MPH</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Westchester Institute for Human Development</address1>
+    <address2 label="Director's street address 2">Cedarwood Hall</address2>
+
+    <address3 label="Director's street address 3">20 Hospital Oval W</address3>
+    <dir_city label="Director's city">Valhalla</dir_city>
+    <dir_state label="Director's state">NY</dir_state>
+
+    <dir_zip label="Director's zip code">10595</dir_zip>
+  </address>
+  <dir_phone label="Tel">914 493-5333</dir_phone>
+
+  <dir_fax label="Fax">914 493-1984</dir_fax>
+  <dir_email label="Director's e-mail">cvarveri@wihd.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset">Univ</setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength">3</prog_length>
+
+  <years_required label="Years required" ampfile="reqlength">3</years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">Yes</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq">3</prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs">50</hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs">11</hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing">NA</most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting">Yes</moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1">69000</salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents">Not available</major_med>
+
+  <depend_med label="Medical insurance-dependents">Not available</depend_med>
+  <ment_hlth label="Outpatient mental health insurance">Not available</ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance">Not available</in_ment_hlth>
+
+  <group_life label="Group life insurance">Not available</group_life>
+  <dental_ins label="Dental insurance">Not available</dental_ins>
+  <dis_ins label="Disability insurance">Not available</dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV">Not available</dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins">When resident starts</ins_begins>
+  <paid_leave label="Max number paid days family/medical leave">Negotiable</paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave">Negotiable</unpaid_leave>
+  <med_profess label="Medical professionalism">Yes</med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills">Yes</teach_skills>
+  <mentoring label="Formal mentoring program">Yes</mentoring>
+  <teamwork label="Interdisciplinary teamwork">Yes</teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt">Yes</qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats">Yes</retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness">Yes</cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp">Yes</altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research">Length negotiable</research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track">Yes</other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations">Yes</degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Ohio</state>
+
+  <city label="City">Cincinnati</city>
+  <prog_name label="Name" ampfile="pgmname">Cincinnati Children's Hospital Medical Center Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Cincinnati Children's Hospital Medical Center</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips></particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-38-32-011</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Kathi Makoroff, MD, MEd</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Cincinnati Children's Hospital Medical Center</address1>
+    <address2 label="Director's street address 2">MLC 3008</address2>
+
+    <address3 label="Director's street address 3">3333 Burnet Avenue</address3>
+    <dir_city label="Director's city">Cincinnati</dir_city>
+    <dir_state label="Director's state">OH</dir_state>
+
+    <dir_zip label="Director's zip code">45229</dir_zip>
+  </address>
+  <dir_phone label="Tel">513 636-0037</dir_phone>
+
+  <dir_fax label="Fax">513 636-0204</dir_fax>
+  <dir_email label="Director's e-mail">kathi.makoroff@cchmc.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset">Univ</setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength">3</prog_length>
+
+  <years_required label="Years required" ampfile="reqlength">3</years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">2</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">Yes</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq">3</prev_yrs_req>
+  <accepting_apps>Yes</accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart">N</multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs">50</hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs">10</hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing">NA</most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting">Yes</moonlighting>
+
+  <night_float label="Night float system">Yes</night_float>
+  <salary label="Salary, pgm yr 1">52200</salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care">Yes</child>
+  <moving_allow label="Moving allowance">Yes</moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking">Yes</parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents">Resident shares cost</major_med>
+
+  <depend_med label="Medical insurance-dependents">Resident shares cost</depend_med>
+  <ment_hlth label="Outpatient mental health insurance">Resident shares cost</ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance">Resident shares cost</in_ment_hlth>
+
+  <group_life label="Group life insurance">Paid by institution</group_life>
+  <dental_ins label="Dental insurance">Resident shares cost</dental_ins>
+  <dis_ins label="Disability insurance">Paid by institution</dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV">Paid by institution</dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins">When resident starts</ins_begins>
+  <paid_leave label="Max number paid days family/medical leave">84</paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave">Negotiable</unpaid_leave>
+  <med_profess label="Medical professionalism">Yes</med_profess>
+  <debt_mgmt label="Debt management/financial counseling">Yes</debt_mgmt>
+
+  <teach_skills label="Developing teaching skills">Yes</teach_skills>
+  <mentoring label="Formal mentoring program">Yes</mentoring>
+  <teamwork label="Interdisciplinary teamwork">Yes</teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt">Yes</qual_imp>
+  <international label="International experience" ampfile="international">Yes</international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats">Yes</retreats>
+
+  <offcampus label="Off-campus electives">Yes</offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness">Yes</cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research">Length negotiable</research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA">Yes</MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track">Yes</primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys">Yes</surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations">Yes</degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Ohio</state>
+
+  <city label="City">Columbus</city>
+  <prog_name label="Name" ampfile="pgmname">Nationwide Children's Hospital/Ohio State University Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Nationwide Children's Hospital</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips></particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-38-12-001</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Megan L McGraw, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Center for Child and Family Advocacy</address1>
+    <address2 label="Director's street address 2">Nationwide Children's Hospital</address2>
+
+    <address3 label="Director's street address 3">655 E Livingston Avenue</address3>
+    <dir_city label="Director's city">Columbus</dir_city>
+    <dir_state label="Director's state">OH</dir_state>
+
+    <dir_zip label="Director's zip code">43205</dir_zip>
+  </address>
+  <dir_phone label="Tel">614 722-3279</dir_phone>
+
+  <dir_fax label="Fax">614 722-3196</dir_fax>
+  <dir_email label="Director's e-mail">megan.mcgraw@nationwidechildrens.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset">Comm/Univ</setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength">3</prog_length>
+
+  <years_required label="Years required" ampfile="reqlength">3</years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">Yes</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq">3</prev_yrs_req>
+  <accepting_apps>Yes</accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs">40</hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs">16</hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing">NA</most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting">No</moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1">54151</salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care">Yes</child>
+  <moving_allow label="Moving allowance">Yes</moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking">Yes</parking>
+  <pdas label="PDAs">Yes</pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents">Resident shares cost</major_med>
+
+  <depend_med label="Medical insurance-dependents">Resident shares cost</depend_med>
+  <ment_hlth label="Outpatient mental health insurance">Resident shares cost</ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance">Resident shares cost</in_ment_hlth>
+
+  <group_life label="Group life insurance">Resident shares cost</group_life>
+  <dental_ins label="Dental insurance">Resident shares cost</dental_ins>
+  <dis_ins label="Disability insurance">Resident shares cost</dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV">Resident shares cost</dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins">When resident starts</ins_begins>
+  <paid_leave label="Max number paid days family/medical leave">Negotiable</paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave">Negotiable</unpaid_leave>
+  <med_profess label="Medical professionalism">Yes</med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills">Yes</teach_skills>
+  <mentoring label="Formal mentoring program">Yes</mentoring>
+  <teamwork label="Interdisciplinary teamwork">Yes</teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt">Yes</qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives">Yes</offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness">Yes</cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research">Optional</research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track">Yes</primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys">Yes</surveys>
+  <portfolio label="Portfolio system">Yes</portfolio>
+  <degree label="360-degree evaluations">Yes</degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Pennsylvania</state>
+
+  <city label="City">Philadelphia</city>
+  <prog_name label="Name" ampfile="pgmname">Children's Hospital of Philadelphia Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Children's Hospital of Philadelphia</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips></particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-41-32-009</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Philip Scribano, DO, MSCE</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Children's Hospital of Philadelphia</address1>
+    <address2 label="Director's street address 2">34th and Civic Center Blvd, 12NW Bldg</address2>
+
+    <address3 label="Director's street address 3">Room 56</address3>
+    <dir_city label="Director's city">Philadelphia</dir_city>
+    <dir_state label="Director's state">PA</dir_state>
+
+    <dir_zip label="Director's zip code">19104</dir_zip>
+  </address>
+  <dir_phone label="Tel">215 590-5357</dir_phone>
+
+  <dir_fax label="Fax">215 590-2180</dir_fax>
+  <dir_email label="Director's e-mail">scribanop@email.chop.edu</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset"></setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength"></prog_length>
+
+  <years_required label="Years required" ampfile="reqlength"></years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">No</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq"></prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing"></most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting"></moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1"></salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents"></major_med>
+
+  <depend_med label="Medical insurance-dependents"></depend_med>
+  <ment_hlth label="Outpatient mental health insurance"></ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance"></in_ment_hlth>
+
+  <group_life label="Group life insurance"></group_life>
+  <dental_ins label="Dental insurance"></dental_ins>
+  <dis_ins label="Disability insurance"></dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV"></dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins"></ins_begins>
+  <paid_leave label="Max number paid days family/medical leave"></paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave"></unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills"></teach_skills>
+  <mentoring label="Formal mentoring program"></mentoring>
+  <teamwork label="Interdisciplinary teamwork"></teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt"></qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research"></research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Rhode Island</state>
+
+  <city label="City">Providence</city>
+  <prog_name label="Name" ampfile="pgmname">Brown University Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Brown University/Rhode Island Hospital-Lifespan</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>Rhode Island Office of State Medical Examiners</particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-43-32-006</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Christine E Barron, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Child Protection Program at Hasbro Children's Hosp</address1>
+    <address2 label="Director's street address 2">593 Eddy Street</address2>
+
+    <address3 label="Director's street address 3">Potter Building 005</address3>
+    <dir_city label="Director's city">Providence</dir_city>
+    <dir_state label="Director's state">RI</dir_state>
+
+    <dir_zip label="Director's zip code">02903</dir_zip>
+  </address>
+  <dir_phone label="Tel">401 444-7168</dir_phone>
+
+  <dir_fax label="Fax">401 444-3804</dir_fax>
+  <dir_email label="Director's e-mail">cbarron1@lifespan.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset">Comm/Univ</setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength">3</prog_length>
+
+  <years_required label="Years required" ampfile="reqlength">3</years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">Yes</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq">3</prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs">50</hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs">10</hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing">NA</most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting">Yes</moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1">58872</salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care">Yes</child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking">Yes</parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance">Yes</job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents">Resident shares cost</major_med>
+
+  <depend_med label="Medical insurance-dependents">Resident shares cost</depend_med>
+  <ment_hlth label="Outpatient mental health insurance">Resident shares cost</ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance">Resident shares cost</in_ment_hlth>
+
+  <group_life label="Group life insurance">Resident shares cost</group_life>
+  <dental_ins label="Dental insurance">Resident shares cost</dental_ins>
+  <dis_ins label="Disability insurance">Resident shares cost</dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV">Resident shares cost</dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins">When resident starts</ins_begins>
+  <paid_leave label="Max number paid days family/medical leave">30</paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave">Negotiable</unpaid_leave>
+  <med_profess label="Medical professionalism">Yes</med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills">Yes</teach_skills>
+  <mentoring label="Formal mentoring program">Yes</mentoring>
+  <teamwork label="Interdisciplinary teamwork">Yes</teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt">Yes</qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives">Yes</offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness">Yes</cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research">52 wks</research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track">Yes</other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys">Yes</surveys>
+  <portfolio label="Portfolio system">Yes</portfolio>
+  <degree label="360-degree evaluations">Yes</degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA">
+  Yes; click link and enter Program Number</FREIDA>
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">South Carolina</state>
+
+  <city label="City">Charleston</city>
+  <prog_name label="Name" ampfile="pgmname">Medical University of South Carolina Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Medical University of South Carolina College of Medicine</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>Dee Norton Lowcountry Children's Center</particips>
+
+    <particips>Dorchester Children's Center</particips>
+    <particips>Medical University of South Carolina Children's Hospital</particips>
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-45-32-016</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Michelle Amaya, MD, MPH</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">MUSC Pediatric Violence Intervention &amp; Prevention</address1>
+    <address2 label="Director's street address 2">135 Rutledge Ave</address2>
+
+    <address3 label="Director's street address 3">PO Box 250566</address3>
+    <dir_city label="Director's city">Charleston</dir_city>
+    <dir_state label="Director's state">SC</dir_state>
+
+    <dir_zip label="Director's zip code">29425</dir_zip>
+  </address>
+  <dir_phone label="Tel">843 792-2618</dir_phone>
+
+  <dir_fax label="Fax">843 792-3022</dir_fax>
+  <dir_email label="Director's e-mail">salduttn@musc.edu</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset"></setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength"></prog_length>
+
+  <years_required label="Years required" ampfile="reqlength"></years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">No</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq"></prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing"></most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting"></moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1"></salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents"></major_med>
+
+  <depend_med label="Medical insurance-dependents"></depend_med>
+  <ment_hlth label="Outpatient mental health insurance"></ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance"></in_ment_hlth>
+
+  <group_life label="Group life insurance"></group_life>
+  <dental_ins label="Dental insurance"></dental_ins>
+  <dis_ins label="Disability insurance"></dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV"></dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins"></ins_begins>
+  <paid_leave label="Max number paid days family/medical leave"></paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave"></unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills"></teach_skills>
+  <mentoring label="Formal mentoring program"></mentoring>
+  <teamwork label="Interdisciplinary teamwork"></teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt"></qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research"></research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Texas</state>
+
+  <city label="City">San Antonio</city>
+  <prog_name label="Name" ampfile="pgmname">University of Texas School of Medicine at San Antonio Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">University of Texas School of Medicine at San Antonio</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>ChildSafe</particips>
+
+    <particips>Christus Santa Rosa - Children's Hospital</particips>
+    <particips>University Hospital</particips>
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-48-32-004</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Nancy D Kellogg, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">University of Texas School of Medicine at San Antonio</address1>
+    <address2 label="Director's street address 2">7703 Floyd Curl Drive</address2>
+
+    <address3 label="Director's street address 3">Mail Code 7821</address3>
+    <dir_city label="Director's city">San Antonio</dir_city>
+    <dir_state label="Director's state">TX</dir_state>
+
+    <dir_zip label="Director's zip code">78229</dir_zip>
+  </address>
+  <dir_phone label="Tel">210 704-3939</dir_phone>
+
+  <dir_fax label="Fax">210 704-3392</dir_fax>
+  <dir_email label="Director's e-mail">quirozs@uthscsa.edu</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset"></setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength"></prog_length>
+
+  <years_required label="Years required" ampfile="reqlength"></years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">No</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq"></prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing"></most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting"></moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1"></salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents"></major_med>
+
+  <depend_med label="Medical insurance-dependents"></depend_med>
+  <ment_hlth label="Outpatient mental health insurance"></ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance"></in_ment_hlth>
+
+  <group_life label="Group life insurance"></group_life>
+  <dental_ins label="Dental insurance"></dental_ins>
+  <dis_ins label="Disability insurance"></dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV"></dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins"></ins_begins>
+  <paid_leave label="Max number paid days family/medical leave"></paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave"></unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills"></teach_skills>
+  <mentoring label="Formal mentoring program"></mentoring>
+  <teamwork label="Interdisciplinary teamwork"></teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt"></qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research"></research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Utah</state>
+
+  <city label="City">Salt Lake City</city>
+  <prog_name label="Name" ampfile="pgmname">University of Utah Medical Center Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">University of Utah Medical Center</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips></particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-49-32-010</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Lori D Frasier, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">University of Utah Medical Center</address1>
+    <address2 label="Director's street address 2">675 East 500 South</address2>
+
+    <address3 label="Director's street address 3">Suite 300</address3>
+    <dir_city label="Director's city">Salt Lake City</dir_city>
+    <dir_state label="Director's state">UT</dir_state>
+
+    <dir_zip label="Director's zip code">84102</dir_zip>
+  </address>
+  <dir_phone label="Tel">801 662-3622</dir_phone>
+
+  <dir_fax label="Fax">801 662-3610</dir_fax>
+  <dir_email label="Director's e-mail">susan.stewart@imail.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset"></setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength"></prog_length>
+
+  <years_required label="Years required" ampfile="reqlength"></years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">No</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq"></prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing"></most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting"></moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1"></salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents"></major_med>
+
+  <depend_med label="Medical insurance-dependents"></depend_med>
+  <ment_hlth label="Outpatient mental health insurance"></ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance"></in_ment_hlth>
+
+  <group_life label="Group life insurance"></group_life>
+  <dental_ins label="Dental insurance"></dental_ins>
+  <dis_ins label="Disability insurance"></dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV"></dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins"></ins_begins>
+  <paid_leave label="Max number paid days family/medical leave"></paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave"></unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills"></teach_skills>
+  <mentoring label="Formal mentoring program"></mentoring>
+  <teamwork label="Interdisciplinary teamwork"></teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt"></qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research"></research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Virginia</state>
+
+  <city label="City">Norfolk</city>
+  <prog_name label="Name" ampfile="pgmname">Eastern Virginia Medical School Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Eastern Virginia Medical School</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>Children's Hospital of the King's Daughters</particips>
+
+    <particips>Naval Medical Center (Portsmouth)</particips>
+    <particips>Tidewater Office of the Chief Medical Examiner</particips>
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-51-32-005</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Suzanne P Starling, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Eastern Virginia Medical School</address1>
+    <address2 label="Director's street address 2">CHKD - Child Abuse Program</address2>
+
+    <address3 label="Director's street address 3">935 Redgate Avenue</address3>
+    <dir_city label="Director's city">Norfolk</dir_city>
+    <dir_state label="Director's state">VA</dir_state>
+
+    <dir_zip label="Director's zip code">23507</dir_zip>
+  </address>
+  <dir_phone label="Tel">757 668-6100</dir_phone>
+
+  <dir_fax label="Fax">757 668-6109</dir_fax>
+  <dir_email label="Director's e-mail">Karen.Howard@chkd.org</dir_email>
+  <website label="Web site"></website>
+
+  <setting label="Setting" ampfile="pgmset"></setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength"></prog_length>
+
+  <years_required label="Years required" ampfile="reqlength"></years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">No</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq"></prev_yrs_req>
+  <accepting_apps></accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart"></multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing"></most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting"></moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1"></salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking"></parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents"></major_med>
+
+  <depend_med label="Medical insurance-dependents"></depend_med>
+  <ment_hlth label="Outpatient mental health insurance"></ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance"></in_ment_hlth>
+
+  <group_life label="Group life insurance"></group_life>
+  <dental_ins label="Dental insurance"></dental_ins>
+  <dis_ins label="Disability insurance"></dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV"></dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins"></ins_begins>
+  <paid_leave label="Max number paid days family/medical leave"></paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave"></unpaid_leave>
+  <med_profess label="Medical professionalism"></med_profess>
+  <debt_mgmt label="Debt management/financial counseling"></debt_mgmt>
+
+  <teach_skills label="Developing teaching skills"></teach_skills>
+  <mentoring label="Formal mentoring program"></mentoring>
+  <teamwork label="Interdisciplinary teamwork"></teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt"></qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives"></offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness"></cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research"></research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA"></MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations"></degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA"></FREIDA>
+
+
+
+
+
+</program>
+
+<program>
+  <specialty_id>339</specialty_id>
+  <specialty label="Specialty">Child Abuse Pediatrics (Pediatrics)</specialty>
+
+
+  <spec_ltr_code label="spec_ltr_code">CAP</spec_ltr_code>
+  <state label="State">Wisconsin</state>
+
+  <city label="City">Milwaukee</city>
+  <prog_name label="Name" ampfile="pgmname">Medical College of Wisconsin Affiliated Hospitals Program</prog_name>
+
+
+  <sponsor label="Sponsoring inst" ampfile="pgmspons">Medical College of Wisconsin Affiliated Hospitals, Inc</sponsor>
+  <participating_inst label="Major participating institutions" ampfile="partic">
+    <particips>Children's Hospital of Wisconsin</particips>
+
+
+
+
+
+
+
+
+
+
+
+
+  </participating_inst>
+  <clin_site label="Primary clinical site" ampfile="clinsite"></clin_site>
+
+  <prog_id label="Pgm ID" ampfile="pgmid">339-56-32-008</prog_id>
+  <director label="Pgm director" ampfile="pgmdir">Lynn Sheets, MD</director>
+  <codirector label="Pgm codirector"></codirector>
+
+  <address label="Address/Phone/Fax">
+    <address1 label="Director's street address 1">Children's Hospital of Wisconsin</address1>
+    <address2 label="Director's street address 2">Child Advocacy, Suite 615</address2>
+
+    <address3 label="Director's street address 3">PO Box 1997</address3>
+    <dir_city label="Director's city">Milwaukee</dir_city>
+    <dir_state label="Director's state">WI</dir_state>
+
+    <dir_zip label="Director's zip code">53201</dir_zip>
+  </address>
+  <dir_phone label="Tel">414 266-2090</dir_phone>
+
+  <dir_fax label="Fax">414 266-3157</dir_fax>
+  <dir_email label="Director's e-mail">skreuter@chw.org</dir_email>
+  <website label="Web site">http://www.mcw.edu/GME/MCWAHOverview.htm</website>
+
+  <setting label="Setting" ampfile="pgmset">Univ</setting>
+  <prog_length label="Accredited length (yrs)" ampfile="aclength">3</prog_length>
+
+  <years_required label="Years required" ampfile="reqlength">3</years_required>
+  <offers_prelim_pos label="Offers preliminary positions"></offers_prelim_pos>
+  <positions label="Program size" ampfile="pgmsize">3</positions>
+
+  <prev_gme_req label="Prior GME required" ampfile="prevreq">Yes</prev_gme_req>
+  <prev_yrs_req label="Requires prior GME (yrs)" ampfile="prevyrsreq">3</prev_yrs_req>
+  <accepting_apps>Yes</accepting_apps>
+
+  <multi_start label="Multiple start dates" ampfile="mulstart">N</multi_start>
+  <hours_week label="Avg hrs/week duty"  ampfile="avghrs"></hours_week>
+  <hours_consec label="Max hrs consecutive duty" ampfile="maxhrs"></hours_consec>
+
+  <most_taxing label="Most taxing call schedule" ampfile="mosttaxing">NA</most_taxing>
+  <duration label="Duration"></duration>
+  <moonlighting label="Moonlighting allowed" ampfile="moonlighting">No</moonlighting>
+
+  <night_float label="Night float system"></night_float>
+  <salary label="Salary, pgm yr 1">56500</salary>
+  <pt_shared label="Part-time/shared positions"></pt_shared>
+
+  <child label="On-site child care"></child>
+  <moving_allow label="Moving allowance"></moving_allow>
+  <housing_stip label="Housing stipend"></housing_stip>
+
+  <meal_allow label="On-call meal allowance"></meal_allow>
+  <parking label="Free parking">Yes</parking>
+  <pdas label="PDAs"></pdas>
+
+  <job_place label="Job placement assistance"></job_place>
+  <cross_cov label="Cross coverage"></cross_cov>
+  <major_med label="Medical insurance-residents">Resident shares cost</major_med>
+
+  <depend_med label="Medical insurance-dependents">Resident shares cost</depend_med>
+  <ment_hlth label="Outpatient mental health insurance">Resident shares cost</ment_hlth>
+  <in_ment_hlth label="Inpatient mental health insurance">Resident shares cost</in_ment_hlth>
+
+  <group_life label="Group life insurance">Paid by institution</group_life>
+  <dental_ins label="Dental insurance">Resident shares cost</dental_ins>
+  <dis_ins label="Disability insurance">Paid by institution</dis_ins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <dis_ins_HIV label="Disability insurance for occupationally acquired HIV">Paid by institution</dis_ins_HIV>
+  <ins_begins label="Medical insurance coverage begins">Within 30 days</ins_begins>
+  <paid_leave label="Max number paid days family/medical leave">180</paid_leave>
+
+  <unpaid_leave label="Max number unpaid days family/medical leave">Negotiable</unpaid_leave>
+  <med_profess label="Medical professionalism">Yes</med_profess>
+  <debt_mgmt label="Debt management/financial counseling">Yes</debt_mgmt>
+
+  <teach_skills label="Developing teaching skills">Yes</teach_skills>
+  <mentoring label="Formal mentoring program">Yes</mentoring>
+  <teamwork label="Interdisciplinary teamwork">Yes</teamwork>
+
+  <qual_imp label="Continuous quality improvement" ampfile="qual_impt">Yes</qual_imp>
+  <international label="International experience" ampfile="international"></international>
+  <retreats label="Resident/fellow retreats" ampfile="retreats"></retreats>
+
+  <offcampus label="Off-campus electives">Yes</offcampus>
+  <hospice label="Hospice/home care exp" ampfile="hospice"></hospice>
+  <cultcomp label="Cultural competence awareness">Yes</cultcomp>
+
+  <nonenglish label="Non-English language instruction" ampfile="spanish"></nonenglish>
+  <altcomp label="Alternative/complementary med" ampfile="altcomp"></altcomp>
+
+
+
+  <research label="Research rotation" ampfile="research">48 wks</research>
+  <MPH_MBA_PhD label="MPH/MBA or PhD training" ampfile="MPH_MBA">Yes</MPH_MBA_PhD>
+  <additional_trng label="Offers additional training" ampfile="addtrng"></additional_trng>
+
+  <req_add_trng label="Requires additional training" ampfile="reqtrng"></req_add_trng>
+  <add_trng_length label="Additional training length" ampfile="trnglen"></add_trng_length>
+  <primary label="Primary care track"></primary>
+
+  <rural label="Rural track"></rural>
+  <women label="Women's health track"></women>
+  <hospitalist label="Hospitalist track"></hospitalist>
+
+  <research_trck label="Research track/nonaccredited fellowship"></research_trck>
+  <other label="Other track"></other>
+  <exam_req label="Yearly specialty in-service exam required"></exam_req>
+
+  <surveys label="Patient surveys"></surveys>
+  <portfolio label="Portfolio system"></portfolio>
+  <degree label="360-degree evaluations">Yes</degree>
+
+  <osce label="Objective structured clinical examination (OSCE)"></osce>
+  <int_model label="Plastic surgery integrated model" ampfile="intmodel"></int_model>
+  <military label="Military" ampfile="mil">N</military>
+
+  <subspec label="Subspecialty codes" ampfile="subspec"></subspec>
+
+  <sponspec label="Sponsoring spec" ampfile="sponspec"></sponspec>
+
+  <FREIDA label="FREIDA listing" ampfile="FREIDA">
+  Yes; click link and enter Program Number</FREIDA>
+
+
+
+
+</program>
+
+</listing_programs>

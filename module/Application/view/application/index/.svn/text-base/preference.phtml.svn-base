@@ -1,0 +1,28 @@
+<?php
+// module/Application/view/application/index/preference.phtml:
+
+$title = 'Preferences';
+if( $phguser ) $title = "$phguser->realname's $title";
+else $errors = 'You are not logged in yet!<br>' . $errors; // never supposed to happen
+
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    if( $errors ) echo "<div class=\"alert alert-error\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button> $errors</div>";
+
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'preference'
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formRow($form->get('password0'));
+echo $this->formRow($form->get('password1'));
+echo $this->formRow($form->get('password2'));
+echo $this->formRow($form->get('csrf'));
+echo '<br>';
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();

@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+ <?xml-stylesheet type="text/xml" href="../xsl/ampfile.xsl"?>
+ <?xml-stylesheet type="text/xsl" href="../xsl/ampfile.xsl"?>
+
+<program_labels>
+
+<label>
+  <ampfile>pgmname</ampfile>
+  <heading>Name</heading>
+  <innertext>The program name is assigned by the Accreditation Council for Graduate Medical Education (ACGME); the names of programs in combined specialties (eg, internal medicine/pediatrics) are assigned by the AMA Medical Education Group.<br/><br/>
+             <U>Underlined program names</U> are linked to the program's website. 
+</innertext>
+</label>
+<label>
+  <ampfile>pgmset</ampfile>
+  <heading>Setting</heading>
+  <innertext>Possible values include university hospital, community-based university-affiliated hospital, community hospital, military-based, and other.
+</innertext>
+</label>
+<label>
+  <ampfile>aclength</ampfile>
+  <heading>Accredited Length (yrs)</heading>
+  <innertext>Length of the program, in years, as set by the ACGME.</innertext>
+</label>
+<label>
+  <ampfile>reqlength</ampfile>
+  <heading>Years Required</heading>
+  <innertext>Some programs require additional training or educational experiences that extend the length of training beyond the accredited length.
+</innertext>
+</label>
+<label>
+  <ampfile>pgmsize</ampfile>
+  <heading>Number of Positions</heading>
+  <innertext>Number of ACGME approved/offered positions; not all RRCs designate this number for accredited programs.
+</innertext>
+</label>
+<label>
+  <ampfile>gy1</ampfile>
+  <heading>GY1 Positions</heading>
+  <innertext>Graduate Year One positions (ie, positions that do not require completion of prior GME).
+</innertext>
+</label>
+<label>
+  <ampfile>prevyrsreq</ampfile>
+  <heading>Requires Prior GME (yrs)</heading>
+  <innertext>Program requires that applicants have completed 1 or more years of GME (not to be confused with undergraduate medical education, ie, medical school).
+</innertext>
+</label>
+
+
+
+<label>
+  <ampfile>avghrs</ampfile>
+  <heading>Average Hours/Week Duty</heading>
+  <innertext>Average hours per week that a resident/fellow is on duty during year 1 of the program (excluding beeper call).
+</innertext>
+</label>
+<label>
+  <ampfile>maxhrs</ampfile>
+  <heading>Maximum Hours Consecutive Duty</heading>
+  <innertext>Maximum number of consecutive hours a resident/fellow is allowed on duty during year 1 of the program (excluding beeper call).
+</innertext>
+</label>
+<label>
+  <ampfile>mosttaxing</ampfile>
+  <heading>Most Taxing Call Schedule</heading>
+  <innertext>Indicates the most taxing call schedule for residents/fellows in the program and the total duration of that call schedule. Data are abbreviated as follows:
+<table border="0">
+<tr><td class="csstext" nowrap="0">1/wk</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Once per week</td></tr>
+<tr><td class="csstext" nowrap="0">2/wk</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Two times per week</td></tr>
+<tr><td class="csstext" nowrap="0">3/wk</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Three times per week</td></tr>
+<tr><td class="csstext" nowrap="0">4/wk</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Four times per week</td></tr>
+<tr><td class="csstext" nowrap="0">>5/wk</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">More than five times per week</td></tr>
+<tr><td class="csstext" nowrap="0">q2d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every other night</td></tr>
+<tr><td class="csstext" nowrap="0">q3d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every third night</td></tr>
+<tr><td class="csstext" nowrap="0">q4d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every fourth night</td></tr>
+<tr><td class="csstext" nowrap="0">q5d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every fifth night</td></tr>
+<tr><td class="csstext" nowrap="0">q6d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every sixth night</td></tr>
+<tr><td class="csstext" nowrap="0">q7d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every seventh night</td></tr>
+<tr><td class="csstext" nowrap="0">q8d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every eighth night</td></tr>
+<tr><td class="csstext" nowrap="0">q9d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every ninth night</td></tr>
+<tr><td class="csstext" nowrap="0">q10d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every tenth night</td></tr>
+<tr><td class="csstext" nowrap="0">>q11d</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Every eleventh night or more</td></tr>
+<tr><td class="csstext" nowrap="0">Oth</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Other</td></tr>
+<tr><td class="csstext" nowrap="0">Neg</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Negotiable</td></tr>
+<tr><td class="csstext" nowrap="0">NA</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Not applicable</td></tr>
+</table>
+</innertext>
+</label>
+<label>
+  <ampfile>duration</ampfile>
+  <heading>Duration</heading>
+  <innertext>Duration of most taxing call schedule.
+</innertext>
+</label>
+<label>
+  <ampfile>moonlighting</ampfile>
+  <heading>Moonlighting Allowed</heading>
+  <innertext>Indicates whether residents/fellows in the program are allowed to moonlight within the institution.
+</innertext>
+</label>
+
+
+<label>
+  <ampfile>mulstart</ampfile>
+  <heading>Multiple Start Dates</heading>
+  <innertext>Program offers residents/fellows various options for beginning the program (January, Quarterly, or Negotiable), in addition to the traditional June/July start date.
+</innertext>
+</label>
+
+
+
+<label>
+  <ampfile>cultcomp</ampfile>
+  <heading>Cultural Competence</heading>
+  <innertext>Program offers instruction in cultural competence awareness.</innertext>
+</label>
+<label>
+  <ampfile>spanish</ampfile>
+  <heading>Medical Spanish Instruction</heading>
+  <innertext>Program offers instruction in medical Spanish or other non-English language.</innertext>
+</label>
+<label>
+  <ampfile>compalt</ampfile>
+  <heading>Alternative/Complementary Medicine</heading>
+  <innertext>Program offers alternative/complementary medicine curriculum.</innertext>
+</label>
+<label>
+  <ampfile>research</ampfile>
+  <heading>Offers Research Rotation</heading>
+  <innertext>Program curriculum includes a dedicated research rotation.</innertext>
+</label>
+
+
+
+<label>
+  <ampfile>addtrng</ampfile>
+  <heading>Offers Additional Training</heading>
+  <innertext>Program offers additional training/education beyond the accredited length.
+</innertext>
+</label>
+<label>
+  <ampfile>reqtrng</ampfile>
+  <heading>Requires Additional Training</heading>
+  <innertext>Program requires additional training/education beyond the accredited length.
+</innertext>
+</label>
+
+
+
+
+<label>
+  <ampfile>prevmed</ampfile>
+  <heading>Preventive Medicine Area</heading>
+  <innertext>Preventive medicine programs offer areas of specialization in aerospace medicine, occupational medicine, public health, and general preventive medicine.
+</innertext>
+</label>
+<label>
+  <ampfile>mil</ampfile>
+  <heading>Military</heading>
+  <innertext>US Uniformed Services (Army, Navy, Air Force, Public Health Service) first-year GME positions are filled by 
+graduates of accredited schools of medicine and osteopathic medicine. Only those individuals who have graduated from 
+accredited US medical schools are eligible to apply for these first-year GME positions. The majority of the Uniformed 
+Services' first-year GME positions are filled by individuals with an existing active duty service obligation. In 
+most cases, only those individuals already serving in the Uniformed Services are eligible for appointment to military 
+postgraduate year 2 and beyond residency positions. Graduates of non-US or non-Canadian medical schools are eligible 
+to apply for postgraduate year 2 positions if they possess the standard ECFMG Certificate and have completed 1 year 
+of GME training at an ACGME-accredited program.
+            <br /><br /> 
+             It is important to note that an individual seeking to be trained in a Uniformed Services medical treatment facility must be qualified for appointment as a commissioned officer in the Uniformed Services. An active duty service obligation is required for participation in Uniformed Services GME training. Acceptance of GME applications from civilian applicants may vary among the four services. Selection priorities for Uniformed Services positions for year 2 and beyond are given to officers on active duty. For more information, interested individuals should contact their local Uniformed Services recruiting office.
+</innertext>
+</label>
+<label>
+  <ampfile>subspec</ampfile>
+  <heading>Subspecialty codes</heading>
+  <innertext>
+<table border="0">
+<tr><td class="csstext" nowrap="0">ADL</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Adolescent Medicine (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">ADP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Addiction Psychiatry (Psychiatry)</td></tr>
+<tr><td class="csstext" nowrap="0">APM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pain Medicine (Anesthesiology)</td></tr>
+<tr><td class="csstext" nowrap="0">AR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Abdominal Radiology (Radiology-Diagnostic)</td></tr>
+<tr><td class="csstext" nowrap="0">BBK</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Blood Banking/Transfusion Medicine (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">CCA</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Critical Care Medicine (Anesthesiology)</td></tr>
+<tr><td class="csstext" nowrap="0">CCM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Critical Care Medicine (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">CCP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Critical Care Medicine (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">CCS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Surgical Critical Care (General Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">CD</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Cardiovascular Disease (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">CFS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Craniofacial Surgery (Plastic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">CHN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Child Neurology (Neurology)</td></tr>
+<tr><td class="csstext" nowrap="0">CHP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Child and Adolescent Psychiatry (Psychiatry)</td></tr>
+<tr><td class="csstext" nowrap="0">CHS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Congenital Cardiac Surgery (General Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">CN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Clinical Neurophysiology (Neurology)</td></tr>
+<tr><td class="csstext" nowrap="0">CTR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Cardiothoracic Radiology (Radiology-Diagnostic)</td></tr>
+<tr><td class="csstext" nowrap="0">DBP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Developmental-Behavioral Pediatrics (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">DMP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Dermatopathology (Dermatology and Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">END</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Endocrinology, Diabetes, and Metabolism (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">ESM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Sports Medicine (Emergency Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">ESS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Endovascular Surgical Neuroradiology (Neurological Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">ETX</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Medical Toxicology (Emergency Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">FOP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Forensic Pathology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">FPG</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Geriatric Medicine (Family Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">FSM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Sports Medicine (Family Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">GE</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Gastroenterology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">HEM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Hematology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">HMP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Hematology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">HO</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Hematology and Oncology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">HSO</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Hand Surgery (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">HSP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Hand Surgery (Plastic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">HSS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Hand Surgery (General Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">IC</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Interventional Cardiology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">ICE</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Clinical Cardiac Electrophysiology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">ID</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Infectious Disease (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">IMG</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Geriatric Medicine (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">ISM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Sports Medicine (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">MM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Medical Microbiology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">MSR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Musculoskeletal Radiology Radiology-Diagnostic)</td></tr>
+<tr><td class="csstext" nowrap="0">NDN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Neurodevelopmental Disabilities (Neurology)</td></tr>
+<tr><td class="csstext" nowrap="0">NEP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Nephrology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">NMN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Neuromuscular Medicine (Neurology)</td></tr>
+<tr><td class="csstext" nowrap="0">NO</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Neurotology (Otolaryngology)</td></tr>
+<tr><td class="csstext" nowrap="0">NP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Neuropathology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">NPM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Neonatal-Perinatal Medicine (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">NR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Nuclear Radiology (Radiology Diagnostic)</td></tr>
+<tr><td class="csstext" nowrap="0">OAR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Adult Reconstructive Orthopaedics (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">OFA</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Foot and Ankle Orthopaedics (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">OMO</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Musculoskeletal Oncology (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">ON</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Oncology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">OP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Orthopaedics (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">OSM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Orthopaedic Sports Medicine (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">OSS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Orthopaedic Surgery of the Spine (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">OTR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Orthopaedic Trauma (Orthopaedic Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">PAN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Anesthesiology (Anesthesiology)</td></tr>
+<tr><td class="csstext" nowrap="0">PCC</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pulmonary Disease  and Critical Care Medicine (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">PCH</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Chemical Pathology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">PCP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Cytopathology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">PDC</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Cardiology (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PDE</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Endocrinology (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PDI</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Infectious Diseases (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PDO</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Otolaryngology (Otolaryngology)</td></tr>
+<tr><td class="csstext" nowrap="0">PDP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Pulmonology (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PDR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Radiology (Radiology-Diagnostic)</td></tr>
+<tr><td class="csstext" nowrap="0">PDS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Surgery (General Surgery)</td></tr>
+<tr><td class="csstext" nowrap="0">PE</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Emergency Medicine (Emergency Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">PEM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Emergency Medicine (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PFP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Forensic Psychiatry (Psychiatry)</td></tr>
+<tr><td class="csstext" nowrap="0">PG</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Gastroenterology (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PHO</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Hematology/Oncology (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PMN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pain Medicine (Neurology)</td></tr>
+<tr><td class="csstext" nowrap="0">PMP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pain Medicine (Physical Medicine and Rehabilitation)</td></tr>
+<tr><td class="csstext" nowrap="0">PN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Nephrology (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Pathology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">PPN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pain Medicine (Psychiatry)</td></tr>
+<tr><td class="csstext" nowrap="0">PPR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Rheumatology (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PRD</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Procedural Dermatology (Dermatology)</td></tr>
+<tr><td class="csstext" nowrap="0">PSM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Sports Medicine (Pediatrics)</td></tr>
+<tr><td class="csstext" nowrap="0">PTX</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Medical Toxicology (Preventive Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">PUD</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pulmonary Disease  (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">PYG</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Geriatric Psychiatry (Psychiatry)</td></tr>
+<tr><td class="csstext" nowrap="0">PYM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Psychosomatic Medicine (Psychiatry)</td></tr>
+<tr><td class="csstext" nowrap="0">RHU</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Rheumatology (Internal Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">RNR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Neuroradiology (Radiology-Diagnostic)</td></tr>
+<tr><td class="csstext" nowrap="0">RPM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Rehabilitation Medicine (Physical Medicine and Rehabilitation)</td></tr>
+<tr><td class="csstext" nowrap="0">SCI</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Spinal Cord Injury Medicine (Physical Medicine and Rehabilitation)</td></tr>
+<tr><td class="csstext" nowrap="0">SP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Selective Pathology (Pathology)</td></tr>
+<tr><td class="csstext" nowrap="0">UM</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Undersea and Hyperbaric Medicine (Preventive Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">UME</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Undersea and Hyperbaric Medicine (Emergency Medicine)</td></tr>
+<tr><td class="csstext" nowrap="0">UP</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Pediatric Urology (Urology)</td></tr>
+<tr><td class="csstext" nowrap="0">VIR</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Vascular and Interventional Radiology (Radiology-Diagnostic)</td></tr>
+<tr><td class="csstext" nowrap="0">VN</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Vascular Neurology (Neurology)</td></tr>
+<tr><td class="csstext" nowrap="0">VS</td><td class="csstext" nowrap="0"><img src="images/transpix.gif" width="15" height="1" /></td><td class="csstext" nowrap="0">Vascular Surgery (General Surgery)</td></tr>
+</table>
+</innertext>
+</label>
+
+
+
+<label>
+  <ampfile>pgmspons</ampfile>
+  <heading>Program Sponsor</heading>
+  <innertext>A sponsoring institution is the institution (eg, a university, medical school, hospital, school of public health, health -department, public health agency, organized health care delivery -system, medical examiner's office, consortium, or educational foundation) that assumes the ultimate responsibility for a GME program.</innertext>
+</label>
+<label>
+  <ampfile>clinsite</ampfile>
+  <heading>Primary Clinical Site</heading>
+  <innertext>Site where the program takes place if not the site of the sponsor.</innertext>
+</label>
+<label>
+  <ampfile>pgmid</ampfile>
+  <heading>Program ID</heading>
+  <innertext>A 10-digit number assigned by the ACGME. The first three numbers refer to the specialty (eg, 120 for family practice, 140 for internal medicine); the next two indicate state where the program is located (eg, 05 for California, 35 for New York).</innertext>
+</label>
+<label>
+  <ampfile>pgmdir</ampfile>
+  <heading>Program Director</heading>
+  <innertext>The official responsible for maintaining the quality of a GME program so that it meets ACGME accreditation standards. Other duties of the program director include preparing a written statement outlining the program's educational goals; providing an accurate statistical and narrative description of the program as requested by the Residency Review Committee (RRC); and providing for the selection, supervision, and evaluation of residents for appointment to and completion of the program.<br/><br/>
+  Click on <U>underlined program director names</U> to start your email program with the director's address.       
+</innertext>
+</label>
+<label>
+  <ampfile>sponsor</ampfile>
+  <heading>Sponsoring Institution</heading>
+  <innertext>The institution (eg, a university, medical school, 
+hospital, school of public health, health department, public health agency, 
+organized health care delivery system, medical examiner's office, consortium, or educational foundation) that assumes the ultimate responsibility for a GME program.
+</innertext>
+</label>
+<label>
+  <ampfile>partic</ampfile>
+  <heading>Major Participating Institutions</heading>
+  <innertext>The institution to which residents rotate for a required experience of long 
+duration and/or those that require explicit approval by the appropriate RRC prior to 
+utilization. Major participating institutions are listed as part of an accredited 
+program in the <I>Graduate Medical Education Directory</I>. Hospitals and other institutions 
+that provide rotations of less than one-sixth of the program length or less than a 
+total of 6 months are not listed in the <I>Directory</I>.
+</innertext>
+</label>
+
+
+
+<label>
+  <ampfile>sponspec</ampfile>
+  <heading>Sponsoring Specialty</heading>
+  <innertext>According to ACGME Program Requirements, all transitional year programs must be offered by an institution and its affiliate(s) with two or more ACMGE-accredited residency programs. Two of these programs must be designated as sponsors of the transitional year program, and one of the sponsors must be in the following disciplines: emergency medicine, family practice, internal medicine, obstetrics/gynecology, pediatrics, or surgery.
+</innertext>
+</label>
+
+
+
+
+</program_labels>

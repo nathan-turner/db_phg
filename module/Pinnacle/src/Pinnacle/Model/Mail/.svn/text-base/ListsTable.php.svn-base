@@ -1,0 +1,101 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/Mail/ListsTable.php:
+/* *** this table (custlistsus) can also be modified by search model classes:
+ *     ClientsTable, ContractsTable, PhysiciansTable, MidlevelsTable
+ */
+namespace Pinnacle\Model\Mail;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Where;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
+use Pinnacle\Model\Report\ReportTable;
+use Pinnacle\Model\Report\RecordGen;
+
+class ListsTable extends ReportTable
+{
+    protected $paginator = null;
+
+    public function __construct(Adapter $adapter) {
+        parent::__construct($adapter,'custlistsus',
+                            '`owneruid`, `listid`, `memberuid`, `ctype`');
+    }
+
+    public function fetchAll($uid,$lid,$page = 0,$pgsize = 25) {
+        $uid = (int) $uid; $lid = (int) $lid;
+        $select = new Select($this->table);
+        $select->where(array( 'owneruid'=>$uid, 'listid'=>$lid ));
+        //        $select->order('memberuid DESC');
+        $limit = (int) $pgsize; if( $limit<=0 || $limit > 200 ) $limit = 25;
+        $select->limit($limit);
+        $page--; if( $page < 0 ) $page = 0;
+        $offset = $page * $limit;
+        $select->offset($offset);
+        $resultSet = $this->selectWith($select);
+        return $resultSet;
+    }
+
+    public function deleteListRow($uid,$lid,$ctid) {
+        $uid = (int) $uid; $lid = (int) $lid; $ctid = (int) $ctid;
+        $this->delete(array( 'owneruid'=>$uid, 'listid'=>$lid, 'memberuid'=>$ctid ));
+    }
+
+    /* @param array $set : plain array of memberuid's
+     * deletes all ids from $set array
+     * */
+    public function deleteListSet($uid,$lid,array $set) {
+        $uid = (int) $uid; $lid = (int) $lid; 
+        if( is_array($set) ) {
+            $this->delete(array( 'owneruid'=>$uid, 'listid'=>$lid, 'memberuid'=>$set ));
+        }
+    }
+    
+    /* @param array/string $set : plain array of memberuid's (or comma-separated string)
+     * deletes all ids except ones in $set array
+     * */
+    public function keepListSet($uid,$lid,$set,$scope) {
+        $uid = (int) $uid; $lid = (int) $lid; $ctype = (int) $ctype;
+        $where = new Where();
+        $where->equalTo('owneruid',$uid)->equalTo('listid',$lid);
+        if( $scope && is_array($scope) )
+            $where->in('memberuid',$scope);
+        $ids = implode(',', preg_replace('/[^0-9,]/','',is_array($set)? $set: array($set)));
+        $where->literal("memberuid not in ($ids)");
+        $this->delete($where);
+    }
+
+    public function getPages($uid,$lid,$page = 1,$pgsize = 25) {
+        if( !$this->paginator ) {
+            $uid = (int) $uid; $lid = (int) $lid;
+            $select = new Select('vCustlist');
+            $select->where(array( 'owneruid'=>$uid, 'listid'=>$lid ));
+            $select->order('ctype, ctct_name');
+            $limit = (int) $pgsize; if( $limit<=0 || $limit > 200 ) $limit = 25;
+            if( $page < 1 ) $page = 1;
+
+            $this->initPaginator($select)->setItemCountPerPage($limit);
+        }
+        $this->paginator->setCurrentPageNumber($page);
+        return $this->paginator;
+    }
+    
+    protected function initPaginator(Select $query = null) {
+        if( !$this->paginator && $query ) {
+            $rs = new ResultSet();
+            $rs->setArrayObjectPrototype(new RecordGen(array('owneruid', 'listid', 'ctype', 'ctct_name', 'ctct_id', 'ctct_email', 'ctct_asp', 'ct_name', 'ctct_backref')));
+            $padapter = new DbSelect($query, $this->adapter, $rs );
+            $this->paginator = new Paginator($padapter);
+        }
+        return $this->paginator;
+    }
+}
+
+/*
+$this->select(function (Select $select) use ($id){
+$select->where(array('kind'=>$id));
+$select->order(array('group','group_order'));
+});
+*/

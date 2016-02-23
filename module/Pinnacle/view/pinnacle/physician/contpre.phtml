@@ -1,0 +1,230 @@
+<?php
+// module/Pinnacle/view/pinnacle/physician/contpre.phtml:
+// Contract Search
+
+$title = 'Contingency Present';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#phystable { width: 70% }
+#datetable, #spectable, #phystable, .historytable { border: 1px solid black }
+#datetable td, #spectable td, .historytable td { border: 1px solid black }
+#phystable td { border: 1px solid black; background-color: #ffffff; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#physician_pass_div { display: none; }
+#sched_activity_div { display: none; }
+.date { width: 110px; }
+.time { width: 60px; }
+</style>
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			$( "#schedact_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#schedact_date"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+
+$(function() {
+
+
+
+ function switchPanel(obj)
+{	
+	$(".tab").addClass('hiddendiv');
+	obj.toggleClass('hiddendiv');
+}
+
+$("#noteslink").click(function() {	
+	switchPanel($("#notes-div"));
+});
+$("#cvlink").click(function() {	
+	switchPanel($("#cv-div"));
+});
+$("#actionslink").click(function() {	
+	switchPanel($("#actions-div"));
+});
+$("#sourcelink").click(function() {	
+	switchPanel($("#source-div"));
+});
+$("#credentialslink").click(function() {	
+	switchPanel($("#credentials-div"));
+});
+
+$("#physician_pass_link").click(function() {	
+	openPhysicianPassPanel();
+ });
+ //close/cancel btn
+ $("#physician_pass_cancel_btn").click(function() { $( "#physician_pass_div" ).dialog("close"); });
+ $("#sched_cancel_btn").click(function() { $( "#sched_activity_div" ).dialog("close"); });
+
+$("#schedulelink").click(function() {	
+	openSchedulePanel();
+ }); 
+
+});
+
+function openPhysicianPassPanel(){
+$( "#physician_pass_div" ).dialog({
+height: 370,
+width: 640,
+modal: true
+});
+}
+
+function openSchedulePanel(){
+$( "#sched_activity_div" ).dialog({
+height: 520,
+width: 440,
+modal: true
+});
+}
+
+
+</script>
+
+
+
+<h1 ><?php echo $this->escapeHtml($title); ?></h1>
+<br/>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+?>
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+
+<?php
+if(!isset($_GET["cli_id"]))
+{
+//echo var_dump($ar);
+?>
+<form method="post" name="form1">
+<INPUT type="hidden" name="ph_id" value="<?php echo $ph_id; ?>">
+<p>Please Enter Client ID#: <input type="text" name="cli_id" value=""></p>
+<p class="ctr notes">- OR -</p>
+<p>Enter Client's City and/or State:
+ <input type="text" name="ccity" value="<?php echo $_POST["ccity"]; ?>">,&nbsp;
+<select name="cstate" id="cstate">
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$_POST["cstate"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+
+<input type="submit" name="submit1" value="Search" />
+</form>
+<?php } //end if ?>
+
+<?php
+if(isset($_POST["submit1"]) && !isset($_GET["cli_id"]))
+{
+//echo var_dump($ar);
+?>
+<table width="90%" class="nobg" border="1" cellspacing="0" cellpadding="2">
+<thead><tr class="bld">
+<td align="center">Client</td><td align="center">City, State</td>
+</tr></thead>
+<tbody>
+<?php
+	//echo var_dump($states);
+			foreach ($ar as $key=>$val)
+			{			
+				echo '<tr><td><a href="?ph_id='.$ph_id.'&amp;cli_id='.$val["cli_id"].'">'.$val["ctct_name"].'</td><td>'.$val["city_state"].'</td></tr>';
+				//echo $val["city_state"];
+			}
+		?>
+</tbody></table>
+<?php } //end if ?>
+
+
+<?php
+if(isset($_GET["cli_id"]))
+{
+//echo var_dump($ar);
+?>
+<form method="post" name="form2">
+<INPUT type="hidden" name="ph_id" value="<?php echo $ph_id; ?>">
+<INPUT type="hidden" name="cli_id" value="<?php echo $_GET["cli_id"]; ?>">
+<div class="row">
+    <div class="span12">  
+	<br/>
+	<p>Press &quot;Proceed&quot; to present <a target="_blank" href="<?php echo $this->basePath(); ?>/physician/view/<?php echo $id; ?>">Dr. <?php echo $ar2["ctct_name"]; ?></a>, <?php echo $ar2["ph_spec_main"]; ?> to
+		 <a target="_blank" href="<?php echo $this->basePath(); ?>/client/view/<?php echo $_GET["cli_id"]; ?>">Client #<?php echo $_GET["cli_id"]; ?></a></p>
+		<br/>
+		
+		<label>Recruiter:</label> <select name="req" size=1>
+		<?php
+		
+			
+			foreach ($rec as $key=>$val)
+			{
+				echo "<option value='".$key."'>";				
+				echo $val;
+				echo "</option>";
+			}			
+			
+		?>
+		</select>
+    </div>    
+</div>
+
+<br/>
+<input type="submit" name="submit2" value="Proceed" class="btn large"/>
+</form>
+<?php } //end if ?>
+
+
+<br/><br/><br/>
+
+<p><a href="<?php echo $this->basePath(); ?>/physician/view/<?php echo $id; ?>">click here to return</a></p>	
+
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

@@ -1,0 +1,13 @@
+#spc-main {
+    border: 1px solid #f3f3f3;
+}
+
+#my-contacts-header,
+#shared-contacts-header {
+
+}
+
+#contacts-search-wrapper {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}

@@ -1,0 +1,53 @@
+<?php
+// module/Pinnacle/view/pinnacle/admin/index.phtml:
+
+$title = 'Administration';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php if( $phguser->access > 1 ) { ?>
+
+<div class="row">
+    <div class="span3">
+        <a href="<?php echo $this->url('admin', array('action'=>'goals')) ?>"><img src="/img/images/Button1.png"> Manage Goals</a>
+    </div>
+    <div class="span3">
+        <a href="<?php echo $this->url('admin', array('action'=>'sources')) ?>"><img src="/img/images/Button1.png"> Manage Sources</a>
+    </div>
+    <div class="span3">
+        <a href="<?php echo $this->url('admin', array('action'=>'cleanup')) ?>"><img src="/img/images/Button1.png"> Database Cleanup</a>
+    </div>
+</div>
+<hr>
+<h2>Manage Users</h2>
+<p><a href="<?php echo $this->url('admin', array('action'=>'users','part'=>'add')) ?>"><img src="/img/images/Button1.png"> Add new user</a></p>
+
+<table class="table">
+<tr>
+    <th>ID#</th>
+    <th>User Name</th>
+    <th>Real Name</th>
+    <th>Department</th>
+    <th title="Status">?</th>
+</tr>
+<?php foreach ($users as $user) : ?>
+<tr>
+    <td><a href="<?php echo $this->url('admin',
+            array('action'=>'users', 'id' => $user->emp_id, 'part' => 'edit'));?>">
+        <?php echo $this->escapeHtml($user->emp_id);?> </a></td>
+    <td><?php echo $this->escapeHtml($user->emp_uname);?></td>
+    <td><?php echo $this->escapeHtml($user->emp_realname);?></td>
+    <td><?php echo $this->escapeHtml($user->emp_dept);?></td>
+    <td title="Status"><?php echo $user->emp_status? '&radic;':' ';?></td>
+</tr>
+<?php endforeach; ?>
+</table>
+
+<?php } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+    } /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

@@ -1,0 +1,63 @@
+<?php
+// module/Pinnacle/view/pinnacle/admin/users.phtml:
+
+$title = $part === 'add'? 'Add New User': 'Edit User';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php if( $phguser->access > 1 ) { 
+
+    //$form = $this->form;
+    $form->setAttribute('action', $this->url('admin',
+                        array('action' => 'users', 'part' => $part, 'id' => $id)));
+    $form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('emp_id'));
+echo $this->formHidden($form->get('emp_access'));
+echo $this->formHidden($form->get('emp_realname'));
+echo '<div class="row"><div class="span4">';
+if( $part === 'add' ) {
+    echo $this->formHidden($form->get('ctct_name'));
+    echo $this->formRow($form->get('first_name'));
+    echo $this->formRow($form->get('last_name'));
+}
+else {
+    echo $this->formRow($form->get('ctct_name'));
+}
+echo $this->formRow($form->get('emp_uname'));
+echo $this->formRow($form->get('ctct_title'));
+echo $this->formRow($form->get('emp_dept'));
+echo $this->formRow($form->get('password3'));
+echo $this->formRow($form->get('ctct_url'));
+echo '</div><div class="span4">';
+echo $this->formRow($form->get('ctct_phone'));
+echo $this->formRow($form->get('ctct_ext1'));
+echo $this->formRow($form->get('ctct_fax'));
+echo $this->formRow($form->get('ctct_cell'));
+echo $this->formRow($form->get('ctct_hphone'));
+echo $this->formRow($form->get('emp_status'));
+echo '</div><div class="span4">';
+echo $this->formRow($form->get('ctct_addr_1'));
+echo $this->formRow($form->get('ctct_addr_2'));
+echo $this->formRow($form->get('ctct_addr_c'));
+echo $this->formRow($form->get('ctct_st_code'));
+echo $this->formRow($form->get('ctct_addr_z'));
+echo $this->formRow($form->get('emp_admin'));
+echo '</div></div>';
+echo $this->formRow($form->get('csrf'));
+echo '<hr>';
+echo $this->formSubmit($form->get('submit'));
+?> <a class="btn btn-large btn-danger" href="<?php echo $this->url('admin') ?>">Cancel</a>
+
+<?php
+echo $this->form()->closeTag();
+
+    } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+    } /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

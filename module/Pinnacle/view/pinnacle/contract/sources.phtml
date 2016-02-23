@@ -1,0 +1,362 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/view.phtml:
+// Client Search
+
+$title = 'Sources for Contract '.$ar['ctr_no'];
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.core.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.widget.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.tabs.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.position.min.js', 'text/javascript');
+
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.js?v=0.3.2', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.css?v=0.3.2', 'text/javascript');
+*/
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#sourcestable { width: 100%; font-size: 12px; }
+#sourcestable th { border: 1px solid black }
+#sourcestable td { padding: 2px; border: 1px solid #cccccc; text-align: center; }
+.currency { width: 50px }
+#sourcestable input { font-size: 12px; padding: 2px; }
+.addate { width: 80px; }
+</style>
+<script language="JavaScript"><!--
+function changess(iid) {
+    document.src2_form.elements[iid].value = "1";
+    return true;
+}
+
+function changepri(iid) {
+
+    //var cnt = document.src2_form.elements.item("dmc_"+iid).value;
+    //var newp = (cnt * document.src2_form.elements.item("pie_"+iid).value) + (cnt * document.src2_form.elements.item("pst_"+iid).value);
+    //var ama = document.src2_form.elements.item("ama_"+iid).value;
+	var cnt = document.src2_form.elements["dmc_"+iid].value;
+    var newp = (cnt * document.src2_form.elements["pie_"+iid].value) + (cnt * document.src2_form.elements["pst_"+iid].value);
+    var ama = document.src2_form.elements["ama_"+iid].value;
+	//alert(document.src2_form.elements["dmc_"+iid].value);
+	//alert(obj.value);
+    // # of Records:
+    // 0 - 1000		$0.36 per record + $75.00 List Copy Cost
+    // 1001 - 2000	$0.17 per record + $75.00 List Copy Cost
+    // 2001 - 4000	$0.13 per record + $75.00 List Copy Cost
+    // 4001 - 6000	$0.10 per record + $75.00 List Copy Cost
+    // 6001 +		$0.085 per record+ $75.00 List Copy Cost
+    if ( cnt <= 1000 ) 	    ama = 0.36 * cnt + 75;
+    else if ( cnt <= 2000 ) ama = 0.17 * cnt + 75;
+    else if ( cnt <= 4000 ) ama = 0.13 * cnt + 75;
+    else if ( cnt <= 6000 ) ama = 0.10 * cnt + 75;
+    else		    ama = 0.085* cnt + 75;
+    if ( ama < 425 )	    ama = 425;
+	//alert(newp.toFixed(2));
+	//alert(ama);
+    //document.src2_form.elements.item("pri_"+iid).value = newp.toFixed(2);
+    //document.src2_form.elements.item("ama_"+iid).value = ama;
+	document.src2_form.elements["pri_"+iid].value = newp.toFixed(2);
+    document.src2_form.elements["ama_"+iid].value = ama;
+    return true;
+}
+// -->
+</script>
+
+
+
+<h1><?php echo $this->escapeHtml($title); ?> &nbsp; <?php echo $ar2["ctr_no"];	?> (<?php echo $ar2["ctr_location_c"].", ".$ar2["ctr_location_s"];	?>) <?php echo $ar2["ctr_spec"];	?> <?php echo $ar2["at_abbr"];	?> - <?php echo $ar2["emp_realname"];	?></h1>
+
+<a href="<?php echo $this->basePath(); ?>/contract/view/<?php echo $id;?>">Return to Contract</a>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    //echo $this->form()->openTag($form);
+	
+	//if(isset($_POST["submit"]))
+		//echo "SUBMITTED";
+	
+	//echo var_dump($_POST);
+	//echo var_dump($ar);
+	
+?>
+<br/>
+<form method="post" name="src2_form" action="">
+<table style="width: 100%">
+<tr><td>
+
+
+<table id="sourcestable">
+<tr>
+<th>Source</th>
+<th>DM Info</th>
+<th>Client Approved</th>
+<th>Price</th>
+<?php
+
+	if(isset($_POST["campaign_month"]))
+		$month = $_POST["campaign_month"]; //added this if else
+	else
+		$month = $ar2["term_month"]; //starting month	
+	
+	//echo $month;
+	//$dte = date('Y-m-d', mktime(0, 0, 0, $month  , 1, date("Y")));
+	//echo $dte;
+	for($i=0;$i<$ar2["ctr_src_term"];$i++)
+	{
+		if($month>12)
+			$month=$month-12;
+		$monthName = date("M", mktime(0, 0, 0, $month, 10));		
+		echo '<th>'.$monthName.'</th>';
+		$month++;
+	}
+	$columns = $ar2["ctr_src_term"]+4; //total num of columns
+	//echo $columns;
+	
+?>
+<th>Action</th>
+</tr>
+
+<?php
+//echo var_dump($ar);
+
+foreach($ar as $key2=>$val2)
+{
+	//echo $val2;
+	/*foreach ($val2 as $k=>$v)
+	{
+		echo $k."-".$v."<br/>";
+	}*/
+	//echo $val2["csr_id"];
+	//echo "<br/>";
+	$shits="";
+	$isdraft = false;
+	$wasdm = false;
+	if($val2["csr_appr_date"]==null){	
+		$isdraft = true;
+	}
+	$shed = $val2["csr_schedule"];
+	$styr = $val2["csr_startyear"]; 
+	$termd = $ar2["ctr_src_termdt"]; 
+	$term = $ar2["ctr_src_term"]; 
+	$term_month = $ar2["term_month"]; 
+	$mmo = $val2["csr_term"]; 
+	
+	
+	
+	echo "<tr>";
+	echo '<td><a href="'.$this->basePath().'/contract/source='.$val2["src_id"].'" target="_blank">'.$val2["src_name"].'</a>'; //update link
+	if($val2["src_type"]==1){
+		$wasdm=true;
+		echo '<br/> Code: <input type="text" name="dcd_'.$val2["csr_id"].'" maxlength=2 size=4 value="'.$val2["csr_dm_code"].'" style="width: 80px">';
+	}	
+	echo '</td>';
+	echo '<td>';
+	if($val2["src_type"]==1){
+		echo 'N <input type="text" class="currency" onchange=\'changepri("'.$val2["csr_id"].'")\' name="dmc_'.$val2["csr_id"].'" size=8 value="'.$val2["csr_dm_count"].'"> x<br/>';
+		echo '$<input type="text" class="currency" onchange=\'changepri("'.$val2["csr_id"].'")\' name="pie_'.$val2["csr_id"].'" size=3 value="'.$val2["csr_dm_piece"].'">';		
+		if(($val2["csr_dm_postage"]=='' || $val2["csr_dm_postage"]==null)&&($val2["csr_dm_piece"]=='' || $val2["csr_dm_piece"]==null))
+			$postage = '0.5';
+		else
+			$postage = $val2["csr_dm_postage"];
+		echo '+postage $<input type="text" class="currency" onchange=\'changepri("'.$val2["csr_id"].'")\' name="pst_'.$val2["csr_id"].'" size=3 value="'.$postage.'">&nbsp;per&nbsp;pc.<br/>';
+	} else { echo '&nbsp;'; }
+	echo '<input type="hidden" name="chg_'.$val2["csr_id"].'" value="0">';
+	echo '</td>';
+	echo '<td>';
+	if($val2["csr_status"]==5)
+		echo "On Hold";
+	elseif($val2["csr_appr_date"]==null || $val2["csr_appr_date"]=='')
+		echo "Draft";
+	else
+		echo $val2["csr_appr_date"];
+		
+	echo '</td>';
+		
+	echo '<td>';
+	
+	echo '$<input type="text" class="currency" name="pri_'.$val2["csr_id"].'" size=10 value="'.$val2["csr_price"].'"/>';
+	if($val2["src_type"]==1){ //direct mail
+		echo '<br/>+AMA List: $<input type="text" class="currency" name="ama_'.$val2["csr_id"].'" size=3 value="'.$val2["csr_dm_ama"].'"/>';
+	}
+	echo '</td>';
+	
+	for($i=1; $i<=$term; $i++)
+	{
+	$mml = $term_month+$i-1;
+	$mms = chr(64+ $mml); //get weird character system to match db
+	if ($mml > 12){
+		$mml2 = $mml - 12;
+		$styr0 = $styr+1;
+	}
+	else{
+	   $mml2 = $mml;
+	   $styr0 = $styr;
+	}
+	
+	
+	echo '<td>';
+	/*echo $styr."-".date('Y');
+	echo " ";
+	echo $mml."-".date('n');*/
+	if(($styr == date('Y') && $mml< date("n")) || ($styr < date('Y') && $term_month+i-13 < date("n")) || $val2["csr_status"]==5 || !$isdraft )
+	{
+		if(strrpos($shed,$mms)!==false || $val2["src_id"]==764)
+		{
+			echo "&radic;";
+		}
+		//echo "X";
+	}
+	else
+	{
+		$shits.=$mms;
+	//echo '<input type="text" name="csd_'.$val2["csr_id"].'_ mms" size="3"  onchange=\'changess("chg_'.$val2["csr_id"].'")\' title="Date">';
+	echo '<input type="checkbox" name="sh_'.$val2["csr_id"].'_'.$mms.'" onchange=\'changess("chg_'.$val2["csr_id"].'")\' value="'.$mms.'" ';
+	if(strrpos($shed,$mms)!==false) //is char in list of sheduled months
+		echo 'checked';
+	echo '/>';
+	}//end else
+	
+	echo '</td>';
+	
+	} //end for
+	echo '<td>';
+	echo '<input type="hidden" name="shi_'.$val2["csr_id"].'" value="'.$shits.'"  ><input type="hidden" name="sda_'.$val2["csr_id"].'" value="'.$val2["sdats"].'">';
+	if($isdraft && $val2["csr_id"]!=764){
+		echo '<label title="Cancel">C:<input type="checkbox" name="can_'.$val2["csr_id"].'" title="Cancel" value="1"></label>';
+	}
+	if($val2["csr_status"]==5){
+		echo '<label title="Activate">A:<input type="checkbox" name="act_'.$val2["csr_id"].'" title="Activate" value="1"></label>';
+	}
+	elseif(!$isdraft && $val2["csr_id"]!=764){
+			echo '<label title="Deactivate">D:<input type="checkbox" onchange=\'clr_'.$val2["csr_id"].'()\' onclick=\'clr_'.$val2["csr_id"].'()\' name="dea_'.$val2["csr_id"].'" title="Deactivate" value="1"></label>';
+			echo '<label title="Hold">H:<input type="checkbox" onchange=\'clr_'.$val2["csr_id"].'()\' onclick=\'clr_'.$val2["csr_id"].'()\' name="hld_'.$val2["csr_id"].'" title="Hold" value="1"></label>';
+	}
+	echo '</td>';
+	
+	
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>Ad Placed (MM/DD/YYYY):</td>";	
+	
+	echo "<td>";
+	echo '<input type="text" name="adpl_'.$val2["csr_id"].'" class="addate" title="MM/DD/YYYY" value="'.$val2["csr_date_placed"].'" size="12" />';
+	echo "</td>";
+	echo "<td>Notes:</td>";
+	echo '<td colspan="'.($term+2).'">';
+	echo '<input type="text" name="note_'.$val2["csr_id"].'" maxlength="100" value="'.$val2["csr_note"].'" size="40">';
+	echo "</td>";
+	
+	echo "</tr>";
+?>
+
+	<script language="JavaScript"><!--
+		    function clr_<?php echo $val2["csr_id"]; ?>() {
+			    swhy_<?php echo $val2["csr_id"]; ?>.style.display = "block";
+				return true;
+		    }
+		    //-->
+		    </script>
+<?php
+}
+
+?>
+</table>
+
+</td><td style="vertical-align: middle; text-align: right; padding-left: 40px;">
+
+<table border="1" cellpadding="1" cellspacing="0" class="nobg" style="float: right">
+<tr><td colspan="2">D.Mail Cost</td></tr>
+<tr><td>&lt; 1,000</td><td>$2.24</td></tr>
+<tr><td>1,000 - 2,499</td><td>$2.01</td></tr>
+<tr><td>2,500 - 2,999</td><td>$1.80</td></tr>
+<tr><td>3,000 - 3,999</td><td>$1.71</td></tr>
+<tr><td>4,000 - 4,999</td><td>$1.61</td></tr>
+<tr><td>&gt; 5,000</td><td>$1.50</td></tr>
+</table>
+
+
+</td></tr>
+</table>
+<p style="text-align: center; font-weight: bold">Please add 20% to quoted Journal Advertisements price</p>
+
+<input type="submit" name="submit_changes_btn" value="Save Changes" />
+<input type="reset" name="reset_btn" value="Reset" />
+</form>
+<br/>
+<hr/>
+<form method="post" name="src4_ext" action="">
+<input type="hidden" name="act" value="src4ext">
+<p>
+You can extend the whole campaign by a few months:
+<select name="ext_term" >
+<option value="1">1 Months</option>
+<option value="2">2 Months</option>
+<option value="3">3 Months</option>
+<option value="4">4 Months</option>
+<option value="5">5 Months</option>
+<option value="6">6 Months</option>
+<option value="7">7 Months</option>
+<option value="8">8 Months</option>
+<option value="9">9 Months</option>
+<option value="10">10 Months</option>
+<option value="11">11 Months</option>
+<option value="12">12 Months</option>
+</select> 
+<input type="submit" name="extend_submit" value="Extend Campaign" />
+</p>
+</form>
+<hr/>
+
+<form method="post" name="src3_end" action="">
+<input type="hidden" name="act" value="src3end">
+<p>
+You can discard the whole campaign draft and start over a new one here. If the campaign was already approved, please deactivate it first.
+All the quotes received should be entered again, if needed. Please print this page now for your reference.
+</p>
+<p>
+<input type="checkbox" name="discard_chk" value="1" /> Yes, I want to discard the current campaign draft now.
+<input type="submit" name="discard_submit" value="Delete Campaign" />
+</p>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    //echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

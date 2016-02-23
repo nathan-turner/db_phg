@@ -1,0 +1,166 @@
+<SCRIPT LANGUAGE="javascript">
+var inprogid=getqstringvalue("prog_id",window.location.search)
+var arrinprogid = new Array()
+arrinprogid = parseqstring(inprogid)
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+var arrids = new Array()
+arrids = parseqstring(specdisplay)
+var backurl=getqstringvalue("backurl",window.location.search)
+
+///////////////////////////////////////////////////////////////////////////
+document.write("<HTML><head>")
+document.write("        <STYLE>")
+document.write("          BODY {margin:0}")
+document.write("          .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("          .csstextright {font: 9pt Arial, Helvetica, sans-serif;text-align:right;}")
+document.write("          .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("          .csstextblue {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#000099;}")
+document.write("          .csstextgreen {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#008840;}")
+document.write("          .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("          .csstextredright {font: 9pt Arial, Helvetica, sans-serif;text-align:right;color:#dd0000;}")
+document.write("          .cssproghead {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#008840}")
+document.write("          .cssBHEAD {font:12pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+document.write("          .cssspechead {font: 11pt Arial, Helvetica, sans-serif;text-align:left;font-weight:700;color:#dd0000;}")
+document.write("        </STYLE>")
+document.write("</head><body onLoad=\"doOnLoad();\" bgcolor=\"#ffffff\" LINK=\"#008840\" VLINK=\"#008840\" ALINK=\"#008840\">")
+document.write("<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">")
+document.write(" <tr>")
+document.write("   <td width=\"23%\" height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" /></td>")
+document.write("   <td width=\"2%\"  height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" /></td>")
+document.write("   <td width=\"75%\" height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"10\" /></td>")
+document.write(" </tr>")
+
+
+
+///////////////////////////// DATA DUMP: //////////////////////////////////
+//    document.write(oProgXml.transformNode(oProgXsl.documentElement))   //
+///////////////////////////////////////////////////////////////////////////
+var elementname = "prog_id"
+var Nodes
+var body = ""
+
+/// MERGE XML DATA ///
+var oProgSetupXml=new ActiveXObject("Microsoft.XMLDOM")
+oProgSetupXml.async = false;
+
+var oProgSetupXsl = new ActiveXObject("Microsoft.XMLDOM");
+oProgSetupXsl.async = false;
+oProgSetupXsl.load("xsl/pgsetup.xsl");
+
+//alert(arrids.length)
+for(i=0;i<arrids.length;i++){
+  if(arrids[i]!="empty" && arrids[i]!=""){
+    oProgSetupXml.load("xmldata/" + arrids[i]+".xml")
+    if (oProgSetupXml.parseError==0){
+      body += oProgSetupXml.transformNode(oProgSetupXsl.documentElement)
+    }
+    else{
+      alert("in oProgSetupXml: " + oProgSetupXml.parseError.reason)
+    }
+  }
+}
+if(body!=""){
+  body = "<listings>" + body + "</listings>"
+
+  //////// NEXT, MAKE ONE XML FILE AND PARSE THE NODES ////////////////////////
+  oSaveXml=new ActiveXObject("Microsoft.XMLDOM")
+  oSaveXml.async = false;
+  oSaveXml.loadXML(body)
+
+  var oSaveXsl = new ActiveXObject("Microsoft.XMLDOM");
+  oSaveXsl.async = false;
+  oSaveXsl.load("xsl/save.xsl");
+
+  if (oSaveXml.parseError==0){
+///////////////////////////// DATA DUMP: //////////////////////////////////
+//    document.write(oSaveXml.transformNode(oSaveXsl.documentElement))
+///////////////////////////////////////////////////////////////////////////
+  Nodes = oSaveXml.documentElement.selectNodes("program/"+elementname)
+  selectListings(Nodes,elementname,inprogid)
+  }
+  else{
+    alert("oSaveXml: " + oSaveXml.parseError.reason)
+  }
+}
+else{
+  document.write("<tr><td height=\"20\"><img src=\"images/transpix.gif\" /></td></tr>")
+  document.write("<tr><td colspan=\"3\" class=\"csstextred\" valign=\"top\"><img src=\"images/transpix.gif\" height=\"1\" width=\"20\" /><b>No listings currently saved.</b></td></tr>")
+}
+
+document.write("</table>")
+document.write("</body>")
+document.write("</HTML>")
+
+
+///////////////////////////////////////////////////////////////////////////
+function doOnLoad(){
+//  alert("in save.htm: " + backurl)
+    top.btnbar.location.href = "btnbarsv.htm?backurl="+backurl
+    top.header.MM_nbGroup('down','navbar1','i_r2_c6','images/slices/i_r2_c6_f3.gif',1)
+}
+
+function selectListings(Nodes,elementname,arrinprogid){
+  for(i=0;i<Nodes.length;i++){
+//alert(Nodes.item(i).text)
+    if(verifyvalue(Nodes.item(i))) {
+      document.write(Nodes.item(i).parentNode.transformNode(oSaveXsl.documentElement));
+//      i = Nodes.length
+    }
+  }
+}
+
+function verifyvalue(Node){
+
+  var bMatch = false
+  for(y=0;y<arrinprogid.length;y++){
+    if(arrinprogid[y].indexOf(Node.text)>=0) {
+      bMatch = true
+      arrinprogid[y] = "empty"
+    }
+  }
+  return bMatch
+}
+
+///////////////////////////////////////////////////////////////////////////
+function parseqstring(inpara){
+  var arrids = new Array()
+  var startpos = 0
+  var intindex = 0
+  var indexpos = inpara.indexOf(",",startpos)
+  if(indexpos==-1){
+    arrids[0] = inpara
+  }
+  else{
+    while (indexpos!=-1){
+      arrids[intindex] = inpara.slice(startpos,indexpos)
+//      alert(arrids[intindex])
+      intindex++
+      startpos = indexpos + 1
+      indexpos = inpara.indexOf(",",startpos)
+    }
+  arrids[intindex] = inpara.slice(startpos,inpara.length)
+//  alert(arrids[intindex])
+  }
+  return arrids
+}
+
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      return inpara.substring(indexvalue,indexvalueend)
+  }
+  else{
+    return ""
+  }
+}
+///////////////////////////////////////////////////////////////////////////
+
+</SCRIPT>
+
+

@@ -1,0 +1,295 @@
+<SCRIPT LANGUAGE="javascript">
+var states=getqstringvalue("states",window.location.search)
+var arrstates = new Array()
+arrstates = parseqstring(states)
+
+var search=getqstringvalue("search",window.location.search)
+var srchinstitution=getqstringvalue("srchinstitution",window.location.search)
+srchinstitution = URLdecode(srchinstitution,"%26","&")
+var military=getqstringvalue("military",window.location.search)
+var nodecount = 0
+
+///////////////////////////////////////////////////////////////////////////
+  document.write("<html><head>")
+  document.write("        <STYLE>")
+  document.write("          BODY {margin:0}")
+  document.write("          .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+  document.write("          .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+  document.write("          .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+  document.write("          .cssproghead {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#008840}")
+  document.write("          .cssBHEAD {font:12pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+  document.write("          .cssstatehead {font:12pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+  document.write("        </STYLE>")
+  document.write("</head><body onLoad=\"doOnLoad();\" bgcolor=\"#ffffff\" LINK=\"#008840\" VLINK=\"#008840\" ALINK=\"#008840\">")
+
+  document.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">")
+  document.write("  <tr>")
+  document.write("    <td width=\"8%\"  height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"5\"  alt=\"\" /></td>")
+  document.write("    <td width=\"92%\" height=\"1\"><img src=\"images/transpix.gif\" height=\"1\" width=\"5\"  alt=\"\" /></td>")
+  document.write("  </tr>")
+
+
+if(search!="on"){
+  ////////////////// DO MILITARY LAYOUT ///////////////
+  if(military!=""){
+    var oMilitaryXml=new ActiveXObject("Microsoft.XMLDOM")
+    oMilitaryXml.async = false;
+    oMilitaryXml.load("xmldata/milinst.xml")
+
+    var oMilitaryXsl = new ActiveXObject("Microsoft.XMLDOM");
+    oMilitaryXsl.async = false;
+    oMilitaryXsl.load("xsl/stsrch.xsl");
+
+    if (oMilitaryXml.parseError==0){
+      var elementname = "institution_name"
+      var Nodes = oMilitaryXml.documentElement.selectNodes("state/city/institution/" + elementname)
+      selectmilitaryListings(Nodes)
+    }
+    else{
+      alert("oMilitaryXml: " + oMilitaryXml.parseError.reason)
+    }
+  }
+  ////////////////// DO STATES LAYOUT ///////////////
+  else{
+    var oStatesXml=new ActiveXObject("Microsoft.XMLDOM")
+    oStatesXml.async = false;
+    oStatesXml.load("xmldata/choosest.xml")
+
+    var oExpXsl = new ActiveXObject("Microsoft.XMLDOM");
+    oExpXsl.async = false;
+    oExpXsl.load("xsl/stexp.xsl");
+
+    var oCntXsl = new ActiveXObject("Microsoft.XMLDOM");
+    oCntXsl.async = false;
+    oCntXsl.load("xsl/stcnt.xsl");
+    if (oStatesXml.parseError==0){
+      var elementname = "state_abbrev"
+      var Nodes = oStatesXml.documentElement.selectNodes("state/" + elementname)
+      selectListings(Nodes,elementname,arrstates[0])
+    }
+    else{
+      alert("oStatesXml: " + oStatesXml.parseError.reason)
+    }
+  }
+}
+////////////////// DO SEARCH LAYOUT ///////////////
+else{
+  var oSrchXml=new ActiveXObject("Microsoft.XMLDOM")
+  oSrchXml.async = false;
+  oSrchXml.load("xmldata/choosest.xml")
+
+  var oSrchXsl = new ActiveXObject("Microsoft.XMLDOM");
+  oSrchXsl.async = false;
+  oSrchXsl.load("xsl/stsrch.xsl");
+
+  if (oSrchXml.parseError==0){
+  ///////////////////////////// DATA DUMP: //////////////////////////////////
+  //    document.write(oSrchXml.transformNode(oSrchXsl.documentElement))
+  ///////////////////////////////////////////////////////////////////////////
+    var elementname = "institution_name"
+    var Nodes = oSrchXml.documentElement.selectNodes("state/city/institution/" + elementname)
+    selectListingsfromsearch(Nodes)
+  }
+  else{
+    alert("oSrchXml: " + oSrchXml.parseError.reason)
+  }
+}
+
+
+document.write("  </table>")
+document.write("</body>")
+document.write("</html>")
+///////////////////////////////////////////////////////////////////////////
+
+
+
+function doOnLoad(){
+  srchinstitution = URLdecode(srchinstitution," ","%20")
+  srchinstitution = URLdecode(srchinstitution,"&","%26")
+  top.btnbar.location.href = "btnbarst.htm?selectscreen=choosest&states="+states+"&srchinstitution="+srchinstitution+"&nodecount="+nodecount
+  //CHECK BOXES FOR PREVIOUSLY SELECTED STATES
+  for(i=0;i<top.data.document.forms.length;i++){
+    //alert("states: " + states + "\n" + document.forms[i].name + "\n" + states.indexOf(document.forms[i].name));
+    if(states.indexOf(document.forms[i].name) >= 0){
+      //alert(document.forms[i].name);
+      document.forms[i].selectstatecheckbox.checked = true;
+    }
+  }
+
+}
+
+function stexp(state){
+  var qstring = createqstringfromarray(state,"add")
+  top.data.location.href = "choosest.htm?states="+qstring+"#"+state
+}
+
+function stcnt(state){
+  var qstring = createqstringfromarray(state,"remove")
+  top.data.location.href = "choosest.htm?states="+qstring+"#"+state
+}
+
+function createqstringfromarray(state,method){
+  var bMatch = false
+  var qstring = ""
+  if(method=="add"){
+    for(i=0;i<arrstates.length;i++){
+      if(arrstates[i]==state){
+        bMatch = true
+      }
+    }
+    if(!bMatch){
+      arrstates[arrstates.length] = state
+    }
+  }
+  else{
+    for(i=0;i<arrstates.length;i++){
+      if(arrstates[i]==state){
+        arrstates[i] = ""
+      }
+    }
+  }
+
+  for(i=0;i<arrstates.length;i++){
+    if(qstring!=""){ qstring+="," }
+    qstring += arrstates[i]
+  }
+//  alert(qstring)
+  return qstring
+}
+
+///////////////////////////////////////////////////////////////////////////
+function selectListings(Nodes,elementname,arrstates){
+  for(i=0;i<Nodes.length;i++){
+//alert(Nodes.item(i).text)
+//    if(verifystate(Nodes.item(i))) {
+//      document.write(Nodes.item(i).parentNode.transformNode(oExpXsl.documentElement));
+//    }
+//    else{
+      document.write(Nodes.item(i).parentNode.transformNode(oCntXsl.documentElement));
+//    }
+  }
+}
+
+function verifystate(Node){
+  var bMatch = false
+  for(y=0;y<arrstates.length;y++){
+    if(arrstates[y].indexOf(Node.text)>=0) {
+      bMatch = true
+    }
+  }
+  return bMatch
+}
+
+////////
+
+function selectListingsfromsearch(Nodes){
+  var bMatch = false
+  for(i=0;i<Nodes.length;i++){
+    if(verifyvaluefromsearch(Nodes.item(i))) {
+//alert(Nodes.item(i).text)
+      document.write(Nodes.item(i).parentNode.transformNode(oSrchXsl.documentElement));
+      bMatch = true
+      nodecount++
+    }
+  }
+  if(!bMatch){
+    document.write("<tr><td height=\"20\"><img src=\"images/transpix.gif\" /></td></tr>")
+    document.write("<tr><td><img src=\"images/transpix.gif\" /></td>")
+    document.write("<td colspan=\"3\" class=\"csstextred\"><b>No Matches Found.</b></td></tr>")
+  }
+}
+
+function verifyvaluefromsearch(Node){
+  var bMatch = false
+//alert(srchinstitution + "\n" + Node.text + "\n" + Node.text.indexOf(srchinstitution))
+  var uppernode = Node.text.toUpperCase()
+  if(uppernode.indexOf(srchinstitution.toUpperCase())>=0) {
+    bMatch = true
+  }
+  return bMatch
+}
+
+
+
+
+function selectmilitaryListings(Nodes){
+  var bMatch = false
+  for(i=0;i<Nodes.length;i++){
+    document.write(Nodes.item(i).parentNode.transformNode(oMilitaryXsl.documentElement));
+    bMatch = true
+    nodecount++
+  }
+  if(!bMatch){
+    document.write("<tr><td height=\"20\"><img src=\"images/transpix.gif\" /></td></tr>")
+    document.write("<tr><td><img src=\"images/transpix.gif\" /></td>")
+    document.write("<td colspan=\"3\" class=\"csstextred\"><b>No Matches Found.</b></td></tr>")
+  }
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+function parseqstring(inpara){
+  var arrids = new Array()
+  var startpos = 0
+  var intindex = 0
+  var indexpos = inpara.indexOf(",",startpos)
+  if(indexpos==-1){
+    arrids[0] = inpara
+  }
+  else{
+    while (indexpos!=-1){
+      arrids[intindex] = inpara.slice(startpos,indexpos)
+//      alert(arrids[intindex])
+      intindex++
+      startpos = indexpos + 1
+      indexpos = inpara.indexOf(",",startpos)
+    }
+  arrids[intindex] = inpara.slice(startpos,inpara.length)
+//  alert(arrids[intindex])
+  }
+  return arrids
+}
+
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+
+</SCRIPT>
+
+

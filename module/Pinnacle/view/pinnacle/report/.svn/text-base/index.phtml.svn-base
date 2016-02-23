@@ -1,0 +1,11 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/index.phtml:
+
+$title = 'Reports';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

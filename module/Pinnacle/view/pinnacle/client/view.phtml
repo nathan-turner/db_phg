@@ -1,0 +1,1430 @@
+<?php
+// module/Pinnacle/view/pinnacle/client/view.phtml:
+// Client Search
+
+$title = 'View Client '.$ar['cli_id'];
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.js', 'text/javascript');
+//$this->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js', 'text/javascript');
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.core.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.widget.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.tabs.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.position.min.js', 'text/javascript');
+
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.js?v=0.3.2', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.css?v=0.3.2', 'text/javascript');
+*/
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<style >
+.inline { display: block; float: left; font-weight: bold; width: 100px; }
+.inline2 { display: inline; float: left; width: 180px; }
+.clear { clear: both; }
+.errors { color: red; }
+#form_title { font-size: 16px; font-weight: bold; }
+#dialog-confirm { display: none; }
+#contact_info_form { display: none; }
+#commentsdiv, #meetingsdiv { clear: both; width: 100%; }
+#send-contract-form, #locums-pass-form, #schedule-activity-form, #merge-form  { display: none; }
+.hiddendiv { display: none; }
+.tab {  }
+.commentstbl { width: 90%; }
+.time { width: 60px; }
+.date { width: 100px; }
+</style >
+<script type="text/javascript">
+/*$(document).ready(function() {
+alert('test');
+$( "#schedule-activity-form" ).dialog({
+height: 620,
+width: 640,
+modal: true
+});
+	var $dialog = $('<div></div>')
+		.html('This dialog will show every time!')
+		.dialog({
+			autoOpen: false,
+			title: 'Basic Dialog'
+		});
+
+	$('#opener').click(function() {
+		$dialog.dialog('open');
+		// prevent the default action, e.g., following a link
+		return false;
+	});
+});*/
+
+$(document).ready(function() {
+//alert('test');
+
+
+ //$(function() { //alert('test');
+/*
+ $.getJSON('/ajax/get/6', function(data) {
+var items = [];
+//items = data["arr"];
+//alert(items["cli_id"]);
+//alert(data["arr"].cli_id);
+var obj = data["arr"];
+//alert(obj.ctct_name);
+
+for(var key in obj)
+{
+   items[keys.length] = key;
+}
+$('<ul/>', {
+'class': 'my-new-list',
+html: items.join('')
+}).appendTo('body');
+});*/
+ 
+ function loadContactPreview(id)
+ {
+	$.getJSON('<?php echo $this->basePath(); ?>/ajax/get/'+id+'', function(data) {
+	var items = [];
+	
+	$("#contactnamelbl").text(data["arr"].ctct_name); 
+	$("#contacttitlelbl").text(data["arr"].ctct_title);
+	$("#contactphonelbl").text(data["arr"].ctct_phone);
+	$("#contactphonelink").attr("href", "http://db.phg.com/pinncopy/call_test.asp?phone="+data["arr"].ctct_phone2);
+	
+	$("#contactextlbl").text(data["arr"].ctct_ext1);
+	//$("#contactfaxlbl").text(data["arr"].ctct_fax);
+	if(data["arr"].ctct_url!=null)
+		$("#contactsitelbl").html('<a href="'+data["arr"].ctct_url+'">'+data["arr"].ctct_url+'</a>');
+	else
+		$("#contactsitelbl").html('');
+	$("#contactcelllbl").text(data["arr"].ctct_cell);
+	$("#contactcelllink").attr("href", "http://db.phg.com/pinncopy/call_test.asp?phone="+data["arr"].ctct_cell2);
+	$("#contactemaillbl").html('');
+	if(data["arr"].ctct_email!=null)
+	$("#contactemaillbl").html('<a href="mailto:'+data["arr"].ctct_email+'">'+data["arr"].ctct_email+'</a>');
+	$("#contactnotelbl").text(data["arr"].ctct_reserved2);		
+	});
+	$("#contact_holder").css('visibility','visible');
+ }
+ 
+ function resetContactPanel()
+ {
+	$("#contact_name").val('');
+	$("#contact_title").val('');
+	$("#contact_phone").val('');
+	$("#contact_ext1").val('');
+	$("#contact_ext2").val('');
+	$("#contact_fax").val('');
+	$("#contact_cell").val('');
+	$("#contact_email").val('');
+	$("#contact_company").val('');
+	$("#contact_website").val('');
+	$("#contact_home_phone").val('');
+	$("#contact_home_fax").val('');
+	$("#contact_pager").val('');
+	$("#contact_address").val('');
+	$("#contact_address2").val('');
+	$("#contact_city").val('');
+	$("#contact_state").val(''); ///	
+	$("#contact_zip").val('');
+	$("#contact_note").val('');
+	$("#contact_status").val('');	
+	
+		$("#contact_marketing_primary").prop('checked', false);	
+		$("#contact_marketing_secondary").prop('checked', false);		
+		$("#contact_fuzion_primary").prop('checked', false);	
+		$("#contact_fuzion_secondary").prop('checked', false);	
+		$("#contact_locums_primary").prop('checked', false);	
+		$("#contact_locums_secondary").prop('checked', false);	
+ }
+ 
+ function loadContactPanel(id)
+ { 
+	resetContactPanel();
+	$("#form_title").text("Edit Contact");
+	$.getJSON('<?php echo $this->basePath(); ?>/ajax/get/'+id+'', function(data) {
+	var items = [];
+	
+	$("#contact_name").val(data["arr"].ctct_name); 
+	$("#contact_title").val(data["arr"].ctct_title);
+	$("#contact_phone").val(data["arr"].ctct_phone);
+	$("#contact_ext1").val(data["arr"].ctct_ext1);
+	$("#contact_ext2").val(data["arr"].ctct_ext2);
+	$("#contact_fax").val(data["arr"].ctct_fax);
+	$("#contact_cell").val(data["arr"].ctct_cell);
+	$("#contact_email").val(data["arr"].ctct_email);
+	$("#contact_company").val(data["arr"].ctct_company);
+	$("#contact_website").val(data["arr"].ctct_url);
+	$("#contact_home_phone").val(data["arr"].ctct_hphone);
+	$("#contact_home_fax").val(data["arr"].ctct_hfax);
+	$("#contact_pager").val(data["arr"].ctct_pager);
+	$("#contact_address").val(data["arr"].ctct_addr_1);
+	$("#contact_address2").val(data["arr"].ctct_addr_2);
+	$("#contact_city").val(data["arr"].ctct_addr_c);
+	$("#contact_state").val(data["arr"].ctct_st_code); ///
+	//$("select#contact_state option").each(function() { this.selected = (this.value == data["arr"].ctct_st_code); });
+	$("#contact_zip").val(data["arr"].ctct_addr_z);
+	$("#contact_note").val(data["arr"].ctct_reserved2);
+	$("#contact_status").val(data["arr"].ctct_status);
+	if(data["arr"].ctct_marketing==1)
+		$("#contact_marketing_primary").prop('checked', true);
+	if(data["arr"].ctct_secondary==1)
+		$("#contact_marketing_secondary").prop('checked', true);
+	if(data["arr"].ctct_fuzion1==1)
+		$("#contact_fuzion_primary").prop('checked', true);
+	if(data["arr"].ctct_fuzion2==1)
+		$("#contact_fuzion_secondary").prop('checked', true);
+	if(data["arr"].ctct_locum1==1)
+		$("#contact_locums_primary").prop('checked', true);
+	if(data["arr"].ctct_locum2==1)
+		$("#contact_locums_secondary").prop('checked', true);	
+	
+	$("#contact_recruiting_primary").val(data["arr"].ctct_recruiting);
+	// not really used?
+	$("#contact_phg_unsub").val(data["arr"].ctct_email);
+	$("#contact_plt_unsub").val(data["arr"].ctct_email);
+	$("#contact_fuzion_unsub").val(data["arr"].ctct_email);
+	
+	
+	});
+	//$("#contact_update_btn").css('visibility','visible');
+	$("#contact_update_btn").css('display','inline');
+	$("#contact_submit_btn").css('display','none');
+	
+	//$("#contact_holder").css('visibility','visible');
+ }
+ 
+ function checkEmpty(id, label)
+ {
+	if($(id).val().trim()==''){		
+		$(id+"_err").text(label + " must not be empty");
+		return false;
+	}
+	return true;
+ }
+ 
+ function checkEmail( id, label ) {
+ regexp = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i;
+if ( !( regexp.test( $(id).val() ) ) ) {
+$(id+"_err").text(label + " must be valid");
+
+return false;
+} else {
+return true;
+}
+}
+
+function clearContactErrors()
+{
+	$(".errors").text("");
+}
+
+ function addContact() //add contact
+ {
+ //alert(JSON.stringify({ "backref": "test" }));
+ clearContactErrors();
+	
+	var contact_recruiting_primary;
+	var contact_marketing_primary;
+	var contact_marketing_secondary;
+	var contact_fuzion_primary;
+	var contact_fuzion_secondary;
+	var contact_locums_primary;
+	var contact_locums_secondary;
+	
+	contact_recruiting_primary = $("#contact_recruiting_primary").prop('checked')? 1 : 0;	
+	contact_marketing_primary = $("#contact_marketing_primary").prop('checked')? 1 : 0;
+	contact_marketing_secondary = $("#contact_marketing_secondary").prop('checked')? 1 : 0;
+	contact_fuzion_primary = $("#contact_fuzion_primary").prop('checked')? 1 : 0;
+	contact_fuzion_secondary = $("#contact_fuzion_secondary").prop('checked')? 1 : 0;
+	contact_locums_primary = $("#contact_locums_primary").prop('checked')? 1 : 0;
+	contact_locums_secondary = $("#contact_locums_secondary").prop('checked')? 1 : 0;
+	
+	var bValid = true;
+	
+	bValid = checkEmpty("#contact_name", "Name");
+	bValid = checkEmpty("#contact_title", "Title");	
+	//bValid = checkEmpty("#contact_company", "Company"); //disabled company validation for now per Jenn
+	
+	//bValid = checkEmail("#contact_email", "Email"); //disabled email validation for now per Jenn
+	
+	if(bValid){
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/addContact",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { backref: $("#ctct_backref").val(), contact_name: $("#contact_name").val(), 
+	contact_title: $("#contact_title").val(),
+	contact_company: $("#contact_company").val(),
+	contact_phone: $("#contact_phone").val(),	
+	contact_ext1: $("#contact_ext1").val(),
+	contact_fax: $("#contact_fax").val(),
+	contact_ext2: $("#contact_ext2").val(),	
+	contact_cell: $("#contact_cell").val(),
+	contact_ext3: $("#contact_ext3").val(),
+	contact_email: $("#contact_email").val(),
+	contact_address: $("#contact_address").val(),
+	contact_address2: $("#contact_address2").val(),
+	contact_city: $("#contact_city").val(),
+	contact_state: $("#contact_state").val(), ///
+	//$("select#contact_state option").each(function() { this.selected = (this.value == data["arr"].ctct_st_code); });
+	contact_zip: $("#contact_zip").val(),
+	contact_website: $("#contact_website").val(),
+	contact_note: $("#contact_note").val(),
+	contact_home_phone: $("#contact_home_phone").val(),
+	contact_home_fax: $("#contact_home_fax").val(),
+	contact_pager: $("#contact_pager").val(),
+	contact_type: '5', //hard-coded	
+	contact_status: $("#contact_status").val(),
+	contact_user_mod: $("#contact_user_mod").val(),
+	contact_recruiting_primary: contact_recruiting_primary,
+	contact_marketing_primary: contact_marketing_primary,
+	contact_marketing_secondary: contact_marketing_secondary,
+	contact_fuzion_primary: contact_fuzion_primary,
+	contact_fuzion_secondary: contact_fuzion_secondary,
+	contact_locums_primary: contact_locums_primary,
+	contact_locums_secondary: contact_locums_secondary
+	},
+	//data: "backref=test",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); resetContactPanel();$( "#contact_info_form" ).dialog("close"); window.location.href="<?php echo $this->basePath(); ?>/client/view/"+$( "#client_id").val(); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+	}
+	
+			
+ }
+ 
+ function updateContact() //update contact
+ {
+ //alert(JSON.stringify({ "backref": "test" }));
+ clearContactErrors();
+	
+	var contact_recruiting_primary;
+	var contact_marketing_primary;
+	var contact_marketing_secondary;
+	var contact_fuzion_primary;
+	var contact_fuzion_secondary;
+	var contact_locums_primary;
+	var contact_locums_secondary;
+	var contact_id = $("#contactlist").val();
+	if($("#contactlist").val()=='' || $("#contactlist").val()<=0){
+		alert('No Contact ID found');
+		return false;
+	}	
+	
+	contact_recruiting_primary = $("#contact_recruiting_primary").prop('checked')? 1 : 0;	
+	contact_marketing_primary = $("#contact_marketing_primary").prop('checked')? 1 : 0;
+	contact_marketing_secondary = $("#contact_marketing_secondary").prop('checked')? 1 : 0;
+	contact_fuzion_primary = $("#contact_fuzion_primary").prop('checked')? 1 : 0;
+	contact_fuzion_secondary = $("#contact_fuzion_secondary").prop('checked')? 1 : 0;
+	contact_locums_primary = $("#contact_locums_primary").prop('checked')? 1 : 0;
+	contact_locums_secondary = $("#contact_locums_secondary").prop('checked')? 1 : 0;
+		
+	var bValid = true;
+	
+	bValid = checkEmpty("#contact_name", "Name");
+	bValid = checkEmpty("#contact_title", "Title");	
+	//bValid = checkEmpty("#contact_company", "Company"); //removed for now
+	
+	//bValid = checkEmail("#contact_email", "Email"); //removed for now
+	
+	if(bValid){
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/updateContact",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { backref: $("#ctct_backref").val(), 
+	contact_id: $("#contactlist").val(),
+	contact_name: $("#contact_name").val(), 
+	contact_title: $("#contact_title").val(),
+	contact_company: $("#contact_company").val(),
+	contact_phone: $("#contact_phone").val(),	
+	contact_ext1: $("#contact_ext1").val(),
+	contact_fax: $("#contact_fax").val(),
+	contact_ext2: $("#contact_ext2").val(),	
+	contact_cell: $("#contact_cell").val(),
+	contact_ext3: $("#contact_ext3").val(),
+	contact_email: $("#contact_email").val(),
+	contact_address: $("#contact_address").val(),
+	contact_address2: $("#contact_address2").val(),
+	contact_city: $("#contact_city").val(),
+	contact_state: $("#contact_state").val(), ///
+	//$("select#contact_state option").each(function() { this.selected = (this.value == data["arr"].ctct_st_code); });
+	contact_zip: $("#contact_zip").val(),
+	contact_website: $("#contact_website").val(),
+	contact_note: $("#contact_note").val(),
+	contact_home_phone: $("#contact_home_phone").val(),
+	contact_home_fax: $("#contact_home_fax").val(),
+	contact_pager: $("#contact_pager").val(),
+	contact_type: '5', //hard-coded	
+	contact_status: $("#contact_status").val(),
+	contact_user_mod: $("#contact_user_mod").val(),
+	contact_recruiting_primary: contact_recruiting_primary,
+	contact_marketing_primary: contact_marketing_primary,
+	contact_marketing_secondary: contact_marketing_secondary,
+	contact_fuzion_primary: contact_fuzion_primary,
+	contact_fuzion_secondary: contact_fuzion_secondary,
+	contact_locums_primary: contact_locums_primary,
+	contact_locums_secondary: contact_locums_secondary
+	},
+	//data: "backref=test",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); resetContactPanel();$( "#contact_info_form" ).dialog("close"); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+	}
+				
+ }
+  
+ //delete contact 
+$("#contactdeletebtn").click(function() {
+	 $( "#dialog-confirm" ).dialog({
+	resizable: false,
+	height:140,
+	modal: true,
+	buttons: {
+	"Delete": function() {		
+		$.ajax({    
+		type: "GET",
+		url: "<?php echo $this->basePath(); ?>/ajax/deleteContact",    
+		data: { contact_id: $("#contactlist").val()	},	
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(data){ alert(data.message); $("#contactlist option[value='"+$("#contactlist").val()+"']").remove(); loadContactPreview($("#contactlist").val()) },
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+		});
+		$( this ).dialog( "close" );
+	},
+	Cancel: function() {
+		$( this ).dialog( "close" );
+	}
+	}
+	});
+});
+
+function addComment() //add comment
+ {	//alert('<?php echo $_COOKIE["phguid"];?>');
+	var id;
+	var comments;
+	id=$("#client_id").val();
+	comments = $("#commenttxt").val();
+	if(comments!=''){
+	var obj = {};
+	obj.id = id;
+	obj.comments = comments;	
+	//alert(JSON.stringify(obj));
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/addComment",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),	
+	data: { id: id, comments: comments },
+	//data: JSON.stringify(obj),		
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); $("#commenttxt").val(); window.location.href="<?php echo $this->basePath(); ?>/client/view/"+$( "#client_id").val(); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+	}	
+ }
+ 
+ function updateRating() //rating
+ {	//alert('<?php echo $_COOKIE["phguid"];?>');
+	var id;
+	var rating;
+	id=$("#client_id").val();
+	rating = $("#rating").val();
+		//alert('test');
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/updateRating",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { id: id, rating: rating },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); /* window.location.href="/client/view/"+$( "#client_id").val();*/ },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});			
+ }
+ 
+ function cancelMeeting(id) //add comment
+ {	//alert('<?php echo $_COOKIE["phguid"];?>');
+	//var id;
+	
+	id=$("#client_id").val();	
+		
+ }
+ 
+ function scheduleActivity()
+ {
+	var id=$("#client_id").val();
+	var timeampm = $("#timeampm:checked").val();
+	var timehour = $("#timehour").val();
+	var timemin = $("#timemin").val();
+	var actdate = $( "#actdate" ).val();
+	var a_activity = $( "#a_activity" ).val();
+	var a_user = $( "#a_user" ).val();
+	var cli_ctct_id = $( "#cli_ctct_id" ).val();
+	var act_notes = $( "#act_notes" ).val();
+	
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/scheduleActivity",	    
+	data: { id: id, timehour:timehour, timemin:timemin, timeampm:timeampm, actdate:actdate, a_activity:a_activity, a_user:a_user, cli_ctct_id:cli_ctct_id, act_notes:act_notes },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){ alert(data.message); window.location.href="<?php echo $this->basePath(); ?>/client/view/"+$( "#client_id").val(); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+	
+ }
+ 
+ 
+ function loadLocumsPanel() //******LOCUMS PANELLL********************#########################
+ { 
+	//resetLocums();
+	var id=$("#client_id").val();	
+	var status;
+	//alert(id);
+	$.getJSON('<?php echo $this->basePath(); ?>/ajax/getLocums/'+id+'', function(data) {	
+	var items = [];
+	$("#loc_empname").val(data["arr"].user_name);
+	//$("#loc_emptime").val('');
+	$("#loc_cliname").val(data["arr"].ctct_name);
+	$("#loc_cliaddr1").val(data["arr"].ctct_addr_1);
+	$("#loc_cliaddr2").val(data["arr"].ctct_addr_2);
+	$("#loc_cliaddr3").val(data["arr"].ctct_addr_c+", "+data["arr"].ctct_st_code+" "+data["arr"].ctct_addr_z);
+	$("#loc_location").val(data["arr"].ctct_addr_c+", "+data["arr"].ctct_st_code);
+	//$("#loc_contact").val('');
+	//$("#loc_title").val('');
+	$("#loc_phone").val(data["arr"].ctct_phone);
+	$("#loc_email").val(data["arr"].ctct_email);
+	//$("#loc_needs").val();
+	//$("#loc_coverage").val();
+	//$("#loc_reason").val();
+	//$("#loc_details").val();
+	status = data["arr"].cli_status;
+	if(data["arr"].cli_status==1){
+		$("#loc_current[value='Yes']").prop('checked', true);
+		$("#loc_through[value='Yes']").prop('checked', true);
+	}
+	
+	//$("#loc_current[value='Yes']").attr('checked', 'checked');
+	//alert($("#loc_current").val());	
+	});		
+ } //end loadLocumsPanel
+ 
+ 
+ function resetLocumsPanel() //******LOCUMS PANELLL********************#########################
+ {
+	$("#loc_empname").val('');
+	$("#loc_emptime").val('');
+	$("#loc_cliname").val('');
+	$("#loc_cliaddr1").val('');
+	$("#loc_cliaddr2").val('');
+	$("#loc_cliaddr3").val('');
+	$("#loc_location").val('');
+	$("#loc_contact").val('');
+	$("#loc_title").val('');
+	$("#loc_phone").val('');
+	$("#loc_email").val('');
+	$("#loc_needs").val('');
+	$("#loc_coverage").val('');
+	$("#loc_reason").val('');
+	$("#loc_details").val('');
+	
+	
+		$("#loc_current").prop('checked', false);	
+		$("#loc_through").prop('checked', false);		
+		$("#loc_urgency").prop('checked', false);	
+		$("#loc_other").prop('checked', false);	
+		
+ }
+ 
+ function submitLocums() //******LOCUMS PANELLL********************#########################
+ {
+	var id=$("#client_id").val();	
+	//alert($("#loc_cliname").val());
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/passToLocums",	    
+	data: { id: id, loc_cliname: $("#loc_cliname").val(), loc_cliaddr1: $("#loc_cliaddr1").val() , loc_cliaddr2: $("#loc_cliaddr2").val(), loc_cliaddr3: $("#loc_cliaddr3").val(),
+	loc_location: $("#loc_location").val(), loc_contact: $("#loc_contact").val(), loc_title: $("#loc_title").val(), loc_phone: $("#loc_phone").val(),
+	loc_email: $("#loc_email").val(), loc_needs: $("#loc_needs").val(), loc_coverage: $("#loc_coverage").val(), loc_reason: $("#loc_reason").val(),
+	loc_details: $("#loc_details").val(), loc_current: $("#loc_current").val(), loc_through: $("#loc_through").val(), loc_urgency: $("#loc_urgency").val(), loc_other: $("#loc_other").val()
+    },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){ /*alert(data.message);*/ resetLocumsPanel(); $( "#locums-pass-form" ).dialog("close");window.location.href="/public/client/view/"+$( "#client_id").val(); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+ }
+ 
+
+ 
+ 
+ //update contact btn
+ $("#contact_update_btn").click(function() {
+//alert($("#contactlist").val());
+updateContact();
+});
+ //edit contact btn
+ $("#contacteditbtn").click(function() {
+	loadContactPanel($("#contactlist").val());
+	openContactPanel();
+});
+//cancel btn
+$("#contact_cancel_btn").click(function() {resetContactPanel(); $( "#contact_info_form" ).dialog("close");});
+//add/submit button
+$("#contact_submit_btn").click(function() {
+	addContact();
+});
+//open add contact panel
+$("#contactaddbtn").click(function() {
+	$("#form_title").text("Add Contact");
+	openContactPanel();
+});
+//add comment
+$("#commentsubmit").click(function() {	
+	//addComment();
+});
+//update rating
+$("#ratingsubmit").click(function() {	
+	updateRating();
+});
+
+//update rating
+/*$("#meetingcancelbtn").click(function(this) {	
+alert(this.attr('meta'));
+	//cancelMeeting($("#meetingcancelbtn").prop('meta'));
+});*/
+$("#commentslink").click(function() {	
+	switchPanel($("#commentsdiv"));
+});
+$("#meetingslink").click(function() {	
+	switchPanel($("#meetingsdiv"));
+});
+$("#activitieslink").click(function() {	
+	switchPanel($("#activitiesdiv"));
+});
+//contracts links
+ $("#sendcontractlink").click(function() {	
+	openContractPanel();
+});
+//schedule activity
+$("#scheduleactivitieslink").click(function() {	
+	openActivityPanel();
+});
+//cancel btn
+$("#activity_cancel_btn").click(function() { $( "#schedule-activity-form" ).dialog("close"); });
+//activitysubmit
+//add/submit button
+$("#activity_submit_btn").click(function() {
+	scheduleActivity();
+	
+});
+
+//cancel btn
+$("#contract_cancel_btn").click(function() { $( "#send-contract-form" ).dialog("close");});
+//add/submit button
+$("#contract_submit_btn").click(function() {
+	sendContract();
+});
+
+function sendContract()
+{
+	//var path = "file://K:/New Database/Contract Forms/";
+	var path = '<?php echo $this->basePath(); ?>/word_doc22.php?filename=New Database\\Contract Forms\\';
+	
+	//var link = path+$("#ctrpopsel").val()+" MM.DOC";
+	var link = path+$("#ctrpopsel").val()+" MM.doc&ctct_name=<?php echo $ar["ctct_name"];?>"; //&ctr_no=";
+	//link="http://www.google.com";
+	//alert(link);
+	$("#linktxt").html('Copy into new tab/window: <a href="'+link+'" target="_blank">'+link+'</a>')
+	window.open(link);
+}
+
+ //open locums btn
+ $("#locumspasslink").click(function() {
+	loadLocumsPanel();
+	openLocumsPanel();
+});
+
+//cancel btn
+$("#locum_cancel_btn").click(function() { resetLocumsPanel(); $( "#locums-pass-form" ).dialog("close"); });
+//submit btn
+$("#locum_submit_btn").click(function() { submitLocums(); });
+
+$("#mergelink").click(function() {	
+	openMergePanel();
+});
+//cancel btn
+$("#merge_cancel_btn").click(function() { $( "#merge-form" ).dialog("close"); });
+/*
+function opendokument(dokument){ 
+var objAppl;
+
+try{ 
+    objAppl = GetObject("","Word.Application"); 
+    objAppl.Documents.open(dokument); 
+} 
+catch(exception){ 
+    objAppl = new ActiveXObject("Word.Application"); 
+    objAppl.Visible = true; 
+    objAppl.Documents.open(dokument); 
+}    
+objAppl = null;  
+} */
+
+function switchPanel(obj)
+{
+	//alert(obj);
+	$(".tab").addClass('hiddendiv');
+	obj.toggleClass('hiddendiv');
+}
+
+
+function openContactPanel(){
+$( "#contact_info_form" ).dialog({
+height: 920,
+width: 740,
+modal: true
+});
+}
+
+function openContractPanel(){
+$( "#send-contract-form" ).dialog({
+height: 170,
+width: 640,
+modal: true
+});
+}
+
+
+function openActivityPanel(){ //alert('test');
+
+$( "#schedule-activity-form" ).dialog({
+height: 620,
+width: 640,
+modal: true
+});
+//$( "#schedule-activity-form" ).dialog('open');
+}
+
+function openLocumsPanel(){
+$( "#locums-pass-form" ).dialog({
+height: 720,
+width: 640,
+modal: true
+});
+}
+
+function openMergePanel(){
+$( "#merge-form" ).dialog({
+height: 320,
+width: 640,
+modal: true
+});
+}
+
+//select a contact
+ $("#contactlist").change(function() {
+	loadContactPreview($("#contactlist").val());
+});
+
+
+function checkLength( o, n, min, max ) {
+if ( o.val().length > max || o.val().length < min ) {
+o.addClass( "ui-state-error" );
+updateTips( "Length of " + n + " must be between " +
+min + " and " + max + "." );
+return false;
+} else {
+return true;
+}
+}
+function checkRegexp( o, regexp, n ) {
+if ( !( regexp.test( o.val() ) ) ) {
+o.addClass( "ui-state-error" );
+updateTips( n );
+return false;
+} else {
+return true;
+}
+}
+
+ loadContactPreview($("#contactlist").val()); //run once on page load
+ 
+ $(function() {
+ $( "#datepicker" ).datepicker({altFormat: "yy-mm-dd",  altField: "#actdate"});
+
+});
+//$('#timepicker').timepicker();
+}); //end main function
+
+
+ function cancelMeeting(id) //add comment
+ {	//alert('<?php echo $_COOKIE["phguid"];?>');
+	var clientid;
+	var answer = confirm("Are you sure you want to cancel?");
+	if(answer)
+	{
+	clientid=$("#client_id").val();
+	
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/cancelMeeting",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { id: id, clientid: clientid },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); $("#commenttxt").val(); window.location.href="<?php echo $this->basePath(); ?>/client/view/"+$( "#client_id").val(); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+	}//end if	
+ }
+
+function checkMerge(form)
+{	
+	$("#merge_alerts").html('');
+	if(form.master_client_id.value==0 || form.master_client_id.value=='')
+	{		
+		//document.getElementById("merge_alerts").innerHTML = '';
+		$("#merge_alerts").html('<p class="alert-danger">You must enter a valid client ID</p>');
+		return false;
+	}
+	else { return confirm('Are you sure you want to move this into the other client record?'); }
+}
+</script>
+
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	$cli_rating=$ar['cli_rating'];
+	$id = $ar['cli_id'];
+	$facility = $ar['ctct_name'];
+	$cli_ctct_id = $ar['cli_ctct_id'];
+?>
+<a href="<?php echo $this->basePath(); ?>/client/edit/<?php echo $ar['cli_id']; ?>">Edit Client</a>&nbsp; <a style="float:right" href="<?php echo $this->basePath(); ?>/report/clientactivity/<?php echo $ar['cli_id']; ?>">Client Activity</a><br/><br/>
+<div class="row">
+	<div class="span4">
+	<input type="hidden" value="<?php echo $ar['cli_id']; ?>" id="client_id" name="client_id" />
+    <label class="inline">Client ID:</label><?php echo $ar['cli_id']; ?><div class="clear"></div>
+	<label class="inline">Facility:</label><?php echo $ar['ctct_name']; ?><div class="clear"></div>
+	<label class="inline">City, State:</label><?php echo $ar['ctct_addr_c'].", ".$ar['ctct_st_code']; ?><div class="clear"></div>
+	<label class="inline">Address:</label><?php echo $ar['ctct_addr_1']." ".$ar['ctct_addr_2']; ?><div class="clear"></div>
+	<label class="inline">Phone:</label><a href="http://db.phg.com/pinncopy/call_test.asp?phone=<?php echo $ar['ctct_phone']; ?>" target="_blank"><?php echo $ar['ctct_phone']; ?></a> Ext: <?php echo $ar['ctct_ext1']; ?><div class="clear"></div>
+	<label class="inline">Fax:</label><?php echo $ar['ctct_fax']; ?> Ext: <?php echo $ar['ctct_ext2']; ?><div class="clear"></div>
+	<label class="inline">Website:</label><a href="<?php echo $ar['ctct_url']; ?>" target="_blank"><?php echo $ar['ctct_url']; ?></a><div class="clear"></div>
+	<label class="inline">System:</label><?php echo $ar['cli_sys']; ?><div class="clear"></div>
+	<label class="inline">Type:</label><?php echo $ar['cli_grp']; ?><div class="clear"></div>
+	
+	<?php 	
+		
+		$srs = rtrim($_GET["srs"], ',');
+		if($srs!='')
+		{
+			$ids;
+			$i;
+			$j;
+			$idup;
+			$iddown;
+			
+			$ids = explode(",", $srs);
+			//echo count($ids);
+			//echo $srs;
+			//echo var_dump($ids);
+			$j=count($ids)+1;
+			for($i=0;$i<=count($ids);$i++)
+			{
+				if($ids[$i]==$ar["cli_id"])
+					$j=$i;	//echo $ids[$i];
+			}			
+			//echo $j;
+			//if($j==0 || $j=='')
+				//$j=1;
+			if($j>0)			
+				echo '<a href="'.$this->basePath().'/client/view/'.$ids[$j-1].'?srs='.$srs.'"><img src="/public/img/images/ARW01LT.png" style="border:0px" />&nbsp;Previous</a>&nbsp;&nbsp;';
+			//echo "HERE";
+			//echo count($ids)-1;
+			if($j<count($ids)-1)
+				echo '<a href="'.$this->basePath().'/client/view/'.$ids[$j+1].'?srs='.$srs.'">Next&nbsp;<img src="/public/img/images/ARW01RT.png" style="border:0px" /></a>'; //next
+		}
+		?>		
+    </div>
+	<div class="span3">
+    <label class="inline">Status:</label><?php echo $ar['cli_status']; ?><div class="clear"></div>
+	<label class="inline">Zip:</label><?php echo $ar['ctct_addr_z']; ?><div class="clear"></div>
+	<label class="inline">Beds/Docs:</label><?php echo $ar['cli_beds']; ?><div class="clear"></div>
+	<label class="inline">Population:</label><?php echo $ar['cli_population']; ?><div class="clear"></div>
+	<label class="inline">Group Specialties:</label><?php echo $ar['cli_specialty']; ?><div class="clear"></div>	
+	<label class="inline">Source:</label><?php echo $ar['cs_name']; ?><div class="clear"></div>	
+	<?php
+		$ltsep = "";
+		if( $ar['cli_fuzion']!="" &&  $ar['cli_fuzion']!=null &&  $ar['cli_fuzion']!=0)
+		{
+				if($ar['fu_status']==1)
+				{
+					$color="green";
+					$futxt="Active";
+				}
+				else{
+					$color="brown";
+					$futxt="Past";
+				}
+				echo '<span style="font-weight: bold; color: '.$color.'">'.$futxt.' Fuzion Client</span>';
+		}
+		if($ar['cli_locumactive']==1)
+			echo ",<span style='font-weight: bold; color: blue'>Locum Tenens</span>";
+	?>
+	<div class="clear"></div><br/>
+	
+	<a href="<?php echo $this->basePath(); ?>/client/edit/<?php echo $ar['cli_id']; ?>">Edit Client</a>
+			<div class="clear"><br/><br/><br/><br/><br/><br/></div>
+	</div>
+	
+	<div class="span5">
+	<select name="contactlist" id="contactlist">
+	<?php
+			foreach ($contacts as $row=>$arx)
+			{
+				echo "<option value='".$arx['ctct_id']."'>";				
+				echo $arx['ctct_name'];
+				if($arx['ctct_title']!='')
+					echo " - ".$arx['ctct_title'];
+				echo "</option>";
+			}
+		?>
+	</select>
+	<input type="button" name="addbtn" id="contactaddbtn" value="Add" />
+	<input type="button" name="editbtn" id="contacteditbtn" value="Edit" />
+	<input type="button" name="deletebtn" id="contactdeletebtn" value="Delete" />
+	<div id="contact_holder" style="visibility: hidden">
+		<strong>Name: </strong><span id="contactnamelbl" ></span><br/>
+		<strong>Title: </strong><span id="contacttitlelbl" ></span><br/>
+		<strong>Phone: </strong><a id="contactphonelink" href="http://db.phg.com/pinncopy/call_test.asp?phone=" target="_blank"><span id="contactphonelbl" ></span></a> <strong>Ext: </strong><span id="contactextlbl" ></span><br/>		
+		<strong>Cell: </strong><a id="contactcelllink" href="http://db.phg.com/pinncopy/call_test.asp?phone=" target="_blank"><span id="contactcelllbl" ></span></a><br/>
+		<strong>Email: </strong><span id="contactemaillbl" ></span><br/>
+		<strong>Note: </strong><span id="contactnotelbl" ></span><br/>
+		<strong>Website: </strong><span id="contactsitelbl" ></span><br/>
+		
+	</div>
+	
+	
+	<table border="1" width="100%" cellspacing="1" class="nobg onscr">
+<tr>
+<td>Pending: <input type="checkbox" id="ch_pending"  name="ch_pending" value="1" <?php if($hotlist["ch_pending"]==1){ echo "checked"; } ?> ></td>
+<td>Long-Term Pending: <input type="checkbox" id="ch_hotpro"  name="ch_hot_prospect" value="1" <?php if($hotlist["ch_hot_prospect"]==1){ echo "checked"; } ?>></td>
+<td>List&nbsp;1: <input type="checkbox" id="ch_lead_1"  name="ch_lead_1" value="1" <?php if($hotlist["ch_lead_1"]==1){ echo "checked"; } ?>></td>
+<td>List&nbsp;2: <input type="checkbox" id="ch_lead_2"  name="ch_lead_2" value="1" <?php if($hotlist["ch_lead_2"]==1){ echo "checked"; } ?>></td>
+</tr>
+<tr><td align="right">Pending Spec:</td><td colspan=""><input type="text" size="2"0 maxlength="30" id="ch_spec"  name="ch_spec" value="<?php echo $hotlist["ch_spec"] ?>" ></td>
+<td colspan="2">Primary Client Record: <input type="checkbox" id="primary_record"  name="primary_record" value="1" <?php if($ar["primary_record"]==1){ echo "checked"; } ?>></td>
+</tr>
+</table>
+<input type="submit" name="change_listsbtn" value="Update" />
+	
+	</div>
+	
+</div>
+<?php if($message!=''){ ?>
+<p style='text-align:center; color:red'><?php echo $message; ?></p>
+<?php } ?>
+
+
+<a href="#" id="commentslink">Comments</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" id="meetingslink">Meetings</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" id="activitieslink">List Activities</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="<?php echo $this->basePath(); ?>/client/addcontract/<?php echo $id; ?>" id="addcontract">Add a Contract</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" id="sendcontractlink">Send Contract</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" id="scheduleactivitieslink">Schedule Activity</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" id="locumspasslink">Pass to LOCUMS</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="<?php echo $this->basePath(); ?>/clientReport.php?id=<?php echo $id; ?>" target="_blank">Print Profile</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" id="mergelink">Merge Client</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<div style="clear: both; width: 100%" id="meetingsdiv" class="tab hiddendiv">
+<h4>Meetings</h4>
+<table>
+<tr>
+<th>Meeting Date</th>
+<th>Marketer</th>
+<th>Cancel</th>
+<th>Set by</th>
+<th>Set when</th>
+</tr>
+<?php
+			foreach ($meetings as $row22=>$ar22)
+			{		
+				if($ar22['cm_cancel'])
+					echo "<tr><td style='vertical-align:top;padding: 10px;'>".$ar22['cm_date']."</td><td style='vertical-align:top;padding: 10px;'>".$ar22['emp_uname']."</td><td style='vertical-align:top;padding: 10px;'><span style='color:red; font-weight:bold'>Cancelled</span></td><td style='vertical-align:top;padding: 10px;'> by ".$ar22['cm_user_mod']."</td><td style='vertical-align:top;padding: 10px;'>".$ar22['cm_date_mod']."</td></tr>";
+			
+				else
+					echo "<tr><td style='vertical-align:top;padding: 10px;'>".$ar22['cm_date']."</td><td style='vertical-align:top;padding: 10px;'>".$ar22['emp_uname']."</td><td style='vertical-align:top;padding: 10px;'><input type='button' id='meetingcancelbtn' name='meetingcancelbtn' value='Cancel' onclick='cancelMeeting(".$ar22['cm_id'].")'  /></td><td style='vertical-align:top;padding: 10px;'>".$ar22['cm_user_mod']."</td><td style='vertical-align:top;padding: 10px;'>".$ar22['cm_date_mod']."</td></tr>";
+			}
+?>
+</table>
+</div>
+
+<div style="clear: both; width: 100%" id="commentsdiv" class="tab">
+
+<div style="float: left; width: 70%">
+<form method="post">
+<input type="hidden" name="id" value="<?php echo $ar['cli_id']; ?>" />
+<input type="hidden" name="note_type" value="2">
+<input type="hidden" name="ref_id" value='<?php echo $ar['ph_id']; ?>' />
+<input type="hidden" name="reserv" value="0"/>
+<h4>Comments</h4>
+<label>Enter Comment:</label>
+<textarea name="commenttxt" id="commenttxt" style="width: 90%"></textarea>
+<input type="submit" name="commentsubmit" id="commentsubmit" value="Add Comment" />
+<hr/>
+<table class="commentstbl">
+<?php
+			foreach ($comments as $row2=>$ar2)
+			{	
+				
+				
+				
+				echo "<tr><td style='vertical-align:top;padding: 10px;'>".$ar2['note_user']."</td><td style='vertical-align:top; padding: 10px;max-width: 500px;'>".str_replace('ctrchange4.asp','/public/contract/ctrchange4', $ar2['note_text']  )."</td><td style='vertical-align:top;padding: 10px;'>".$ar2['note_dt']."</td></tr>";
+			}
+?>
+</table>
+</form>
+</div>
+<div style="float: left; width: 25%; margin-left: 20px;">
+Set Client Satisfaction Rating:  
+<select name="rating" id="rating" size="1">
+<option <?php if($cli_rating==0){ echo "selected";} ?> value="0">0. N/A</option>
+<option <?php if($cli_rating==1){ echo "selected";} ?> value="1">1. Poor</option>
+<option <?php if($cli_rating==2){ echo "selected";} ?> value="2">2. Below Average</option>
+<option <?php if($cli_rating==3){ echo "selected";} ?> value="3">3. Average</option>
+<option <?php if($cli_rating==4){ echo "selected";} ?> value="4">4. Good</option>
+<option <?php if($cli_rating==5){ echo "selected";} ?> value="5">5. Excellent</option>
+</select>
+<input type="button" name="ratingsubmit" id="ratingsubmit" value="Set Rating" />
+
+<h4>Contracts</h4>
+
+<?php
+	if( $ar['cli_fuzion']!="" &&  $ar['cli_fuzion']!=null &&  $ar['cli_fuzion']!=0)
+	{
+		if($ar['fu_status']==1)
+		{
+			$color="green";
+		}
+		else{
+			$color="brown";
+		}
+		switch($ar["fu_status"])
+		{
+			case 0:
+				$fusta="Inactive";
+				break;
+			case 1:
+				$fusta="Active";
+				break;
+			case 2:
+				$fusta="Expired";
+				break;
+			case 4:
+				$fusta="Canceled";
+				break;
+		}
+		if($ar['fu_client']==$ar['cli_id'])
+			$master=" Master";
+		echo '<p style="font-weight: bold; color: '.$color.'">Fuzion ('.$fusta.$master.') '.date('Y-m-d',strtotime($ar['fu_date'])).' - '.date('Y-m-d',strtotime($ar['fu_renewal'])).'</p>';
+		echo '<a href="'.$this->basePath().'/client/editfuzion/'.$ar['cli_fuzion'].'?cli_id='.$ar['cli_id'].'">Edit Fuzion Contract</a><br/>';
+	}
+	echo '<a href="'.$this->basePath().'/client/addfuzion?cli_id='.$ar['cli_id'].'">Add Fuzion Contract</a><br/>';
+?>
+
+<?php
+			foreach ($contracts as $row3=>$ar3)
+			{								
+				echo "<a href='".$this->basePath()."/contract/view/".$ar3['ctr_id']."'>".$ar3['ctr_no']."</a> (".$ar3['ctr_type'].") ".$ar3['ctr_spec']." ".$ar3['st_name']."<br/>";
+			}
+?>
+</div>
+
+
+</div>
+
+<div style="clear: both; width: 100%" id="activitiesdiv" class="tab hiddendiv">
+<h4>Activities</h4>
+<table>
+<tr>
+<th></th><th>Date</th><th>What/Notes</th><th>Set By</th><th>To Whom</th>
+</tr>
+<?php
+			foreach ($activities as $row4=>$ar4)
+			{								
+				echo "<tr><td style='vertical-align:top;padding: 10px;'>".$ar4['check']."</td><td style='vertical-align:top;padding: 10px;'>".$ar4['aact_trg_dt']."</td><td style='vertical-align:top;padding: 10px;'>".$ar4['act_name']." ".$ar4['ctct_name']." -".$ar4['aact_shortnote']."</td><td style='vertical-align:top;padding: 10px;'>".$ar4['emp_uname']."</td><td style='vertical-align:top;padding: 10px;'>".$ar4['Expr1']."</td></tr>";
+			}
+?>
+</table>
+</div>
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+<!-- POP UP CONTACT ADD/EDIT -->
+<div id="contact_info_form" style="font-size:12px">
+
+<span id="form_title">Edit Contact</span>
+	<form >
+	<input type="hidden" name="ctct_backref" id="ctct_backref" value="<?php echo $ar['cli_id']; ?>">
+		<table>
+			<tr>
+				<td><strong>Name: </td><td><input type="text" name="contact_name" id="contact_name" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_name_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Title: </td><td><input type="text" name="contact_title" id="contact_title" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_title_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Company: </td><td><input type="text" name="contact_company" id="contact_company" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_company_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Phone: </td><td><input type="text" name="contact_phone" id="contact_phone" /></td>
+				<td><strong>Ext: </td><td><input type="text" name="contact_ext1" id="contact_ext1" /></td>
+				
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_phone_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Fax: </td><td><input type="text" name="contact_fax" id="contact_fax" /></td>
+				<td><strong>Ext: </td><td><input type="text" name="contact_ext2" id="contact_ext2" /></td>				
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_fax_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Email: </td><td><input type="text" name="contact_email" id="contact_email" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_email_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>WWW: </td><td><input type="text" name="contact_website" id="contact_website" /></td>
+			</tr>			
+			<tr>
+				<td><strong>Cell: </td><td><input type="text" name="contact_cell" id="contact_cell" /></td>
+				<td><strong>Home Phone: </td><td><input type="text" name="contact_home_phone" id="contact_home_phone" /></td>				
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_cell_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Pager: </td><td><input type="text" name="contact_pager" id="contact_pager" /></td>
+				<td><strong>Home Fax: </td><td><input type="text" name="contact_home_fax" id="contact_home_fax" /></td>				
+			</tr>
+			
+			<tr>
+				<td><strong>Address: </td><td><input type="text" name="contact_address" id="contact_address" /></td>
+			</tr>
+			<tr>
+				<td><strong>Address2: </td><td><input type="text" name="contact_address2" id="contact_address2" /></td>
+			</tr>
+			<tr>
+				<td><strong>City: </td><td><input type="text" name="contact_city" id="contact_city" /></td>
+			</tr>
+			<tr>
+				<td><strong>State: </td><td><select name="contact_state" id="contact_state">
+				<?php
+				foreach ($states as $row=>$ar)
+				{					
+					echo "<option value='".$row."'>";				
+					echo $ar;
+					echo "</option>";
+				}
+				?>
+				</select>
+				</td>
+				<td><strong>Zip: </strong></td><td><input type="text" name="contact_zip" id="contact_zip" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_name_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Note: </strong></td><td colspan="2"><input type="text" name="contact_note" id="contact_note" size="60" /></td>
+			</tr>
+			<tr>
+				<td><strong>Marketing: </td><td><input type="checkbox" name="contact_marketing_primary" id="contact_marketing_primary" value="1" /> Primary <input type="checkbox" name="contact_marketing_secondary" id="contact_marketing_secondary" value="1" /> Secondary</td>
+				<td><strong>Recruiting: </td><td><input type="checkbox" name="contact_recruiting_primary" id="contact_recruiting_primary" value="1" /> Primary </td>
+			
+			</tr>
+			<tr>
+				<td><strong>Fuzion: </td><td><input type="checkbox" name="contact_fuzion_primary" id="contact_fuzion_primary" value="1" /> Primary <input type="checkbox" name="contact_fuzion_secondary" id="contact_fuzion_secondary" value="1" /> Secondary</td>
+				<!--<td><strong>Unsubscribe: </td><td><input type="checkbox" name="contact_phg_unsub" id="contact_phg_unsub" /> PHG <input type="checkbox" name="contact_plt_unsub" id="contact_plt_unsub" /> PLT <input type="checkbox" name="contact_fuzion_unsub" id="contact_fuzion_unsub" /> Fuzion</td>-->
+			
+			</tr>
+			<tr>
+				<td><strong>Locums: </td><td><input type="checkbox" name="contact_locums_primary" id="contact_locums_primary" value="1" /> Primary <input type="checkbox" name="contact_locums_secondary" id="contact_locums_secondary" value="1" /> Secondary</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			<tr>
+				<td><strong>Status: </td><td>				
+				<select name="contact_status" id="contact_status">
+				<?php
+				foreach ($contact_status as $row=>$ar)
+				{						
+					echo "<option value='".$ar['st_id']."'>";				
+					echo $ar['st_name'];
+					echo "</option>";					
+				}
+				?>
+				</select></td>
+			</tr>
+			<tr>
+				<td>
+				<input type="button" value="Submit" class="btn" id="contact_submit_btn" />
+				<input type="button" value="Save" class="btn" id="contact_update_btn" style="display: none" />
+				<input type="button" value="Cancel" class="btn" id="contact_cancel_btn"/>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			
+		</table>
+	</form>
+</div>
+<!-- END POP UP CONTACT ADD/EDIT -->
+
+<div id="dialog-confirm" title="DELETE CONTACT?"><p>Permanently delete the contact?</p></div>
+
+<div id="send-contract-form">
+
+<strong>Send Contract</strong>
+<select id="ctrpopsel" size=1>
+	<option value="Budget Agmnt">Budget</option>
+	<!--<option value="Quorum Budget">QHR Budget Search</option>
+	<option value="HMA Budget Agmnt">HMA Budget</option>
+	<option value="CHC Agmnt">Carolinas HC system</option>//-->
+	<option value="CHP Budget Agmnt">Catholic HP Budget</option>
+	<option value="single payment">Single Payment</option>
+	<option value="metro">Metro Agreement</option>
+	<option value="Multisearch Agmnt">Multi Search Agreement</option>
+	<option value="Locum Tenens">Locum Tenens</option>
+	<option value="partnership agreement">Partnership Agreement</option>
+	<!--<option value="QHR Multi Budget">QHR Multi Search</option>
+	<option value="Tenet Budget Agmnt">Tenet Budget</option>
+	<option value="SunLink Healthcare">SunLink Healthcare</option>
+	<option value="Morton Budget Agmnt">Morton Plant Budget</option>//-->
+	<option value="Executive Agmnt">Physician Executive</option>
+	<!--<option value="Quorum Budget 3650">Quorum with Addendum</option>-->
+	<option value="CHI Master Agmnt">CHI Master Agreement</option>
+	<!--<option value="CHI Affiliate Agmnt">CHI Affiliate Agreement</option>
+	<option value="Lifebridge Budget Agmnt">Lifebridge Budget</option>-->
+</select>
+
+<input type="button" value="Submit" class="btn" id="contract_submit_btn" />
+<input type="button" value="Cancel" class="btn" id="contract_cancel_btn"/>
+<div id="linktxt"></div>
+</div>
+
+<div id="schedule-activity-form">
+<strong>Schedule Activity for a Client</strong><br/>
+<?php echo $id; ?> <?php echo $facility; ?>
+<label>Activity:</label>
+				<select name="a_activity" id="a_activity">
+				<?php
+				foreach ($activitylist as $row=>$ar)
+				{						
+					echo "<option value='".$ar['act_code']."'>";				
+					echo $ar['act_name'];
+					echo "</option>";					
+				}
+				?>
+				</select><br/>
+<label>User:</label>
+				<select name="a_user" id="a_user">
+				<?php
+				foreach ($userslist as $row=>$ar)
+				{						
+					echo "<option value='".$ar['emp_id']."'";
+					if($_COOKIE["phguid"]==$ar['emp_id'])
+						echo " selected ";
+					echo ">";				
+					echo $ar['ctct_name'];
+					echo "</option>";					
+				}
+				?>
+				</select><br/>
+				
+				<label>Date:</label> <input type="text" id="datepicker" />
+				<input type="hidden" id="actdate" name="actdate" value="<?php echo date('Y-m-d'); ?>" />
+				<input type="hidden" id="cli_ctct_id" name="cli_ctct_id" value="<?php echo $cli_ctct_id; ?>" />
+				<!--
+				<label>Time:</label> <input type="text" id="timehour" name="timehour" value="00" style="width:20px" />:<input type="text" id="timemin" name="timemin" value="00" style="width:20px"/>
+				AM <input type="radio" name="timeampm" id="timeampm" value="AM" /> PM <input type="radio" name="timeampm" id="timeampm" value="PM" />
+				//-->
+				<label><strong>Time:</strong></label>
+	<select  name="timehour" id="timehour" class="time" >
+		<option value="00">0</option>		
+		<option value="01">1</option>
+		<option value="02">2</option>
+		<option value="03">3</option>
+		<option value="04">4</option>
+		<option value="05">5</option>
+		<option value="06">6</option>
+		<option value="07">7</option>
+		<option value="08">8</option>
+		<option value="09">9</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+		<option value="13">13</option>
+		<option value="14">14</option>
+		<option value="15">15</option>
+		<option value="16">16</option>
+		<option value="17">17</option>
+		<option value="18">18</option>
+		<option value="19">19</option>
+		<option value="20">20</option>
+		<option value="21">21</option>
+		<option value="22">22</option>
+		<option value="23">23</option>
+		<option value="24">24</option>
+		
+		
+		
+	</select>
+	:
+	<select  name="timemin" id="timemin"  class="time">
+		<option value="00">00</option>
+		<option value="05">05</option>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+		<option value="25">25</option>
+		<option value="30">30</option>
+		<option value="35">35</option>
+		<option value="40">40</option>
+		<option value="45">45</option>
+		<option value="50">50</option>
+		<option value="55">55</option>		
+		
+	</select> <br/>
+<label>Note:</label>
+<textarea name="act_notes" id="act_notes" rows="3" cols="45" ></textarea><br/>
+<input type="button" value="Submit" class="btn" id="activity_submit_btn" />
+<input type="button" value="Cancel" class="btn" id="activity_cancel_btn"/>	  
+</div>
+
+
+
+<div id="locums-pass-form">
+<strong>Client Pass to locums</strong><br/>
+<input type="hidden" name="empemail" value="<?php echo $_COOKIE["phguid"]; ?>">
+<input type="hidden" name="cliid" value="<?php echo $id; ?>">
+
+<label class="inline2">PHG contact name:</label> <input type="text" size="40" name="empname" id="loc_empname" value="<?php echo $_COOKIE["realname"]; ?>"><br/>
+<label class="inline2">Best time to call to discuss:</label> <input type="text" size="30" name="emptime" id="loc_emptime" value=""><br/><br/>
+<label class="inline2">Client Name:</label>
+<input type="text" size="60" name="cliname" id="loc_cliname" value='<?php echo $ar['ctct_name']; ?>'><br/>
+<label class="inline2">Address 1:</label><input type="text" size="60" name="cliaddr1" id="loc_cliaddr1" value='<?php echo $ar['ctct_addr_1']; ?>'><br/>
+<label class="inline2">Address 2:</label><input type="text" size="60" name="cliaddr2" id="loc_cliaddr2" value='<?php echo $ar['ctct_addr_2']; ?>'><br/>
+<label class="inline2">City, State, Zip:</label>
+<input type="text" size="60" name="cliaddr3" id="loc_cliaddr3" value=''><br/>
+<label class="inline2">Jobsite location:</label>
+<input type="text" size="60" name="location" id="loc_location" value=''><br/>
+
+<label class="inline2">Contact Name:</label><input type="text" size="40" name="contact" id="loc_contact" value=""><br/>
+<label class="inline2">Contact Title:</label><input type="text" size="40" name="title" id="loc_title" value=""><br/>
+<label class="inline2">Phone Number:</label><input type="text" size="20" name="phone" id="loc_phone" value=""><br/>
+<label class="inline2">Email Address</label><input type="text" size="60" name="email" id="loc_email" value=""><br/>
+<label class="inline2">Specialty Needs:</label><textarea name="needs" id="loc_needs" cols="60" rows="4"></textarea><br/>
+<label class="inline2">Requested dates of coverage:</label><input type="text" size="40" name="coverage" id="loc_coverage" value=""><br/><br/>
+<label class="inline2">Reason for coverage:</label><textarea name="reason" id="loc_reason" cols="60" rows="4"></textarea><br/>
+<label class="inline2">Practice details:</label><textarea name="details" id="loc_details" cols="60" rows="4"></textarea><br/>
+
+<br/>
+<label>Current PHG Client?</label>
+	<input type="radio" name="current" id="loc_current"  value="Yes">&nbsp;Yes&nbsp;
+	<input type="radio" name="current" id="loc_current"  value="No">&nbsp;No<br/><br/>
+<label>If yes, go through PHG contact first?</label>
+	<input type="radio" name="through" id="loc_through"  value="Yes">&nbsp;Yes&nbsp;
+	<input type="radio" name="through" id="loc_through"  value="No">&nbsp;No<br/><br/>
+<label>Urgency of Need:</label> 
+	 <input type="radio" name="urgency" id="loc_urgency" value="Not urgent">&nbsp;Not&nbsp;urgent
+     <input type="radio" name="urgency" id="loc_urgency" value="Urgent">&nbsp;Urgent
+	 <input type="radio" name="urgency" id="loc_urgency" value="Extremely Urgent">&nbsp;Extremely&nbsp;Urgent<br/><br/>
+<label>Other locum tenens groups used?</label>
+	<input type="radio" name="other" id="loc_other" value="Yes">&nbsp;Yes&nbsp;
+	<input type="radio" name="other" id="loc_other" value="No">&nbsp;No<br/>
+
+<p style="clear:both">&nbsp;</p>
+<input type="button" value="Submit" class="btn" id="locum_submit_btn" />
+<input type="button" value="Cancel" class="btn" id="locum_cancel_btn"/>
+<p style="clear:both">&nbsp;</p>
+</div>
+
+
+<div id="merge-form">
+<form method="post" id="merge_form" onsubmit="return checkMerge(this);">
+<strong>Merge Client Into</strong><br/>
+<p><em>This client's information will be merged <strong>into</strong> the main client you specify.</em></p>
+<input type="hidden" name="empemail" value="<?php echo $_COOKIE["phguid"]; ?>">
+<input type="hidden" name="cli_id" value="<?php echo $id; ?>">
+<label>Merge this client's info into the client ID below</label><br/>
+<label>Client ID:</label>
+<input type="text" name="master_client_id" id="master_client_id" /><br/>
+<div id="merge_alerts"  ></div>
+<input type="submit" value="Submit" class="btn" id="merge_submit_btn" name="merge_submit_btn" onclick="//return confirm('Are you sure you want to move this into the other client record?');" />
+<input type="button" value="Cancel" class="btn" id="merge_cancel_btn"/>
+</form>
+</div>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

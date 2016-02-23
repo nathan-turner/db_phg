@@ -1,0 +1,80 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/index.phtml:
+// Contract Search
+
+$title = 'Contracts Lookup';
+$this->headTitle($title);
+$this->inlineScript()->appendFile($this->basePath() . '/js/contracts.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('resort', array('action'=>'contracts')));
+    $form->get('submit')->setAttribute('type','button');
+    if( strpos($phguser->dept,'R') !== false )
+        $form->get('ctr_recruiter')->setValue($phguser->uid);
+        // $form->get('ctr_recruiter')->setValue(31);
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+?>
+<div class="row">
+    <div class="span4">
+        <?php echo $this->formRow($form->get('ctr_no')); ?>
+        <?php echo $this->formRow($form->get('ctr_cli')); ?>
+        <?php echo $this->formRow($form->get('ctr_city')); ?>
+        <?php echo $this->formRow($form->get('ctr_state')); ?>
+        <?php echo $this->formRow($form->get('ctr_status')); ?>
+    </div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('ctr_type')); ?>
+        <?php echo $this->formRow($form->get('ctr_nurse')); ?>
+        <?php echo $this->formRow($form->get('ctr_spec')); ?>
+        <?php echo $this->formRow($form->get('nu_type')); ?>
+        <?php echo $this->formRow($form->get('instant')); ?>
+</div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('ctr_recruiter')); ?>
+        <?php echo $this->formRow($form->get('date1')); ?>
+        <?php echo $this->formRow($form->get('date2')); ?>
+        <br><br>
+        <?php echo $this->formInput($form->get('submit')) ?>
+        &nbsp; <a href="<?php echo $this->url('contract') ?>" id="resetbutton" class="btn btn-danger btn-large">Reset</a>
+        <br><br>
+        <?php echo $this->formRow($form->get('pg_size')); ?> <span id="pagespan">25</span>
+    </div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+<div class="row">
+    <div class="span3" id="searchstatus"></div>
+    <div class="span8 phg-rite" id="ctr-pages">
+        Please enter search terms, then click Search
+    </div>
+</div>
+<hr>
+<table class="table report">
+    <thead><tr>
+        <th>N<sup>o</sup>#</th>
+        <th>Date</th>
+        <th>Spec</th>
+        <th>Facility</th>
+        <th>City</th><th>State</th>
+        <th>Status</th>
+        <th>Recruiter</th>
+    </tr></thead>
+    <tbody id="ctr-tbody">
+        <tr><td colspan="8"><i>Waiting for input...</i> </td></tr>
+    </tbody>
+</table>
+
+<?php
+$url = $this->url('resort', array('action'=>'contracts'));
+$redir = $this->url('login');
+$scrip = "ctrInit(\"#ctr-tbody\",\"#ctr-pages\", \"$url\", \"$redir\");\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-ctr'));

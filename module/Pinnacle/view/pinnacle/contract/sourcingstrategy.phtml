@@ -1,0 +1,572 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/sourcingstrategy.phtml:
+// Client Search
+
+$title = 'Sourcing Strategy for Contract '.$rs["ctr_no"];
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.core.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.widget.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.tabs.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.position.min.js', 'text/javascript');
+
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.js?v=0.3.2', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.css?v=0.3.2', 'text/javascript');
+*/
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+body{ font-family: arial }
+h1 { text-align: center; font-family: arial }
+.sources td { border: 1px solid black; background-color: white; padding: 5px; }
+table h3 { font-size: 14px; line-height: 16px; }
+</style>
+
+
+<h1>Sourcing Strategy Summary Page</h1>
+<hr/>
+ <p style="font-size: 18px; font-weight: bold; text-align: center; "><em>
+ <?php echo $rs["cli_name"]; ?><br/>
+ Sourcing Strategy for 
+ <?php 
+ if($rs["ctr_nurse"]=="1" && $rs["at_name"]!='')
+ $spec= $rs["at_name"]; 
+ else
+  $spec= $rs["sp_name"]; 
+ //echo var_dump($rs);
+ echo $spec;
+ ?><br/>
+ (Contract # <?php echo $rs["ctr_no"]; ?>)
+ </em></p>
+<?php
+$omon=0;
+$smon=0;
+$ii=0;
+$fisrdm = true;
+$totsum =0; 
+
+$trm = $rs["ctr_src_term"];
+
+$tmon = date('n', strtotime($rs["ctr_src_termdt"]));
+$tyer = date('Y', strtotime($rs["ctr_src_termdt"]));
+	//echo $trm; date('m/d/Y', strtotime($val2["csr_appr_date"]))
+ ?>
+<p><em>
+Pinnacle Health Group recognizes the uniqueness of each search.  We first determine the specific needs of your opportunity including the job parameters, work environment, group personality, locational attributes, etc.  After thoroughly investigating your situation, we have formulated a customized sourcing strategy designed to specifically meet your needs as follows:
+</em>
+</p>
+
+<table  class="sources">
+ <tr>
+  <th>  
+  
+  </th>
+  <th>
+  Direct Mail
+  and<br/>
+  E-mail
+  Campaigns
+  </th>
+  <th>
+  Internet / Job Boards
+  </th>
+  <th>
+  Other
+  </th>
+ </tr>
+
+
+<?php
+		$contn = $rs["ctct_name"];
+	    $contt = $rs["ctct_title"];
+	$omon =0;
+	$ii=0;
+	$firstc=true;
+	
+	
+	for($mon8=1; $mon8<=$trm; $mon8++)
+	{
+		$mml = $tmon+$mon8-1; //curent month
+		$mms = chr(64+$mml); //get weird character system to match db
+		$smon = 0;
+	
+	//echo var_dump($rs1);
+	//echo $mms."<br/>";
+	foreach ($rs1 as $key=>$val)
+	{
+		//echo $key."-".$val."<br/>";
+		//echo $val[];
+		if(strrpos($val["csr_schedule"],$mms)!==false || $val["src_id"]==764)
+		{
+			$osrct = $val["src_hack"];
+			if ($mml != $omon)// month table footer/header
+			{
+				if ($omon != 0){ // not the first month - put the footer
+					if( $ii < 3)
+						echo "</td>";
+					if( $ii < 5)
+						echo"<td width=204 valign=top style='width:153.0pt;border-top:none;border-left:  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;  padding:0in 5.4pt 0in 5.4pt'>&nbsp;</td>";
+					echo "</tr>";
+				}
+				
+				if($mml > 12){ $mn = $mml - 12; } else { $mn = $mml; }
+				$omon = $mml;
+				$ii=1; //' ii here is src_type tracker
+				//''firstc = True
+				if ($tyer < $val["sh_year"]) 
+					$mn = $mn+12;
+				//** MONTH HEADER **
+				
+				echo '<tr><td>Month '.$mon8.':</td><td>';
+				
+				
+			} //end if $mml != $omon
+			
+			if ($ii+1 < $osrct && $ii < 5) //new cell
+			{
+				if ($osrct < 5 )
+				{
+					echo '</td><td>';
+					$ii = 3;
+				}
+				else{
+					if ($ii == 1)
+						echo" </td><td >&nbsp;";
+					echo '</td><td>';
+					$ii = 5;
+				}
+			} //end new cell
+			echo '<p>'.$val["src_name"].'';
+			if($val["csr_price"]!=0)
+			{
+				if ($val["src_estprice"]) { echo "( est.&nbsp;"; } else { echo "($"; }
+				$dmprice= $val["csr_price"];
+				if($val["src_type"] == 1) {
+					if( $val["csr_dm_ama"]!=null) {//' change: dm_ama is null - old stuff, else new
+						$amalist = $val["csr_dm_ama"];
+						$dmprice = $dmprice + $amalist;
+					}
+				}
+				echo number_format($dmprice,2).")";
+				$smon = $smon + $dmprice;
+			}
+			else
+			{
+				if ($val["src_quota"]) { echo "( quote&nbsp;req.)"; } else { echo " (included)"; }
+				
+			}
+			echo '</p>';
+		}
+	}
+	$totsum = $totsum+$smon;
+	}//end for
+	if ($ii < 3) echo " </td>";
+	if ($ii < 5) echo "<td>&nbsp;</td>";
+?>
+ </tr>
+ </table>
+
+ <p>Estimated <?php echo $trm; ?>-Month Total: $<?php echo number_format($totsum,2); ?> Potential<br>
+<em>Note that month-to-month totals are more important, as estimated <?php echo $trm; ?>-month total is subject to change.</em></p> 
+<br/>
+<p>
+I
+agree with the generalized plan shown above and understand that I will <u>not</u>
+pay for each individual sourcing strategy until the date each individual
+sourcing strategy is implemented. I understand that sourcing can be canceled
+at any time and changes can be made throughout the search process. 
+I understand that ISC - Internet Sourcing Campaign
+will remain active for the life of the search and a fee will be incurred
+monthly.
+</p>
+
+<table width="754" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="348" height="68"><p class=nenormal1 style='margin-left:0in'><span style='font-size:10.0pt'>For: <?php echo $rs["cli_name"]; ?></span></p></td>
+    <td width="44">&nbsp;</td>
+    <td width="348"><p class=nenormal1 style='margin-left:0in'><span style='font-size:10.0pt'>For: Pinnacle</span></p></td>
+    </tr>
+  <tr valign="top">
+    <td height="56" style="border-top: thin solid black"><p class=nenormal1 style='margin-top:2.0pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt'><span style='font-size:10.0pt'><?php echo $contn.", ".$contt; ?></span></p></td>
+    <td>&nbsp;</td>
+    <td style="border-top: thin solid black"><p class=nenormal1 style='margin-top:2.0pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt'><span style='font-size:10.0pt'>
+<?php
+	$aemp_name=$rs["emp_name"];
+	if($aemp_name=="")
+		$aemp_name=$rs["ctct_name"];
+	//maybe something here to remove commas...
+	echo $aemp_name;
+?>
+</span></p></td>
+    </tr>
+  <tr valign="top">
+    <td height="27" style="border-top: thin solid black"><p class=nenormal1 style='margin-top:2.0pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt'>Print &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Name Date</p></td>
+    <td>&nbsp;</td>
+    <td style="border-top: thin solid black"><p class=nenormal1 style='margin-top:2.0pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt'>Print Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date</p></td>
+    </tr>
+</table>
+
+<br/>
+
+<h1>
+Direct Mail Sourcing Strategy
+</h1>
+<hr/>
+<p style="font-size: 18px; font-weight: bold; text-align: center; "><em>
+ <?php echo $rs["cli_name"]; ?><br/>
+ Sourcing Strategy for 
+ <?php 
+ if($rs["ctr_nurse"]=="1" && $rs["at_name"]!='')
+ $spec= $rs["at_name"]; 
+ else
+  $spec= $rs["sp_name"]; 
+ //echo var_dump($rs);
+ echo $spec;
+ ?><br/>
+ (Contract # <?php echo $rs["ctr_no"]; ?>)
+ </em></p>
+ <p>&nbsp;</p>
+ <?php
+ $rs2=$rs2[0]; //second result set is supposed to be just one result...I guess
+
+ $dmname = $rs2["src_name"];
+	    $dmcount= $rs2["csr_dm_count"];
+	    $dmpiece= $rs2["csr_dm_piece"];
+	    if ($rs2["csr_dm_postage"]==null || $rs2["csr_dm_postage"]=="") { $postage = 0; } else { $postage= $rs2["csr_dm_postage"]; }
+	    $dmprice= $rs2["csr_price"];
+		if ($rs2["csr_dm_ama"]==null || $rs2["csr_dm_ama"]=="") {
+			$amalist = $dmprice - $dmcount*$dmpiece - $dmcount*$postage;
+			$minprice = $dmprice - $amalist;
+		}
+		else{
+			$minprice = $dmprice - $dmcount*$postage;
+			$amalist = $rs2["csr_dm_ama"];
+			$dmprice = $dmprice + $amalist;
+		}
+ ?>
+ <p><i>Pinnacle
+Health Group recognizes the uniqueness of each search. We first
+determine the specific needs of your opportunity including the job parameters,
+work environment, group personality, locational attributes, etc. After
+thoroughly investigating your situation, we have formulated a customized
+sourcing strategy designed to specifically meet your needs as follows:</i>
+</p>
+<p>&nbsp;</p>
+<div align=center>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=668
+ style='width:501.2pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=668 valign=top style='width:501.2pt;border-top:solid black 1.5pt;
+  border-left:none;border-bottom:solid black 1.0pt;border-right:none;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <h2 style='margin-top:6.0pt;margin-right:0in;margin-bottom:6.0pt;margin-left:
+  0in;line-height:12.0pt'><span style='font-size:10.0pt'>Description:</span></h2>
+  </td>
+ </tr>
+ <tr>
+  <td width=668 valign=top style='width:501.2pt;border:none;border-bottom:solid black 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-top:3.0pt;margin-right:0in;margin-bottom:
+  3.0pt;margin-left:.3in;text-indent:-.25in'><i><span style='font-size:10.0pt'>1.<span
+  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></i><b><i><span
+  style='font-size:10.0pt'>Direct Mail</span></i></b><i><span style='font-size:
+  10.0pt'>: </span></i><span style='font-size:10.0pt'>This is the single most
+  effective sourcing tool available. Each direct mail campaign is well
+  targeted and customized to meet your particular parameters. We make a point
+  of focusing on candidates who are <i>not</i> actively looking for job
+  placement in order to find and secure only the very best and most qualified
+  and competent of candidates.</span></p>
+  <p class=MsoNormal style='margin-top:3.0pt;margin-right:0in;margin-bottom:
+  3.0pt;margin-left:0in'><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=668 valign=top style='width:501.2pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-top:3.0pt;margin-right:0in;margin-bottom:
+  3.0pt;margin-left:.3in;text-indent:-.25in'><i><span style='font-size:10.0pt'>2.<span
+  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></i><b><i><span
+  style='font-size:10.0pt'>Supplemental Sourcing</span></i></b><i><span
+  style='font-size:10.0pt'>: </span></i><span style='font-size:10.0pt'>Please
+  refer to supplemental sourcing pages for pricing and details.</span></p>
+  <p class=MsoNormal style='margin-top:3.0pt;margin-right:0in;margin-bottom:
+  3.0pt;margin-left:0in'><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<h4>DIRECT MAIL</h4>
+ 
+ <p>
+ <?php echo $dmname; ?> will be sent to <?php echo $dmcount; ?> selected
+ <?php if($rs["ctr_nurse"]==1 || $rs["ctr_nurse"]=="1"){ echo "candidates in the category ";} else{ echo "physicians, currently practicing ".$spec; } ?>
+ </p>
+
+ <h4>Cost of Mailing:</h4>
+
+ <table width="654" border="0" cellpadding="0" cellspacing="2">
+  <tr>
+    <td align="center"><span class="MsoBodyText" style='font-size:10.0pt'>Number of Direct Mail Pieces: <?php echo $dmcount; ?> x</span></td>
+    <td><span class="MsoBodyText" style='font-size:10.0pt'>Cost per piece: $<?php echo number_format($dmpiece,2); ?></span></td>
+    <td>=</td>
+    <td align="right"><span class="MsoBodyText" style='font-size:10.0pt'>$<?php echo number_format($minprice,2); ?></span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><span class="MsoBodyText" style='font-size:10.0pt'>Postage per piece: $<?php echo number_format($postage,2); ?></span></td>
+    <td>=</td>
+    <td align="right"><span class="MsoBodyText" style='font-size:10.0pt'>$<?php echo number_format($postage*$dmcount,2); ?></span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><span class="MsoBodyText" style='font-size:10.0pt'>Cost of RDM List</span></td>
+    <td>=</td>
+    <td align="right"><span class="MsoBodyText" style='font-size:10.0pt'>$<?php echo number_format($amalist,2); ?></span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><span class="MsoBodyText" style='font-size:10.0pt'>TOTAL COST</span></td>
+    <td>=</td>
+    <td align="right"><span class="MsoBodyText" style='font-size:10.0pt'>$<?php echo number_format($dmprice,2); ?></span></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p class=MsoBodyText align=center style='margin-right:12.6pt;text-align:center'>Recruiter:
+<?php echo $aemp_name; ?>- Pinnacle Health Group</p>
+
+<br clear=all style='page-break-before:always'>
+
+<h1>Supplemental Sourcing Strategy</h1>
+<hr/>
+<p style="font-size: 18px; font-weight: bold; text-align: center; text-transform:uppercase"><em>
+<?php echo $rs["cli_name"]; ?>
+<br/>
+for <?php echo $spec; ?> search
+<br/>
+(Contract #<?php echo $rs["ctr_no"]; ?>)
+</p>
+
+<?php
+	$omon =0;
+	$smon =0;
+	$ii=0;	
+	$firstdm=true;
+	$totsum = 0;
+	$trm = $rs["ctr_src_term"];
+	
+	for($mon8=1; $mon8<=$trm; $mon8++)
+	{
+		$mml = $tmon+$mon8-1; //curent month
+		$mms = chr(64+$mml); //get weird character system to match db
+		//$smon = 0;
+	
+	//echo var_dump($rs1);
+	//echo $mms."<br/>";
+	foreach ($rs1 as $key=>$val)
+	{
+		if(strrpos($val["csr_schedule"],$mms)!==false || $val["src_id"]==764)
+		{			
+			if ($mml != $omon)// month table footer/header
+			{
+				if ($omon != 0){
+?>
+ <tr>
+  <td width=668 valign=top style='width:501.2pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <h3>TOTAL FOR MONTH:</h3>
+  </td>
+  <td width=16 valign=top style='width:11.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>&nbsp;
+  
+  </td>
+  <td width=72 valign=top style='width:.75in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:10.0pt'>$<?php echo $smon; ?></span></p>
+  </td>
+ </tr>
+</table>
+<?php			
+				}//end $omon != 0
+				if ($mml > 12){ $mn = $mml - 12; } else { $mn = $mml; }
+				$omon = $mml;
+				$totsum = $totsum+$smon;
+				$smon = 0;
+				$ii = 1;
+?>
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=756
+ style='width:567.0pt;margin-left:3.6pt;border-collapse:collapse;border:none'>
+ <tr style='page-break-inside:avoid'>
+  <td width=756 colspan=3 valign=top style='width:567.0pt;border:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <h3 align=left style='text-align:left;color:navy'>MONTH <?php echo $mon8; ?> (<?php echo date('F', strtotime(date('Y')."-".$mn."-1")); ?>)</h3>
+  </td>
+ </tr>
+ <tr>
+  <td width=668 valign=top style='width:501.2pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <h2 style='margin-top:6.0pt;margin-right:0in;margin-bottom:6.0pt;margin-left:
+  0in;line-height:12.0pt;font-size:10.0pt'>Description:</h2>
+  </td>
+  <td width=16 valign=top style='width:11.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>&nbsp;
+  
+  </td>
+  <td width=72 valign=top style='width:.75in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <h2 align=center style='margin-top:6.0pt;margin-right:0in;margin-bottom:6.0pt;
+  margin-left:0in;text-align:center;line-height:12.0pt;font-size:
+  10.0pt'>PRICE</h2>
+  </td>
+ </tr>
+ <tr>
+  <td width=668 valign=top style='width:501.2pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-top:3.0pt;margin-right:0in;margin-bottom:
+  3.0pt;margin-left:.3in;text-indent:-.25in'><span style='font-size:10.0pt'>
+ <?php
+				
+			}
+			else { //omon
+?>
+<tr>
+  <td width=668 valign=top style='width:501.2pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-top:3.0pt;margin-right:0in;margin-bottom:
+  3.0pt;margin-left:.3in;text-indent:-.25in'><span style='font-size:10.0pt'>
+<?php
+			}//end else
+			
+			echo $ii;
+			$ii = $ii+1;
+?>
+.<span
+  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><b><i><span
+  style='font-size:10.0pt'><?php echo $val["src_name"];?>:</span></i></b><span
+  style='font-size:10.0pt'>
+  <?php
+		//' if the first DM, then:
+	    if ($firstdm && $val["src_type"]== 1){
+			$firstdm = false;
+			echo "Please see the Direct Mail Sourcing page.";
+		}
+	    else{
+			echo $val["src_mp_descr"];	
+	    }
+  ?>
+</span></p>
+  </td>
+  <td width=16 valign=top style='width:11.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>&nbsp;
+  
+  </td>
+  <td width=72 style='width:.75in;border-top:none;border-left:none;border-bottom:
+  solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center;font-size:10.0pt'>
+<?php
+			if($val["csr_price"]!=0)
+			{
+				if ($val["src_estprice"]) { echo "(est.&nbsp;"; } else { echo "("; }
+				$dmprice= $val["csr_price"];
+				if($val["src_type"] == 1) {
+					if( $val["csr_dm_ama"]!=null) {//' change: dm_ama is null - old stuff, else new
+						$amalist = $val["csr_dm_ama"];
+						$dmprice = $dmprice + $amalist;
+					}
+				}
+				echo "$".number_format($dmprice,2).")";
+				$smon = $smon + $dmprice;
+			}
+			else
+			{
+				if($val["src_quota"] && $val["src_quota"]!="")
+					echo "(quote req.)";
+				else
+					echo "FREE";
+			}
+?>
+</p>
+  </td>
+ </tr>
+<?php
+		}//end first if
+	}//end for
+	
+	}//end for mon8
+	$totsum = $totsum+$smon;
+?>
+<tr>
+  <td width=668 valign=top style='width:501.2pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <h3>TOTAL FOR MONTH:</h3>
+  </td>
+  <td width=16 valign=top style='width:11.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>&nbsp;
+  
+  </td>
+  <td width=72 valign=top style='width:.75in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center;font-size:10.0pt'>$<?php echo $smon; ?></p>
+  </td>
+ </tr>
+</table>
+
+
+</div>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    //echo $this->form()->openTag($form);
+	
+	
+?>
+
+
+
+
+
+
+
+
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    //echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+<?php
+
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

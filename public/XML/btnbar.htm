@@ -1,0 +1,220 @@
+<SCRIPT language="javascript">
+<!--
+var specialty_id = getqstringvalue("specialty_id",window.location.search)
+  if(specialty_id==""){ specialty_id = "020" }
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+var sortby=getqstringvalue("sortby",window.location.search)
+  if(sortby==""){ sortby = "state" }
+var selectfield=getqstringvalue("selectfield",window.location.search)
+var selectvalue=getqstringvalue("selectvalue",window.location.search)
+var selectscreen=getqstringvalue("selectscreen",window.location.search)
+var nodecount=getqstringvalue("nodecount",window.location.search)
+var backurl=getqstringvalue("backurl",window.location.search)
+//alert("\selectfield: " + selectfield + "\nselectvalue: " + selectvalue + "\nselectscreen: " + selectscreen)
+
+writepage(selectscreen)
+
+function doOnLoad(){
+  top.header.callsniff();
+}
+
+///////////// CHOOSE SPECIALTY FUNCTIONS //////////////////////
+function openprogreq(filename){
+  var backurl = top.data.location.href
+  backurl = URLencode(backurl,"&","%26")
+  backurl = URLencode(backurl,"/","%2F")
+  backurl = URLencode(backurl,":","%3A")
+  backurl = URLencode(backurl,"=","%3D")
+  backurl = URLencode(backurl,"?","%3F")
+
+  top.data.location.href = filename
+  location.href = "../btnbarsp.htm?selectscreen=progreq&backurl="+backurl
+}
+
+function showspecialtyscreen(){
+  var qstring = ""
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].selectspeccheckbox.checked || top.data.document.forms[i].selectspeccheckbox.checked=="true"){
+      if(qstring!=""){ qstring+="," }
+      qstring += top.data.document.forms[i].name
+//      alert(qstring)
+    }
+  }
+
+  if(qstring != ""){
+//    alert("specialty.htm?specdisplay="+qstring)
+    top.data.location.href="specialty.htm?specdisplay="+qstring
+  }
+  else{
+    alert("Please check at least one Specialty.")
+  }
+}
+
+///////// PROGRAM REQUIREMENTS FUNCTIONS ////////
+function returnfromprogreq(){
+  backurl = URLdecode(backurl,"%26","&")
+  backurl = URLdecode(backurl,"%2F","/")
+  backurl = URLdecode(backurl,"%3A",":")
+  backurl = URLdecode(backurl,"%3D","=")
+  backurl = URLdecode(backurl,"%3F","?")
+//  alert(backurl)
+  top.data.location.href = backurl
+}
+
+//////// SPECIALTY SCREEN FUNCTIONS ////////
+function showalllistings(){
+//alert("specialty.htm?specdisplay=" + specdisplay + "&sortby=" + sortby)
+  top.data.location.href = "specialty.htm?specdisplay=" + specdisplay + "&sortby=" + sortby
+}
+
+function clearall(){
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].name!="fspec"){
+      top.data.document.forms[i].detailcheckbox.checked = 0
+    }
+  }
+}
+
+function showdetails(){
+  var qstring = ""
+
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].name!="fspec"){
+      if(top.data.document.forms[i].detailcheckbox.checked || top.data.document.forms[i].detailcheckbox.checked=="true"){
+        if(qstring!=""){ qstring+="," }
+        qstring += top.data.document.forms[i].name
+//        alert(qstring)
+      }
+    }
+  }
+
+  if(qstring != ""){
+//    alert("program.htm?specdisplay=" + specdisplay + "&sortby=" + sortby+"&prog_id="+qstring + "&btnbar=sp"
+    top.data.location.href="program.htm?specdisplay=" + specdisplay + "&sortby=" + sortby+"&prog_id="+qstring + "&btnbar=sp&selectfield="+selectfield+"&selectvalue="+selectvalue
+  }
+  else{
+    alert("Please check at least one Program.")
+  }
+}
+
+function sort(sortby){
+//  alert("specialty.htm?specdisplay=" + specdisplay+ "&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue)
+  top.data.location.href="specialty.htm?specdisplay=" + specdisplay+ "&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue
+}
+
+function reselect(fieldname,fieldvalue){
+//  alert("specialty.htm?sortby="+sortby+"&selectfield="+fieldname+"&selectvalue="+fieldvalue)
+  top.data.location.href="specialty.htm?specdisplay=" + specdisplay+ "&sortby="+sortby+"&selectfield="+fieldname+"&selectvalue="+fieldvalue
+}
+
+
+///////// PROGRAM SCREEN FUNCTIONS ////////
+function returntospecialty(){
+  top.data.location.href = "specialty.htm?specdisplay=" + specdisplay + "&sortby=" + sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue
+}
+
+
+
+
+//////////////// URL FUNCTIONS /////////////////////////////
+function getqstringvalue(name,inpara){
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function URLencode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+
+
+///////////////// WRITE PAGE ///////////////////////
+function writepage(selectscreen){
+//alert(selectscreen)
+document.write("<HTML>")
+document.write("<head>")
+document.write("<STYLE>")
+document.write("  BODY {margin:0}")
+document.write("  .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("  .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("  .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("</STYLE>")
+document.write("</head>")
+document.write("<body onLoad=\"doOnLoad();\" bgcolor=#cccccc>")
+document.write("<table border=0 cellpadding=0 cellspacing=0 width=100%>")
+
+
+if(selectscreen=="intro"){
+document.write("  <tr><td width=100%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td></tr>")
+document.write("  <tr><td bgcolor=#cccccc><img src=images/transpix.gif height=23 width=10 /></td></tr>")
+document.write("  <tr><td height=3 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#dddddd><img src=images/transpix.gif /></td></tr>")
+}
+
+
+if(selectscreen==""){
+document.write("  <tr><td width=100%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td></tr>")
+document.write("  <tr><td bgcolor=#cccccc><img src=images/transpix.gif height=23 width=10 /></td></tr>")
+document.write("  <tr><td height=3 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#dddddd><img src=images/transpix.gif /></td></tr>")
+}
+
+
+
+
+
+document.write("</table>")
+document.write("</body>")
+document.write("</HTML>")
+}
+
+//-->
+</script>
+
+
+

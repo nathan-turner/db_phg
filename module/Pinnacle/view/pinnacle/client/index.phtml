@@ -1,0 +1,89 @@
+<?php
+// module/Pinnacle/view/pinnacle/client/index.phtml:
+// Client Search
+
+$title = 'Clients Lookup';
+$this->headTitle($title);
+$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    $maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+?>
+<div class="row">
+    <div class="span4">
+        <?php echo $this->formRow($form->get('cli_id')); ?>
+        <?php echo $this->formRow($form->get('cli_name')); ?>
+        <?php echo $this->formRow($form->get('cli_city')); ?>
+        <?php echo $this->formRow($form->get('cli_state')); ?>
+        <?php echo $this->formRow($form->get('cli_zip')); ?>
+    </div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('cli_status')); ?>
+        <?php echo $this->formRow($form->get('cli_phone')); ?>
+        <?php echo $this->formRow($form->get('cli_sys')); ?>
+        <?php echo $this->formRow($form->get('cli_hotlist')); ?>
+        <?php echo $this->formRow($form->get('instant')); ?>
+</div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('cli_beds')); ?> <span id="bedspan">0</span>
+        <?php echo $this->formRow($form->get('cli_type')); ?>
+        <?php echo $this->formRow($form->get('cli_source')); ?>
+        <br><br>
+        <?php echo $this->formButton($form->get('search')) //echo $this->formInput($form->get('submit')) ?>
+        &nbsp; <a href="<?php echo $this->url('client') ?>" id="resetbutton" class="btn btn-danger btn-large">Reset</a>
+        <br><br>
+        <?php echo $this->formRow($form->get('pg_size')); ?> <span id="pagespan">25</span>
+    </div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+<div class="row">
+    <div class="span2"><a href="<?php echo $this->url('client',array('action'=>'add')) ?>">Add New Client</a></div>
+    <div class="span2" id="searchstatus"></div>
+    <div class="span7 phg-rite" id="cli-pages">
+        Please start typing
+    </div>
+</div>
+<hr>
+<table class="table report">
+    <thead><tr>
+        <th>ID#</th>
+        <th>City, State</th>
+        <th>Facility</th>
+        <th>Status</th>
+    </tr></thead>
+    <tbody id="cli-tbody">
+        <tr><td colspan="4"><i>Waiting for input...</i> </td></tr>
+    </tbody>
+</table>
+
+<div class="row" id="my-savelist-div">
+    <div class="span5 form-inline">
+        <?php echo $maillist ?>
+        <button class="btn myml-class" type="button" id="my-list-save"><i class="icon-download-alt"></i> Save to List</button>
+    </div>
+    <div class="pull-right span3 input-append">
+        <input class="span2 myml-class" id="my-new-name" type="text" required='required' placeholder="New List Name..."
+            title="Create new list">
+        <button class="btn myml-class" type="button" id="my-list-add"><i class="icon-plus"></i> Add List</button>
+    </div>
+</div>
+
+<?php
+$url = $this->url('resort', array('action'=>'clients'));
+$url2 = $this->url('resort', array('action'=>'mdes')); // . add / edit / del / get
+$redir = $this->url('login');
+$scrip = "cliInit(\"#cli-tbody\",\"#cli-pages\", \"$url\", \"$redir\", \"$url2\");\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

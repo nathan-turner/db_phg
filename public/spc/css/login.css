@@ -1,0 +1,206 @@
+/*** Smart PHP Calendar Login Form ***/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    text-align: center;
+}
+
+img {
+    border: 0;
+}
+
+.header1 {
+    text-align: left;
+    padding: 7px;
+    font-family: corbel, sans-serif, arial, verdana;
+    color: #333;
+    font-size: 13px;
+}
+
+#container {
+    width: 500px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif, Verdana;
+    position: relative;
+    top: 200px;
+    color: #4D4D4D;
+}
+.login-form-top {
+    position: relative;
+    margin: 0 auto;
+    width: 359px;
+    background: #fff url('../img/install-content.png');
+    font-size: 12px;
+}
+.login-form-bottom {
+    margin: 0 auto;
+    width: 359px;
+    height: 8px;
+    background: #fff url('../img/install-foot.png');
+    font-size: 12px;
+}
+
+input, select {
+    border: 1px solid #ccc;
+    width: 190px;
+    padding: 6px;
+    font-family: sans-serif, Verdana;
+    font-size: 12px;
+    font-weight: bold;
+    color: #1D2A5B;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+input[type="submit"] {
+    background-color: #f5f5f5;
+    cursor: pointer;
+    color: #333;
+    padding: 6px 0;
+    width: 90px;
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ccc;
+}
+
+#statusMsg {
+    text-align: center;
+    display: none;
+    padding: 5px;
+    font-size: 10px;
+}
+
+.error {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-color:#FEF5C9;
+    border:1px solid #E8D15C;
+}
+
+#login-table {
+    margin: 30px auto;
+}
+
+#login-table td {
+    padding: 5px;
+}
+
+#pass {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 11px;
+}
+
+#user-passwords {
+    padding: 10px;
+    background-color: #fff !important;
+    border: 0 !important;
+    text-align: left !important;
+    padding: 6px !important;
+}
+
+#user-passwords h3 {
+    border-bottom: 1px solid #ddd;
+    margin: 6px 0;
+    font-size: 13px;
+}
+
+#user-passwords ul {
+    list-style-type: none;
+}
+
+#user-passwords ul li {
+    margin: 6px 0;
+}
+
+#bottom-links {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+#bottom-links a {
+    color: #444;
+}
+
+/*** signup ***/
+
+#signup-table {
+    width: 700px;
+    color: #444;
+}
+
+#signup-table input,
+#signup-table select {
+    width: 250px;
+}
+
+#signup-table td {
+    width: 35%;
+    padding: 9px;
+    vertical-align: middle;
+}
+
+#signup-table tbody td:first-child {
+    text-align: right;
+    font-weight: bold;
+    width: 40%;
+}
+
+#signup-table td .err {
+    display: none;
+    width: 90%;
+    margin: 0 auto;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #F83A22;
+    background-color: #FA573C;
+    color: #fafafa;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+#smart-captcha {
+    text-align: left;
+}
+
+.smart-captcha-wrapper img {
+    margin: 1px;
+    border: 1px solid #ddd;
+    padding: 6px;
+    border-radius: 6px;
+    -mox-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    cursor: move;
+}
+
+.smart-captcha-wrapper .smart-captcha-dropbox {
+    border: 2px dashed #eee;
+    color: #666;
+    margin: 6px;
+    border-radius: 6px;
+    -mox-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    width: 250px;
+    padding: 30px 0;
+    text-align: center;
+}
+
+/*** password strength plugin styles ***/
+.password {
+    font-size : 12px;
+    border : 1px solid #cc9933;
+    width : 200px;
+}
+.pstrength-minchar {
+    font-size : 10px;
+}

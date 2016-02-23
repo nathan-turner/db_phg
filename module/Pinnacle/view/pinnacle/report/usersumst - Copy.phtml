@@ -1,0 +1,715 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/usersumst.phtml:
+// Summary report
+
+$title = 'Recruiting Performance Summary - '.$ldate;
+$this->headTitle($title);
+
+$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script language="JavaScript"><!--
+	function loaded() {
+	   try { parent.frames.phgtop.sim_click("rep_a"); } catch (e) { } finally {} //debug
+	}
+
+      // Load the Google Visualization API and the barchart package.
+	  // see http://code.google.com/apis/chart/interactive/docs/gallery.html
+      google.load('visualization', '1.0', {packages:['corechart','imagebarchart']});
+
+// -->
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'placement')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+?>
+<?php
+
+function GetRatio($r1, $r2){
+	if($r1==0)
+		echo "0:".$r2;
+	elseif($r2==0)
+		echo $r1.":0";
+	elseif($r1==$r2)
+		echo "1:1";
+	elseif($r1>$r2){
+		$r = $r1/$r2;
+		echo round($r,1)."&nbsp;<b>:</b>&nbsp;1";
+	}
+	else{
+		$r = $r2/$r1;
+		echo "1&nbsp;<b>:</b>&nbsp;".round($r,1);
+	}
+}
+
+function Lookup($ar, $n, $x){
+	if($n>0)
+	{	
+		for ($i=0; $i<$n; $i++){
+			if($ar[$i]==$x){
+				return $i;
+			}
+			//echo $ar[$i]."<br/>";
+				//return $i;
+		}
+	}
+	return -1;
+}
+
+$empid = $_COOKIE["phguid"];		
+?>
+
+
+<?php
+$DT0=mktime(0, 0, 0, date("m")  , date("d"), date("Y"));
+$calldata2 = false;
+$Dt1 = mktime(0, 0, 0, date("m")  , date("d")-1, date("Y")); //' yesterday
+$numc = 0;
+//echo var_dump($rs);
+foreach ($rs as $key=>$val)
+{
+	//echo $val["call_emp_id"]."<br/>";
+	$emps[$numc]=$val["call_emp_id"];
+	$sumc[$numc]=$val["sumout"];
+	$times[$numc]=$val["timout"];
+	$avgt = $val["timout"];
+
+$hours = floor($avgt / 3600);
+$mins = floor(($avgt - ($hours*3600)) / 60);
+$seconds = floor($avgt % 60);
+
+/*$seconds = $avgt % 60;
+$time = ($avgt - $seconds) / 60;
+$minutes = $avgt % 60;
+$hours = round((($avgt - $minutes) / 60),2);*/
+$time = ($avgt - $seconds) / 60;
+	
+	$atimes[$numc]= gmdate("H:i:s",$avgt);//date('h:i:s',mktime($hours,$minutes,$seconds)); //date('h:i:s',mktime(0,0,$avgt)); //$hours.":".$minutes.":".$seconds; //($avgt/60) $avgt%60;
+	$numc = $numc + 1;
+	$calldata2 = true;
+}
+
+//echo date('Y-m-d',$Dt1);
+//echo $DT0;
+
+//echo var_dump($emps);
+$errth = 0;
+
+$mycat = 0;
+        
+for ($i = 0; $i<=4; $i++)
+{
+    $ns[$i]=0;   
+	for ($k = 0; $k<=4; $k++)
+	{
+		$ysum[0][$i][$k] = "0.0"; 
+		$ysum[1][$i][$k] = "0.0";
+		$ysum[2][$i][$k] = "0.0";
+        $msum[0][$i][$k] = "0.0"; 
+		$msum[1][$i][$k] = "0.0";
+		$msum[2][$i][$k] = "0.0";
+		   
+	}           
+}
+
+foreach ($gl as $key=>$val)
+{
+	$cat = $val["category"];
+	
+	$uname[$cat][$ns[$cat]] = $val["uname"];
+		$eid[$cat][$ns[$cat]] = $val["emp_id"];
+		$est[$cat][$ns[$cat]] = $val["emp_status"];
+		
+		if ($empid == $eid[$cat][$ns[$cat]] ){
+            $mycat = $cat;
+            $myns = $ns[$cat];
+        }
+		//echo $eid[$cat][$ns[$cat]]."<br/>";
+		$eind[$cat][$ns[$cat]] = Lookup($emps,$numc,$eid[$cat][$ns[$cat]]);
+	   $catg[1][$cat][$ns[$cat]] = $val["goal1"];
+	   $catg[2][$cat][$ns[$cat]] = $val["goal2"];
+	   $catg[3][$cat][$ns[$cat]] = $val["goal3"];
+	   $catg[4][$cat][$ns[$cat]] = $val["goal4"];
+	   $cata[1][$cat][$ns[$cat]] = $val["act1"];
+	   $cata[2][$cat][$ns[$cat]] = $val["act2"];
+	   $cata[3][$cat][$ns[$cat]] = $val["act3"];
+	   $cata[4][$cat][$ns[$cat]] = $val["act4"];
+	   $matg[1][$cat][$ns[$cat]] = $val["moal1"];
+	   $matg[2][$cat][$ns[$cat]] = $val["moal2"];
+	   $matg[3][$cat][$ns[$cat]] = $val["moal3"];
+	   $matg[4][$cat][$ns[$cat]] = $val["moal4"];
+	   $mata[1][$cat][$ns[$cat]] = $val["mact1"];
+	   $mata[2][$cat][$ns[$cat]] = $val["mact2"];
+	   $mata[3][$cat][$ns[$cat]] = $val["mact3"];
+	   $mata[4][$cat][$ns[$cat]] = $val["mact4"];
+	   $yatg[1][$cat][$ns[$cat]] = $val["yoal1"];
+	   $yatg[2][$cat][$ns[$cat]] = $val["yoal2"];
+	   $yatg[3][$cat][$ns[$cat]] = $val["yoal3"];
+	   $yatg[4][$cat][$ns[$cat]] = $val["yoal4"];
+	   $ns[$cat] = $ns[$cat] + 1;
+}
+
+for ($i = 1; $i<=4; $i++) //...should these been <=?
+{    
+	for ($k = 1; $k<=4; $k++)
+	{
+		for ($j = 0; $j<=$ns[$k]-1; $j++) //adjusted this
+		{
+			$ysum[0][$i][$k] = $ysum[0][$i][$k] + $yatg[$i][$k][$j]; // goal year end totals
+			$ysum[1][$i][$k] = $ysum[1][$i][$k] + $cata[$i][$k][$j]; //' act YTD totals
+			$ysum[2][$i][$k] = $ysum[2][$i][$k] + $catg[$i][$k][$j]; //' goal YTD totals			
+			$msum[1][$i][$k] = $msum[1][$i][$k] + $mata[$i][$k][$j]; //' act month totals
+			$msum[2][$i][$k] = $msum[2][$i][$k] + $matg[$i][$k][$j]; //' goal month totals
+		}   
+	}           
+}
+//echo var_dump($uname);
+?>
+
+<div class="row">
+    <div class="span12">
+	
+<table width="100%" class="nobg ctr" border="1" cellspacing="0" cellpadding="2"><tr>
+<td>&nbsp;</td>
+<td>AVG Phone time per Day</td>
+<td><?php echo$coldate; ?> Placements &amp; &plusmn;to Goal</td>
+<td><?php echo$coldate; ?> Interviews &amp; &plusmn;to Goal</td>
+<td>Prsnts this month</td>
+<td>Placements YTD &amp; &plusmn;to Goal</td>
+<td>Interviews YTD &amp; &plusmn;to Goal</td>
+<td>IV/Pl Ratio YTD</td>
+<td>Present/IV Ratio YTD</td>
+</tr>
+<?php
+  $sumtimes = 0;
+  for ($i=0; $i<=$ns[1]-1; $i++)	//not sure of the indexing on this
+  {
+	if($est[1][$i]>0)
+	{
+		if($eind[1][$i]<0)
+		{
+			$atmes = "N/A";
+		}
+		else{
+			$atmes = $atimes[$eind[1][$i]];
+			$sumtimes = $sumtimes + $times[$eind[1][$i]];
+		}
+		//echo var_dump($eind);
+		//other stuff here
+		?>
+		
+<tr>
+<td><a class="ndec" href="#userstats.asp?emp_id=<?php echo $eid[1][$i]; ?>"><?php echo $uname[1][$i]; ?></a></td><td><?php echo $atmes; ?></td>
+<td><?php echo $mata[1][1][$i]; ?>
+<?php if($matg[1][1][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($mata[1][1][$i] >= $matg[1][1][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $matg[1][1][$i]; ?>"><?php echo ($mata[1][1][$i]-$matg[1][1][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td>
+<?php echo $mata[2][1][$i]; ?>
+<?php if($matg[2][1][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($mata[2][1][$i] >= $matg[2][1][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $matg[2][1][$i]; ?>"><?php echo ($mata[2][1][$i]-$matg[2][1][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td><?php echo $mata[3][1][$i]; ?></td>
+
+<td>
+<?php echo $cata[1][1][$i]; ?>
+<?php if($catg[1][1][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($cata[1][1][$i] >= $catg[1][1][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $yatg[1][1][$i]; ?>"><?php echo ($cata[1][1][$i]-$catg[1][1][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td>
+<?php echo $cata[2][1][$i]; ?>
+<?php if($catg[2][1][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($cata[2][1][$i] >= $catg[2][1][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $yatg[2][1][$i]; ?>"><?php echo ($cata[2][1][$i]-$catg[2][1][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td class="rite"><?php GetRatio ($cata[2][1][$i], $cata[1][1][$i]);  ?></td>
+<td class="rite"><?php GetRatio ($cata[3][1][$i], $cata[2][1][$i]);  ?></td>
+</tr>
+<?php
+if($eid[1][$i]==105 || $eid[1][$i]==24){
+
+$placements = $placements+$mata[1][1][$i];
+$placements_goal = $placements_goal+$matg[1][1][$i];
+$interviews = $interviews+$mata[2][1][$i];
+$interviews_goal = $interviews_goal+$matg[2][1][$i];
+$presents = $presents+ $mata[3][1][$i];
+$placements_ytd = $placements_ytd+$cata[1][1][$i];
+$placements_ytd_goal = $placements_ytd_goal+$catg[1][1][$i];
+$interviews_ytd = $interviews_ytd+$cata[2][1][$i];
+$interviews_ytd_goal = $interviews_ytd_goal+$catg[2][1][$i];
+$act3 = $act3+$cata[3][1][$i];
+}
+
+if($eid[1][$i]==2 || $eid[1][$i]==239){
+
+$placements2 = $placements2+$mata[1][1][$i];
+$placements_goal2 = $placements_goal2+$matg[1][1][$i];
+$interviews2 = $interviews2+$mata[2][1][$i];
+$interviews_goal2 = $interviews_goal2+$matg[2][1][$i];
+$presents2 = $presents2+ $mata[3][1][$i];
+$placements_ytd2 = $placements_ytd2+$cata[1][1][$i];
+$placements_ytd_goal2 = $placements_ytd_goal2+$catg[1][1][$i];
+$interviews_ytd2 = $interviews_ytd2+$cata[2][1][$i];
+$interviews_ytd_goal2 = $interviews_ytd_goal2+$catg[2][1][$i];
+$act32 = $act32+$cata[3][1][$i];
+}
+?>
+
+
+<?php		
+		
+	}// end est
+  }// end for
+  
+  $avgt = $sumtimes;
+  $days = round($avgt/86400);
+  //$avgt = avgt%86400;
+  //echo $avgt;
+  //echo $days;
+?>
+
+<tr>
+<td>Rob & Craig</td>
+<td>&nbsp;</td>
+<td><?php echo $placements; ?>
+<?php if ($placements_goal > 0) { 
+	echo '(<span class="';
+		if($placements >= $placements_goal)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Goal: $placements_goal">'.($placements - $placements_goal).'</span>)';
+	
+ } ?>
+</td>
+<td><?php echo $interviews; ?>
+<?php if ($interviews_goal > 0) { 
+	echo '(<span class="';
+		if($interviews >= $interviews_goal)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Goal: $interviews_goal">'.($interviews - $interviews_goal).'</span>)';
+	
+ } ?>
+</td>
+<td><?php echo $presents; ?></td>
+<td><?php echo $placements_ytd; ?>
+<?php if ($placements_ytd_goal > 0) { 
+	echo '(<span class="';
+		if($placements_ytd >= $placements_ytd_goal)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Annual Goal: $placements_ytd_goal">'.($placements_ytd - $placements_ytd_goal).'</span>)';
+	
+ } ?>
+</td>
+<td><?php echo $interviews_ytd; ?>
+<?php if ($interviews_ytd_goal > 0) { 
+	echo '(<span class="';
+		if($interviews_ytd >= $interviews_ytd_goal)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Annual Goal: $interviews_ytd">'.($interviews_ytd - $interviews_ytd_goal).'</span>)';
+	
+ } ?>
+</td>
+<td class="rite"><?php GetRatio ($interviews_ytd, $placements_ytd);  ?></td>
+<td class="rite"><?php GetRatio ($act3, $interviews_ytd);  ?></td>
+</tr>
+
+<tr>
+<td>John & Stephanie</td>
+<td>&nbsp;</td>
+<td><?php echo $placements2; ?>
+<?php if ($placements_goal2 > 0) { 
+	echo '(<span class="';
+		if($placements2 >= $placements_goal2)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Goal: $placements_goal2">'.($placements2 - $placements_goal2).'</span>)';
+	
+ } ?>
+</td>
+<td><?php echo $interviews2; ?>
+<?php if ($interviews_goal2 > 0) { 
+	echo '(<span class="';
+		if($interviews2 >= $interviews_goal2)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Goal: $interviews_goal2">'.($interviews2 - $interviews_goal2).'</span>)';
+	
+ } ?>
+</td>
+<td><?php echo $presents2; ?></td>
+<td><?php echo $placements_ytd2; ?>
+<?php if ($placements_ytd_goal2 > 0) { 
+	echo '(<span class="';
+		if($placements_ytd2 >= $placements_ytd_goal2)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Annual Goal: $placements_ytd_goal2">'.($placements_ytd2 - $placements_ytd_goal2).'</span>)';
+	
+ } ?>
+</td>
+<td><?php echo $interviews_ytd2; ?>
+<?php if ($interviews_ytd_goal2 > 0) { 
+	echo '(<span class="';
+		if($interviews_ytd2 >= $interviews_ytd_goal2)
+			echo "bleu_bld";
+		else
+			echo "alert_bld";
+	echo '" title="Annual Goal: $interviews_ytd2">'.($interviews_ytd2 - $interviews_ytd_goal2).'</span>)';
+	
+ } ?>
+</td>
+<td class="rite"><?php GetRatio ($interviews_ytd2, $placements_ytd2);  ?></td>
+<td class="rite"><?php GetRatio ($act32, $interviews_ytd2);  ?></td>
+</tr>
+
+
+<tr>
+<td class="bld">Recruiting</td><td><?php echo $days; ?>:<?php echo gmdate('H:i:s', $avgt); //date('h:i:s',mktime(0, ($avgt/60), ($avgt%60))); ?></td>
+<td>
+<?php echo $msum[1][1][1]; ?> 
+
+(<span class='
+	<?php 
+	if($msum[1][1][1] >= $msum[2][1][1]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $msum[2][1][1]; ?>"><?php echo ($msum[1][1][1]-$msum[2][1][1]); ?>
+</span>)
+
+</td>
+<td>
+<?php echo $msum[1][2][1]; ?> 
+
+(<span class='
+	<?php 
+	if($msum[1][2][1] >= $msum[2][2][1]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $msum[2][2][1]; ?>"><?php echo ($msum[1][2][1]-$msum[2][2][1]); ?>
+</span>)
+
+</td>
+<td><?php echo $msum[1][3][1]; ?></td>
+<td>
+<?php echo $ysum[1][1][1]; ?> 
+(<span class='
+	<?php 
+	if($ysum[1][1][1] >= $ysum[2][1][1]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $ysum[0][1][1]; ?>"><?php echo ($ysum[1][1][1]-$ysum[2][1][1]); ?>
+</span>)
+
+</td>
+
+<td>
+<?php echo $ysum[1][2][1]; ?> 
+(<span class='
+	<?php 
+	if($ysum[1][2][1] >= $ysum[2][2][1]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $ysum[0][2][1]; ?>"><?php echo ($ysum[1][2][1]-$ysum[2][2][1]); ?>
+</span>)
+</td>
+<td class="rite"><?php GetRatio ($ysum[1][2][1], $ysum[1][1][1]);  ?></td>
+<td class="rite"><?php GetRatio ($ysum[1][3][1], $ysum[1][2][1]);  ?></td>
+</tr>
+
+ </table> 
+
+ 
+ <h1>Marketing Performance Summary - <?php echo $ldate; ?></h1>
+<table width="100%" class="nobg ctr" border="1" cellspacing="0" cellpadding="2"><tr>
+<td>&nbsp;</td><td><?php echo$coldate; ?> Calls</td>
+<td><?php echo$coldate; ?> Retainers &amp; &plusmn;to Goal</td>
+<td>New Retainers %MTD &amp; &plusmn;to Goal</td>
+<td><?php echo$coldate; ?> Meetings &amp; &plusmn;to Goal</td>
+<td>Retainers YTD &amp; &plusmn;to Goal</td>
+<td>Meetings YTD &amp; &plusmn;to Goal</td>
+<td>Meeting / Retainer Ratio YTD</td>
+<td>Call / Meeting Ratio Monthly</td>
+</tr>
+<?php
+
+$sumca = 0;
+  for ($i=0; $i<=$ns[3]-1; $i++)	//not sure of the indexing on this
+  {
+	if($est[3][$i]>0)
+	{
+		if($eind[3][$i]<0)
+		{
+			$smca = "N/A";
+		}
+		else{
+			$smca = $sumc[$eind[3][$i]];
+			$sumca = $sumca + $sumc[$eind[3][$i]];
+		}
+?>
+
+<tr>
+<td><a class="ndec" href="userstats.asp?emp_id=<?php echo $eid[3][$i]; ?>"><?php echo $uname[3][$i]; ?></a></td><td><?php echo $smca; ?></td>
+<td>
+<?php echo $mata[1][3][$i]; ?>
+<?php if($matg[1][3][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($mata[1][3][$i] >= $matg[1][3][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $matg[1][3][$i]; ?>"><?php echo ($mata[1][3][$i]-$matg[1][3][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td>
+
+	<?php 
+	if($mata[1][3][$i] ==0) 
+		echo "N/A";
+	else
+		echo (($mata[3][3][$i]/$mata[1][3][$i])*100)."%";
+	if($mata[3][3][$i]>0)
+	{
+	?>
+	(<span class='
+	<?php 
+	if($mata[3][3][$i] >= $matg[3][3][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+	title="Goal: <?php echo $matg[3][3][$i]; ?>"><?php echo ($mata[3][3][$i]-$matg[3][3][$i]); ?>
+	</span>)
+	<?php
+	}
+	?>
+
+</td>
+<td>
+<?php echo $mata[2][3][$i]; ?>
+<?php if($matg[2][3][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($mata[2][3][$i] >= $matg[2][3][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $matg[2][3][$i]; ?>"><?php echo ($mata[2][3][$i]-$matg[2][3][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td>
+<?php echo $cata[1][3][$i]; ?>
+<?php if($catg[1][3][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($cata[1][3][$i] >= $catg[1][3][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $yatg[1][3][$i]; ?>"><?php echo ($cata[1][3][$i]-$catg[1][3][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td>
+<?php echo $cata[2][3][$i]; ?>
+<?php if($catg[2][3][$i] > 0){ ?>
+(<span class='
+	<?php 
+	if($cata[2][3][$i] >= $catg[2][3][$i]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $yatg[2][3][$i]; ?>"><?php echo ($cata[2][3][$i]-$catg[2][3][$i]); ?>
+</span>)
+<?php } ?>
+
+</td>
+<td class="rite"><?php GetRatio($cata[2][3][$i], $cata[1][3][$i]); ?></td>
+<td class="rite"><?php 
+if($smca=="N/A")
+	$smca=0;
+GetRatio($smca, $mata[2][3][$i]); 
+?>
+
+</td>
+</tr>
+
+	
+	
+<?php
+	}//end est
+}//end for
+?>	
+
+<tr>
+<td class="bld">Marketing</td><td><?php echo $sumca;?></td>
+<td>
+<?php echo $msum[1][1][3]; ?>
+
+(<span class='
+	<?php 
+	if($msum[1][1][3] >= $msum[2][1][3]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $msum[2][1][3]; ?>"><?php echo ($msum[1][1][3]-$msum[2][1][3]); ?>
+</span>)
+
+</td>
+<td>
+<?php if($msum[1][1][3]==0)
+		echo "N/A";
+	else
+		echo round((($msum[1][3][3]/$msum[1][1][3])*100),2)."%";
+?>
+
+(<span class='
+	<?php 
+	if($msum[1][3][3] >= $msum[2][3][3]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $msum[2][3][3]; ?>"><?php echo ($msum[1][3][3]-$msum[2][3][3]); ?>
+</span>)
+
+</td>
+
+<td>
+<?php echo $msum[1][2][3]; ?>
+
+(<span class='
+	<?php 
+	if($msum[1][2][3] >= $msum[2][2][3]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Goal: <?php echo $msum[2][2][3]; ?>"><?php echo ($msum[1][2][3]-$msum[2][2][3]); ?>
+</span>)
+</td>
+
+<td>
+<?php echo $ysum[1][1][3]; ?>
+
+(<span class='
+	<?php 
+	if($ysum[1][1][3] >= $ysum[2][1][3]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $ysum[0][1][3]; ?>"><?php echo ($ysum[1][1][3]-$ysum[2][1][3]); ?>
+</span>)
+</td>
+<td>
+<?php echo $ysum[1][2][3]; ?>
+
+(<span class='
+	<?php 
+	if($ysum[1][2][3] >= $ysum[2][2][3]) 
+		echo "bleu_bld";
+	else
+		echo "alert_bld";
+	?>'
+title="Annual Goal: <?php echo $ysum[0][2][3];?>"><?php echo $ysum[1][2][3]-$ysum[2][2][3];?></span>)</td>
+<td class="rite"><?php GetRatio($ysum[1][2][3], $ysum[1][1][3]); ?></td>
+<td class="rite"><?php GetRatio($sumca, $msum[1][2][3]); ?></td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

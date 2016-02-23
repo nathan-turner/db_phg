@@ -1,0 +1,336 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/Utility.php:
+/* 
+ * Utility Class Factory and related small classes, mostly for use in forms;
+ * each may implement initClass(mixed $args, ...) method that can be used for custom init
+ * */
+
+namespace Pinnacle\Model;
+
+class DictStates {
+    // in unlikely case of adopting more states, add them to dctStates table as well
+    public $states = array( // lame but fast
+    '--' => 'Unlisted Territory',
+    'AL' => 'Alabama','AK' => 'Alaska','AZ' => 'Arizona','AR' => 'Arkansas',
+    'CA' => 'California','CO' => 'Colorado','CT' => 'Connecticut','DE' => 'Delaware',
+    'DC' => 'District of Columbia','FL' => 'Florida','GA' => 'Georgia','HI' => 'Hawaii',
+    'ID' => 'Idaho','IL' => 'Illinois','IN' => 'Indiana','IA' => 'Iowa','KS' => 'Kansas',
+    'KY' => 'Kentucky','LA' => 'Louisiana','ME' => 'Maine','MD' => 'Maryland',
+    'MA' => 'Massachusetts','MI' => 'Michigan','MN' => 'Minnesota','MS' => 'Mississippi',
+    'MO' => 'Missouri','MT' => 'Montana','NE' => 'Nebraska','NV' => 'Nevada',
+    'NH' => 'New Hampshire','NJ' => 'New Jersey','NM' => 'New Mexico','NY' => 'New York',
+    'NC' => 'North Carolina','ND' => 'North Dakota','OH' => 'Ohio','OK' => 'Oklahoma',
+    'OR' => 'Oregon','PA' => 'Pennsylvania','PR' => 'Puerto Rico','RI' => 'Rhode Island',
+    'SC' => 'South Carolina','SD' => 'South Dakota','TN' => 'Tennessee','TX' => 'Texas',
+    'UT' => 'Utah','VT' => 'Vermont','VA' => 'Virginia','WA' => 'Washington',
+    'WV' => 'West Virginia','WI' => 'Wisconsin','WY' => 'Wyoming',
+    );
+    
+    public function getStates() {
+        return $this->states;
+    }
+    public function getState($st) {
+        return $this->states[$st];
+    }
+
+    public function getSelectOptions($nosp = 0) {
+        $ar = array();
+        foreach( $this->states as $st=>$nm)
+            $ar[$st] = "$st $nm";
+        if( $nosp ) unset($ar['--']);
+        return $ar;
+    }
+}
+
+class DictDepartments {
+    public $departments = array(
+        'A' => 'Administration',
+        'R' => 'Recruiting',
+        'M' => 'Marketing',
+        'RM' => 'Recr. & Mktg.',
+        'RA' => 'Recr. & Admin.',
+        'MA' => 'Mktg. & Admin.',
+        'AD' => 'Data Entry',
+        'FA' => 'Fuzion Callers',
+        'FM' => 'Fuzion Sales',
+        'LA' => 'Locum Admin.',
+        'LM' => 'Locum Sales',
+        'LR' => 'Locum Recruiter'
+    );
+    
+    public function getDepartments() {
+        return $this->departments;
+    }
+    public function getDepartment($st) {
+        return $this->departments[$st];
+    }
+    public function getSelectOptions() {
+        return $this->departments;
+    }
+
+}
+
+class DictClientTypes {
+    // mirrors dctClientTypes table
+    public $dct = array(
+        '1' => ' Other - Unspecified',
+        '2' => 'Hospital',
+        '3' => 'State Hospital Association',
+        '4' => 'Physician Recruiting Firm',
+        '5' => 'Consulting Firm',
+        '6' => 'Healthcare System',
+        '7' => 'Medical Management Consultants',
+        '8' => 'Group Purchasing Organization',
+        '9' => 'Integrated Healthcare Organization',
+        '10' => 'HMO',
+        '11' => 'Physician Group - SSG',
+        '12' => 'Physician Group',
+        '13' => 'Solo Practice',
+        '14' => 'Community/Rural Health Center',
+        '15' => 'Long-term Care facility',
+        '16' => 'Residency Program'
+    );
+    public function getClientTypes() {
+        return $this->dct;
+    }
+    public function getClientType($st) {
+        return $this->dct[$st];
+    }
+    public function getSelectOptions() {
+        return $this->dct;
+    }
+}
+
+class DictClientSources {
+    // mirrors dctClientSource table WHERE cs_phys =0
+    public $dct = array(
+        '0' => 'Old Database',
+        '1' => 'Yellow Pages',
+        '2' => 'Hospital List',
+        '3' => 'Vista',
+        '4' => 'Conventions',
+        '5' => 'Marketing Mailer',
+        '6' => 'Recruiting Mailer',
+        '7' => 'Call In',
+        '8' => 'PR',
+        '9' => 'Advertisement',
+        '10' => 'Telemarketing',
+        '11' => 'Other',
+        '12' => 'InfoUSA',
+        '17' => 'InfoUSA-07',
+        '18' => 'GMED 2011',
+    );
+    public function getClientSources() {
+        return $this->dct;
+    }
+    public function getClientSource($st) {
+        return $this->dct[$st];
+    }
+    public function getSelectOptions() {
+        return $this->dct;
+    }
+}
+
+class DictStatuses {
+    // mirrors dctStatus table
+    public $dct = array(
+        array(0,'Unknown',          1,0,1,1),
+        array(1,'Active',           1,1,1,1),
+        array(2,'Inactive',         1,0,1,1),
+        array(3,'Unreachable',      0,0,1,1),
+        array(4,'Canceled',         0,1,0,0),
+        array(5,'On Hold',          0,1,0,0),
+        array(6,'Completed',        0,1,0,0),
+        array(7,'Placed',           0,1,1,0),
+        array(8,'Replacement',      0,1,0,0),
+        array(9,'Fell Off',         0,1,0,0),
+        array(10,'Past',            1,0,0,0),
+        array(11,'Import',          0,0,0,0),
+        array(12,'To Be Deleted',   1,1,1,1),
+        array(13,'Duplicate',       1,0,0,0),
+        array(14,'Suspended',       0,1,0,0),
+        array(15,'Caution',         0,0,1,0),
+        array(16,'Zombie',          0,1,0,1),
+    );
+    public function getStatuses() {
+        return $this->dct;
+    }
+    public function getStatus($st) {
+        return $this->dct[$st][1];
+    }
+    
+    // @param int $stype 0,1,2,3,4 : any, client, contract, physician, contact (filter)
+    public function getSelectOptions($stype = 0) {
+        $ar = array();
+        foreach( $this->dct as $st) {
+            if( $stype && !$st[$stype + 1] ) continue;
+            $ar[$st[0]] = $st[1];
+        }
+        return $ar;
+    }
+}
+
+class DictCtctTypes {
+    // mirrors dctContactTypes table
+    public $dct = array(
+        array(0,'Miscellaneous','calendar','dummy'),
+        array(1,'Employee','calendar','dummy'),
+        array(2,'Client','client','cli_id'),
+        array(3,'Physician','physician','ph_id'),
+        array(4,'Contract','contract','ctr_id'),
+        array(5,'Client contact','client','cli_id'),
+        array(6,'Note','calendar','dummy'),
+        array(7,'Physician office','physician','ph_id'),
+        array(8,'Activity','calendar','dummy'),
+        array(9,'Reference','physician','ph_id'),
+        array(10,'Data Transfer','admin','dummy'),
+        array(11,'Source','source','src_id'),
+        array(12,'Source Contacts','source','src_id'),
+        array(13,'Client Pass from Vista','client','cli_id'),
+        array(14,'Physician from Vista','physician','ph_id'),
+        array(15,'Mid-Level','midlevel','an_id'),
+        array(16,'Mid-Level Reference','midlevel','an_id'),
+    );
+    public function getTypes() {
+        return $this->dct;
+    }
+    public function getType($st) {
+        return $this->dct[$st][1];
+    }
+    public function getRoute($st) {
+        return $this->dct[$st][2];
+    }
+}
+
+class DictPracticeTypes {
+    // mirrors dctPracticeTypes table
+    public $dpt = array('0' => 'Unspecified',
+                '1' => 'Resident',
+                '2' => 'In Practice',
+                '3' => 'Fellow',
+                '4' => 'Military',
+                '5' => 'Retired',
+                '6' => 'Mid-Level',
+                '7' => 'Locum Tenens',
+    );
+    public function getPracticeTypes() {
+        return $this->dpt;
+    }
+    public function getPracticeType($st) {
+        return $this->dpt[$st];
+    }
+    public function getSelectOptions() {
+        return $this->dpt;
+    }
+}
+
+class DictPiplStatuses {
+    // mirrors dctPIPLStatus table
+    public $pist = array(
+        '1' => 'N/A',
+        '2' => 'Presented',
+        '3' => 'Interviewed',
+        '4' => 'Placed',
+        '5' => 'Replaced',
+        '6' => 'Assesment',
+        '7' => 'Re-send Preinterview',
+        '8' => 'Contingency Present',
+        '9' => 'Locum Pass',
+        '10' => 'Pending'
+    );
+    public function getPiplStatuses() {
+        return $this->pist;
+    }
+    public function getPiplStatus($st) {
+        return $this->pist[$st];
+    }
+    public function getSelectOptions() {
+        return $this->pist;
+    }
+}
+
+class DictRegions {
+    // mirrors dctRegions table
+    public $regions = array(
+        '0'=>'Unspecified region',
+        '1'=>'New England',
+        '2'=>'Middle Atlantic',
+        '3'=>'East North Central',
+        '4'=>'West North Central',
+        '5'=>'South Atlantic',
+        '6'=>'East South Central',
+        '7'=>'West South Central',
+        '8'=>'Mountain',
+        '9'=>'Pacific'
+    );
+    public function getRegions() {
+        return $this->regions;
+    }
+    public function getRegion($st) {
+        return $this->regions[$st];
+    }
+    public function getSelectOptions() {
+        return $this->regions;
+    }
+}
+
+class DictSrcDates {
+    public $srcd = array(
+        '0' => ' ',
+        '1' => '< Yesterday',
+        '2' => '< 1 week ago',
+        '3' => '< 2 weeks ago',
+        '4' => '< 1 month ago',
+        '5' => '< 2 months ago',
+        '6' => '< 6 months ago',
+        '7' => '< 1 year ago',
+    );
+    public function getSrcDates() {
+        return $this->srcd;
+    }
+    public function getSelectOptions() {
+        return $this->srcd;
+    }
+}
+
+class DictMonths {
+    public $months = array(
+        '0'=>'(current)',
+        '1'=>'January',
+        '2'=>'February',
+        '3'=>'March',
+        '4'=>'April',
+        '5'=>'May',
+        '6'=>'June',
+        '7'=>'July',
+        '8'=>'August',
+        '9'=>'September',
+        '10'=>'October',
+        '11'=>'November',
+        '12'=>'December',
+    );
+    public function getMonths() {
+        return $this->months;
+    }
+    public function getMonth($m) {
+        return $this->months[$m];
+    }
+    public function getSelectOptions() {
+        return $this->months;
+    }
+}
+
+class Utility {
+    public static function getClass($class) {
+        if( class_exists($class) ) {
+            $obj = new $class();
+            if( method_exists( $obj, 'initClass') ) {
+                $ar = func_get_args ();
+                array_shift($ar);
+                call_user_func_array( array($obj,'initClass'), $ar );
+            }
+            return $obj;
+        }
+        else throw new \Exception('Unknown class '.$class);
+    }
+}

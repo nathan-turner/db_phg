@@ -1,0 +1,306 @@
+<HTML>
+<HEAD><LINK REL=STYLESHEET TYPE="text/css" HREF="../HTML/styles/gmecd.css"></HEAD>
+
+<script language="javascript">
+<!--
+function doOnLoad(){
+  try{
+    top.btnbar.location.href = "btnbar.htm?selectscreen=install"
+    localsniff();
+  }catch(e){
+    localsniff();
+  }
+}
+
+function localsniff(){
+  var strop = navigator.userAgent
+  //alert(strop)
+
+////////// NETSCAPE CREATES ERROR ON THIS PAGE ANYWAY, SO DON'T CHECK FOR IT ///////////////
+//  if((strop.indexOf("95")>=0)||(strop.indexOf("Netscape")>=0)||(strop.indexOf("Win")<0)){//
+/////////////////////////////////////////////////////////////////////////////////////////////
+  if(strop.indexOf("95")>=0){
+    alert("This software will not install or operate properly\non the Windows 95 operating system.")
+    document.write("<HTML><head>")
+    document.write("        <STYLE>")
+    document.write("          .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+    document.write("          .csstextright {font: 9pt Arial, Helvetica, sans-serif;text-align:right;}")
+    document.write("          .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+    document.write("          .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+    document.write("          .cssContentsHead {font:20pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+    document.write("          .cssproghead {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#008840}")
+    document.write("          .cssBHEAD {font:12pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+    document.write("        </STYLE>")
+    document.write("</head><body marginwidth=\"5\" marginheight=\"0\" onLoad=\"doOnLoad();\" bgcolor=\"#ffffff\" LINK=\"#008840\" VLINK=\"#008840\" ALINK=\"#008840\">")
+    document.write("<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">")
+    document.write(" <tr><td class=\"cssContentsHead\">Install Software</td></tr>")
+    document.write(" <tr><td CLASS=\"csstextred\"><b>This software will not install or operate properly on the Windows 95 operating system.</b></td></tr>")
+    document.write(" <tr><td CLASS=\"csstextred\">&nbsp;</td></tr>")
+    document.write(" <tr><td CLASS=\"csstextcenter\"><input type=button onClick=\"javascript:location.href='HTML/intro.htm'\" class=\"csstextcenter\" value=\"&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;\"></td></tr>")
+    document.write("</table></body></HTML>")
+    if(top.header.location.href.indexOf("header_ns")<0){
+      top.header.location.href = "header_ns.htm"
+    }
+  }
+  else{
+    if(strop.indexOf("MSIE 5.5")>=0 || strop.indexOf("MSIE 6.0")>=0){
+      document.browser.src = "images/chkd.jpg"
+//      installform.browser.checked = true
+    }
+    ////////////////
+
+    var xml = "<?xml version=\"1.0\" encoding=\"UTF-16\"?><cjb></cjb>";
+    var xsl = "<?xml version=\"1.0\" encoding=\"UTF-16\"?><x:stylesheet version=\"1.0\" xmlns:x=\"http://www.w3.org/1999/XSL/Transform\" xmlns:m=\"urn:schemas-microsoft-com:xslt\"><x:template match=\"/\"><x:value-of select=\"system-property('m:version')\" /></x:template></x:stylesheet>";
+
+    var x = null;
+    var msxml2,msxml2v26,msxml2v30,msxml2v40,msxml = false
+
+    try{ 
+      x = new ActiveXObject("Msxml2.DOMDocument"); 
+      x.async = false;
+      if (x.loadXML(xml)){ msxml2 = true; }
+    }catch(e){
+//       alert("msxml2 bad: " + e.description)
+    }
+
+    try{ 
+      x = new ActiveXObject("Msxml2.DOMDocument.2.6"); 
+      x.async = false;
+      if (x.loadXML(xml)){ msxml2v26 = true; }
+    }catch(e){
+//       alert("msxml2.6 bad: " + e.description)
+    }
+
+    try{ 
+      x = new ActiveXObject("Msxml2.DOMDocument.3.0"); 
+      x.async = false;
+      if (x.loadXML(xml)){
+        msxml2v30 = true;
+        document.msxml3.src = "images/chkd.jpg"
+//        installform.msxml3.checked = true;
+      }
+    }catch(e){
+//      alert("msxml2v30 bad: " + e.description)
+    }
+
+    try{ 
+      x = new ActiveXObject("Msxml2.DOMDocument.4.0"); 
+      x.async = false;
+      if (x.loadXML(xml)){ msxml2v40 = true; }
+    }catch(e){
+//       alert("msxml2v40 bad: " + e.description)
+    }
+
+    try{ 
+      x = new ActiveXObject("Microsoft.XMLDOM");  
+      x.async = false;
+      if (x.loadXML(xml)){ msxml = true; }
+    }catch(e){
+//       alert("msxml bad: " + e.description)
+    } 
+
+    try{
+      var s = new ActiveXObject("Microsoft.XMLDOM"); 
+      s.async = false;
+      if (s.loadXML(xsl)){
+        try{
+          var op = x.transformNode(s);
+          if (op.indexOf("stylesheet") == -1){
+            document.modereplace.src = "images/chkd.jpg"
+//            installform.modereplace.checked = true;
+//            alert("Replace V" + op.substr(op.lastIndexOf(">")+1))
+          }
+          else{
+            if (msxml2){
+//            alert("Side-By-Side")
+            }
+          }
+        }catch(e){
+          if (msxml2){
+//          alert("Side-By-Side")
+          }
+        }
+      }
+    }
+  catch(e){
+//       alert(e.description)
+    }
+  }
+}
+
+
+
+function installie55(){
+  location.href="ie55/setup.exe"
+  installform.browser.checked = true
+}
+
+function installmsxml3(){
+  location.href="plugin/msxml3.exe"
+//  document.body.refresh
+//  document.execCommand("refresh")
+  installform.msxml3.checked = true
+}
+
+function installxmlinst(){
+  location.href="plugin/xmlinst.exe"
+  installform.modereplace.checked = true
+}
+
+//-->
+</script>
+
+
+<BODY onLoad="doOnLoad();" MARGINWIDTH=5 MARGINHEIGHT=0 LINK=#006A4D VLINK=#773377 ALINK=#aa4433 bgcolor=#ffffff>
+
+<form name="installform">
+<TABLE topmargin=0 border=0 cellpadding=0 cellspacing=0>
+  <tr>
+   <td width=10% height=1><img src="images/transpix.gif" width=10 height=1></td>
+   <td width=2%  height=1><img src="images/transpix.gif" width=10 height=1></td>
+   <td width=5%  height=1><img src="images/transpix.gif" width=10 height=1></td>
+   <td width=3%  height=1><img src="images/transpix.gif" width=10 height=1></td>
+   <td width=80% height=1><img src="images/transpix.gif" width=10 height=1></td>
+  </tr>
+
+  <tr>
+    <td colspan=5 class=cssContentsHead>Install Software</td>
+  </tr>
+  <tr>
+    <td colspan=5 CLASS=csstext>
+The correct software configuration is required 
+so you can access the XML version of this page. <br>
+<b>If any of the 3 checkboxes below are not checked, your system is not configured correctly.</b>
+    </td>
+  </tr>
+
+
+  <tr><td height=20><img src="images/transpix.gif"></td></tr>
+  <tr>
+    <td colspan=5 class=cssProg nowrap>
+      There are 5 Steps.
+    </td>
+  </tr>
+  <tr>
+    <td colspan=5 class=csstext>
+<ul>
+<li>If any of the checkboxes below are <b>NOT</b> checked, you must follow the instructions for that step.
+<li>Steps 4, and 5 must be done <b>AFTER</b> Steps 1, 2, and 3. For example, if you reinstall Internet Explorer 5.5 
+      (or&nbsp;a later version), you must re-run Steps 2 through 5.
+<li>Be sure to <b>REBOOT</b> your computer after completing the required steps.
+</ul>
+    </td>
+  </tr>
+
+
+
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+  <tr><td colspan=5 height=1 bgcolor=#aa0060><img src="images/transpix.gif"></td></tr>
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+  <tr>
+    <td class=cssProg nowrap valign=top>Step 1.</td>
+    <td><img src="images/transpix.gif"></td>
+    <td valign=top><img src="images/unchkd.jpg" name="browser" width="24" height="24" alt="" /></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=cssCHead>Required Browser and version<br>
+      <FONT CLASS=csstext>Microsoft Internet Explorer 5.5 is required. Click below to install.
+    </td>
+  </tr>
+  <tr><td height=3><img src="images/transpix.gif"></td></tr>
+  <tr>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=csstext><input type=button onClick="javascript:installie55();" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Install IE 5.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+    </td>
+  </tr>
+
+
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+  <tr><td colspan=5 height=1 bgcolor=#aa0060><img src="images/transpix.gif"></td></tr>
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+
+
+  <tr>
+    <td class=cssProg nowrap valign=top>Step 2.</td>
+    <td><img src="images/transpix.gif"></td>
+    <td valign=top><img src="images/unchkd.jpg" name="msxml3" width="24" height="24" alt="" /></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=cssCHead>Required Software and version<br>
+      <FONT CLASS=csstext>The Microsoft Parser (Interpreter) "MSXML3" must be installed. Click below to install.
+    </td>
+  </tr>
+  <tr><td height=3><img src="images/transpix.gif"></td></tr>
+  <tr>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=csstext><input type=button onClick="javascript:installmsxml3();" value="Install MSXML3 Parser">
+    </td>
+  </tr>
+
+
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+  <tr><td colspan=5 height=1 bgcolor=#aa0060><img src="images/transpix.gif"></td></tr>
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+
+
+  <tr>
+    <td class=cssProg nowrap valign=top>Step 3.</td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=cssProg>Refresh this page</td>
+  </tr>
+
+
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+  <tr><td colspan=5 height=1 bgcolor=#aa0060><img src="images/transpix.gif"></td></tr>
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+
+
+  <tr>
+    <td class=cssProg nowrap valign=top>Step 4.</td>
+    <td><img src="images/transpix.gif"></td>
+    <td valign=top><img src="images/unchkd.jpg" name="modereplace" width="24" height="24" alt="" /></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=cssCHead>Required Software Configuration<br>
+      <FONT CLASS=csstext>The MSXML3 Parser must be set in "Replace" Mode (<i>NOT</i> Side-by-Side mode). Click below to update your settings.
+    </td>
+  </tr>
+  <tr><td height=3><img src="images/transpix.gif"></td></tr>
+  <tr>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=csstext><input type=button onClick="javascript:installxmlinst();" value="Set to Replace mode">
+    </td>
+  </tr>
+
+
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+  <tr><td colspan=5 height=1 bgcolor=#aa0060><img src="images/transpix.gif"></td></tr>
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+
+
+  <tr>
+    <td class=cssProg nowrap valign=top>Step 5.</td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+    <td CLASS=cssProg>Reboot!
+    </td>
+  </tr>
+  <tr><td height=5><img src="images/transpix.gif"></td></tr>
+  <tr><td colspan=5 height=1 bgcolor=#aa0060><img src="images/transpix.gif"></td></tr>
+  <tr><td height=20><img src="images/transpix.gif"></td></tr>
+</TABLE>
+</form>
+
+
+</BODY>
+</HTML>
+

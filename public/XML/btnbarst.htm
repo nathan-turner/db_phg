@@ -1,0 +1,390 @@
+<SCRIPT language="javascript">
+<!--
+//var selindex=getqstringvalue("selindex",window.location.search)
+//  if(selindex==""){ selindex = "0" }
+//var specialty_id = getqstringvalue("specialty_id",window.location.search)
+//  if(specialty_id==""){ specialty_id = "020" }
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+var statedisplay=getqstringvalue("statedisplay",window.location.search)
+var sortby=getqstringvalue("sortby",window.location.search)
+  if(sortby==""){ sortby = "state" }
+var selectfield=getqstringvalue("selectfield",window.location.search)
+var selectvalue=getqstringvalue("selectvalue",window.location.search)
+var selectscreen=getqstringvalue("selectscreen",window.location.search)
+var states = getqstringvalue("states",window.location.search)
+var military=getqstringvalue("military",window.location.search)
+var nodecount=getqstringvalue("nodecount",window.location.search)
+
+var search=getqstringvalue("search",window.location.search)
+var srchinstitution=getqstringvalue("srchinstitution",window.location.search)
+srchinstitution = URLdecode(srchinstitution,"%26","&")
+//alert(srchinstitution);
+
+
+writepage(selectscreen)
+
+function doOnLoad(){
+  top.header.MM_nbGroup('down','navbar1','i_r2c3','images/slices/i_r2c3f3.gif',1)
+  top.header.callsniff();
+}
+
+
+
+///////////// CHOOSE INSTITUTION FUNCTIONS //////////////////////
+
+function doSearch(){
+  if(srchinstitution==""){
+    var searchstring = searchform.searchstring.value;
+  }else{
+    var searchstring = srchinstitution;
+  }
+  if(searchstring!=""){
+    searchstring = URLdecode(searchstring," ","%20")
+    searchstring = URLdecode(searchstring,"&","%26")
+    top.data.location.href = "choosestprog.htm?search=on&srchinstitution=" + searchstring
+  }
+  return false
+}
+
+function showmilitary(){
+  top.data.location.href="choosestprog.htm?military=yes"
+}
+
+function openwindow(strfile){
+  var winpop = window.open(strfile, "View", "width=700, height=475, menubar=1, toolbar=1, scrollbars=1, resizable=1");
+  winpop.focus();
+}
+
+function showsstateprogramsscreen(){
+  var qstring = ""
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].selectstatecheckbox.checked || top.data.document.forms[i].selectstatecheckbox.checked=="true"){
+      if(qstring!=""){ qstring+="," }
+      qstring += top.data.document.forms[i].name
+      //alert(qstring)
+    }
+  }
+
+  if(qstring != ""){
+    //alert("choosestprog.htm?statedisplay="+qstring)
+    top.data.location.href="choosestprog.htm?states="+qstring+"&states="+states
+  }
+  else{
+    alert("Please check at least one State.")
+  }
+}
+
+
+
+function showspecialtyscreen(){
+  var qstring = ""
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].selectspeccheckbox.checked || top.data.document.forms[i].selectspeccheckbox.checked=="true"){
+      if(qstring!=""){ qstring+="," }
+      qstring += top.data.document.forms[i].name
+//      alert(qstring)
+    }
+  }
+
+  if(qstring != ""){
+//    alert("state.htm?statedisplay="+qstring)
+    top.data.location.href="state.htm?statedisplay="+qstring+"&states="+states+"&srchinstitution="+srchinstitution+"&military="+military
+  }
+  else{
+    alert("Please check at least one Institution.")
+  }
+}
+
+//////// INSTITUTION SCREEN FUNCTIONS ////////
+function clearall(){
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].name!="fspec"){
+      top.data.document.forms[i].detailcheckbox.checked = 0
+    }
+  }
+}
+
+
+function openmedschaffil(inst_id){
+//  alert(inst_id)
+  var winpop = window.open("msaffil.htm?inst_id="+inst_id, "MS", "menubar=1, toolbar=1, scrollbars=1, resizable=1, width=450, height=225");
+}
+
+
+function showdetails(){
+  var qstring = ""
+  var specqstring = ""
+
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].name!="fspec"){
+      if(top.data.document.forms[i].detailcheckbox.checked || top.data.document.forms[i].detailcheckbox.checked=="true"){
+        if(qstring!=""){ qstring+="," }
+         qstring += top.data.document.forms[i].name
+        if(specqstring!=""){ specqstring+="," }
+         specqstring += top.data.document.forms[i]["specialty_id"].value
+//        alert(top.data.document.forms[i]["specialty_id"].value)
+//        alert(qstring)
+      }
+    }
+  }
+
+  if(qstring != ""){
+//    alert(""program.htm?specdisplay=" + specqstring + "&statedisplay=" + statedisplay + "&sortby=" + sortby+"&prog_id="+qstring + "&btnbar=st")
+    top.data.location.href="program.htm?specdisplay=" + specqstring + "&statedisplay=" + statedisplay + "&sortby=" + sortby+"&prog_id="+qstring + "&btnbar=st&states="+states
+  }
+  else{
+    alert("Please check at least one Program.")
+  }
+}
+
+function returntostatelist(){
+//  top.data.location.href = "choosest.htm"
+  top.data.location.href = "choosest.htm?states="+states
+}
+
+function returntostateproglist(){
+//  top.data.location.href = "choosest.htm"
+  if(srchinstitution!=""){
+    doSearch();
+  }else{
+    top.data.location.href = "choosestprog.htm?states="+states+"&military="+military
+  }
+}
+
+
+///////// PROGRAM SCREEN FUNCTIONS ////////
+function returntospecialty(){
+  top.data.location.href = "state.htm?statedisplay=" + statedisplay + "&sortby=" + sortby+"&states="+states
+}
+
+
+
+
+//////////////// URL FUNCTIONS /////////////////////////////
+function getqstringvalue(name,inpara){
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+
+
+///////////////// WRITE PAGE ///////////////////////
+function writepage(selectscreen){
+//alert(selectscreen)
+document.write("<html>")
+document.write("<head>")
+document.write("<STYLE>")
+document.write("  BODY {margin:0}")
+document.write("  .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("  .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("  .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("</STYLE>")
+document.write("</head>")
+document.write("<body onLoad=\"doOnLoad();\" bgcolor=#cccccc>")
+document.write("<table border=0 cellpadding=0 cellspacing=0 width=100%>")
+
+
+if(selectscreen=="choosest"){
+document.write("  <tr>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 alt= /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 alt= /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=90% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=1 alt= /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("    <td colspan=6 class=csstext bgcolor=#cccccc>")
+document.write("  <table border=0 cellpadding=0 cellspacing=0>")
+document.write("  <tr><form name=\"searchform\"  onsubmit=\"return doSearch()\">")
+document.write("  <td width=2%  height=1><img src=images/transpix.gif height=1 width=5></td>")
+document.write("  <td width=4%  height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=20% height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=4%  height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=4%  height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=20% height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=4%  height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=15% height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=4%  height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=15% height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=4%  height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td width=4%  height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  </tr><tr>")
+document.write("  <td><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:showsstateprogramsscreen();\" VALUE=\"View Institutions\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td><img src=images/transpix.gif height=1 width=30 alt= /></td>")
+document.write("  <td class=csstext><input onClick=\"doSearch();\" type=button value=\"Name Search>>\" class=csstextCENTER></td>")
+document.write("  <td class=csstext><input name=\"searchstring\" size=20 class=csstext value=\""+srchinstitution+"\"></td>")
+document.write("  <td><img src=images/transpix.gif height=1 width=25 alt= /></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:showmilitary();\" VALUE=\"All Military Institutions\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td img src=images/transpix.gif></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:openwindow('../Tour/XML_Tour.htm');\" VALUE=\"User Help for XML\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td img src=images/transpix.gif></td>")
+  if(nodecount==0){ document.write("  <td><img src=images/transpix.gif height=1 width=10 alt= /></td>") }
+  else{ document.write("    <td class=csstext nowrap>&nbsp;&nbsp;Count: <font class=csstextred><b>" + nodecount + "</b>&nbsp;&nbsp;&nbsp;&nbsp;</td>") }
+document.write("  </form></tr>")
+
+document.write("  </table>")
+document.write("    </td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=6 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=6 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=6 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+if(selectscreen=="choosestprog"){
+document.write("  <tr>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 alt= /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 alt= /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=90% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=1 alt= /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("    <td colspan=6 class=csstext bgcolor=#cccccc>")
+document.write("  <table border=0 cellpadding=0 cellspacing=0>")
+document.write("  <tr><form name=\"searchform\"  onsubmit=\"return doSearch()\">")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=5></td>")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=465></td>")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td height=1><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  </tr><tr>")
+document.write("  <td><img src=images/transpix.gif height=1 width=10></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:returntostatelist();\" VALUE=\"<< Return\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td><img src=images/transpix.gif height=1 width=10 alt= /></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:showspecialtyscreen();\" VALUE=\"Show Details\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td img src=images/transpix.gif></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:openwindow('../Tour/XML_Tour.htm');\" VALUE=\"User Help for XML\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td img src=images/transpix.gif></td>")
+  if(nodecount==0){ document.write("  <td><img src=images/transpix.gif height=1 width=10 alt= /></td>") }
+  else{ document.write("    <td class=csstext nowrap>&nbsp;&nbsp;Count: <font class=csstextred><b>" + nodecount + "</b>&nbsp;&nbsp;&nbsp;&nbsp;</td>") }
+document.write("  </form></tr>")
+
+document.write("  </table>")
+document.write("    </td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=6 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=6 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=6 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+
+
+
+
+
+
+
+
+
+
+if(selectscreen=="state"){
+document.write("  <tr>")
+document.write("    <td width=3%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=30% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=43% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><INPUT TYPE=BUTTON ONCLICK=\"javascript:returntostateproglist();\" VALUE=\"<< Return\" NAME=return CLASS=csstextcenter /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5  /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=30 /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=30 /></td>")
+document.write("    <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:showdetails();\" VALUE=\"View Program Details\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:clearall();\" VALUE=\"Clear Checkboxes\" NAME=clearall CLASS=csstextcenter /></td></tr>")
+document.write("    <td><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=9 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=9 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=9 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+if(selectscreen=="program"){
+document.write("  <tr>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td>")
+document.write("  <td width=20% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=78% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><INPUT TYPE=BUTTON ONCLICK=\"javascript:returntospecialty();\" VALUE=\"<< Return\" NAME=returntospecialty CLASS=csstextcenter /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#ffffff><img src=images/transpix.gif /></td></tr>")
+}
+
+if(selectscreen==""){
+document.write("  <tr>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td>")
+document.write("  <td width=20% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=78% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+
+document.write("</table>")
+document.write("</body>")
+document.write("</html>")
+}
+
+//-->
+</script>
+
+
+

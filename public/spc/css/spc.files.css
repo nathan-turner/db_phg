@@ -1,0 +1,183 @@
+#files-viewport {
+    height: 100%;
+}
+
+#files-viewport .left,
+#files-viewport .center {
+    border: 1px solid #eee;
+    vertical-align: top;
+    text-align: left;
+}
+#files-viewport .left {
+    border-top: 0;
+}
+
+#files-viewport .left {
+    width: 210px;
+}
+
+/*** dynatree overrides ***/
+ul.dynatree-container {
+    border: 0 !important;
+}
+
+.dynatree-title {
+    font-family: Arial, sans-serif, Verdana;
+    padding: 4px 6px !important;
+    color: #444;
+}
+
+ul.dynatree-container li {
+    padding: 1px !important;
+    margin: 3px 0 !important;
+}
+
+ul.dynatree-container a:focus, span.dynatree-focused a:link {
+    background-color: #D8F0FA !important;
+}
+
+span.dynatree-active a {
+    border-radius: 2px;
+}
+
+#file-search {
+    width: 196px;
+    margin: 0 3px 6px;
+    padding: 6px 2px !important;
+    border: 1px solid #e3e3e3 !important;
+}
+
+#files-left-nav {
+    width: 199px;
+    margin: 2px 3px 6px;
+    border: 1px solid #e3e3e3;
+    border-radius: 3px;
+    background-color: #fafafa;
+}
+#files-left-nav table td {
+    cursor: pointer;
+    vertical-align: middle;
+    text-align: center;
+    border-left: 1px solid #e3e3e3;
+    padding: 4px;
+}
+
+#files-left-nav table td:first-child {
+    border-left: 0;
+}
+
+#files-left-nav table td:hover {
+    background-color: #f6f6f6;
+}
+
+/*** file-list ***/
+.file-list-table th,
+.file-list-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    color: #444;
+}
+
+.file-list-table td a {
+    text-decoration: none;
+    color: #444;
+}
+
+.file-list-table th {
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #444;
+    text-align: left;
+    font-weight: bold;
+}
+
+.file-list-table tbody tr:hover {
+    background-color: #fafafa;
+}
+
+.file-list-table .ui-icon {
+    cursor: pointer;
+    margin: 0 4px;
+}
+
+.file-list-table .file-name:hover,
+.file-list-table .folder-name:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.file-list-table tbody td .ui-icon {
+    float: left;
+    margin: -3px 2px;
+}
+
+#file-list-breadcrumb .ui-icon {
+    margin: -4px 4px;
+}
+
+#file-list-breadcrumb .ui-icon:last-child {
+    visibility: hidden;
+}
+
+#file-list-breadcrumb-row td {
+    color: #DD4B39;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 18px;
+    background-color: #fafafa;
+}
+
+.file-list-table input[type='checkbox'] {
+    float: left;
+    margin: -1px 6px;
+    border: 1px solid #eee;
+}
+
+#file-preview {
+    border: 1px solid #ddd;
+    padding: 4px;
+    background-color: #fff;
+    z-index: 10000;
+}
+
+#file-preview img {
+    width: 150px;
+    height: 150px;
+}
+
+.swfupload {
+    z-index: 100000 !important;
+}
+
+.files-upload-path {
+    font-weight: bold;
+    font-size: 11px;
+    color: #DD4B39;
+}
+
+#file-upload-dialog {
+    max-height: 300px;
+    overflow: auto !important;
+    overflow-x: hidden !important;
+}
+
+#file-list-wrapper {
+    overflow: auto;
+}
+
+.file-list-table .title {
+    width: 60%;
+}
+
+.file-list-table .size {
+    width: 10%;
+}
+
+.file-list-table .created-on {
+    width: 15%;
+}
+
+.file-list-table .modified-on {
+    width: 15%;
+}

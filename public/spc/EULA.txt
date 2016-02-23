@@ -1,0 +1,20 @@
+Smart PHP Calendar License Agreement
+
+BY USING THE SOFTWARE, YOU ACCEPT THE FOLLOWING TERMS AND CONDITIONS. IF YOU DO NOT AGREE WITH ANY OF THE TERMS OR CONDITIONS OF THIS LICENSE AGREEMENT, DO NOT PROCEED USE OF THE SOFTWARE OR ANY PORTION THEREOF. THE SOFTWARE IS PROTECTED BY INTERNATIONAL COPYRIGHT LAWS, AS WELL AS OTHER INTELLECTUAL PROPERTY LAWS AND TREATIES. THE SOFTWARE IS LICENSED, NOT SOLD.
+1. Copyright and Ownership.
+Smart PHP Calendar is the owner and authorized licensor of the Work. The Work is protected by copyright law and international treaty provisions. The Customer acquires solely a non-exclusive right to use the Work as permitted herein. The Customer does not acquire any rights of ownership to the Work. Nobody shall remove from the SOFTWARE any trademark, tradename, copyright notice or other notice.
+
+2. Distribution
+You are granted a license to use the Smart PHP Calendar on your server. The license does not grant you the rights to resell any of the source-code of the software. You can not bundle the Smart PHP Calendar software, or any of its source with another package for users to download and install. Modificating the system's general look and feel, behaviour or removing logos are forbidden.
+
+3. Prohibited Uses
+You may not redistribute the Software in your product if it is commercially sold or licensed, including SaaS type applications. You agree that the source code of the Licensed Software is confidential and proprietary to Smart PHP Calendar. Accordingly, You may not copy the Licensed Software, or decompile, unobfuscate, disassemble, reverse engineer or create a derivative work based upon the Licensed Software, or authorize anyone else to do so. You may not transfer, rent, lease, or sublicense the Software or any portions thereof. You may not change or remove the copyright notice from any of the files included in the Software. Use of the Licensed Software with a License Key obtained from a source other than Smart PHP Calendar is expressly and strictly forbidden. Permission is NOT given to redistribute the source code as a competing product that has the same use as the Software.
+
+4. Termination.
+The Licensor shall be allowed to terminate this license with immediate effect if the Customer fails to comply with the terms and conditions hereof. Upon the termination of the licence the Customer shall destroy the Work and shall erase all copies of the Work under his control.
+
+5. Limitation of Warranties and Liability.
+IN NO EVENT SHALL THE LICENSOR BE LIABLE TO THE CUSTOMER FOR ANY CONSEQUENTIAL, INDIRECT, SPECIAL, MULTIPLE OR INCIDENTAL DAMAGE, INCLUDING, WITHOUT LIMITATION, LOST PROFITS, BUSINESS INTERRUPTION AND LOST DATA, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH POTENTIAL LOSS OR DAMAGE. The Licensor does not warrant that use of the Work will be uninterrupted or error-free, nor that program errors will be corrected.
+
+6. Refund Policy
+Because our products are available as fully functional online demos our clients are able to test and try the products before buying them. For this reason, we offer no refunds as a matter of policy.

@@ -1,0 +1,72 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/UsermodTable.php:
+namespace Pinnacle\Model;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\ResultSet\ResultSet;
+
+class UsermodTable extends UsersTable
+{
+    protected $table ='vEmpMod';
+    const DEFAULT_PWD = 'phg123'; // very secure
+
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+
+        $this->resultSetPrototype = new ResultSet();
+        $this->resultSetPrototype->setArrayObjectPrototype(new Usermod());
+
+        $this->initialize();
+    }
+
+    public function addUser(Usermod $user, $identity) {
+        if( ! $identity || $identity->access < 2 ) return false; // silently fail
+        // make new default password if nothing was provided
+        if( ! $user->password3 ) $user->password3 = self::DEFAULT_PWD;
+        // prepare sql stmt
+        $result = $this->adapter->query('call AddAnEmployeeNoId(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())',
+            array( $user->ctct_name, $user->ctct_title, $user->ctct_phone,
+                $user->ctct_ext1, $user->ctct_fax, $user->ctct_cell, $user->ctct_hphone,
+                $user->ctct_addr_1, $user->ctct_addr_2, $user->ctct_addr_c,
+                $user->ctct_addr_z, $user->ctct_st_code,
+                $user->ctct_url, $user->emp_uname, $user->emp_status,
+                $user->emp_admin, $user->emp_access, $user->emp_dept,
+                $user->password3, $identity->username
+        ));
+        return $result;
+    }
+    
+    public function saveUser(Usermod $user, $id, $identity) {
+        $id  = (int) $id;
+        if( ! $identity || $identity->access < 2 ||
+           !((int) $user->emp_id) || $id != $user->emp_id ) return false; // silently fail
+        // prepare sql
+        $result = $this->adapter->query('Call EditAnEmployee (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())',
+            array(
+                $id, $user->ctct_name, $user->ctct_title, $user->ctct_phone,
+                $user->ctct_ext1, $user->ctct_fax, $user->ctct_cell, $user->ctct_hphone,
+                $user->ctct_addr_1, $user->ctct_addr_2, $user->ctct_addr_c,
+                $user->ctct_addr_z, $user->ctct_st_code,
+                $user->ctct_url, $user->emp_uname, $user->emp_status, $user->emp_admin,
+                $user->emp_access, $user->emp_dept, $user->password3, $identity->username
+        ));
+        return $result; 
+    }
+
+    public function getUser($id) {
+        $id  = (int) $id;
+
+        $rowset = $this->select(array(
+            'emp_id' => $id,
+        ));
+
+        $row = $rowset->current();
+
+        if (!$row) {
+            throw new \Exception("Could not find row $id");
+        }
+
+        return $row;
+    }
+}

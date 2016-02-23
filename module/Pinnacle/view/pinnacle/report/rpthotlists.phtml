@@ -1,0 +1,179 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/rpthotlists.phtml:
+// Summary report
+
+$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
+
+if(!isset($_GET["mark"]))
+			$_GET["mark"]=$_POST["mark"];
+		$market = $_GET["mark"];
+		if(!isset($_GET["filter"]))
+			$_GET["filter"]=$_POST["filter"];
+		$filter = $_GET["filter"];
+
+if($market=="yes")
+	$title = 'Marketing ';
+else
+	$title = 'Recruiting ';
+	
+
+switch($filter){	
+	case "p":
+		$vis="Pendings";
+		break;
+	case "h":
+		if($market=="yes"||$market)
+			$vis="Hot Prospects";
+		else
+			$vis="Hot Docs";
+		$vis="Pendings";
+		break;
+	case "1":
+		$vis="Lead List 1";
+		break;
+	case "2":
+		$vis="Lead List 2";
+		break;
+	case "s":
+		$vis="Passes (last month)";
+		break;
+	default:
+		$vis="Pendings";
+		break;
+	
+}//end switch
+$title.=$vis." Report";
+$sempid = $_COOKIE["userid"];
+
+   
+   
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			//$( "#startdatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#startdate"});
+			//$( "#enddatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#enddate"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+  input, label, select, br { display:none; }
+  table { font-size: 12px; line-height: 14px }
+  td { padding: 2px }
+  td { padding: 0px; margin: 0px; }
+}
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'rpthotlists')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="post">
+	<input type="hidden" name="mark" value="<?php echo $market; ?>">
+<input type="hidden" name="filter" value="<?php echo $filter; ?>">
+	<?php
+	if($market=="yes"||$market){
+	?>
+	<label>Marketer: </label>
+	<?php
+	}else{
+	?>
+	<label>Recruiter: </label>
+	<?php
+	}
+	?>
+	<select name="empid" id="empid">
+	<option value="0" <?php if($_POST["empid"]==0){ echo "selected"; } ?> > (Me) </option>
+	<option value="-1" <?php if($_POST["empid"]==-1){ echo "selected"; } ?> > All </option>
+	<option value="-2" <?php if($_POST["empid"]==-2){ echo "selected"; } ?> > Fuzion Callers </option>
+	<?php
+	//echo var_dump($emps);
+			foreach ($emps as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$_POST["empid"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+	
+	
+	
+<input type="submit" value="Submit" name="submitbtn" class="btn" />
+	</form>
+
+<br/>
+<?php //echo "HERE"; ?>	
+
+ <?php echo $table; ?>
+
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

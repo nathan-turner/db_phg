@@ -1,0 +1,1612 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/view.phtml:
+// Client Search
+
+$title = 'View Contract '.$ar['ctr_no'];
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+/*//$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.9.1.js');//
+
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');*/
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+//$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+//$this->headLink()->prependStylesheet($this->basePath() .'/resources/demos/style.css');//
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.core.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.widget.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.tabs.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.position.min.js', 'text/javascript');
+
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.js?v=0.3.2', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.css?v=0.3.2', 'text/javascript');
+*/
+/*
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet($this->basePath() .'/resources/demos/style.css');
+*/
+
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet($this->basePath() .'/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#contracttable { width: 100% }
+#contracttable th { border: 1px solid black }
+#contracttable td { padding: 10px; }
+.footer td { text-align: center; border: 1px solid black }
+#profile-div {  }
+#contacts-div {  }
+#status-form { display: none; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#specialtydiv { display: none; }
+#table2 th { text-align: left; }
+#directmail th { text-align: left; }
+#directmail { width: 90%; }
+.datefld { width: 100px; margin: 0px; }
+.ui-icon { float: left; }
+#accordion div { height: auto; }
+#accordion { }
+.ui-accordion-content-active { height: auto }
+#contacts_source_div { display: none }
+#contact_info_form { display: none; }
+#document-form, #document-form2 { display: none; }
+.errors { color: red; }
+.smoll a{ font-size: 8pt; color: #333333; line-height: 9pt; padding: 0px;}
+</style>
+
+
+
+<script>
+
+$(function() {
+
+function loadContactPreview(id)
+ {
+	$.getJSON('<?php echo $this->basePath();?>/ajax/get/'+id+'', function(data) {
+	var items = [];
+	
+	$("#contactnamelbl").text(data["arr"].ctct_name); 
+	$("#contacttitlelbl").text(data["arr"].ctct_title);
+	$("#contactphonelbl").text(data["arr"].ctct_phone);
+	$("#contactextlbl").text(data["arr"].ctct_ext1);
+	$("#contactfaxlbl").text(data["arr"].ctct_fax);
+	$("#contactcelllbl").text(data["arr"].ctct_cell);
+	$("#contactemaillbl").html('');
+	if(data["arr"].ctct_email!=null)
+	$("#contactemaillbl").html('<a href="mailto:'+data["arr"].ctct_email+'">'+data["arr"].ctct_email+'</a>');
+	//$("#contactnotelbl").text(data["arr"].ctct_note);		
+	});
+	$("#contact_holder").css('visibility','visible');
+ }
+
+
+function addComment() //add comment
+ {	
+	var id, ctr_id;
+	var comments;
+	id=$("#client_id").val();
+	ctr_id=$("#ctr_id").val();
+	comments = $("#commenttxt").val();
+	
+	if(comments!=''){	
+	//alert(comments);
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath();?>/ajax/addComment",	    
+	data: { id: id, ctr_id: ctr_id, comments: comments },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); $("#commenttxt").val(); /*window.location.href="/contract/view/"+ctr_id;*/ },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+	}	
+ }
+
+//add comment
+$("#commentsubmit").click(function() {	
+	addComment();
+});
+
+//add request
+function addRequest() //add comment
+ {	
+ //alert('test');
+	var id, ctr_id;
+	var comments;
+	id=$("#client_id").val();
+	ctr_id=$("#ctr_id").val();
+	stat_comments = $("#statcomments").val();	
+				
+	//alert(comments);
+	if(ctr_id!='' && stat_comments!=''){	
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath();?>/ajax/addChangeRequest",	    
+	data: { id: id, ctr_id: ctr_id, ctr_type: $("#ctr_type").val(), stat_reason: $("#statreason").val(), stat_comments: $("#statcomments").val(), chg_spec: $("#chg_spec").val(), chg_rec: $("#chg_rec").val(), pipl: $("#pipl").val(), chg_nut: $("#chg_nut").val() },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); $( "#status-form" ).dialog("close");  },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+	}	
+ }
+ 
+ //add request
+function updateDMSourcing() //add comment
+ {	
+
+	var id, ctr_id;
+	var ctr_src_cnt, ctr_src_appr, ctr_src_list, ctr_src_print, ctr_src_dmdate, ctr_src_dmurl, src_descr, src_dhtml;
+	
+	id=$("#client_id").val();
+	ctr_id=$("#ctr_id").val();
+	ctr_src_cnt=$("#ctr_src_cnt").val();
+	ctr_src_appr=$("#ctr_src_appr").val();
+	ctr_src_list=$("#ctr_src_list").val();
+	ctr_src_print=$("#ctr_src_print").val();
+	ctr_src_dmdate=$("#ctr_src_dmdate").val();
+	ctr_src_dmurl=$("#ctr_src_dmurl").val();
+	src_descr=$("#src_descr").val();
+	src_dhtml=$("#src_dhtml").val();
+	
+	//alert(ctr_src_dmurl);
+	
+	if(ctr_id!='' ){	
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath();?>/ajax/updateDirectMail",	    
+	data: { id: id, ctr_id: ctr_id, ctr_src_cnt: $("#ctr_src_cnt").val(), ctr_src_appr: $("#ctr_src_appr").val(), ctr_src_list: $("#ctr_src_list").val(), ctr_src_print: $("#ctr_src_print").val(), ctr_src_dmdate: $("#ctr_src_dmdate").val(), ctr_src_dmurl: $("#ctr_src_dmurl").val(), src_descr: $("#src_descr").val(), src_dhtml: $("#src_dhtml").val() },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message);   },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+	}	
+ }
+
+
+//LINK btn
+$("#placeholdlink").click(function() { $("#statusheading").text("Place on Hold Request");$( "#ctr_type" ).val(1); openStatusPanel(0,0);  });
+$("#cancelsearchlink").click(function() { $("#statusheading").text("Cancel Search Request");$( "#ctr_type" ).val(0); openStatusPanel(0,0);  });
+$("#zombifylink").click(function() { $("#statusheading").text("Zombify Request");$( "#ctr_type" ).val(6); openStatusPanel(0,0); });
+$("#changespecialtylink").click(function() { $("#statusheading").text("Change of Specialty Request");$( "#ctr_type" ).val(3); openStatusPanel(1,0);  });
+$("#changerecruiterlink").click(function() { $("#statusheading").text("Change of Recruiter Request");$( "#ctr_type" ).val(4); openStatusPanel(0,1); });
+$("#reactivationlink").click(function() { $("#statusheading").text("Reactivation Request");$( "#ctr_type" ).val(2); openStatusPanel(0,0); });
+
+
+
+//cancel btn
+$("#statcancelbtn").click(function() { $( "#status-form" ).dialog("close"); });
+//submit btn
+$("#statsubmitbtn").click(function() { addRequest(); });
+
+function openStatusPanel(spec, rec){
+$( "#status-form" ).dialog({
+height: 600,
+width: 640,
+modal: true
+});
+if(spec==1)
+	$("#specialtydiv").css('display','block'); 
+else
+	$("#specialtydiv").css('display','none'); 
+	
+if(rec==1)
+	$("#recruiterdiv").css('display','block'); 
+else
+	$("#recruiterdiv").css('display','none'); 
+
+}
+
+//tab links
+$("#profilelink").click(function() {	
+	switchPanel($("#profile-div"));
+
+});
+$("#sourcinglink").click(function() {	
+	switchPanel($("#sourcing-div"));
+	$( "#accordion" ).accordion({
+heightStyle: "content",
+collapsible: true
+});	
+	
+});
+$("#piplrlink").click(function() {	
+	switchPanel($("#piplr-div"));
+});
+$("#tqclink").click(function() {	
+	switchPanel($("#tqc-div"));
+});
+$("#statuslink").click(function() {	
+	switchPanel($("#status-div"));
+});
+$("#noteslink").click(function() {	
+	switchPanel($("#notes-div"));
+});
+$("#contactslink").click(function() {		
+	loadContactPreview($("#contactlist").val());
+	switchPanel($("#contacts-div"));
+});
+//select a contact
+ $("#contactlist").change(function() {
+	loadContactPreview($("#contactlist").val());
+});
+
+ function switchPanel(obj)
+{	
+	$(".tab").addClass('hiddendiv');
+	obj.toggleClass('hiddendiv');
+}
+
+$(function() {
+ $( "#src_cnt_date" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_src_cnt"});
+});
+$(function() {
+ $( "#src_appr" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_src_appr"});
+});
+$(function() {
+ $( "#src_list" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_src_list"});
+});
+$(function() {
+ $( "#src_print" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_src_print"});
+});
+$(function() {
+ $( "#src_dmdate" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_src_dmdate"});
+});
+//src_profile_date
+$(function() {
+ $( "#src_profile_date" ).datepicker({altFormat: "yy-mm-dd",  altField: "#profile_date"});
+});
+//dm_submit
+
+$("#dm_submit").click(function() {	
+	updateDMSourcing();
+ });
+
+ /*$(function() {
+$( "#accordion" ).accordion({
+heightStyle: "fill",
+collapsible: true
+});sourcing_proposal_link
+});*/
+
+$("#sourcing_proposal_link").click(function() {	
+	openContactSourcePanel();
+ });
+ 
+ 
+ 
+ ///CONTACTS STUFF
+ 
+ function clearContactErrors()
+{
+	$(".errors").text("");
+}
+
+function addContact() //add contact
+ {
+ //alert(JSON.stringify({ "backref": "test" }));
+ clearContactErrors();
+	
+	var contact_recruiting_primary;
+	var contact_marketing_primary;
+	var contact_marketing_secondary;
+	var contact_fuzion_primary;
+	var contact_fuzion_secondary;
+	var contact_locums_primary;
+	var contact_locums_secondary;
+	
+	contact_recruiting_primary = $("#contact_recruiting_primary").prop('checked')? 1 : 0;	
+	contact_marketing_primary = $("#contact_marketing_primary").prop('checked')? 1 : 0;
+	contact_marketing_secondary = $("#contact_marketing_secondary").prop('checked')? 1 : 0;
+	contact_fuzion_primary = $("#contact_fuzion_primary").prop('checked')? 1 : 0;
+	contact_fuzion_secondary = $("#contact_fuzion_secondary").prop('checked')? 1 : 0;
+	contact_locums_primary = $("#contact_locums_primary").prop('checked')? 1 : 0;
+	contact_locums_secondary = $("#contact_locums_secondary").prop('checked')? 1 : 0;
+	
+	var bValid = true;
+	
+	bValid = checkEmpty("#contact_name", "Name");
+	bValid = checkEmpty("#contact_title", "Title");	
+	bValid = checkEmpty("#contact_company", "Company");
+	
+	bValid = checkEmail("#contact_email", "Email");
+	
+	if(bValid){
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/addContact",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { backref: $("#ctct_backref").val(), contact_name: $("#contact_name").val(), 
+	contact_title: $("#contact_title").val(),
+	contact_company: $("#contact_company").val(),
+	contact_phone: $("#contact_phone").val(),	
+	contact_ext1: $("#contact_ext1").val(),
+	contact_fax: $("#contact_fax").val(),
+	contact_ext2: $("#contact_ext2").val(),	
+	contact_cell: $("#contact_cell").val(),
+	contact_ext3: $("#contact_ext3").val(),
+	contact_email: $("#contact_email").val(),
+	contact_address: $("#contact_address").val(),
+	contact_address2: $("#contact_address2").val(),
+	contact_city: $("#contact_city").val(),
+	contact_state: $("#contact_state").val(), ///
+	//$("select#contact_state option").each(function() { this.selected = (this.value == data["arr"].ctct_st_code); });
+	contact_zip: $("#contact_zip").val(),
+	contact_website: $("#contact_website").val(),
+	contact_note: $("#contact_note").val(),
+	contact_home_phone: $("#contact_home_phone").val(),
+	contact_home_fax: $("#contact_home_fax").val(),
+	contact_pager: $("#contact_pager").val(),
+	contact_type: '5', //hard-coded	
+	contact_status: $("#contact_status").val(),
+	contact_user_mod: $("#contact_user_mod").val(),
+	contact_recruiting_primary: contact_recruiting_primary,
+	contact_marketing_primary: contact_marketing_primary,
+	contact_marketing_secondary: contact_marketing_secondary,
+	contact_fuzion_primary: contact_fuzion_primary,
+	contact_fuzion_secondary: contact_fuzion_secondary,
+	contact_locums_primary: contact_locums_primary,
+	contact_locums_secondary: contact_locums_secondary
+	},
+	//data: "backref=test",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); resetContactPanel();$( "#contact_info_form" ).dialog("close"); window.location.href="<?php echo $this->basePath(); ?>/client/view/"+$( "#client_id").val(); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+	}
+	
+			
+ }
+ 
+ function updateContact() //update contact
+ {
+ //alert(JSON.stringify({ "backref": "test" }));
+ clearContactErrors();
+	//alert($("#ctct_backref").val());
+	var contact_recruiting_primary;
+	var contact_marketing_primary;
+	var contact_marketing_secondary;
+	var contact_fuzion_primary;
+	var contact_fuzion_secondary;
+	var contact_locums_primary;
+	var contact_locums_secondary;
+	var contact_id = $("#contactlist").val();
+	if($("#contactlist").val()=='' || $("#contactlist").val()<=0){
+		alert('No Contact ID found');
+		return false;
+	}	
+	
+	contact_recruiting_primary = $("#contact_recruiting_primary").prop('checked')? 1 : 0;	
+	contact_marketing_primary = $("#contact_marketing_primary").prop('checked')? 1 : 0;
+	contact_marketing_secondary = $("#contact_marketing_secondary").prop('checked')? 1 : 0;
+	contact_fuzion_primary = $("#contact_fuzion_primary").prop('checked')? 1 : 0;
+	contact_fuzion_secondary = $("#contact_fuzion_secondary").prop('checked')? 1 : 0;
+	contact_locums_primary = $("#contact_locums_primary").prop('checked')? 1 : 0;
+	contact_locums_secondary = $("#contact_locums_secondary").prop('checked')? 1 : 0;
+		
+	var bValid = true;
+	
+	bValid = checkEmpty("#contact_name", "Name");
+	bValid = checkEmpty("#contact_title", "Title");	
+	bValid = checkEmpty("#contact_company", "Company");
+	
+	bValid = checkEmail("#contact_email", "Email");
+	
+	if(bValid){
+	$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath(); ?>/ajax/updateContact",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { backref: $("#ctct_backref").val(), 
+	contact_id: $("#contactlist").val(),
+	contact_name: $("#contact_name").val(), 
+	contact_title: $("#contact_title").val(),
+	contact_company: $("#contact_company").val(),
+	contact_phone: $("#contact_phone").val(),	
+	contact_ext1: $("#contact_ext1").val(),
+	contact_fax: $("#contact_fax").val(),
+	contact_ext2: $("#contact_ext2").val(),	
+	contact_cell: $("#contact_cell").val(),
+	contact_ext3: $("#contact_ext3").val(),
+	contact_email: $("#contact_email").val(),
+	contact_address: $("#contact_address").val(),
+	contact_address2: $("#contact_address2").val(),
+	contact_city: $("#contact_city").val(),
+	contact_state: $("#contact_state").val(), ///
+	//$("select#contact_state option").each(function() { this.selected = (this.value == data["arr"].ctct_st_code); });
+	contact_zip: $("#contact_zip").val(),
+	contact_website: $("#contact_website").val(),
+	contact_note: $("#contact_note").val(),
+	contact_home_phone: $("#contact_home_phone").val(),
+	contact_home_fax: $("#contact_home_fax").val(),
+	contact_pager: $("#contact_pager").val(),
+	contact_type: '5', //hard-coded	
+	contact_status: $("#contact_status").val(),
+	contact_user_mod: $("#contact_user_mod").val(),
+	contact_recruiting_primary: contact_recruiting_primary,
+	contact_marketing_primary: contact_marketing_primary,
+	contact_marketing_secondary: contact_marketing_secondary,
+	contact_fuzion_primary: contact_fuzion_primary,
+	contact_fuzion_secondary: contact_fuzion_secondary,
+	contact_locums_primary: contact_locums_primary,
+	contact_locums_secondary: contact_locums_secondary
+	},
+	//data: "backref=test",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); resetContactPanel();$( "#contact_info_form" ).dialog("close"); },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+	}
+				
+ }
+ 
+ function loadContactPanel(id)
+ { 
+	resetContactPanel();
+	$("#form_title").text("Edit Contact");
+	$.getJSON('<?php echo $this->basePath(); ?>/ajax/get/'+id+'', function(data) {
+	var items = [];
+	
+	$("#contact_name").val(data["arr"].ctct_name); 
+	$("#contact_title").val(data["arr"].ctct_title);
+	$("#contact_phone").val(data["arr"].ctct_phone);
+	$("#contact_ext1").val(data["arr"].ctct_ext1);
+	$("#contact_ext2").val(data["arr"].ctct_ext2);
+	$("#contact_fax").val(data["arr"].ctct_fax);
+	$("#contact_cell").val(data["arr"].ctct_cell);
+	$("#contact_email").val(data["arr"].ctct_email);
+	$("#contact_company").val(data["arr"].ctct_company);
+	$("#contact_website").val(data["arr"].ctct_url);
+	$("#contact_home_phone").val(data["arr"].ctct_hphone);
+	$("#contact_home_fax").val(data["arr"].ctct_hfax);
+	$("#contact_pager").val(data["arr"].ctct_pager);
+	$("#contact_address").val(data["arr"].ctct_addr_1);
+	$("#contact_address2").val(data["arr"].ctct_addr_2);
+	$("#contact_city").val(data["arr"].ctct_addr_c);
+	$("#contact_state").val(data["arr"].ctct_st_code); ///
+	//$("select#contact_state option").each(function() { this.selected = (this.value == data["arr"].ctct_st_code); });
+	$("#contact_zip").val(data["arr"].ctct_addr_z);
+	$("#contact_note").val(data["arr"].ctct_reserved2);
+	$("#contact_status").val(data["arr"].ctct_status);
+	if(data["arr"].ctct_marketing==1)
+		$("#contact_marketing_primary").prop('checked', true);
+	if(data["arr"].ctct_secondary==1)
+		$("#contact_marketing_secondary").prop('checked', true);
+	if(data["arr"].ctct_fuzion1==1)
+		$("#contact_fuzion_primary").prop('checked', true);
+	if(data["arr"].ctct_fuzion2==1)
+		$("#contact_fuzion_secondary").prop('checked', true);
+	if(data["arr"].ctct_locum1==1)
+		$("#contact_locums_primary").prop('checked', true);
+	if(data["arr"].ctct_locum2==1)
+		$("#contact_locums_secondary").prop('checked', true);	
+	
+	$("#contact_recruiting_primary").val(data["arr"].ctct_recruiting);
+	// not really used?
+	$("#contact_phg_unsub").val(data["arr"].ctct_email);
+	$("#contact_plt_unsub").val(data["arr"].ctct_email);
+	$("#contact_fuzion_unsub").val(data["arr"].ctct_email);
+	
+	
+	});
+	//$("#contact_update_btn").css('visibility','visible');
+	$("#contact_update_btn").css('display','inline');
+	$("#contact_submit_btn").css('display','none');
+	
+	//$("#contact_holder").css('visibility','visible');
+ }
+ 
+  function resetContactPanel()
+ {
+	$("#contact_name").val('');
+	$("#contact_title").val('');
+	$("#contact_phone").val('');
+	$("#contact_ext1").val('');
+	$("#contact_ext2").val('');
+	$("#contact_fax").val('');
+	$("#contact_cell").val('');
+	$("#contact_email").val('');
+	$("#contact_company").val('');
+	$("#contact_website").val('');
+	$("#contact_home_phone").val('');
+	$("#contact_home_fax").val('');
+	$("#contact_pager").val('');
+	$("#contact_address").val('');
+	$("#contact_address2").val('');
+	$("#contact_city").val('');
+	$("#contact_state").val(''); ///	
+	$("#contact_zip").val('');
+	$("#contact_note").val('');
+	$("#contact_status").val('');
+	
+		$("#contact_marketing_primary").prop('checked', false);	
+		$("#contact_marketing_secondary").prop('checked', false);		
+		$("#contact_fuzion_primary").prop('checked', false);	
+		$("#contact_fuzion_secondary").prop('checked', false);	
+		$("#contact_locums_primary").prop('checked', false);	
+		$("#contact_locums_secondary").prop('checked', false);	
+ }
+ 
+ function checkEmpty(id, label)
+ {
+	if($(id).val().trim()==''){		
+		$(id+"_err").text(label + " must not be empty");
+		return false;
+	}
+	return true;
+ }
+ 
+ function checkEmail( id, label ) {
+ regexp = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i;
+if ( !( regexp.test( $(id).val() ) ) ) {
+$(id+"_err").text(label + " must be valid");
+
+return false;
+} else {
+return true;
+}
+}
+ 
+ //update contact btn
+ $("#contact_update_btn").click(function() {
+//alert($("#contactlist").val());
+updateContact();
+});
+ //edit contact btn
+ $("#contacteditbtn").click(function() {
+	loadContactPanel($("#contactlist").val());
+	openContactPanel();
+});
+//cancel btn
+$("#contact_cancel_btn").click(function() {resetContactPanel(); $( "#contact_info_form" ).dialog("close");});
+//add/submit button
+$("#contact_submit_btn").click(function() {
+	addContact();
+});
+//open add contact panel
+$("#contactaddbtn").click(function() {
+	$("#form_title").text("Add Contact");
+	openContactPanel();
+});
+
+
+ $("#pre-profilelink").click(function() {
+	openDocsPanel();
+});
+
+$("#doccancelbtn").click(function() {
+
+	$( "#document-form" ).dialog("close");
+});
+
+$("#docsubmitbtn").click(function() {
+
+	sendDocument();
+});
+
+function sendDocument()
+{ 	
+	var link = '<?php echo $this->basePath(); ?>/contract/preprofile?ctr_id=<?php echo $ar['ctr_id']; ?>&cont_id='+$("#contactlist2").val();
+	
+	window.open(link);
+}
+
+//letter links
+$("#welcome-letter").click(function() {	
+	$("#letterid").val("#welcome-letter");
+	openLettersPanel();
+	return false;
+});
+$("#45-day-survey").click(function() {	
+	$("#letterid").val("#45-day-survey");
+	openLettersPanel();
+	return false;
+});
+$("#180-day-survey").click(function() {	
+	$("#letterid").val("#180-day-survey");
+	openLettersPanel();
+	return false;
+});
+$("#annual-survey").click(function() {	
+	$("#letterid").val("#annual-survey");
+	openLettersPanel();
+	return false;
+});
+$("#hold-survey").click(function() {	
+	$("#letterid").val("#hold-survey");
+	openLettersPanel();
+	return false;
+});
+$("#cancel-survey").click(function() {	
+	$("#letterid").val("#cancel-survey");
+	openLettersPanel();
+	return false;
+});
+$("#placement-survey").click(function() {	
+	$("#letterid").val("#placement-survey");
+	openLettersPanel();
+	return false;
+});
+
+$("#lettercancelbtn").click(function() {
+
+	$( "#document-form2" ).dialog("close");
+});
+$("#lettersubmitbtn").click(function() { //open letter in new window with variables loaded
+	openLetter();
+});
+
+function openLetter() ///new
+{ 	//alert($($("#letterid").val()).attr('href'));
+	//alert($("#letterid").val());
+	//var link = '<?php echo $this->basePath(); ?>/contract/preprofile?ctr_id=<?php echo $ar['ctr_id']; ?>&cont_id='+$("#contactlist2").val();
+	var path = $($("#letterid").val()).attr('href');
+	//var path = '<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\\Reports\\';
+	
+	//var link = path+$("#ctrpopsel").val()+" MM.DOC";
+	var link = path+$("#contactlist3").val()+""; //add variables for contact stuff to the end
+	//alert(link);
+	window.open(link);
+}
+
+ 
+});
+
+function openContactSourcePanel(){
+$( "#contacts_source_div" ).dialog({
+height: 170,
+width: 640,
+modal: true
+});
+}
+
+
+function openContactPanel(){
+$( "#contact_info_form" ).dialog({
+height: 920,
+width: 740,
+modal: true
+});
+}
+
+function openDocsPanel(){
+$( "#document-form" ).dialog({
+height: 220,
+width: 540,
+modal: true
+});
+}
+
+function openLettersPanel(){
+$( "#document-form2" ).dialog({
+height: 220,
+width: 540,
+modal: true
+});
+}
+</script>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1><a href="<?php echo $this->basePath(); ?>/contract/edit/<?php echo $ar['ctr_id']; ?>">Edit</a>
+
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	
+?>
+<?php if(trim($_GET["message"])!=''){ ?><p style="text-align:center; color: red"><?php echo $_GET["message"]; ?></p><?php } ?>
+
+<h4><?php echo $ar['ctr_location_c'].", ".$ar['ctr_location_s']; ?></h4>
+<p>
+<?php echo $ar['ctct_addr_1']." ".$ar['ctct_addr_2']." ".$ar['ctr_location_c'].", ".$ar['ctr_location_s']." ".$ar['ctr_location_z']; ?>
+</p>
+
+
+
+<table id="contracttable">
+<tr>
+<th>#</th><th>Date</th><th>Facility</th><th>Spec.</th><th>Status</th><th>Recruiter</th><th>Type</th><th>Amount</th><th>Monthly</th><th>Notice</th>
+</tr>
+<tr>
+<td><?php echo $ar['ctr_no']; ?></td>
+<td><?php echo $ar['ctr_date']; ?><br/><small><?php echo $ar['ctr_retain_date']; ?></small></td>
+<td><a href="<?php echo $this->basePath(); ?>/client/view/<?php echo $ar['cli_id']; ?>"><?php echo $ar['ctct_name']; ?></a>
+<?php
+if($ar['bill_id']!='')
+{
+?>	
+<br><span title="Child Client" class="smoll"><a style="color: #333333; " href="<?php echo $this->basePath(); ?>/client/view/<?php echo $ar['bill_id']; ?>"><?php echo $ar['bill_name']; ?> </a></span>
+<?php
+}
+?>
+</td>
+<td>
+<?php 
+if($ar['ctr_nurse']!=0)
+echo '<span class="smoll" title="'.$ar["ctr_nu_type"].'">'.$ar["at_name"].'</span>';
+else
+echo '<span title="'.$ar["sp_name"].'">'.$ar["ctr_spec"].'</span>'; 
+//echo $ar["ctr_nurse"];
+?>
+</td>
+<td><?php echo $ar['st_name']; ?></td>
+<td><?php echo $ar['emp_uname']; ?></td>
+<td><?php echo $ar['ctr_type']; ?></td>
+<?php
+if($ar['ctr_type']=="LT"){
+echo '<td align="center" colspan="2">';
+	if($ar['ctr_locumactive']!=0)
+		echo "Active";
+	else
+		echo "nbsp;";
+echo '</td>';
+}
+else{?>
+<td>$<?php echo number_format($ar['ctr_amount'],2); ?></td>
+<td>$<?php echo number_format($ar['ctr_monthly'],2); ?></td>
+<?php
+}
+?>
+
+<td><?php echo $ar['ctr_shortnote']; ?></td>
+
+</tr>
+<?php
+if($ar['ctr_status']==14){
+?>
+</table>
+<p style="text-align: center; color: red">Contract is Suspended<br/>Contract is suspended by Administration because of data inconsistency.</p>
+<?php
+}else{
+?>
+<tr class="footer">
+<td><a href="#" id="profilelink">Profile</a></td>
+<td><a href="#" id="sourcinglink">Sourcing</a></td>
+<td><a href="#" id="piplrlink">P / I / Pl / R</a></td>
+<td><a href="#" id="tqclink">TQC</a></td>
+<td colspan="2"><a href="#" id="statuslink">Change Status</a></td>
+<td><a href="#" id="noteslink">Notes</a></td>
+<td colspan="2"><a href="#" id="contactslink">Contacts</a></td>
+<td><a href="mailto:acchistory@phg.com?Subject=Account History Request for Contract <?php echo $ar['ctr_no']; ?>&body='Please send me the account history for the contract <?php echo $ar['ctr_no']; ?> (<?php if($ar['ctr_nurse']!=0){ echo "Mid-Level ";} ?>  <?php echo $ar['ctr_spec']; ?> <?php echo $ar['sp_name']; ?>). http://db.phg.com/pinnacle/contract.asp?ctr_id=<?php echo $ar['ctr_id']; ?>'" id="accountlink">Account History</a></td>
+
+</tr>
+</table>
+<p>&nbsp;</p>
+<?php
+}
+?>
+
+
+
+<!--PROFILE BOX //-->
+<div id="profile-div" class="tab hiddendiv" >
+<h4>Profile</h4>
+<form action="" method="post">
+Actual Profile Date:
+<input type="text" id="src_profile_date" name="src_profile_date" class="datefld" value="<?php echo $ar['ctr_pro_date2'];?>"/>
+<input type="hidden" name="profile_date" id="profile_date" value="<?php echo $ar['ctr_pro_date'];?>"/>	
+<input type="submit" name="profile_submit" value="Update" /><br/><br/>
+<a href="#" id="pre-profilelink">Pre-Profile Letter</a><br/>
+<!--<a href="#" id="changedatelink">Change Date</a><br/>-->
+<!--<a href="#" id="profilesheetlink">Profile Sheet</a><br/>nobody uses...?//-->
+<a href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\POST PROFILE LTR MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&city=<?php echo $pp['city'];?>&stat=<?php echo $pp['stat'];?>&sp_name=<?php echo $pp['sp_name'];?>&ctct_name=<?php echo $pp['ctct_name'];?>&cont_name=<?php echo $pp['cont_name'];?>&addr1=<?php echo $pp['addr1'];?>&addr2=<?php echo $pp['addr2'];?>&cont_title=<?php echo $pp['cont_title'];?>&req_name=<?php echo $pp['req_name'];?>&req_title=<?php echo $pp['req_title'];?>&pro_practice=<?php echo $pp['pro_practice'];?>&pro_commun=<?php echo $pp['pro_commun'];?>&ctr_nurse=<?php echo $pp['ctr_nurse'];?>&ctr_nu_type=<?php echo $pp['ctr_nu_type'];?>&at_name=<?php echo $pp['at_name'];?>" id="postprofilelink" target="_blank">Post Profile Letter</a><br/>
+</form>
+</div>
+<!--END PROFILE BOX //-->
+
+<!--SOURCING BOX //-->
+<div id="sourcing-div" class="tab hiddendiv" >
+<h4>Sourcing</h4>
+
+<strong>Responses:</strong> <a href="<?php echo $this->basePath(); ?>/contract/responses/<?php echo $ar['ctr_id']; ?>"><?php echo $reqtotal;?></a><br/>
+
+<h5>Direct Mail</h5>
+
+<table id="directmail">
+<tr>
+<th></th>
+<th style="text-align:center">Date</th>
+<th></th>
+<th>Opportunity Description:</th>
+<th>HTML Description:</th>
+</tr>
+<tr>
+<th></th>
+<td></td>
+<td></td>
+<td rowspan="7" ><textarea id="src_descr" name="src_descr" rows="10"><?php echo $ar["cd_text"]; ?><?php echo $ar['src_descr'];?></textarea></td>
+<td rowspan="7" ><textarea id="src_dhtml" name="src_dhtml" rows="10"><?php echo $ar["cd_html"]; ?><?php echo $ar['src_dhtml'];?></textarea></td>
+</tr>
+<tr>
+<th>Counts Requested:</th>
+<td>
+
+<input type="text" id="src_cnt_date" name="src_cnt_date" class="datefld" value="<?php echo $ar['ctr_src_cnt2'];?>"/>
+<input type="hidden" name="ctr_src_cnt" id="ctr_src_cnt" value="<?php echo $ar['ctr_src_cnt'];?>"/>	
+
+</td>
+<td><a target="_blank" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\DIRECT MAIL COUNT REQUEST MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>">Request Count</a></td>
+</tr>
+<tr>
+<th>Sourcing Approved by Client:</th>
+<td>
+
+<input type="text" id="src_appr" name="src_appr" class="datefld" value="<?php echo $ar['ctr_src_appr2'];?>"/>
+<input type="hidden" name="ctr_src_appr" id="ctr_src_appr" value="<?php echo $ar['ctr_src_appr'];?>"/>	
+
+</td>
+<td></td>
+</tr>
+<tr>
+<th>List Ordered:</th>
+<td>
+
+<input type="text" id="src_list" name="src_list" class="datefld" value="<?php echo $ar['ctr_src_list2'];?>"/>
+<input type="hidden" name="ctr_src_list" id="ctr_src_list" value="<?php echo $ar['ctr_src_list'];?>"/>	
+
+</td>
+<td><a target="_blank" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\DIRECT MAIL LIST ORDER MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>">List Order Form</a></td>
+</tr>
+<tr>
+<th>Printing Ordered:</th>
+<td>
+
+<input type="text" id="src_print" name="src_print" class="datefld" value="<?php echo $ar['ctr_src_print2'];?>"/>
+<input type="hidden" name="ctr_src_print" id="ctr_src_print" value="<?php echo $ar['ctr_src_print'];?>"/>	
+
+</td>
+<td><a target="_blank" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\DIRECT MAIL PACKAGE ORDER FORM MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>">Printing Order Form</a></td>
+</tr>
+<tr>
+<th>DM Copy Mailed:</th>
+<td>
+
+<input type="text" id="src_dmdate" name="src_dmdate" class="datefld" value="<?php echo $ar['ctr_src_dmdate2'];?>"/>
+<input type="hidden" name="ctr_src_dmdate" id="ctr_src_dmdate" value="<?php echo $ar['ctr_src_dmdate'];?>"/>
+
+</td>
+<td></td>
+</tr>
+<tr>
+<th>Link to DM Piece:</th>
+<td colspan="2"><input type="text" name="ctr_src_dmurl" id="ctr_src_dmurl" value="<?php echo $ar['ctr_src_dmurl'];?>"/><!--<a href="">Link to DM Piece Document/Image</a>//--></td>
+
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+<td colspan="2"></td>
+</tr>
+<tr>
+<td><input type="button" value="Save Changes" id="dm_submit"/></td>
+<td><input type="button" value="Cancel" id="dm_cancel"/></td>
+<td></td>
+<td colspan="2"></td>
+</tr>
+</table>
+<hr/>
+
+<h4>Active Sources</h4>
+
+
+<?php 
+
+$newterm = false;
+    $isdraft = false;
+    if ($ar['ctr_src_term']=='' || $ar['ctr_src_term']==null || $ar['ctr_src_term']==0)
+		$newterm = true;    
+	$mm0 = 12;
+	$mm0d = date('Y-m-d');    
+	if(!$newterm){
+	    $mm0d = $ar['ctr_src_termdt'];
+		$mm0 = $ar['ctr_src_term'];	 
+		//need to finish this part????
+		/*if($mm0d==null || $mm0d=='')
+			$mm0d = date('Y-m-d');
+	    $mm0 = $ar['ctr_src_term'];	    
+		mmE = DateAdd("m",mm0,mm0d)
+		//' we need to find if sourcing ends soon - let's say, this current month. Or better yet, between Today and Today+1 month.
+		mNxt = DateAdd("m",1,Date())
+		if mmE < Date() then ' expired
+			sql = "EXEC SourcingEnd " & ctrid & ",'" & FormatDT(Date()) & "','" & Session("UserName") & "',1"
+			Conn.Execute(sql)
+			newterm = true
+		elseif mmE < mNxt then ' expires in 1 month
+			if Request("drops") = "yes" then
+				sql = "EXEC SourcingEnd " & ctrid & ",'" & FormatDT(Date()) & "','" & Session("UserName") & "',1"
+				Conn.Execute(sql)
+				newterm = true
+			else
+			end if
+		end if*/
+    }
+?>
+
+<?php
+	$table="";
+	
+	foreach ($actives as $key2=>$val2)
+	{
+		$amaa = $val2["csr_dm_ama"];
+		if($amaa==null || $amaa=='')
+			$amaa=0;
+		if($val2["csr_status"]==5)
+			$status="On Hold";
+		elseif($val2["csr_appr_date"]==null || $val2["csr_appr_date"]=='')
+			$status="Draft";
+		else
+			$status=date('Y-m-d', strtotime($val2["csr_appr_date"]));
+		
+		//echo $val2["csr_appr_date"]."HEREEEE*****";
+		if($val2["csr_appr_date"]!=0 && (int)$val2["csr_price"]==0)
+			$price="Quote Required";
+		else
+			$price = $val2["csr_price"]+$amaa;
+			//$price = number_format($val2["csr_price"],2)+$amaa;
+		$table.='<tr><td><a href="'.$this->basePath().'/contract/source/'.$val2["src_id"].'" target="_blank">'.$val2["src_name"].'</a></td><td>';
+		for($k=1;$k<=$val2["csr_rating"];$k++)
+				{
+					$table.= '<img src="'.$this->basePath().'/img/star.png" alt="*" width="16" height="16" border="0" title="Rating: '.$val2["csr_rating"].'">&nbsp;';
+				}
+				if($val2["csr_rating"]<=0)
+					$table.= '<img src="'.$this->basePath().'/img/star0.png" alt="*" width="16" height="16" border="0" title="Rating: '.$val2["csr_rating"].'">&nbsp;';
+				
+		$table.='</td><td style="text-align:center">'.$status.'</td><td style="text-align:center">'.$price.'</td></tr>';
+	}
+	$activetable2 = "<table>";
+	$activetable2 .= "<tr><th>Source</th><th>Rating</th><th>Client Approved</th><th>Price</th></tr>";
+	$activetable2 .= $table;
+	$activetable2 .= "</table>";
+	
+	if($table=="")
+		echo "Please create new sourcing campaign. ";
+	else
+		echo $activetable2;
+	
+	$pro_date = $ar['ctr_pro_date'];
+	//echo "desc". $ar['src_descr'].$ar["cd_text"];
+?>
+<br/>
+<a href="#" id="sourcing_proposal_link">Get Sourcing Campaign Proposal </a>&nbsp;&nbsp;&nbsp;&nbsp;
+<?php if($status=="Draft" && $pro_date!=null && $ar["cd_text"]!=""){ ?>
+<a href="<?php echo $this->basePath(); ?>/contract/sourcing4?ctr_id=<?php echo $ar['ctr_id'];?>">Approve and Submit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+
+<?php } else { 
+if($ar["cd_text"]=="")
+	$msg = "You must enter a description above";
+if($status!="Draft")
+	$msg = "Already approved!";
+if($pro_date==null)
+{
+	$msg = "You must enter a profile date";
+}
+?>
+<a href="#" onclick="alert('<?php echo $msg;?>')">Approve and Submit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<?php }?>
+<a href="#">Add New Source</a>&nbsp;&nbsp;
+<a href="<?php echo $this->basePath(); ?>/contract/sources/<?php echo $ar['ctr_id'];?>">Edit Sourcing Campaign </a>&nbsp;&nbsp;
+<hr/>
+<?php if(count($history)>0) { ?>
+<h4>Source History</h4>
+<Table border="1" cellspacing=1 class="nobg">
+<thead>
+<TR VALIGN="bottom">
+<TD ALIGN="center"><B>Source</B></TD>
+<TD ALIGN="center"><b>Rating</b></TD>
+<TD ALIGN="center"><B>Date Added</B></TD>
+<TD ALIGN="center"><B>Approved</B></TD>
+<TD ALIGN="center"><B>Completed</B></TD>
+<TD ALIGN="center"><B>Price</B></TD>
+<TD ALIGN="center"><B>Status</B></TD>
+<TD ALIGN="left"><B>Details</B></TD>
+</TR>
+<tbody>
+<?php 
+$table='';
+foreach($history as $hist=>$hval){ 
+	$postage_ama='';
+	if($hval["src_type"]==1)
+	{
+		if($hval["csr_dm_postage"]==null || $hval["csr_dm_postage"]=='')
+			$posta = 0;
+		else
+			$posta = $hval["csr_dm_postage"];
+		
+		$postage_ama.= $hval["csr_dm_code"]."(".$hval["csr_dm_count"]." x ". ($hval["csr_dm_piece"]+$posta).") ";
+		
+		if($hval["csr_dm_ama"]==null || trim($hval["csr_dm_ama"])=='')
+		{
+			$postage_ama.='AMA';
+			$amaa = 0;
+		}
+		else{
+			$postage_ama.='$'.$hval["csr_dm_ama"];
+			$amaa = $hval["csr_dm_ama"];	
+		}
+	}
+
+	$table.='<tr><td><a href="'.$this->basePath().'/contract/source/'.$hval["src_id"].'" target="_blank">'.$hval["src_name"].'</a> '.$postage_ama.'</td><td>';
+	for($k=1;$k<=$hval["csr_rating"];$k++)
+	{
+		$table.= '<img src="'.$this->basePath().'/img/star.png" alt="*" width="16" height="16" border="0" title="Rating: '.$hval["csr_rating"].'">&nbsp;';
+	}
+	if($hval["csr_rating"]<=0)
+		$table.= '<img src="'.$this->basePath().'/img/star0.png" alt="*" width="16" height="16" border="0" title="Rating: '.$hval["csr_rating"].'">&nbsp;';
+	$table.='</td>';
+	if($hval["csr_add_date"]=='')
+		$table.='<td>&nbsp;</td>';
+	else
+		$table.='<td>'.date('Y-m-d',strtotime($hval["csr_add_date"])).'</td>';	
+	if($hval["csr_appr_date"]=='')
+		$table.='<td>&nbsp;</td>';
+	else
+		$table.='<td>'.date('Y-m-d',strtotime($hval["csr_appr_date"])).'</td>';	
+	if($hval["csd_date"]=='')
+		$table.='<td>&nbsp;</td>';
+	else
+		$table.='<td>'.date('Y-m-d',strtotime($hval["csd_date"])).'</td>';		
+	$table.='<td>';
+		if($hval["csr_price"]==0)
+			$table.="&nbsp;";
+		else
+			$table.= "$".$hval["csr_price"]+$hval["csr_dm_ama"];
+	$table.='</td>';	
+	$table.='<td>'.$hval["csr_status"].'</td>';	
+	$table.='<td>'.$hval["csr_note"].''.$hval["csr_date_placed"].'</td>';	
+	
+ } 
+ echo $table;
+ ?>
+</table>
+<hr/>
+<?php } ?>
+
+<h4>New Sources</h4>
+<form name="source_form" action="<?php echo $this->basePath(); ?>/contract/sources/<?php echo $ar['ctr_id']; ?>" method="post" >
+
+<p>
+New Sourcing Campaign term for: 
+<select name="campaign_term" id="campaign_term" style="width: 120px">
+<option value="1"> 1 month</option> 
+<option value="2"> 2 months</option> 
+<option value="3"> 3 months</option> 
+<option value="4"> 4 months</option> 
+<option value="5"> 5 months</option>
+<option selected value="6"> 6 months</option>
+<option value="7"> 7 months</option>
+<option value="8"> 8 months</option>
+<option value="9"> 9 months</option>
+<option value="10"> 10 months</option>
+<option value="11"> 11 months</option>
+<option value="12"> 12 months</option>
+</select>
+Starting in 
+<select id="campaign_month" name="campaign_month" style="width: 120px">
+   <option <?php if(date('m')==1){ echo "selected";} ?> value="1">January</option>
+   <option <?php if(date('m')==2){ echo "selected";} ?> value="2">February</option>
+   <option <?php if(date('m')==3){ echo "selected";} ?> value="3">March</option>
+   <option <?php if(date('m')==4){ echo "selected";} ?> value="4">April</option>
+   <option <?php if(date('m')==5){ echo "selected";} ?> value="5">May</option>
+   <option <?php if(date('m')==6){ echo "selected";} ?> value="6">June</option>
+   <option <?php if(date('m')==7){ echo "selected";} ?> value="7">July</option>
+   <option <?php if(date('m')==8){ echo "selected";} ?> value="8">August</option>
+   <option <?php if(date('m')==9){ echo "selected";} ?> value="9">September</option>
+   <option <?php if(date('m')==10){ echo "selected";} ?> value="10">October</option>
+   <option <?php if(date('m')==11){ echo "selected";} ?> value="11">November</option>
+   <option <?php if(date('m')==12){ echo "selected";} ?> value="12">December</option>
+</select> 
+(of the next year, if the month passed already)
+
+</p>
+<p>
+Pick sources from the list: <!--PRINT ALL LINK//-->
+</p>
+
+
+
+
+
+<div id="accordion">
+<?php
+	
+	foreach ($sourcetypes as $keys=>$types)
+	{
+		echo "<h3>".$types['srt_id']."-".$types['srt_name']."</h3><div style='height:auto'>";		
+		
+		$ar_sources = $sources[$types['srt_id']];
+		for ($i=0; $i<count($ar_sources); $i++)
+		{
+			//if(!isset($ar['ctr_spec'])||$ar['ctr_spec']==null)
+				//$ar['ctr_spec']="";
+			if($ar['ctr_spec']=='' || ($ar_sources[$i]["src_sp_code"]=='---' || @strpos($ar_sources[$i]["src_sp_code"],$ar['ctr_spec'])!==false && $ar_sources[$i]["src_sp_code"]!=''))			
+			{
+				//echo "--".$ar_sources[$i]["src_name"]."-".$ar_sources[$i]["src_price"]."-".$ar_sources[$i]["src_pricing"]."-".$ar_sources[$i]["src_rating"]."-".$ar_sources[$i]["src_sp_code"]."-".$ar_sources[$i]["src_type"]."<br/>";
+				echo "&nbsp;&nbsp;".'<input type="checkbox" style="margin-top:0px; margin-right: 5px" name="sourcechk[]"  value="'.$ar_sources[$i]["src_id"].'" id="'.$ar_sources[$i]["src_id"].'"';
+				if($ar_sources[$i]["src_id"]==2||$ar_sources[$i]["src_id"]==1308)
+					echo ' checked ';
+				echo '/>'.$ar_sources[$i]["src_name"]."&nbsp;";
+				for($k=1;$k<=$ar_sources[$i]["src_rating"];$k++)
+				{
+					echo '<img src="'.$this->basePath().'/img/star.png" alt="*" width="16" height="16" border="0" title="Rating: '.$ar_sources[$i]["src_rating"].'">&nbsp;';
+				}
+				if($ar_sources[$i]["src_rating"]<=0)
+					echo '<img src="'.$this->basePath().'/img/star0.png" alt="*" width="16" height="16" border="0" title="Rating: '.$ar_sources[$i]["src_rating"].'">&nbsp;';
+				
+				if($ar_sources[$i]["src_price"]>0)
+					echo " $".(int)$ar_sources[$i]["src_price"]." / ".(int)$ar_sources[$i]["src_pricing"];
+				if($ar_sources[$i]["src_sp_code"]!='---')
+					echo " Specialty: <strong>".$ar_sources[$i]["src_sp_code"]."</strong>";
+				echo "<br/>";
+			}
+		}		
+		echo "</div><br/><br/>";
+	}	
+	
+?>
+</div>
+<input type="hidden" value="<?php echo $ar['ctr_id']; ?>" name="ctr_id" />
+<input type="submit" value="Submit Changes" name="submit"  class="btn btn-success btn-large" />
+
+</form>
+</div>
+<!--END SOURCING BOX onblur='document.getElementById("viewform").action="<?php echo $this->basePath(); ?>contract/sources/<?php echo $ar['ctr_id']; ?>";document.getElementById("viewform").method="post";document.getElementById("viewform").submit();'//-->
+
+<!--PIPLR BOX //-->
+<div id="piplr-div" class="tab hiddendiv" >
+<h4>P / I / Pl / R</h4>
+
+<table style="float: left; width: 50%; border: 1px solid; background-color:#eeeeee;">
+<tr>
+<th>Person ID#</th>
+<th>Name</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<?php
+foreach ($pipl as $row=>$arr)
+{	
+if($arr['pipl_cancel']!=1){							
+	echo "<tr><td>";
+	if($arr['pipl_nurse']==1)
+		echo "<a href='".$this->basePath()."/midlevel/view/".$arr['an_id']."'>".$arr['an_id']."</a>";
+	else
+		echo "<a href='".$this->basePath()."/physician/view/".$arr['ph_id']."'>".$arr['ph_id']."</a>";
+	echo "</td><td>";
+	if($arr['pipl_nurse']==1)
+		echo $arr['nu_name'].", ".$arr['nu_title']."(".$arr['at_abbr'].") ";
+	else
+		echo $arr['ctct_name'].", ".$arr['ctct_title']."(".$arr['ph_spec_main'].") ";
+	echo "</td>";
+	echo "<td>".date('Y-m-d',strtotime($arr['pipl_date']))."</td>";
+	echo "<td>".$arr['pist_name']."</td>";
+	echo "</tr>";
+}
+}
+?>
+</table>
+
+<table style="float: left; width: 300px; margin-left: 20px" id="table2">
+<tr>
+<th> Interviews Completed: </th>
+<td><?php echo $ar["icpl"]; ?></td>
+</tr>
+<tr>
+<th>Search to Placement:</th>
+<td><?php echo $ar["s2pl"]; if($ar["s2pl"]!=""){ echo " days"; }?></td>
+</tr>
+<tr>
+<th>Presents:</th>
+<td><?php echo $ar["pre"]; ?></td>
+</tr>
+<tr>
+<th>Interviews to Placement:</th>
+<td><?php echo $ar["i2pl"]; ?>%</td>
+</tr>
+<tr>
+<th>Presents to Interview:</th>
+<td><?php echo $ar["pr2i"]; ?>%</td>
+</tr>
+<tr>
+<th>Interviews Cancelled:</th>
+<td><?php echo $ar["ican"]; ?></td>
+</tr>
+</table>
+
+</div>
+<!--END PIPLR BOX //-->
+
+<!--TQC BOX //-->
+<div id="tqc-div" class="tab hiddendiv" >
+<h4>TQC</h4>
+
+<a id="welcome-letter" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\WELCOME LETTER MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctct_addr_1=<?php echo $ar['ctct_addr_1'];?>&ctct_addr_2=<?php echo $ar['ctct_addr_2'];?>&ctct_addr_c=<?php echo $ar['ctct_addr_c'];?>&ctct_addr_z=<?php echo $ar['ctct_addr_z'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctct_st_code=<?php echo $ar['ctr_location_s'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>" target="_blank">Welcome Letter</a><br/>
+<a id="45-day-survey" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\45 DAY SURVEY LTR MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctct_addr_1=<?php echo $ar['ctct_addr_1'];?>&ctct_addr_2=<?php echo $ar['ctct_addr_2'];?>&ctct_addr_c=<?php echo $ar['ctct_addr_c'];?>&ctct_addr_z=<?php echo $ar['ctct_addr_z'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctct_st_code=<?php echo $ar['ctr_location_s'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>" target="_blank">45 Day Survey</a><br/>
+<a id="180-day-survey" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\180 DAY SURVEY LTR MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctct_addr_1=<?php echo $ar['ctct_addr_1'];?>&ctct_addr_2=<?php echo $ar['ctct_addr_2'];?>&ctct_addr_c=<?php echo $ar['ctct_addr_c'];?>&ctct_addr_z=<?php echo $ar['ctct_addr_z'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctct_st_code=<?php echo $ar['ctr_location_s'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>" target="_blank">180 Day Survey</a><br/>
+<a id="annual-survey" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\ANNUAL SURVEY LETTER MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctct_addr_1=<?php echo $ar['ctct_addr_1'];?>&ctct_addr_2=<?php echo $ar['ctct_addr_2'];?>&ctct_addr_c=<?php echo $ar['ctct_addr_c'];?>&ctct_addr_z=<?php echo $ar['ctct_addr_z'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctct_st_code=<?php echo $ar['ctr_location_s'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>" target="_blank">Annual Survey</a><br/>
+<a id="hold-survey" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\HOLD SURVEY LETTER MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctct_addr_1=<?php echo $ar['ctct_addr_1'];?>&ctct_addr_2=<?php echo $ar['ctct_addr_2'];?>&ctct_addr_c=<?php echo $ar['ctct_addr_c'];?>&ctct_addr_z=<?php echo $ar['ctct_addr_z'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctct_st_code=<?php echo $ar['ctr_location_s'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>" target="_blank">Hold Survey</a><br/>
+<a id="cancel-survey" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\CANCEL SURVEY LETTER MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctct_addr_1=<?php echo $ar['ctct_addr_1'];?>&ctct_addr_2=<?php echo $ar['ctct_addr_2'];?>&ctct_addr_c=<?php echo $ar['ctct_addr_c'];?>&ctct_addr_z=<?php echo $ar['ctct_addr_z'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctct_st_code=<?php echo $ar['ctr_location_s'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>" target="_blank">Cancel Survey</a><br/>
+<a id="placement-survey" href="<?php echo $this->basePath(); ?>/word_doc2.php?filename=New Database\Reports\PLACEMENT SURVEY LTR MM.docx&ctr_no=<?php echo $ar['ctr_no'];?>&ctr_spec=<?php echo $ar['ctr_spec'];?>&ctct_addr_1=<?php echo $ar['ctct_addr_1'];?>&ctct_addr_2=<?php echo $ar['ctct_addr_2'];?>&ctct_addr_c=<?php echo $ar['ctct_addr_c'];?>&ctct_addr_z=<?php echo $ar['ctct_addr_z'];?>&ctr_location_c=<?php echo $ar['ctr_location_c'];?>&ctct_st_code=<?php echo $ar['ctr_location_s'];?>&ctr_location_s=<?php echo $ar['ctr_location_s'];?>&sp_name=<?php echo $ar['sp_name'];?>&ctct_name=<?php echo $ar['ctct_name'];?>" target="_blank">Placement Survey</a><br/>
+
+</div>
+<!--END TQC BOX //-->
+
+<!--STATUS BOX //-->
+<div id="status-div" class="tab " >
+<h4>Change Status</h4>
+<table style="width: 50%">
+<tr>
+<td>Contract put on Hold: </td><td>&nbsp;</td><td><?php if($ar["ctr_status"]==1 || $ar["ctr_status"]==16 || $_COOKIE["access"]==2){?><a href="<?php echo $this->basePath(); ?>/contract/ctrchange?ctr_id=<?php echo $ar['ctr_id']; ?>&type=1" id="_placeholdlink">Place on Hold Request</a><?php } ?></td>
+</tr>
+<tr>
+<td>Contract Cancelled: </td><td>&nbsp;</td><td><?php if($ar["ctr_status"]==1 || $ar["ctr_status"]==5 || $ar["ctr_status"]==16 || $_COOKIE["access"]==2){?><a href="<?php echo $this->basePath(); ?>/contract/ctrchange?ctr_id=<?php echo $ar['ctr_id']; ?>&type=0" id="_cancelsearchlink">Cancel Search Request</a><?php } ?></td>
+</tr>
+<tr>
+<td>Contract became zombie: </td><td>&nbsp;</td><td><?php if($ar["ctr_status"]==1 || $_COOKIE["access"]==2){?><a href="<?php echo $this->basePath(); ?>/contract/ctrchange?ctr_id=<?php echo $ar['ctr_id']; ?>&type=6" id="zombifylink">Zombify Request</a><?php } ?></td>
+</tr>
+<tr>
+<td>Contract Specialty Changed: </td><td>&nbsp;</td><td><?php if($ar["ctr_status"]==1 || $ar["ctr_status"]==16 || $_COOKIE["access"]==2){?><a href="<?php echo $this->basePath(); ?>/contract/ctrchange?ctr_id=<?php echo $ar['ctr_id']; ?>&type=3" id="_changespecialtylink">Change of Specialty Request</a><?php } ?></td>
+</tr>
+<tr>
+<td>Contract Recruiter Changed: </td><td>&nbsp;</td><td><?php if($ar["ctr_status"]==1 || $ar["ctr_status"]==16 || $_COOKIE["access"]==2){?><a href="<?php echo $this->basePath(); ?>/contract/ctrchange?ctr_id=<?php echo $ar['ctr_id']; ?>&type=4" id="_changerecruiterlink">Change of Recruiter Request</a><?php } ?></td>
+</tr>
+<tr>
+<td>Contract Reactivated: </td><td>&nbsp;</td><td><?php if($ar["ctr_status"]==5 || $ar["ctr_status"]==16 || $_COOKIE["access"]==2){?><a href="<?php echo $this->basePath(); ?>/contract/ctrchange?ctr_id=<?php echo $ar['ctr_id']; ?>&type=2" id="_reactivationlink">Reactivation Request</a><?php } ?></td>
+</tr>
+</table>
+</div>
+<!--END STATUS BOX //-->
+
+<!--NOTES BOX //-->
+<div id="notes-div" class="tab hiddendiv" >
+<h4>NOTES</h4>
+<div style="float: left; width: 70%">
+<input type="hidden" id="ctr_id" value="<?php echo $ar['ctr_id']; ?>" />
+<input type="hidden" id="client_id" value="<?php echo $ar['cli_id']; ?>" />
+<label>Enter Comment:</label>
+<textarea name="commenttxt" id="commenttxt" style="width: 90%"></textarea>
+<input type="button" name="commentsubmit" id="commentsubmit" value="Add Comment" />
+<hr/>
+<table>
+<?php
+			foreach ($comments as $row2=>$ar2)
+			{								
+				echo "<tr><td style='vertical-align:top;padding: 10px;'>".$ar2['note_user']."</td><td style='vertical-align:top; padding: 10px;'>".$ar2['note_text']."</td><td style='vertical-align:top;padding: 10px;'>".$ar2['note_dt']."</td></tr>";
+			}
+?>
+</table>
+</div>
+
+</div>
+<!--END NOTES BOX //-->
+
+<!--CONTACTS BOX //-->
+<div id="contacts-div" class="tab hiddendiv" >
+<h4>CONTACTS</h4>
+<select name="contactlist" id="contactlist">
+	<?php
+			foreach ($contacts as $row=>$ar_contacts)
+			{
+				echo "<option value='".$ar_contacts['ctct_id']."'>";				
+				echo $ar_contacts['ctct_name'];
+				echo "</option>";
+			}
+		?>
+	</select>
+	<input type="button" name="addbtn" id="contactaddbtn" value="Add" />
+	<input type="button" name="editbtn" id="contacteditbtn" value="Edit" />
+	<!--<input type="button" name="deletebtn" id="contactdeletebtn" value="Delete" />-->
+	<div id="contact_holder" style="visibility: hidden">
+		<strong>Name: </strong><span id="contactnamelbl" ></span><br/>
+		<strong>Title: </strong><span id="contacttitlelbl" ></span><br/>
+		<strong>Phone: </strong><span id="contactphonelbl" ></span> <strong>Ext: </strong><span id="contactextlbl" ></span><br/>
+		<strong>Fax: </strong><span id="contactfaxlbl" ></span><br/>
+		<strong>Cell: </strong><span id="contactcelllbl" ></span><br/>
+		<strong>Email: </strong><span id="contactemaillbl" ></span><br/>
+		<strong>Note: </strong><span id="contactnotelbl" ></span><br/>
+		
+	</div>
+
+</div>
+<!--END CONTACTS BOX //-->
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+<div id="document-form2">
+<h4 id="heading">Select Contact</h4>
+<input type="hidden" value="" id="letterid"/>
+<select name="contactlist3" id="contactlist3">
+	<?php
+	/*$ar[$i]['cli_id']=$id;
+					$ar[$i]['ctct_id']=$row->ctct_id;
+					$ar[$i]['ctct_name']=$row->ctct_name;
+					$ar[$i]['ctct_title']=$row->ctct_title;
+					$ar[$i]['ctct_company']=$row->ctct_company;
+					$ar[$i]['ctct_phone']=$row->ctct_phone;
+					$ar[$i]['ctct_ext1']=$row->ctct_ext1;
+					$ar[$i]['ctct_fax']=$row->ctct_fax;
+					$ar[$i]['ctct_ext2']=$row->ctct_ext2;
+					$ar[$i]['ctct_email']=$row->ctct_email;
+					$ar[$i]['ctct_addr_1']=$row->ctct_addr_1;
+					$ar[$i]['ctct_addr_2']=$row->ctct_addr_2;
+					$ar[$i]['ctct_addr_c']=$row->ctct_addr_c;
+					$ar[$i]['ctct_addr_z']=$row->ctct_addr_z;
+					$ar[$i]['ctct_st_code']=$row->ctct_st_code;
+					$ar[$i]['ctct_url']=$row->ctct_url;				*/
+					
+			foreach ($contacts as $row=>$ar_contacts)
+			{
+				//echo "<option value='&cli_id=".$ar_contacts['cli_id']."&ctct_id=".$ar_contacts['ctct_id']."&ctct_name=".$ar_contacts['ctct_name']."&ctct_title=".$ar_contacts['ctct_title']."&ctct_company=".$ar_contacts['ctct_company']."&ctct_phone=".$ar_contacts['ctct_phone']."&ctct_email=".$ar_contacts['ctct_email']."&ctct_addr_1=".$ar_contacts['ctct_addr_1']."&ctct_addr_c=".$ar_contacts['ctct_addr_c']."&ctct_addr_z=".$ar_contacts['ctct_addr_z']."&ctct_st_code=".$ar_contacts['ctct_st_code']."&ctct_addr_2=".$ar_contacts['ctct_addr_2']."&cont_name=".$ar_contacts['ctct_name']."&cont_title=".$ar_contacts['ctct_title']."'>";				
+				echo "<option value='&cli_id=".$ar_contacts['cli_id']."&ctct_id=".$ar_contacts['ctct_id']."&ctct_company=".$ar_contacts['ctct_company']."&cont_name=".$ar_contacts['ctct_name']."&cont_title=".$ar_contacts['ctct_title']."'>";								
+				echo $ar_contacts['ctct_name'];
+				echo "</option>";
+			}
+		?>
+	</select>
+<input type="button" name="lettersubmitbtn" id="lettersubmitbtn" value="Submit" />
+<input type="button" name="lettercancelbtn" id="lettercancelbtn" value="Cancel" />	
+</div>
+
+<div id="document-form">
+<h4 id="heading">Select Contact</h4>
+<select name="contactlist2" id="contactlist2">
+	<?php
+			foreach ($contacts as $row=>$ar_contacts)
+			{
+				echo "<option value='".$ar_contacts['ctct_id']."'>";				
+				echo $ar_contacts['ctct_name'];
+				echo "</option>";
+			}
+		?>
+	</select>
+<input type="button" name="statsubmitbtn" id="docsubmitbtn" value="Submit" />
+<input type="button" name="statcancelbtn" id="doccancelbtn" value="Cancel" />	
+</div>
+
+<div id="status-form">
+<h4 id="statusheading">Status</h4>
+<input type="hidden" id="ctr_type" />
+<input type="hidden" id="chg_pipl" />
+<strong>Date: </strong><span id="statdatelbl" ><?php echo $ar['ctr_date']; ?></span><br/>
+<strong>Recruiter: </strong><span id="statrecruiterlbl" ><?php echo $ar['emp_uname']; ?></span><br/>
+<strong>Contract#: </strong><span id="statcontractlbl" ><?php echo $ar['ctr_no']; ?></span><br/>
+<strong>Client: </strong><span id="statclientlbl" ><?php echo $ar['ctct_name']; ?></span><br/>
+<strong>City, State: </strong><span id="statcitystatelbl" ><?php echo $ar['ctr_location_c'].", ".$ar['ctr_location_s']; ?></span><br/>
+<strong>Phone: </strong><span id="statphonelbl" ><?php echo $ar['ctr_phone']; ?></span><br/>
+<strong>Specialty: </strong><span id="statspecialtylbl" ><?php echo $ar['ctr_spec']; ?></span><br/>
+<div id="specialtydiv">
+Please change the specialty of this search to the following:<br/>
+<select name="chg_nut" id="chg_nut">
+	<?php
+			foreach ($spec as $row2=>$ar_spec)
+			{
+				echo "<option value='".$ar_spec['sp_code']."'>";				
+				echo $ar_spec['sp_code']." ".$ar_spec['sp_name'];
+				echo "</option>";
+			}
+		?>
+	</select>
+	<br/>
+</div>
+<div id="recruiterdiv">
+Please change the Recruiter of this search to the following:<br/>
+<select name="chg_rec" id="chg_rec">
+	<?php
+			foreach ($rec as $key=>$val)
+			{
+				echo "<option value='".$key."'>";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>
+	<br/>
+</div>
+Please place this search on hold for the following reason:<br/>
+<textarea id="statreason"></textarea><br/>
+Please cancel the Sourcing Campaign. Comments:<br/>
+<textarea id="statcomments"></textarea><br/><br/>
+
+<input type="button" name="statsubmitbtn" id="statsubmitbtn" value="Submit" />
+<input type="button" name="statcancelbtn" id="statcancelbtn" value="Cancel" />
+
+</div>
+
+<div id="contacts_source_div">
+<strong>Get Sourcing Contract Proposal for Contact:</strong><br/><br/>
+<?php		
+			foreach ($contacts2 as $k=>$v)
+			{
+				//foreach ($v as $ke=>$vals){
+				//echo var_dump($v);
+					$ctct_id = $v["ctct_id"];
+					$ctct_name = $v["ctct_name"];
+					$ctct_title = $v["ctct_title"];
+					echo '<a target="_blank" href="'.$this->basePath().'/contract/sourcingstrategy/'.$ar['ctr_id'].'?ctct_id='.$ctct_id.'">'.$ctct_name.'</a><br/>';
+				//}
+			}
+?>
+</div>
+
+
+<!-- POP UP CONTACT ADD/EDIT -->
+<div id="contact_info_form" style="font-size:12px">
+
+<span id="form_title">Edit Contact</span>
+	<form >
+	<input type="hidden" name="ctct_backref" id="ctct_backref" value="<?php echo $ar['cli_id']; ?>">
+		<table>
+			<tr>
+				<td><strong>Name: </td><td><input type="text" name="contact_name" id="contact_name" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_name_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Title: </td><td><input type="text" name="contact_title" id="contact_title" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_title_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Company: </td><td><input type="text" name="contact_company" id="contact_company" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_company_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Phone: </td><td><input type="text" name="contact_phone" id="contact_phone" /></td>
+				<td><strong>Ext: </td><td><input type="text" name="contact_ext1" id="contact_ext1" /></td>
+				
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_phone_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Fax: </td><td><input type="text" name="contact_fax" id="contact_fax" /></td>
+				<td><strong>Ext: </td><td><input type="text" name="contact_ext2" id="contact_ext2" /></td>				
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_fax_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Email: </td><td><input type="text" name="contact_email" id="contact_email" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_email_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>WWW: </td><td><input type="text" name="contact_website" id="contact_website" /></td>
+			</tr>			
+			<tr>
+				<td><strong>Cell: </td><td><input type="text" name="contact_cell" id="contact_cell" /></td>
+				<td><strong>Home Phone: </td><td><input type="text" name="contact_home_phone" id="contact_home_phone" /></td>				
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_cell_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Pager: </td><td><input type="text" name="contact_pager" id="contact_pager" /></td>
+				<td><strong>Home Fax: </td><td><input type="text" name="contact_home_fax" id="contact_home_fax" /></td>				
+			</tr>
+			
+			<tr>
+				<td><strong>Address: </td><td><input type="text" name="contact_address" id="contact_address" /></td>
+			</tr>
+			<tr>
+				<td><strong>Address2: </td><td><input type="text" name="contact_address2" id="contact_address2" /></td>
+			</tr>
+			<tr>
+				<td><strong>City: </td><td><input type="text" name="contact_city" id="contact_city" /></td>
+			</tr>
+			<tr>
+				<td><strong>State: </td><td><select name="contact_state" id="contact_state">
+				<?php
+				foreach ($states as $row=>$ar)
+				{					
+					echo "<option value='".$row."'>";				
+					echo $ar;
+					echo "</option>";
+				}
+				?>
+				</select>
+				</td>
+				<td><strong>Zip: </strong></td><td><input type="text" name="contact_zip" id="contact_zip" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="contact_name_err" class="errors"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Note: </strong></td><td colspan="2"><input type="text" name="contact_note" id="contact_note" size="60" /></td>
+			</tr>
+			<tr>
+				<td><strong>Marketing: </td><td><input type="checkbox" name="contact_marketing_primary" id="contact_marketing_primary" value="1" /> Primary <input type="checkbox" name="contact_marketing_secondary" id="contact_marketing_secondary" value="1" /> Secondary</td>
+				<td><strong>Recruiting: </td><td><input type="checkbox" name="contact_recruiting_primary" id="contact_recruiting_primary" value="1" /> Primary </td>
+			
+			</tr>
+			<tr>
+				<td><strong>Fuzion: </td><td><input type="checkbox" name="contact_fuzion_primary" id="contact_fuzion_primary" value="1" /> Primary <input type="checkbox" name="contact_fuzion_secondary" id="contact_fuzion_secondary" value="1" /> Secondary</td>
+				<!--<td><strong>Unsubscribe: </td><td><input type="checkbox" name="contact_phg_unsub" id="contact_phg_unsub" /> PHG <input type="checkbox" name="contact_plt_unsub" id="contact_plt_unsub" /> PLT <input type="checkbox" name="contact_fuzion_unsub" id="contact_fuzion_unsub" /> Fuzion</td>-->
+			
+			</tr>
+			<tr>
+				<td><strong>Locums: </td><td><input type="checkbox" name="contact_locums_primary" id="contact_locums_primary" value="1" /> Primary <input type="checkbox" name="contact_locums_secondary" id="contact_locums_secondary" value="1" /> Secondary</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			<tr>
+				<td><strong>Status: </td><td>				
+				<select name="contact_status" id="contact_status">
+				<?php
+				foreach ($contact_status as $row=>$ar)
+				{						
+					echo "<option value='".$ar['st_id']."'>";				
+					echo $ar['st_name'];
+					echo "</option>";					
+				}
+				?>
+				</select></td>
+			</tr>
+			<tr>
+				<td>
+				<input type="button" value="Submit" class="btn" id="contact_submit_btn" />
+				<input type="button" value="Save" class="btn" id="contact_update_btn" style="display: none" />
+				<input type="button" value="Cancel" class="btn" id="contact_cancel_btn"/>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			
+		</table>
+	</form>
+</div>
+<!-- END POP UP CONTACT ADD/EDIT -->
+
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-ctr'));

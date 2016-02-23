@@ -1,0 +1,16 @@
+<?php
+// module/Application/view/application/index/logout.phtml:
+
+$title = 'Log Out';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>You are logged in as <?php echo $phguser->realname; ?>. Are you sure that you want to log out?
+</p>
+<form action="<?php echo $this->url('logout'); ?>" method="post">
+<div>
+    <input class="btn btn-danger" type="submit" name="lgout" value="Yes" />
+    <input class="btn btn-success" type="submit" name="lgout" value="No" />
+</div>
+</form>

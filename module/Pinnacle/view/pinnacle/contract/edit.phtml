@@ -1,0 +1,133 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/edit.phtml:
+
+$title = $part === 'add'? 'Add New Contract': 'Edit Contract';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.9.1.js');//
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headLink()->prependStylesheet($this->basePath() .'/resources/demos/style.css');
+
+/*$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');*/
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<style>
+#ctr_type { width: 50px; }
+fieldset legend { font-size: 14px; border: 0px; line-height: 16px; margin-bottom: 10px; }
+fieldset label { display: inline; margin-left: 0px; margin-right: 20px; }
+</style>
+<script type="text/javascript">
+$(function() {
+ 
+ $(function() {
+ $( "#datepicker" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_date"});
+ $( "#retaindatepicker" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_retain_date"});
+ });
+ $("input[type=radio][value=0]").click(function() {	
+	//alert($("#ctr_nurse").val());
+	$("#ctr_mid").attr("disabled", true);
+	$("#ctr_spec").attr("disabled", false);
+ });
+ $("input[type=radio][value=1]").click(function() {
+	//alert('test2');
+	$("#ctr_mid").attr("disabled", false);
+	$("#ctr_spec").attr("disabled", true);
+ });
+
+ 
+});
+</script>
+
+<?php if( true /*$phguser->access > 1*/ ) { 
+
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('contract',
+                        array('action' => 'edit', 'part' => $part, 'id' => $id)));
+						//array('action' => 'edit', 'part' => $part, 'id' => $id)));
+    $form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+
+
+<!--<label>Search for:</label>
+<input type="radio" name="ctr_nurse" id="ctr_nurse1" value="0" checked /> Physician&nbsp;&nbsp;&nbsp;
+<input type="radio" name="ctr_nurse" id="ctr_nurse2" value="1" /> Mid-level
+<br/><br/>-->
+<?php
+//echo $this->formRow($form->get('search'));
+echo $this->formHidden($form->get('ctr_id'));
+echo $this->formHidden($form->get('cli_id'));
+echo $this->formHidden($form->get('ctr_status'));
+echo '<div class="row"><div class="span4">';
+//echo '<div style="display:none">';
+echo $this->formRow($form->get('ctr_nurse'));
+echo '<br/>';
+//echo '</div>';
+echo $this->formRow($form->get('ctr_no'));
+echo $this->formRow($form->get('ctr_date'));
+echo $this->formRow($form->get('datepicker'));
+echo $this->formRow($form->get('ctr_cli_bill'));
+echo $this->formRow($form->get('ctr_spec'));
+echo $this->formRow($form->get('ctr_mid'));
+echo $this->formRow($form->get('st_name'));
+echo '</div>';
+echo '<div class="span4">';
+echo $this->formRow($form->get('ctr_rec'));
+echo $this->formRow($form->get('ctr_manager'));
+echo $this->formRow($form->get('ctr_type'));
+//echo $ar['ctr_date'];
+?>
+LT = locums
+<?php
+echo $this->formRow($form->get('ctr_marketer'));
+echo $this->formRow($form->get('ctr_amount'));
+echo $this->formRow($form->get('ctr_monthly'));
+echo '</div>';
+echo '<div class="span4">';
+echo $this->formRow($form->get('ctr_location_c'));
+echo $this->formRow($form->get('ctr_location_s'));
+echo $this->formRow($form->get('ctr_retain_date'));
+echo $this->formRow($form->get('retaindatepicker'));
+echo $this->formRow($form->get('ctr_nomktg'));
+echo $this->formRow($form->get('ctr_shortnote'));
+echo $this->formRow($form->get('ctr_wkupdate'));
+
+//echo $messages2[2];
+echo '</div><div class="span4">';
+
+
+echo '</div><div class="span4">';
+
+
+echo '</div><div class="span4">';
+
+echo '</div></div>';
+
+echo '<br/><br/>';
+
+echo $this->formSubmit($form->get('submit'));
+echo '&nbsp;&nbsp;<a href="'.$this->basePath().'/contract/view/'.$id.'" class="btn btn-large btn-danger">Cancel</a>';
+
+
+?>
+<?php
+echo $this->form()->closeTag();
+
+    } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+    } /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

@@ -1,0 +1,89 @@
+<script src="testbrow.js" language="JavaScript"></script>
+<SCRIPT language="javascript">
+<!--
+
+var OS,version,useragent,detect,place;
+useragent = navigator.userAgent;
+detect = useragent.toLowerCase();
+//var cmd=getqstringvalue("cmd",window.location.search)
+//if(cmd=="exc"){ setexcludexml(); }else{ setincludexml(); }
+
+var msxml2v30 = false
+var replacemode = false
+var browser = false
+
+if(checkIt('msie')){
+  getBrowserInfo();
+  if(OS.indexOf("95")>=0){
+    alert("The XML version of the Graduate Medical Education Library will not\ninstall or operate properly on the Windows 95 operating system.\nYou are being automatically transferred to the HTML version.")
+    location.href = "../HTML/default.htm";
+  }else{
+    var strexcludexml = getCookie("excludexml")
+//    alert(strexcludexml)
+    if(strexcludexml!="true"){
+      var bOK = sniff();
+      if(bOK){ writestandard(); }
+      else{ writeinstall(); }
+    }else{ location.href = "../HTML/default.htm"; }
+  }
+}else{
+  if(checkIt('mac')){
+    location.href = "../HTML/default.htm";
+  }else{
+    location.href = "../XML/default.htm";
+  }
+}
+
+////////////////////////////////////////////////////////
+var now = new Date();
+fixDate(now);
+now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+
+function setexcludexml(){
+  setCookie("excludexml","false");
+}
+
+function setincludexml(){
+  setCookie("excludexml","false");
+}
+
+function setCookie(name, value, expires, path, domain, secure) {
+
+  var curCookie = name + "=" + escape(value) +
+      ((expires) ? "; expires=" + expires.toGMTString() : "; expires=" + now.toGMTString()) +
+      ((path) ? "; path=" + path : "") +
+      ((domain) ? "; domain=" + domain : "") +
+      ((secure) ? "; secure" : "");
+  document.cookie = curCookie;
+}
+
+function fixDate(date) {
+  var base = new Date(0);
+  var skew = base.getTime();
+  if (skew > 0)
+    date.setTime(date.getTime() - skew);
+}
+
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+//-->
+</SCRIPT>
+
+
+
+
+

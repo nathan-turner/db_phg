@@ -1,0 +1,234 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/retained.phtml:
+
+$title = 'Specialty Demographics';
+$this->headTitle($title);
+
+$lastup = '03/19/2012';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+
+if( $report ) {
+    $formUrl = $this->url('report', array('action' => 'specdemo', 'part' => $part, 'id' => $id));
+?>
+<hgroup>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<h2><?php echo $this->escapeHtml($report->sd_name); ?></h2>
+</hgroup>
+
+<form action="<?php echo $formUrl; ?>" name="specdemoform" method="post">
+<div class="onscr">
+    <label for="demo-select">Specialty:</label>
+    <select name="sid" id="demo-select">
+        <?php if( $demo ) foreach ($demo as $opt): ?>
+        <option value="<?php echo $this->escapeHtml($opt->sd_id); ?>"
+            <?php if( $opt->sd_id == $id ) echo ' selected' ?>>
+            <?php echo $this->escapeHtml($opt->sd_name); ?>
+        </option>
+        <?php endforeach ?>
+    </select> 
+    <input class="btn btn-success" type="submit" name="submit" value="Select" />
+</div>
+</form>
+
+<div class="row">
+    <div class="span4">
+        <table class="table">
+        <tr>
+            <th>Total Physicians</th>
+            <th><?php echo $this->escapeHtml($report->sd_gt); ?></th>
+        </tr>
+        <tr>
+            <td>MDs</td>
+            <td><?php echo $this->escapeHtml($report->sd_md); ?></td>
+        </tr>
+        <tr>
+            <td>DOs</td>
+            <td><?php echo $this->escapeHtml($report->sd_gt - $report->sd_md); ?></td>
+        </tr>
+        <tr>
+            <td>AMG</td>
+            <td><?php echo $this->escapeHtml($report->sd_amg); ?></td>
+        </tr>
+        <tr>
+            <td>FMG</td>
+            <td><?php echo $this->escapeHtml($report->sd_fmg); ?></td>
+        </tr>
+        <tr>
+            <td>Board Certified</td>
+            <td><?php echo $this->escapeHtml($report->sd_bc); ?></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+        </tr>
+        </table>
+    </div>
+
+    <div class="span4">
+        <table class="table">
+        <tr>
+            <th>Total Physicians Under Age 55</th>
+            <th><?php echo $this->escapeHtml($report->sd_gt50); ?></th>
+        </tr>
+        <tr>
+            <td>MDs Under Age 55</td>
+            <td><?php echo $this->escapeHtml($report->sd_md50); ?></td>
+        </tr>
+        <tr>
+            <td>DOs Under Age 55</td>
+            <td><?php echo $this->escapeHtml($report->sd_gt50 - $report->sd_md50); ?></td>
+        </tr>
+        <tr>
+            <td>AMG Under Age 55</td>
+            <td><?php echo $this->escapeHtml($report->sd_amg50); ?></td>
+        </tr>
+        <tr>
+            <td>FMG Under Age 55</td>
+            <td><?php echo $this->escapeHtml($report->sd_fmg50); ?></td>
+        </tr>
+        <tr>
+            <td>Board Certified Under Age 55</td>
+            <td><?php echo $this->escapeHtml($report->sd_bc50); ?></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+        </tr>
+        </table>
+    </div>
+
+    <div class="span4">
+        <table class="table">
+        <tr>
+            <th>Total Physicians Under Age 50</th>
+            <th><?php echo $this->escapeHtml($report->sd_gt45); ?></th>
+        </tr>
+        <tr>
+            <td>MDs Under Age 50</td>
+            <td><?php echo $this->escapeHtml($report->sd_md45); ?></td>
+        </tr>
+        <tr>
+            <td>DOs Under Age 50</td>
+            <td><?php echo $this->escapeHtml($report->sd_gt45 - $report->sd_md45); ?></td>
+        </tr>
+        <tr>
+            <td>AMG Under Age 50</td>
+            <td><?php echo $this->escapeHtml($report->sd_amg45); ?></td>
+        </tr>
+        <tr>
+            <td>FMG Under Age 50</td>
+            <td><?php echo $this->escapeHtml($report->sd_fmg45); ?></td>
+        </tr>
+        <tr>
+            <td>Board Certified Under Age 50</td>
+            <td><?php echo $this->escapeHtml($report->sd_bc45); ?></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+        </tr>
+        </table>
+    </div>
+
+    <div class="span4">
+        <table class="table">
+        <tr>
+            <th>Total Physicians Under Age 45</th>
+            <th><?php echo $this->escapeHtml($report->sd_gt40); ?></th>
+        </tr>
+        <tr>
+            <td>MDs Under Age 45</td>
+            <td><?php echo $this->escapeHtml($report->sd_md40); ?></td>
+        </tr>
+        <tr>
+            <td>DOs Under Age 45</td>
+            <td><?php echo $this->escapeHtml($report->sd_gt40 - $report->sd_md40); ?></td>
+        </tr>
+        <tr>
+            <td>AMG Under Age 45</td>
+            <td><?php echo $this->escapeHtml($report->sd_amg40); ?></td>
+        </tr>
+        <tr>
+            <td>FMG Under Age 45</td>
+            <td><?php echo $this->escapeHtml($report->sd_fmg40); ?></td>
+        </tr>
+        <tr>
+            <td>Board Certified Under Age 45</td>
+            <td><?php echo $this->escapeHtml($report->sd_bc40); ?></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+        </tr>
+        </table>
+    </div>
+
+    <div class="span4">
+        <table class="table">
+        <tr>
+            <th>Residents / Fellows</th>
+            <th><?php echo $this->escapeHtml($report->sd_gtres); ?></th>
+        </tr>
+        <tr>
+            <td>MDs</td>
+            <td><?php echo $this->escapeHtml($report->sd_mdres); ?></td>
+        </tr>
+        <tr>
+            <td>DOs</td>
+            <td><?php echo $this->escapeHtml($report->sd_gtres - $report->sd_mdres); ?></td>
+        </tr>
+        <tr>
+            <td>AMG</td>
+            <td><?php echo $this->escapeHtml($report->sd_amgres); ?></td>
+        </tr>
+        <tr>
+            <td>FMG</td>
+            <td><?php echo $this->escapeHtml($report->sd_fmgres); ?></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+        </tr>
+        </table>
+    </div>
+
+    <div class="span4">
+        <table class="table">
+        <tr>
+            <th>Physicians 3 years or less out of training</th>
+            <th><?php echo $this->escapeHtml($report->sd_gt3); ?></th>
+        </tr>
+        <tr>
+            <td>MDs</td>
+            <td><?php echo $this->escapeHtml($report->sd_md3); ?></td>
+        </tr>
+        <tr>
+            <td>DOs</td>
+            <td><?php echo $this->escapeHtml($report->sd_gt3 - $report->sd_md3); ?></td>
+        </tr>
+        <tr>
+            <td>AMG</td>
+            <td><?php echo $this->escapeHtml($report->sd_amg3); ?></td>
+        </tr>
+        <tr>
+            <td>FMG</td>
+            <td><?php echo $this->escapeHtml($report->sd_fmg3); ?></td>
+        </tr>
+        <tr>
+            <td>Board Certified</td>
+            <td><?php echo $this->escapeHtml($report->sd_bc3); ?></td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+        </tr>
+        </table>
+    </div>
+</div>
+<small>Updated: <?php echo $this->escapeHtml($lastup); ?></small>
+<?php
+} // report
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

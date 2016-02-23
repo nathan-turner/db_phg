@@ -1,0 +1,1844 @@
+<?php
+// module/Pinnacle/view/pinnacle/physician/view.phtml:
+// Contract Search
+
+$title = 'Physicians View';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+//$this->headLink()->prependStylesheet('/resources/demos/style.css');
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#phystable { width: 70% }
+#datetable, #spectable, #phystable { border: 1px solid black }
+#datetable td, #spectable td { border: 1px solid black }
+#phystable td { border: 1px solid black; background-color: #ffffff; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#physician_pass_div { display: none; }
+#sched_activity_div { display: none; }
+#pres_panel, #int_panel, #resend_int_panel, #plac_panel, #replac_panel, #loc_pres_panel, #loc_pass_panel, #fupass_pop, #genctr_date_panel, #genctr_pop, #addsource_panel, #bill_panel, #ama_panel, #pending_panel, #candass_panel { display: none; }
+.date { width: 110px; }
+.time { width: 60px; }
+#loc_pass_panel strong { font-size: 14px;  }
+#loc_pass_panel { font-size: 11px; line-height: 11px; }
+#loc_pass_panel input, #loc_pass_panel label { font-size: 11px; line-height: 11px; }
+.historytable td { padding: 5px; }
+.alertdiv { width: 70% }
+</style>
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			$( "#schedact_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#schedact_date"});
+			$( "#pres_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#pres_date"});
+			$( "#int_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#int_date"});
+			$( "#loc_pres_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#loc_pres_date"});
+			$( "#cdate_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#cdate_date"});
+			$( "#addsource_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#addsource_date"});
+			$( "#pend_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#pend_date"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+
+
+$(function() {
+
+//select a contact
+ $("#addsource_ctr_id").change(function() {
+	loadSources($("#addsource_ctr_id").val());
+});
+
+function loadSources(id)
+ { 
+	$.getJSON('<?php echo $this->basePath();?>/ajax/getSourceList/'+id+'', function(data) {
+	var items = [];
+	
+	
+	items = data["arr"];
+	
+	$.each(items, function (i, item) {
+    $('#srctx').append($('<option>', { 
+        value: item.src_name,
+        text : item.src_name 
+    }));
+});
+	//if(data["arr"].ctct_email!=null)
+	//$("#contactemaillbl").html('<a href="mailto:'+data["arr"].ctct_email+'">'+data["arr"].ctct_email+'</a>');
+	//$("#contactnotelbl").text(data["arr"].ctct_note);		
+	});
+	//$("#contact_holder").css('visibility','visible');
+ }
+ 
+
+ function switchPanel(obj)
+{	
+	$(".tab").addClass('hiddendiv');
+	obj.toggleClass('hiddendiv');
+}
+
+$("#noteslink").click(function() {	
+	switchPanel($("#notes-div"));
+});
+$("#cvlink").click(function() {	
+	switchPanel($("#cv-div"));
+});
+$("#actionslink").click(function() {	
+	switchPanel($("#actions-div"));
+});
+$("#sourcelink").click(function() {	
+	switchPanel($("#source-div"));
+});
+$("#credentialslink").click(function() {	
+	switchPanel($("#credentials-div"));
+});
+
+$("#physician_pass_link").click(function() {	
+	openPhysicianPassPanel();
+ });
+ //close/cancel btn
+ $("#physician_pass_cancel_btn").click(function() { $( "#physician_pass_div" ).dialog("close"); });
+ $("#sched_cancel_btn").click(function() { $( "#sched_activity_div" ).dialog("close"); });
+ $("#pres_cancel_btn").click(function() { $( "#pres_panel" ).dialog("close"); });
+ $("#int_cancel_btn").click(function() { $( "#int_panel" ).dialog("close"); });
+ $("#resend_int_cancel_btn").click(function() { $( "#resend_int_panel" ).dialog("close"); });
+ $("#plac_cancel_btn").click(function() { $( "#plac_panel" ).dialog("close"); });
+ $("#replac_cancel_btn").click(function() { $( "#replac_panel" ).dialog("close"); });
+ $("#loc_pass_cancel_btn").click(function() { $( "#loc_pass_panel" ).dialog("close"); });
+ $("#loc_pres_cancel_btn").click(function() { $( "#loc_pres_panel" ).dialog("close"); });
+ $("#addsource_cancel_btn").click(function() { $( "#addsource_panel" ).dialog("close"); });
+ $("#bill_cancel_btn").click(function() { $( "#bill_panel" ).dialog("close"); });
+ $("#ama_cancel_btn").click(function() { $( "#ama_panel" ).dialog("close"); });
+  $("#fupass_cancel_btn").click(function() { $( "#fupass_pop" ).dialog("close"); });
+ $("#pend_cancel_btn").click(function() { $( "#pending_panel" ).dialog("close"); });
+ $("#candass_cancel_btn").click(function() { $( "#candass_panel" ).dialog("close"); });
+
+ $("#schedulelink").click(function() {	
+	openSchedulePanel();
+ }); 
+ 
+ 
+$("#present_link").click(function() {	
+	openPresentPanel();
+ }); 
+ 
+ $("#interview_link").click(function() {	
+	openInterviewPanel();
+ });
+ 
+  $("#resend_interview_link").click(function() {	
+	openResendInterviewPanel();
+ });
+ 
+  $("#placement_link").click(function() {	
+	openPlacementPanel();
+ });
+ 
+ $("#replacement_link").click(function() {	
+	openReplacementPanel();
+ });
+ 
+ $("#locum_present_link").click(function() {	
+	openLocumsPresentPanel();
+ });
+ 
+  $("#locum_pass_link").click(function() {	
+	openLocumsPassPanel();
+ });
+ 
+	$("#add_record_link").click(function() {	
+	loadSources($("#addsource_ctr_id").val());
+	openSourcePanel();
+	});
+	
+ $("#refcheckreq").click(function() {	
+	openBillingPanel();
+ });
+
+ $("#amacheckreq").click(function() {	
+	openAMAPanel();
+ }); 
+
+ $("#fupass_link").click(function() {	
+	openPCPassPanel();
+ }); 
+ 
+  $("#pend_pop_link").click(function() {	
+	openPendingPanel();
+ });
+ 
+   $("#candass_link").click(function() {	
+	openCandassPanel();
+ });
+ 
+ $("#candass_submit_btn").click(function() {
+
+	//sendDocument();
+});
+
+/*function sendDocument()
+{ 	
+//alert($("#candass_ctr_id").val());
+	var link = "/word_doc2.php?filename=/New Database/Reports/CANDIDATE ASSESSMENT MM.docx&ctr_id=";
+	//alert(link);
+	window.open(link);
+}*/
+ 
+ //date links for credentials
+ $("#ref_ref0").click(function() {	
+	$( "#ref_row" ).show();
+	$( "#ama_row" ).hide();
+	$( "#ref_date_submit_btn" ).show();
+	$( "#ama_date_submit_btn" ).hide();
+	$( "#preint_date_submit_btn" ).hide();
+	$( "#cand_ass_date_submit_btn" ).hide();
+	$( "#packet_date_submit_btn" ).hide();
+	openCredDatePanel();
+ });
+  $("#ref_ama0").click(function() {	
+	$( "#ref_row" ).hide();
+	$( "#ama_row" ).show();
+	$( "#ref_date_submit_btn" ).hide();
+	$( "#ama_date_submit_btn" ).show();
+	$( "#preint_date_submit_btn" ).hide();
+	$( "#cand_ass_date_submit_btn" ).hide();
+	$( "#packet_date_submit_btn" ).hide();
+	openCredDatePanel();
+ });
+  $("#ref_prei0").click(function() {
+	$( "#ref_row" ).hide();
+	$( "#ama_row" ).hide();
+	$( "#ref_date_submit_btn" ).hide();
+	$( "#ama_date_submit_btn" ).hide();
+	$( "#preint_date_submit_btn" ).show();
+	$( "#cand_ass_date_submit_btn" ).hide();
+	$( "#packet_date_submit_btn" ).hide();
+	openCredDatePanel();
+ });
+  $("#ref_ref1").click(function() {	
+	$( "#ref_row" ).hide();
+	$( "#ama_row" ).hide();
+	$( "#ref_date_submit_btn" ).hide();
+	$( "#ama_date_submit_btn" ).hide();
+	$( "#preint_date_submit_btn" ).hide();
+	$( "#cand_ass_date_submit_btn" ).hide();
+	$( "#packet_date_submit_btn" ).show();
+	openCredDatePanel();
+ });
+ $("#genctr_date_cancel_btn").click(function() { $( "#genctr_date_panel" ).dialog("close"); });
+ 
+ 
+ $(".f12").click(function() {
+SelectText("hf12");
+    /*var e = jQuery.Event("keydown");
+    e.which = 123; // # Some key code value
+    e.ctrlKey = true;
+    $("#f12").trigger(e);*/
+//fireHotKeys("#f12");
+   //console.log(e);
+});
+ 
+});
+
+function SelectText(element) {
+//alert(element);
+    var doc = document
+        , text = doc.getElementById(element)
+        , range, selection
+    ;    
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();        
+        range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+	fireHotKeys("#"+element);
+}
+
+function fireHotKeys(id){ //alert($(id+"txt").val());
+	var e = jQuery.Event("keydown");  
+	//var e = jQuery.Event("keypress");
+    /*e.ctrlKey = true;
+	e.view = Window;
+	e.which = 123; // # Some key code value
+	e.charCode = 123;
+	e.keyCode = 123;	
+    $(id+"txt").trigger(e);*/
+	
+	var press = jQuery.Event("keypress");
+press.bubbles = true;
+press.cancelable = true;
+press.ctrlKey = true;
+press.charCode = 123;
+press.currentTarget = $(id+"txt")[0];
+press.eventPhase = 2;
+press.keyCode = 123;
+press.returnValue = true;
+press.srcElement = $(id+"txt")[0];
+press.target = $(id+"txt")[0];
+press.type = "keypress";
+press.view = Window;
+press.which = 123;
+$(id+"txt").trigger(press);
+    console.log(e);
+}
+
+
+function openPhysicianPassPanel(){
+$( "#physician_pass_div" ).dialog({
+height: 370,
+width: 640,
+modal: true
+});
+}
+
+function openSchedulePanel(){
+$( "#sched_activity_div" ).dialog({
+height: 520,
+width: 440,
+modal: true
+});
+}
+
+function openPresentPanel(){
+$( "#pres_panel" ).dialog({
+height: 420,
+width: 440,
+modal: true
+});
+}
+
+function openInterviewPanel(){
+$( "#int_panel" ).dialog({
+height: 320,
+width: 440,
+modal: true
+});
+}
+
+function openResendInterviewPanel(){
+$( "#resend_int_panel" ).dialog({
+height: 220,
+width: 440,
+modal: true
+});
+}
+
+
+function openPlacementPanel(){
+$( "#plac_panel" ).dialog({
+height: 320,
+width: 440,
+modal: true
+});
+}
+
+function openReplacementPanel(){
+$( "#replac_panel" ).dialog({
+height: 320,
+width: 440,
+modal: true
+});
+}
+
+function openLocumsPresentPanel(){
+$( "#loc_pres_panel" ).dialog({
+height: 620,
+width: 440,
+modal: true
+});
+} 
+
+function openLocumsPassPanel(){
+$( "#loc_pass_panel" ).dialog({
+height: 780,
+width: 720,
+modal: true
+});
+}
+
+function openCredDatePanel(){
+$( "#genctr_date_panel" ).dialog({
+height: 280,
+width: 440,
+modal: true
+});
+} 
+
+function openCredPanel(){
+$( "#genctr_pop" ).dialog({
+height: 320,
+width: 440,
+modal: true
+});
+}
+
+function openSourcePanel(){
+$( "#addsource_panel" ).dialog({
+height: 600,
+width: 440,
+modal: true
+});
+}
+
+function openBillingPanel(){
+$( "#bill_panel" ).dialog({
+height: 320,
+width: 440,
+modal: true
+});
+}
+
+function openAMAPanel(){
+$( "#ama_panel" ).dialog({
+height: 320,
+width: 440,
+modal: true
+});
+}
+
+function openPCPassPanel(){
+$( "#fupass_pop" ).dialog({
+height: 200,
+width: 340,
+modal: true
+});
+}
+
+function openPendingPanel(){
+$( "#pending_panel" ).dialog({
+height: 320,
+width: 340,
+modal: true
+});
+} 
+
+function openCandassPanel(){
+$( "#candass_panel" ).dialog({
+height: 240,
+width: 340,
+modal: true
+});
+}
+
+
+</script>
+
+
+<h1 style="display: none"><?php //echo $this->escapeHtml($title); ?></h1>
+<br/>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'physicians')));
+    //$form->get('submit')->setAttribute('type','button');
+    if( strpos($phguser->dept,'R') !== false ) {
+        //$form->get('ph_recruiter')->setValue($phguser->uid);
+        //$form->get('ph_status')->setValue(1); //not sure this caused an error
+    }
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+	if(trim($_GET["message"])!="")
+		$message=$_GET["message"];
+	
+	$srslink="";
+		if($_GET["srs"]!='')
+			$srslink="?srs=".$_GET["srs"];
+?>
+<div class="row">
+    <div class="span4">
+        <a href="<?php echo $this->basePath(); ?>/physician/add">Add a Doctor</a>
+    </div>
+    <div class="span4">
+        <a href="<?php echo $this->basePath(); ?>/physician/export/<?php echo $ar["ph_id"]; ?>">Export</a>
+    </div>
+    <div class="span4">
+        <a href="<?php echo $this->basePath(); ?>/physician/edit/<?php echo $ar["ph_id"].$srslink; ?>">Edit</a>
+    </div>
+</div>
+<?php if(trim($message)!=''){ ?><p style="text-align:center; color: red"><?php echo $message; ?></p><?php } ?>
+
+<div class="row">
+    <div class="span12">
+		<div style="float: right">
+		<table id="spectable">
+			<tr>
+				<td>Specialty</td>
+				<td>BC/BE</td>
+				<td>Year</td>
+			</tr>
+			<tr>
+				<td><span title="<?php echo $ar["sp_name"]; ?>"><?php echo $ar["ph_spec_main"]; ?>
+				<?php if($ar["sk_name"]!="") { echo "(".$ar["sk_name"].")";} ?></span></td>
+				<td><?php echo $ar["ph_spm_bc"]; ?>&nbsp;</td>
+				<td><?php echo $ar["ph_spm_year"]; ?>&nbsp;</td>
+			</tr>
+			<?php //if($ar["ph_sub"]!=0) { ?>
+			<tr>				
+				<td colspan="3"><?php echo $ar["ph_subspec"]; ?>&nbsp;</td>
+			</tr>
+			<?php //} ?>
+		</table><br/>
+		
+		<table id="datetable">
+			<tr>
+				<td></td>
+				<td>Date</td>				
+			</tr>
+			<tr>
+				<td>First Inquiry:</td>
+				<td><?php if($ar["ph_1st_inq"]!="") { echo date('m-d-Y', strtotime($ar["ph_1st_inq"])); }?></td>				
+			</tr>
+			<tr>
+				<td>Available:</td>
+				<td><?php if($ar["ph_avail"]!="") { echo date('m-d-Y', strtotime($ar["ph_avail"])); } ?></td>				
+			</tr>
+			<tr>
+				<td>CV Date:</td>
+				<td><?php if($ar["ph_cv_date"]!="") { echo date('m-d-Y', strtotime($ar["ph_cv_date"])); } ?></td>				
+			</tr>
+			<tr>
+				<td>Phone Interview:</td>
+				<td><?php if($ar["ph_phone_date"]!="") { echo date('m-d-Y', strtotime($ar["ph_phone_date"])); } ?></td>				
+			</tr>
+			<tr>
+				<td>Contract Date:</td>
+				<td><?php if($ar["ph_ctr_date"]!="") { echo date('m-d-Y', strtotime($ar["ph_ctr_date"])); } ?></td>				
+			</tr>
+			<tr>
+				<td>Start Date:</td>
+				<td><?php if($ar["ph_start_date"]!="") { echo date('m-d-Y', strtotime($ar["ph_start_date"])); } ?></td>				
+			</tr>
+			<?php
+			$color = "white";
+		$typus = "";
+		$alert = "";
+		$locums_doc = false;
+		foreach($pipl as $k=>$v)
+		{
+			$textcolor = "white";
+			switch($v["prio"]){
+				case 1:
+					$color = "maroon";
+                    $typus = "Present";
+					break;
+				case 2:
+					$color = "firebrick";
+                    $typus = "Interview";
+					break;
+				case 3:
+					$color = "red";
+                    $typus = "Pending";
+					break;
+				case 4:
+					$color = "crimson";
+                    $typus = "Placement";
+					break;
+				case 11:
+					$color = "#00cc00";
+					$textcolor = "black";
+                    $typus = "Locums Doc - Do not call";
+					$locums_doc=true;
+					break;
+			}
+			$alert.='<div class="alertdiv" style="background: '.$color.'; color: '.$textcolor.'; font-weight: bold"
+                title="'.$typus.'">'.$typus.': '.$v["emp_uname"].', '.date('Y-m-d',strtotime($v["pipl_date"])).'</div>';
+			
+		}
+			?>
+			<tr>
+				<td>Locums Doc:</td>
+				<td><input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>"><input type="checkbox" name="locums_doc" value="1" <?php if($locums_doc){ echo "checked"; } ?> /> <input type="submit" name="locums_doc_submit" value="Update" /></td>
+			</tr>
+		</table>
+		
+		</div>
+		
+		<div>
+        <table id="phystable">
+			<tr>
+				<td><strong>ID #:</strong></td>
+				<td><?php echo $ar["ph_id"]; ?></td>
+				<td><strong>Status:</strong></td>
+				<td><?php echo $ar["st_name"]; ?><?php //echo $ar["ph_status"]; ?></td>
+				<td><strong>Practicing:</strong></td>
+				<td><?php echo $ar["pt_name"]; ?></td>
+			</tr>
+			<tr>
+				<td><strong>Name:</strong></td>
+				<td colspan="2"><?php echo $ar["ctct_name"]; ?></td>
+				<td><?php echo $ar["ctct_title"]; ?></td>
+				
+				<td><strong>Licenses:</strong></td>
+				<td><?php echo $ar["ph_licenses"]; ?></td>
+			</tr>
+			<tr>
+				<td><strong>City, State:</strong></td>
+				<td><?php echo $ar["ctct_addr_c"].", ".$ar["ctct_st_code"]; ?></td>
+				<td><strong>Zip:</strong></td>
+				<td><?php echo $ar["ctct_addr_z"]; ?></td>
+				<td><strong>Pref Location:</strong></td>
+				<td><?php echo $ar["ph_pref_state"].", ".$ar["reg_name"]; ?></td>
+			</tr>
+			<tr>
+				<td><strong>Gender:</strong></td>
+				<td><?php if($ar["ph_sex"]==1){ echo "Male"; } else { echo "Female"; } ?></td>
+				<td><strong>DOB:</strong></td>
+				<td><?php echo $ar["ph_DOB"]; ?></td>
+				<td><strong>Languages:</strong></td>
+				<td><?php echo $ar["ph_lang"]; ?></td>
+			</tr>
+			<tr>
+				<td><strong>Home #:</strong></td>
+				<td><strong>Work #:</strong></td>
+				<td><strong>Cell #:</strong></td>
+				<td><strong>Fax #:</strong></td>
+				<td><strong>Verbal Skills:</strong></td>
+				<td><?php 
+				switch ($ar["ph_v_skills"]) {
+					case 4:
+						echo "Excellent";
+						break;
+					case 3:
+						echo "Good";
+						break;
+					case 2:
+						echo "Medium";
+						break;
+					case 1:
+						echo "Poor";
+						break;
+					default:
+						echo "Unknown";	  
+						break;
+				}
+				//echo $ar["ph_v_skills"]; ?></td>
+			</tr>
+			<tr>
+				<td><!--<a href="#" class="f12" id="hf12" >//--><a href="http://db.phg.com/pinncopy/call_test.asp?phone=<?php echo $ar['ctct_hphone2']; ?>" target="_blank"><?php echo $ar["ctct_hphone"]; ?></a><!--<input type="text" id="hf12txt" />--></td>
+				<td><!--<a href="#" class="f12" id="f12">//--><a href="http://db.phg.com/pinncopy/call_test.asp?phone=<?php echo $ar['ctct_phone2']; ?>" target="_blank"><?php echo $ar["ctct_phone"]; ?></a><?php echo $ar["ctct_ext1"]; ?></td>
+				<td><a href="http://db.phg.com/pinncopy/call_test.asp?phone=<?php echo $ar['ctct_cell']; ?>" target="_blank"><?php echo $ar["ctct_cell2"]; ?></a></td>
+				<td><?php echo $ar["ctct_hfax"]; ?><?php echo $ar["ctct_fax"]; ?></td>
+				<td><strong>Med School :</strong></td>
+				<td><?php echo $ar["ph_med_school"]; ?></td>
+			</tr>
+			<tr>
+				<td><strong>Email :</strong></td>
+				<td colspan="2"><a href="mailto:<?php echo $ar["ctct_email"]; ?>"><?php echo $ar["ctct_email"]; ?></a></td>
+				<td><strong>Pager :</strong></td>
+				<td><?php echo $ar["ctct_pager"]; ?></td>				
+				<td><strong>PIN :</strong><?php echo $ar["ctct_ext3"]; ?></td>
+			</tr>
+			
+			<tr>
+			<?php if($ar["ph_prot_date"]!=null){ ?>
+				<td><strong>Protected Until:</strong></td>
+				<td><?php echo $ar["ph_prot_date"]; ?> <?php echo $ar["emp_uname"]; ?></td>
+			<?php } else {	?>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			<?php } ?>
+				<td colspan="2"><strong>AMG/IMG/CAN/J1/H1B:</strong> <?php echo $ar["ph_citizen"]; ?></td>				
+				<td><strong>Modified :</strong></td>
+				<td><?php echo date('Y-m-d',strtotime($ar["ph_date_mod"])); ?> by <?php echo $ar["ph_user_mod"]; ?></td>
+				
+			</tr>
+			
+		</table>
+		<?php 
+		//pipl status line
+		//echo var_dump($pipl);
+		/*$color = "white";
+		$typus = "";
+		$alert="";
+		foreach($pipl as $k=>$v)
+		{
+			$textcolor = "white";
+			switch($v["prio"]){
+				case 1:
+					$color = "maroon";
+                    $typus = "Present";
+					break;
+				case 2:
+					$color = "firebrick";
+                    $typus = "Interview";
+					break;
+				case 3:
+					$color = "red";
+                    $typus = "Pending";
+					break;
+				case 4:
+					$color = "crimson";
+                    $typus = "Placement";
+					break;
+				case 11:
+					$color = "#00cc00";
+					$textcolor = "black";
+                    $typus = "Locums Doc - Do not call";
+					break;
+			}
+			$alert.='<div class="alertdiv" style="background: '.$color.'; color: '.$textcolor.'; font-weight: bold"
+                title="'.$typus.'">'.$typus.': '.$v["emp_uname"].', '.date('Y-m-d',strtotime($v["pipl_date"])).'</div>';
+			
+		}*/
+		echo $alert;
+		
+		$srs = rtrim($_GET["srs"], ',');
+		if($srs!='')
+		{
+			$ids;
+			$i;
+			$j;
+			$idup;
+			$iddown;
+			
+			$ids = explode(",", $srs);
+			//echo count($ids);
+			//echo $srs;
+			//echo var_dump($ids);
+			$j=count($ids)+1;
+			for($i=0;$i<=count($ids);$i++)
+			{
+				if($ids[$i]==$ar["ph_id"])
+					$j=$i;	//echo $ids[$i];
+			}			
+			//echo $j;
+			//if($j==0 || $j=='')
+				//$j=1;
+			if($j>0)			
+				echo '<a href="'.$this->basePath().'/physician/view/'.$ids[$j-1].'?srs='.$srs.'"><img src="/public/img/images/ARW01LT.png" style="border:0px" />&nbsp;Previous</a>&nbsp;&nbsp;';
+			//echo "HERE";
+			if($j<count($ids)-1)
+				echo '<a href="'.$this->basePath().'/physician/view/'.$ids[$j+1].'?srs='.$srs.'">Next&nbsp;<img src="/public/img/images/ARW01RT.png" style="border:0px" /></a>'; //next
+		}
+		?>		
+		</div>		
+    </div>
+    
+</div>
+
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+
+<!--
+<div class="row">
+    <div class="span4">
+        asdf
+    </div>
+    <div class="span4">
+        asdf2
+    </div>
+    <div class="span4">
+        asdf3
+    </div>
+</div>-->
+
+<hr/>
+<p>
+<a href="#" id="noteslink" >Notes</a>&nbsp;
+<a href="#" id="cvlink" >CV Information</a>&nbsp;
+<a href="#" id="actionslink" >Actions</a>&nbsp;
+<a href="#" id="sourcelink" >Source</a>&nbsp;
+<a href="#" id="credentialslink" >Credentials</a>&nbsp;
+<a href="#" id="schedulelink" style="float:right">Schedule an Activity</a>
+</p>
+
+<!--NOTES BOX //-->
+<div id="notes-div" class="tab" >
+<h4>NOTES</h4>
+<div style="float: left; width: 90%">
+<form  method="post">
+<input type="hidden" id="ph_id" name="ph_id" value="<?php echo $ar['ph_id']; ?>" />
+<input type="hidden" name="ref_id" value='<?php echo $ar['ph_id']; ?>' />
+<input type="hidden" name="note_type" value="3"><input type="hidden" name="reserv" value="0"/>
+<label>Enter Comment:</label>
+<textarea name="commenttxt" id="commenttxt" style="width: 60%"></textarea><br/>
+<input type="submit" name="commentsubmit" id="commentsubmit" value="Add Comment" />
+</form>
+<hr/>
+<table>
+<?php
+			foreach ($comments as $row2=>$ar2)
+			{								
+				echo "<tr><td style='vertical-align:top;padding: 10px;'>".$ar2['note_user']."</td><td style='vertical-align:top; padding: 10px;'>".$ar2['note_text']."</td><td style='vertical-align:top;padding: 10px;'>".$ar2['note_dt']."</td></tr>";
+			}
+?>
+</table>
+</div>
+
+</div>
+<!--END NOTES BOX //-->
+
+<!--CV BOX //-->
+<div id="cv-div" class="tab hiddendiv" >
+<h4>CV Information</h4>
+
+<table>
+<tr>
+<td><strong>CV Web Link:</strong></td>
+<td><a href="<?php echo $this->basePath(); ?>/download_file.php?id=<?php echo $ar["cv_id"]; ?>"><?php echo $ar["filename"]; ?></a></td>
+</tr>
+<tr>
+<td><strong>CV Network Link:</strong></td>
+<td><a href="<?php echo $ar["ph_cv_url"]; ?>"><?php echo $ar["ph_cv_url"]; ?></a></td>
+</tr>
+<tr>
+<td><strong>CV Text:</strong></td>
+<td><?php echo $ar["ph_cv_text"]; ?></td>
+</tr>
+<tr>
+<td><strong>Upload:</strong></td>
+<td><button  onclick='window.open("<?php echo $this->basePath();?>/upload.php?ph_id=<?php echo $ar["ph_id"]; ?>","myWindow","width=420,height=270");return false;' >Upload a CV</button></td>
+</tr>
+</table>
+</div>
+<!--END CV BOX //-->
+
+<!--ACTIONS BOX //-->
+<div id="actions-div" class="tab hiddendiv" >
+<h4>Actions </h4>
+
+<div style="float: right; width: 40%">
+<form action="" method="post">
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<table border="1" cellpadding="1" cellspacing="0" class="nobg">
+  <tr>
+    <td colspan=2>Recruiter:</td>
+    <td colspan=3>
+	<select id="hot_req" name="hot_req" size=1>
+	<?php
+			foreach ($rec as $key=>$val)
+			{
+				echo "<option value='".$key."'>";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+     </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Hot Doc:</td>
+    <td><input type="checkbox" id="ph_hotdoc" name="ph_hotdoc" value="1"></td>
+    <td colspan=1><a id="pend_pop_link" class="fakea">Pending</a> </td><td><input type="checkbox" id="ph_pending" name="ph_pending" value="1" ></td>
+    
+    <td><button   type="button" class="btncan" id="ch_reset">&nbsp;Reset</button></td>
+  </tr>
+  <tr>
+    <td>Lead List 1:</td>
+    <td><input type="checkbox" id="ph_lead_1" name="ph_lead_1" value="1" ></td>
+    <td>Lead List 2</td>
+    <td><input type="checkbox" id="ph_lead_2" name="ph_lead_2" value="1" ></td>
+    <td align="middle"><input  type="submit" class=" btnok" id="ch_submit" name="ch_submit" value="OK" /></td>
+  </tr>
+</table>
+</form>
+</div>
+
+<p><a href="#" id="physician_pass_link" onclick="">Physician Pass</a></p>
+<p><a href="#" onclick="" id="fupass_link">PhysicianCareer Pass</a></p>
+<p><a href="#" id="present_link" onclick="">Present</a></p>
+<p><a href="#" id="interview_link" onclick="">Interview</a> &nbsp;(<a href="#" id="resend_interview_link" onclick="">Re-Send Pre-Interview</a>)</p>
+<p><a href="#" id="placement_link" onclick="">Placement</a></p>
+<p><a href="#" id="replacement_link" onclick="">Replacement</a></p>
+<p><a href="<?php echo $this->basePath(); ?>/physician/contpre/<?php echo $ar["ph_id"]; ?>?ph_id=<?php echo $ar["ph_id"]; ?>" onclick="">Contingency Present</a></p>
+<p><a href="#" id="locum_present_link" onclick="">Locum Tenens Present</a></p>
+<!--<p><a href="#" onclick="">Pay Rates</a></p>-->
+<p><a href="#" id="locum_pass_link" onclick="">Pass to Locums</a></p>
+
+<h4>History</h4>
+
+<table style="border: 1px solid " class="historytable">
+<tr><th>Facility</th><th>Contract</th><th>Date</th><th>Status</th><th>Recruiter</th><th>Cancelled</th></tr>
+<?php
+foreach ($history as $r2=>$h2)
+			{ 
+?>
+<tr>
+  <td><a href="<?php echo $this->basePath(); ?>/client/view/<?php echo $h2["cli_id"]; ?>"><?php echo $h2["ctct_name"]; ?></a></td>
+  <td><a href="<?php echo $this->basePath(); ?>/contract/view/<?php echo $h2["ctr_id"]; ?>"><?php echo $h2["ctr_no"]; ?></a></td>
+  <td><?php echo date('Y-m-d',strtotime($h2["pipl_date"])); ?>&nbsp;</td>
+  <td><?php echo $h2["pist_name"]; ?></td>
+  <td><?php echo $h2["emp_uname"]; ?></td>
+  <td>
+  <?php
+	if($h2["pipl_status"]==4 || $h2["pipl_status"]==5)
+		echo '<a href="'.$this->basePath().'/contract/ctrchange?pipl_id='.$h2["pipl_id"].'&ctr_id='.$h2["ctr_id"].'&type=5&action=writeoff">'."Write Off</a>&nbsp;";
+	elseif($h2["pipl_status"]==3 && $h2["pipl_cancel"]!=1)
+		echo '<a href="?id='.$h2["pipl_id"].'&action=cancel">Cancel</a>&nbsp;';
+	elseif($h2["pipl_cancel"]!=1)
+		echo '<a href="?id='.$h2["pipl_id"].'&action=cancel">Cancel</a>&nbsp;';
+		
+	if($h2["pipl_cancel"]==1)
+		echo "&nbsp;Cancelled";
+	//echo $h2["pipl_status"];
+  ?>
+  
+  </td>
+</tr>
+<?php
+}
+?>
+</table>
+
+<h3>Passes:</h3>
+<table border=1 cellpadding=2 cellspacing=0 class="nobg">
+<thead>
+ <tr><td>Date</td><td>From</td><td>To</td></tr>
+<?php
+foreach ($passes as $p2=>$v2)
+{ 
+
+echo'<tr>
+  <td>'.$v2["pp_date"].'</td><td>'.$v2["rec_from"].'</td>
+  <td>'.$v2["rec_to"].'</td>
+</tr>';
+
+}
+?>
+</table>
+</div>
+<!--END ACTIONS BOX //-->
+
+<!--SOURCE BOX //-->
+<div id="source-div" class="tab hiddendiv" >
+<h4>Source </h4>
+
+<a href="#" id="add_record_link">Add a record</a>
+
+<br/><br/>
+<?php if(count($sources2)>0) { ?>
+<table border="1" cellspacing="1" class="nobg">
+<TR>
+<TD ALIGN="center"><B>Contract#</B></TD>
+<TD ALIGN="center"><B>Source:</B></TD>
+<TD ALIGN="center"><B>Recruiter:</B></TD>
+<TD ALIGN="center"><B>Date Received:</B></TD>
+</TR>
+<?php } ?>
+<?php
+//echo var_dump($sources2);
+foreach ($sources2 as $key=>$val)
+{
+	echo "<tr><td><a href='".$this->basePath()."/contract/view/".$val['ctr_id']."'>".$val['ctr_no']."</a></td><td>".$val['psr_source']."</td><td>".$val['emp_uname']."</td><td>".$val['psr_date']."</td>";				
+					
+}
+?>
+</table>
+
+<form action="" method="post">
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="submit" name="enable_fuzion_submit" value="Enable Fuzion Export" />
+</form>
+
+</div>
+<!--END SOURCE BOX //-->
+
+<!--CREDENTIALS BOX //-->
+<div id="credentials-div" class="tab hiddendiv" >
+<h4>Credentials </h4>
+
+<table style="width: 80%; border: 1px solid;">
+<tr>
+<td>Reference Request Submitted</td>
+<td><a id="ref_ref0" class="fakea">
+<?php 
+
+   echo $ar["ph_ref_client"];
+   if($ar["ph_ref_client"])
+	echo "Client";
+   elseif($ar["ph_ref_recr"])
+	echo "R.Hold";
+   elseif($ar["ph_ref_hold"])
+	echo "C.Hold";
+   elseif($ar["ph_ref_submit"]=='')
+	echo "Enter";
+   else
+	echo $ar["ph_ref_submit"];
+	
+?></a>
+</td>
+<td><a class="fakea" id="refcheckreq">Billing Form</a></td>
+</tr>
+<tr>
+<td>AMA Request Submitted</td>
+<td><a id="ref_ama0" class="fakea">
+<?php 
+  
+   if($ar["ph_ama_client"])
+	echo "Client";
+   elseif($ar["ph_ama_submit"]=='')	
+	echo "Enter";
+   else
+	echo $ar["ph_ama_submit"];	
+?></a>
+</td>
+<td><a class="fakea" id="amacheckreq">Request an AMA Check</a></td>
+</tr>
+<tr>
+<td>Pre-Interview Form Received</td>
+<td><a id="ref_prei0" class="fakea">
+<?php   
+   if($ar["ph_preint_got"]=='')	
+	echo "Enter";
+   else
+	echo $ar["ph_preint_got"];	
+?>
+</a></td>
+<td><a class="fakea" id="phquest2" href="mailto:<?php echo $ar["ctct_email"]; ?>?Subject=Pre-Interview&Body=http://www.phg.com/pre_interview.php%3Fa=<?php echo $ar["ph_id"]; ?>%26b=<?php echo $_COOKIE["phguid"];?>" onclick="alert('Pre-Interview emails are sent automatically when you schedule an interview!');">Send Physician Questionnaire email</a></td>
+
+
+</tr>
+<tr>
+<td>Candidate Assessment</td>
+<td>
+<?php   
+   if($ar["ph_ca_not"])	
+	echo "NA";
+   else
+	echo $ar["ph_assesm"];	
+?>
+</td>
+<td><a href="<?php echo $this->basePath(); ?>/physician/assessment/<?php echo $ar['ph_id']; ?>">Candidate Assessment Notes</a></td>
+</tr>
+<tr>
+<td>Packet Completed</td>
+<td>
+<a id="ref_ref1" class="fakea">
+<?php   
+   if($ar["ph_completed"]=='')	
+	echo "Enter";
+   else
+	echo $ar["ph_completed"];	
+?>
+</a>
+</td>
+<td><a href="#" id="candass_link">Candidate Assessment Packet</a></td>
+</tr>
+
+
+</table>
+
+Send Post-Interview TQC Questionnaire
+
+</div>
+<!--END CREDENTIALS BOX //-->
+
+
+<!-- credentials panel genctr_pop//-->
+<div id="genctr_pop" class="p0pup">
+<form name="pres_form" method="post" action="<?php echo $this->basePath(); ?>/physician/assessment/<?php echo $ar["ph_id"]; ?>" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="pres_status" value="2">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="act_ret" value="3">
+
+
+<label><strong>Contract:</strong></label>
+<select name="genctr_ctr_id" >
+<?php
+//echo var_dump($contracts);
+foreach ($contracts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+<input type="submit" value="Submit" id="genctr_submit_btn" name="genctr_submit_btn" />
+<input type="button" value="Cancel" id="genctr_cancel_btn" />
+</form>
+</div>
+<!-- credentials panel //-->
+
+<!-- credentials date panel //-->
+<div id="genctr_date_panel" class="p0pup">
+<form name="genctr_date_form" method="post" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="pres_status" value="2">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="act_ret" value="3">
+
+<label><strong>Date:</strong></label>
+
+<input type="text" name="cdate_datetxt" id="cdate_datetxt" value="" class="date"/>
+<input type="hidden" name="cdate_date" id="cdate_date" value=""/>
+
+<div id="ref_row" style="display:none">
+<input type="checkbox" <?php if($ar["ph_ref_client"]){ echo "checked"; } ?> value="1" name="client_tmp" id="client_fld">
+  Client does Ref. Check<br>
+    <input type="checkbox" <?php if($ar["ph_ref_recr"]){ echo "checked"; } ?> value="1" name="client2_tmp" id="client2_fld">
+  Recruiter Hold<br>
+    <input type="checkbox" <?php if($ar["ph_ref_hold"]){ echo "checked"; } ?> value="1" name="client4_tmp" id="client4_fld">
+  Candidate Hold
+</div>
+<div id="ama_row" style="display:none">
+  <input type="checkbox" <?php if($ar["ph_ama_client"]){ echo "checked"; } ?> value="1" name="client3_tmp" id="client3_fld">
+  Client does AMA Check
+</div>
+
+<br/><br/>
+<input type="submit" value="Submit" id="ref_date_submit_btn" name="ref_date_submit_btn" />
+<input type="submit" value="Submit" id="ama_date_submit_btn" name="ama_date_submit_btn" />
+<input type="submit" value="Submit" id="preint_date_submit_btn" name="preint_date_submit_btn" />
+<input type="submit" value="Submit" id="cand_ass_date_submit_btn" name="cand_ass_date_submit_btn" />
+<input type="submit" value="Submit" id="packet_date_submit_btn" name="packet_date_submit_btn" />
+
+
+<input type="button" value="Cancel" id="genctr_date_cancel_btn" />
+</form>
+</div>
+<!-- credentials date panel //-->
+
+
+
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+			
+?>
+<div id="physician_pass_div" class="p0pup" style="">
+<strong>Physician Pass</strong><br/><br/>
+<form name="pass_form" method="POST" action="">
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="ph_ct" value="<?php echo $ar["ph_ctct_id"]; ?>">
+<input type="hidden" name="ph_tx" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="passt" value="PHG">
+<strong>Pass to:</strong>
+<select name="to[]" size="3" multiple>
+<?php
+			foreach ($rec as $key=>$val)
+			{
+				echo "<option value='".$key."'>";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+</select>
+<p>Hold the &lt;Ctrl&gt; button to select multiple recruiters</p>
+<strong>Source:</strong>
+<select name="pass_source" size="1" >
+<?php
+			foreach ($sources as $key=>$val)
+			{
+				echo "<option value='".$val['src_id']."'>";				
+				echo $val['src_name'];
+				echo "</option>";
+				
+			}
+		?>
+</select>
+<input type="submit" value="Submit" id="physician_pass_submit_btn" name="physician_pass_submit_btn" />
+
+<input type="button" value="Cancel" id="physician_pass_cancel_btn" />
+</form>
+</div>
+
+
+<!-- present panel //-->
+<div id="pres_panel" class="p0pup">
+<form name="pres_form" method="post" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="pres_status" value="2">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<!--<input type="hidden" name="act_ret" value="15">-->
+<!--<input type="hidden" name="addon" value="see below">-->
+<strong>Schedule Present</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="pres_ctr_id" >
+<?php
+//echo var_dump($contracts);
+if($_COOKIE["dept"]=='A' || count($mycontracts)<=0)
+	$conts = $contracts;
+else
+	$conts = $mycontracts;
+foreach ($conts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+<label><strong>Present Date:</strong></label>
+
+<input type="text" name="pres_datetxt" id="pres_datetxt" value="" class="date"/>
+<input type="hidden" name="pres_date" id="pres_date" value=""/>
+
+<label><strong>Do you have a CV?</strong></label><input name="addon" type="radio" id="presycv" value="YES" /> Yes
+&nbsp; <input name="addon" id="presnocv" type="radio" value="NO" /> No
+
+<br/><br/>
+<input type="submit" value="Submit" id="pres_submit_btn" name="pres_submit_btn" />
+<input type="button" value="Cancel" id="pres_cancel_btn" />
+</form>
+</div>
+<!-- present panel //-->
+
+
+
+<!-- pending panel //-->
+<div id="pending_panel" class="p0pup">
+<form name="pending_form" method="post" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="pend_status" value="10">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="pipl_emp_id" value="">
+<!--<input type="hidden" name="act_ret" value="15">-->
+<!--<input type="hidden" name="addon" value="see below">-->
+<strong>Pending</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="ctr_id" >
+<?php
+//echo var_dump($contracts);
+if($_COOKIE["dept"]=='A' || count($mycontracts)<=0)
+	$conts = $contracts;
+else
+	$conts = $mycontracts;
+foreach ($conts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+<label><strong>Pending Date:</strong></label>
+
+<input type="text" name="pend_datetxt" id="pend_datetxt" value="" class="date"/>
+<input type="hidden" name="pend_date" id="pend_date" value=""/>
+
+
+<br/><br/>
+<input type="submit" value="Submit" id="pend_submit_btn" name="pend_submit_btn" />
+<input type="button" value="Cancel" id="pend_cancel_btn" />
+</form>
+</div>
+<!-- pending panel //-->
+
+
+<!-- interview panel //-->
+<div id="int_panel" class="p0pup">
+<form name="int_form" method="post" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="int_status" value="3">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="addon" value="<?php echo $ar["ctct_email"]; ?>">
+<input type="hidden" name="act_ret" value="3">
+<!--<input type="hidden" name="addon" value="see below">-->
+<strong>Schedule Interview</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="int_ctr_id" >
+<?php
+//echo var_dump($contracts);
+if($_COOKIE["dept"]=='A' || count($mycontracts)<=0)
+	$conts = $contracts;
+else
+	$conts = $mycontracts;
+foreach ($conts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+<label><strong>Interview Date:</strong></label>
+
+<input type="text" name="int_datetxt" id="int_datetxt" value="" class="date"/>
+<input type="hidden" name="int_date" id="int_date" value=""/>
+
+<br/><br/>
+<input type="submit" value="Submit" id="int_submit_btn" name="int_submit_btn" />
+<input type="button" value="Cancel" id="int_cancel_btn" />
+</form>
+</div>
+<!-- interview panel //-->
+
+<!-- resend interview panel //-->
+<div id="resend_int_panel" class="p0pup">
+<form name="int_form" method="post" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="int_status" value="3">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="addon" value="<?php echo $ar["ctct_email"]; ?>">
+<input type="hidden" name="act_ret" value="3">
+<!--<input type="hidden" name="addon" value="see below">-->
+<strong>Resend Pre-Interview?</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="int_ctr_id" >
+<?php
+//echo var_dump($contracts);
+if($_COOKIE["dept"]=='A' || count($mycontracts)<=0)
+	$conts = $contracts;
+else
+	$conts = $mycontracts;
+foreach ($conts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+<input type="submit" value="Submit" id="resend_int_submit_btn" name="resend_int_submit_btn" />
+<input type="button" value="Cancel" id="resend_int_cancel_btn" />
+</form>
+</div>
+<!-- interview panel //-->
+
+<!-- placement panel //-->
+<div id="plac_panel" class="p0pup">
+<form name="plac_form" method="post" action="<?php echo $this->basePath(); ?>/physician/placement/<?php echo $ar["ph_id"]; ?>" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="plac_status" value="3">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="re" value="0">
+<input type="hidden" name="n" value="<?php echo $_GET["n"]; ?>">
+<input type="hidden" name="srs" value="<?php echo $_GET["srs"]; ?>">
+<input type="hidden" name="act_ret" value="3">
+<strong>Placement</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="plac_ctr_id" >
+<?php
+//echo var_dump($contracts);
+if($_COOKIE["dept"]=='A' || count($mycontracts)<=0)
+	$conts = $contracts;
+else
+	$conts = $mycontracts;
+foreach ($conts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+<input type="submit" value="Submit" id="plac_submit_btn" name="plac_submit_btn" />
+<input type="button" value="Cancel" id="plac_cancel_btn" />
+</form>
+</div>
+<!-- placement panel //-->
+
+<!-- replacement panel?????? same???? //-->
+<div id="replac_panel" class="p0pup">
+<form name="plac_form" method="post" action="<?php echo $this->basePath(); ?>/physician/placement/<?php echo $ar["ph_id"]; ?>" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="plac_status" value="3">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="re" value="0">
+<input type="hidden" name="n" value="<?php echo $_GET["n"]; ?>">
+<input type="hidden" name="srs" value="<?php echo $_GET["srs"]; ?>">
+<input type="hidden" name="act_ret" value="3">
+<strong>Placement</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="plac_ctr_id" >
+<?php
+//echo var_dump($contracts);
+foreach ($contracts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+<input type="submit" value="Submit" id="replac_submit_btn" name="plac_submit_btn" />
+<input type="button" value="Cancel" id="replac_cancel_btn" />
+</form>
+</div>
+<!-- replacement panel //-->
+
+
+<!-- locums present panel //-->
+<div id="loc_pres_panel" class="p0pup">
+<form name="loc_pres_form" method="post" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="pres_status" value="2">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+
+<!--<input type="hidden" name="addon" value="see below">-->
+<strong>Schedule Locums Present</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="loc_pres_ctr_id" >
+<option value="">--None--</option>
+<?php
+echo var_dump($ltcontracts);
+foreach ($ltcontracts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+<label><strong>Client ID:</strong></label>
+<input type="text" name="loc_cli_id" id="loc_cli_id" value="" style="width: 50px;" />
+
+<label><strong>Location:</strong></label>
+<input type="text" name="loc_location" id="loc_location" value=""  />
+
+<label><strong>Work Site:</strong></label>
+<input type="text" name="loc_work_site" id="loc_work_site" value=""  />
+
+<label><strong>Present Date:</strong></label>
+<input type="text" name="loc_pres_datetxt" id="loc_pres_datetxt" value="" class="date"/>
+<input type="hidden" name="loc_pres_date" id="loc_pres_date" value=""/>
+
+<label><strong>Specialty:</strong></label>
+<input type="text" name="loc_spec" id="loc_spec" value="" style="width: 50px;" />
+
+<br/><br/>
+<input type="submit" value="Submit" id="loc_pres_submit_btn" name="loc_pres_submit_btn" />
+<input type="button" value="Cancel" id="loc_pres_cancel_btn" />
+</form>
+</div>
+<!-- locums present panel //-->
+
+
+<!-- billing panel //-->
+<div id="bill_panel" class="p0pup">
+<form name="bill_form" method="get" action="<?php echo $this->basePath(); ?>/physician/refbill" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="ctr_id" >
+<?php
+//echo var_dump($contracts);
+foreach ($contracts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+<input type="submit" value="Submit" id="bill_submit_btn" name="bill_submit_btn" />
+<input type="button" value="Cancel" id="bill_cancel_btn" />
+</form>
+</div>
+<!-- billing panel //-->
+
+<!-- amacheck panel //-->
+<div id="ama_panel" class="p0pup">
+<form name="ama_form" method="get" action="<?php echo $this->basePath(); ?>/physician/amacheck" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="ctr_id" >
+<?php
+//echo var_dump($contracts);
+foreach ($contracts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+<input type="submit" value="Submit" id="ama_submit_btn" name="ama_submit_btn" />
+<input type="button" value="Cancel" id="ama_cancel_btn" />
+</form>
+</div>
+<!-- amacheck panel //-->
+
+
+<!-- locums pass panel //-->
+<div id="loc_pass_panel" class="p0pup">
+<form name="loc_pass_form" method="post" action="" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="plac_status" value="3">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="re" value="0">
+<input type="hidden" name="n" value="<?php echo $_GET["n"]; ?>">
+<input type="hidden" name="srs" value="<?php echo $_GET["srs"]; ?>">
+<input type="hidden" name="act_ret" value="3">
+
+<input type="hidden" name="empemail" value="">
+<input type="hidden" name="phid" value="">
+<input type="hidden" name="empuser" value="">
+
+<strong>Physician Pass to Locums</strong><br/><br/>
+
+<label>Pass to:</label>
+<select name="emp_id" size="1" >
+<?php
+			foreach ($rec as $key=>$val)
+			{
+				echo "<option value='".$key."'>";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+</select>
+<br/>
+<div class="row">
+<div class="span3">
+<label>Pinnacle contact name:</label> <input type="text" size="40" name="empname" value="<?php echo $_COOKIE["realname"]; ?>">
+</div>
+<div class="span3">
+<label>Best time to call to discuss:</label> <input type="text" size="30" name="emptime" value="">
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>Provider Name:</label><input type="text" size="40" name="phname" value='<?php echo $ar["ctct_name"]; ?>'>
+</div>
+<div class="span3">
+<label>Title:</label><input type="text" size="6" name="title" value='<?php echo $ar["ctct_title"]; ?>'>
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>Address 1:</label><input type="text" size="60" name="addr1" value='<?php echo $ar["ctct_addr_1"]; ?>' />
+</div>
+<div class="span3">
+<label>Address 2:</label><input type="text" size="60" name="addr2" value='<?php echo $ar["ctct_addr_2"]; ?>'>
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>City, State, Zip:</label><input type="text" size="60" name="addr3"  value='<?php echo $ar["ctct_addr_c"].", ".$ar["ctct_st_code"]." ".$ar["ctct_addr_z"]; ?>'>
+</div>
+<div class="span3">
+<label>Phone Number:</label><input type="text" size="40" name="phone" value='<?php echo $ar["ctct_phone"]; ?>'>
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>Email Address:</label><input type="text" size="60" name="email" value="<?php echo $ar["ctct_email"]; ?>">
+</div>
+<div class="span3">
+<label>Category:</label><input type="text" size="60" name="spec" value="<?php echo $ar["an_type"]; ?>">
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>Board Certified:</label><input type="text" size="6" name="bcbe" value="<?php echo $ar["an_bc"]; ?>">
+</div>
+<div class="span3">
+<label>Licenses:</label><input type="text" name="licenses" size="30" value="<?php echo $ar["an_licenses"]; ?>">
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>Actually talked to Dr. about locums?</label>
+	<input type="radio" name="talked" value="Yes">&nbsp;Yes&nbsp;
+	<input type="radio" name="talked" value="No">&nbsp;No <br/><br/>
+</div>
+<div class="span3">
+<label>Currently working with PHG?</label>
+	<input type="radio" name="current" value="Yes">&nbsp;Yes&nbsp;
+	<input type="radio" name="current" value="No">&nbsp;No<br/><br/>
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>If yes, go through PHG contact first?</label>
+	<input type="radio" name="through" value="Yes">&nbsp;Yes&nbsp;
+	<input type="radio" name="through" value="No">&nbsp;No
+</div>
+<div class="span3">
+<label>Best time to call:</label>
+	<input type="text" name="besttime" size="40" value="">
+</div>
+</div>
+
+<div class="row">
+<div class="span3">
+<label>Current situation/type of position desired:</label>
+	<textarea name="situation" cols="60" rows="4"></textarea>	
+</div>
+<div class="span3">
+
+<br/><br/><br/>	
+<input type="submit" value="Submit" id="loc_pass_submit_btn" name="loc_pass_submit_btn" class="btn-large btn" />
+<input type="button" value="Cancel" id="loc_pass_cancel_btn" class="btn-large btn" />
+
+</div>
+</div>
+
+</form>
+</div>
+<!-- locums pass panel //-->
+
+
+<!-- add source panel //-->
+<div id="addsource_panel" class="p0pup">
+<form name="addsource_form" method="post" action="" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="sp" value="<?php echo $ar["ph_spec_main"]; ?>">
+<strong>Add Source</strong><br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="addsource_ctr_id" id="addsource_ctr_id" >
+<?php
+//echo var_dump($contracts);
+foreach ($contracts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+
+<label><input type="radio" name="is_dm" id="isdm1" checked value="1"> Direct Mail</label>
+	     <input type="text" name="dm_code" value="" maxlength="2" size="4" title="Campaign Code (2 symbols)"> code<br>
+	   <label><input type="radio" name="is_dm" id="isdm3" value="3"> www.PHG.com</label><br>
+	   <label><input type="radio" name="is_dm" id="isdm2" value="4"> PhysicianCareer</label><br>
+	   <label><input type="radio" name="is_dm" id="isdm4" value="5"> Physician Work</label><br>
+	   <label><input type="radio" name="is_dm" id="isdm5" value="6"> Email Campaigns</label><br>
+	   <input type="radio" name="is_dm" id="isdm0" value="0">
+<select name="source" id="srctx">
+<option value="Unspecified">&nbsp;</option>
+<?php
+//echo var_dump($contracts);
+foreach ($sources as $key=>$val)
+{
+	//echo "<option value='".$val['src_id']."'>";	
+	echo "<option value='".$val['src_name']."'>";		
+	echo $val['src_sp_code']." - ".$val['src_name']." - ".$val['src_price'];
+	echo "</option>";
+	/*echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";*/
+				
+}
+?>
+</select>
+
+<label><strong>Date:</strong></label> <input type="text" name="addsource_date" id="addsource_datetxt" value="" class="date"/>
+	<input type="hidden" name="addsource_date" id="addsource_date" value=""/>
+<br/><br/>
+
+<input type="submit" value="Submit" id="addsource_submit_btn" name="addsource_submit_btn" />
+<input type="button" value="Cancel" id="addsource_cancel_btn" />
+</form>
+</div>
+<!-- add source panel //-->
+
+
+<div id="fupass_pop" class="p0pup" >
+<form name="fupass_form" method="POST" action="">
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="passt" value="FU">
+<input type="hidden" name="act_ct" value="<?php echo $ar["ph_ctct_id"]; ?>">
+<B>Pass to PhysicianCareer Data Entry</B>
+<br/><br/>
+<input type="submit" value="Submit" id="fupass_submit_btn" name="fupass_submit_btn" />
+<input type="button" value="Cancel" id="fupass_cancel_btn" />
+
+
+</form>
+</div>
+
+
+
+<div id="sched_activity_div" class="p0pup" style="">
+<strong>Physician Schedule Activity</strong><br/><br/>
+<form  method="post">
+	 <input type="hidden" name="act_t_x" id="act_tx" value="">
+	 <input type="hidden" name="act_ref" value="<?php echo $id; ?>">
+	 <input type="hidden" name="act_ret" value="3"><!-- physician -->
+	 <input type="hidden" name="act_ct" value="<?php echo $ar["ph_ctct_id"]; ?>">
+	 <input type="hidden" name="ph_name" value="<?php echo $ar["ctct_name"]; ?>">
+	<strong><?php echo $ar["ph_id"]; ?></strong> - <?php echo $ar["ctct_name"]; ?><br/><br/>
+	<strong>Activity:</strong>
+	<select size="1" name="activ_type" id="act_t">
+	<?php
+	
+			foreach ($act as $key=>$val)
+			{
+				echo "<option value='".($val['act_code']+$val['act_need_note']*1000)."'>";				
+				echo $val['act_name'];
+				echo "</option>";
+				
+			}
+		?>
+	</select><br/>
+	
+	<label><strong>Date:</strong></label> <input type="text" name="schedact_date" id="schedact_datetxt" value="" class="date"/>
+	<input type="hidden" name="schedact_date" id="schedact_date" value=""/>
+	
+	<label><strong>Time:</strong></label>
+	<select  name="schedact_hrtxt" id="schedact_hrtxt" class="time" >
+		<option value="00">0</option>		
+		<option value="01">1</option>
+		<option value="02">2</option>
+		<option value="03">3</option>
+		<option value="04">4</option>
+		<option value="05">5</option>
+		<option value="06">6</option>
+		<option value="07">7</option>
+		<option value="08">8</option>
+		<option value="09">9</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+		<option value="13">13</option>
+		<option value="14">14</option>
+		<option value="15">15</option>
+		<option value="16">16</option>
+		<option value="17">17</option>
+		<option value="18">18</option>
+		<option value="19">19</option>
+		<option value="20">20</option>
+		<option value="21">21</option>
+		<option value="22">22</option>
+		<option value="23">23</option>
+		<option value="24">24</option>
+		
+		<!--<option value="13:00">1:00 PM</option>
+		<option value="14:00">2:00 PM</option>
+		<option value="15:00">3:00 PM</option>
+		<option value="16:00">4:00 PM</option>
+		<option value="17:00">5:00 PM</option>
+		<option value="18:00">6:00 PM</option>
+		<option value="19:00">7:00 PM</option>
+		<option value="08:00">8:00 PM</option>
+		<option value="09:00">9:00 PM</option>
+		<option value="10:00">10:00 PM</option>
+		<option value="11:00">11:00 PM</option>-->
+		
+	</select>
+	:
+	<select  name="schedact_mintxt" id="schedact_mintxt"  class="time">
+		<option value="00">00</option>
+		<option value="05">05</option>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+		<option value="25">25</option>
+		<option value="30">30</option>
+		<option value="35">35</option>
+		<option value="40">40</option>
+		<option value="45">45</option>
+		<option value="50">50</option>
+		<option value="55">55</option>		
+		
+	</select> <br/>
+	
+	<label><strong>User:</strong></label>
+	<select size="1" name="act_user" id="act_t">
+	<?php
+	
+			foreach ($users as $key=>$val)
+			{
+				echo "<option value='".$key."'>";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>
+	
+	
+	<label><strong>Notes:</strong></label>
+	<textarea name="sched_act_notes" id="sched_act_notes"></textarea>
+	<br/>
+	
+	<input type="submit" value="Submit" id="sched_submit_btn" name="sched_submit_btn" />
+<input type="button" value="Cancel" id="sched_cancel_btn" />
+</form>	
+	 
+</div>
+
+
+<!-- assessment panel //-->
+<div id="candass_panel" class="p0pup">
+<form name="candass_form" method="post" action="" target="_blank" >
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="as_nurse" value="0" />
+<br/><br/>
+
+<label><strong>Contract:</strong></label>
+<select name="candass_ctr_id" id="candass_ctr_id">
+<?php
+//echo var_dump($contracts);
+foreach ($asscontracts as $key=>$val)
+{
+	echo "<option value='".$val['ctr_id']."'>";				
+	echo $val['ctr_no']." ".$val['ctr_spec']." ".$val['ctr_location_c']." ".$val['ctr_location_s'];
+	echo "</option>";
+				
+}
+?>
+</select>
+
+<br/><br/>
+<input type="submit" value="Submit" id="candass_submit_btn" name="candass_submit_btn" />
+<input type="button" value="Cancel" id="candass_cancel_btn" />
+</form>
+</div>
+<!-- assessment panel //-->
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

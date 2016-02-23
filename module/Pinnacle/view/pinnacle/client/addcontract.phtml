@@ -1,0 +1,444 @@
+<?php
+// module/Pinnacle/view/pinnacle/client/addContract.phtml:
+// Contract Search
+
+$title = 'Add Contract';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+h4 { text-align: center; }
+.inline { font-weight: bold; /*display: block; float: left; width: 90px;*/ }
+</style>
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			
+			 $( "#datepicker" ).datepicker({altFormat: "yy-mm-dd",  altField: "#actdate"});
+			 $( "#ctr_retainpicker" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ctr_retain"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+			$( "#viewform" ).submit(function(event){ //alert('test');
+            
+			//event.preventDefault();
+			//return Form1_Validator(this);
+			//return (Form1_Validator(this));
+			//alert(Form1_Validator(this));
+			if(Form1_Validator(this))
+				return true;
+			else
+				event.preventDefault();
+                    // This cancels the event...
+					//return true;
+        });
+}
+
+
+
+
+</script>
+<script language="JavaScript"><!--
+function radio1click() {
+   document.all.bill_xid.value = "";
+   document.all.bill_xid.disabled = true;
+}
+
+function radio2click() {
+   document.all.bill_xid.disabled = false;
+}
+
+function radio3click() {
+   document.all.ctr_spec.disabled = false;
+   document.all.nutype.disabled = true;
+}
+
+function radio4click() { 
+   document.all.ctr_spec.disabled = true;
+   document.all.nutype.disabled = false;
+}
+// -->
+</script>
+<script Language="JavaScript"><!--
+function Form1_Validator(theForm)
+{
+//alert(theForm.ctr_no.value);
+  var checkOK = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  var checkStr = theForm.ctr_no.value;
+  var allValid = true;
+  var decPoints = 0;
+  var allNum = "";
+  for (i = 0;  i < checkStr.length;  i++)
+  {
+    ch = checkStr.charAt(i);
+    for (j = 0;  j < checkOK.length;  j++)
+      if (ch == checkOK.charAt(j))
+        break;
+    if (j == checkOK.length)
+    {
+      allValid = false;
+      break;
+    }
+    allNum += ch;
+  }
+  if (!allValid)
+  {
+    alert("Please enter only digit characters in the \"Contract#\" field.");
+    theForm.ctr_no.focus();
+    return (false);
+  }
+
+  var checkOK = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  var checkStr = theForm.ctr_type.value;
+  var allValid = true;
+  for (i = 0;  i < checkStr.length;  i++)
+  {
+    ch = checkStr.charAt(i);
+    for (j = 0;  j < checkOK.length;  j++)
+      if (ch == checkOK.charAt(j))
+        break;
+    if (j == checkOK.length)
+    {
+      allValid = false;
+      break;
+    }
+  }
+  if (!allValid)
+  {
+    alert("Please enter only letter characters in the \"Type\" field.");
+    theForm.ctr_type.focus();
+    return (false);
+  }
+
+  var checkOK = "0123456789.";
+  var checkStr = theForm.ctr_amount.value;
+  var allValid = true;
+  var decPoints = 0;
+  var allNum = "";
+  for (i = 0;  i < checkStr.length;  i++)
+  {
+    ch = checkStr.charAt(i);
+    for (j = 0;  j < checkOK.length;  j++)
+      if (ch == checkOK.charAt(j))
+        break;
+    if (j == checkOK.length)
+    {
+      allValid = false;
+      break;
+    }
+    if (ch == ".")
+    {
+      allNum += ".";
+      decPoints++;
+    }
+    else
+      allNum += ch;
+  }
+  if (!allValid)
+  {
+    alert("Please enter only digit characters in the \"Amount\" field.");
+    theForm.ctr_amount.focus();
+    return (false);
+  }
+
+  if (decPoints > 1)
+  {
+    alert("Please enter a valid number in the \"Amount\" field.");
+    theForm.ctr_amount.focus();
+    return (false);
+  }
+
+  var checkOK = "0123456789.";
+  var checkStr = theForm.ctr_monthly.value;
+  var allValid = true;
+  var decPoints = 0;
+  var allNum = "";
+  for (i = 0;  i < checkStr.length;  i++)
+  {
+    ch = checkStr.charAt(i);
+    for (j = 0;  j < checkOK.length;  j++)
+      if (ch == checkOK.charAt(j))
+        break;
+    if (j == checkOK.length)
+    {
+      allValid = false;
+      break;
+    }
+    if (ch == ".")
+    {
+      allNum += ".";
+      decPoints++;
+    }
+    else
+      allNum += ch;
+  }
+  if (!allValid)
+  {
+    alert("Please enter only digit characters in the \"Installment\" field.");
+    theForm.ctr_monthly.focus();
+    return (false);
+  }
+
+  if (decPoints > 1)
+  {
+    alert("Please enter a valid number in the \"Installment\" field.");
+    theForm.ctr_monthly.focus();
+    return (false);
+  }
+
+  var checkStr = theForm.ctr_snote.value;
+  if (checkStr.length > 250)
+  {
+    alert("Please enter no more than 250 characters in the \"Notes\" field.");
+    theForm.ctr_snote.focus();
+    return (false);
+  }
+
+  //theForm.ctr_date.value = document.all.dtpicker1.value;
+  //getthedate();
+  //getthedate2();
+
+  return (true);
+}
+</script>
+<?php
+
+?>
+
+<h1 ><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+?>
+
+<h4>Facility: <?php echo $ar["ctct_name"]; ?></h4>
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+
+
+<input type="hidden" name="cli_id" value="<?php echo $ar["cli_id"]; ?>">
+
+<div class="row">
+    <div class="span7">
+	<label class="inline">Contract #:</label>
+	<input type="text" name="ctr_no" size="12" > Search for
+	<input onclick="radio3click()" name="ctr_nurse" type="radio" value="0" checked> Physician &nbsp;
+    <input onclick="radio4click()" name="ctr_nurse" type="radio" value="1"> Mid-level
+    </div>  
+	<div class="span4">
+	<label class="inline">Date:</label>
+	<input type="text" id="datepicker" />
+				<input type="hidden" id="actdate" name="actdate" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+	<label class="inline">Parent/Child:</label>
+	<input onclick="radio1click()" type="radio" value="<?php echo $ar["cli_id"]; ?>" checked name="ctr_bill">None &nbsp;
+    <input onclick="radio2click()" type="radio" name="ctr_bill" value="x">Child Client #:&nbsp;
+    <input type="text"  id="bill_xid" size="12" maxlength="10" name="cli_bill" disabled>
+    </div>  
+	<div class="span4">
+	<label></label>
+	
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+	<label class="inline">Specialty:</label>
+	
+	<select name="ctr_spec" id="ctr_spec">
+				<?php
+	//echo var_dump($specs);
+	$nbsp = array();
+	$nbsp[0] = "&nbsp;&nbsp;&nbsp;";
+	$nbsp[1] = "&nbsp;&nbsp;";
+	$nbsp[2] = "&nbsp;";
+	$nbsp[3] = "";
+	
+			foreach ($spec as $key=>$val)
+			{		//(RS("skill") = "--" and IsNull(RS0("ph_skill")) OR RS0("ph_skill")=RS("skill") OR RS("skill") = "  " and IsNull(RS0("ph_skill"))
+				$code = $val["sp_code"].$nbsp[strlen($val["sp_code"])];
+				echo "<option value='".$val["sp_code"]."|".$val["skill"]."'";
+				//if(strtoupper($val["sp_code"])==strtoupper($_POST["ph_spec_main"]) && ($val["skill"]=="--" && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) || $ar["ph_skill"]==$val["skill"] || $ar["ph_skill"] == "  " && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) ))				
+					//echo "selected";
+				echo ">";				
+				echo $code."&nbsp;".$val['spec'];
+				echo "</option>";
+			}
+?>
+				</select><br/>
+	<?php //echo var_dump($ar); ?>			
+<?php //echo var_dump($mid); ?>
+	<select size="1" name="ctr_nu_type" disabled id="nutype" ><!-- &&&&&&&&&&&&&&&&&&&&&&&&&& ALLIED TYPE &&&&&&&&&&&&&& -->
+	<?php //echo $mid; 
+		foreach ($mid as $key=>$val)
+			{		
+				//$code = $key.$nbsp[strlen($key)];
+				/*$code = $val["at_code"].$nbsp[strlen($val["at_code"])];
+				echo "<option value='".$val["at_code"]."'";				
+				echo ">";				
+				echo $code."&nbsp;".$val['at_name'];
+				echo "</option>";*/
+				echo "<option value='".$key."'";				
+				echo ">";				
+				echo "&nbsp;".str_replace("=","&nbsp;",$val);
+				echo "</option>";
+			}
+	?>
+	</select>
+
+    </div>  
+	<div class="span4">
+	<label class="inline">Status</label>
+	<select name="ctr_status" id="ctr_status">
+				<?php
+				foreach ($status as $row=>$ar2)				{						
+					echo "<option value='".$ar2['st_id']."'";
+					if($_POST["ctr_status"]==$ar2['st_id'])
+						echo "selected";
+					elseif($ar2['st_id']=='1')
+						echo "selected";						
+					echo ">";				
+					echo $ar2['st_name'];
+					echo "</option>";					
+				}
+				?>
+				</select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+	<label class="inline">Recruiter</label>
+	<select size="1" name="ctr_recruiter">
+			<?php
+				foreach ($rec as $key=>$val)
+				{						
+					echo "<option value='".$key."'>";				
+					echo $val;
+					echo "</option>";					
+				}
+			?>
+	
+	</select>
+	
+	
+	<label class="inline">Marketer</label>
+	<select size="1" name="ctr_marketer">
+		<?php
+				foreach ($mr as $key=>$val)
+				{						
+					echo "<option value='".$key."'>";				
+					echo $val;
+					echo "</option>";					
+				}
+		?>
+	
+	</select>
+	
+	
+    </div>  
+	<div class="span4">
+	<label class="inline">Type:</label>
+	<input type="text" name="ctr_type" size="5"> <span class="smoll">LT = locums</span>
+	
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+	<label class="inline">Amount:</label>
+	<input type="text" name="ctr_amount" size="20">
+    </div>  
+	<div class="span4">
+	<label class="inline">Monthly Installment:</label>
+	<input type="text" name="ctr_monthly" size="20">
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+	<label class="inline">City:</label>
+	<input type="text" name="ctr_loc_c" value='<?php echo $ar["ctct_addr_c"]; ?>' size="20" maxlength="50">
+	<label class="inline">State:</label>
+	<select name="ctr_loc_s" id="contact_state">
+				<?php
+				foreach ($states as $row=>$ar3)
+				{					
+					echo "<option value='".$row."'";
+					if($row==$ar["ctct_st_code"])
+						echo "selected";
+					echo " >";				
+					echo $ar3;
+					echo "</option>";
+				}
+				?>
+				</select>
+	
+    </div>  
+	<div class="span4">
+	<label class="inline">Retain Date:</label>
+	<input type="text" id="ctr_retainpicker" />
+	<input type="hidden" name="ctr_retain" id="ctr_retain" value="">
+    </div>
+</div>
+
+<div class="row">
+    <div class="span7">
+	<label class="inline" >Notice:</label>
+	<textarea name="ctr_snote" rows="4" cols="170" style="width: 300px"></textarea>
+    </div>  
+	<div class="span4">
+	<label></label>
+	
+    </div>
+</div>
+
+
+<br/><br/>
+<input type="submit" name="submit" value="Submit" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="<?php echo $this->basePath(); ?>/client/view/<?php echo $id; ?>">Go Back to Client</a>
+
+
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

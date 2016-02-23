@@ -1,0 +1,583 @@
+<?php
+// module/Pinnacle/view/pinnacle/physician/edit.phtml:
+
+$title = $part === 'add'? 'Add New Physician': 'Edit Physician';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-1.9.1.js');//
+
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+//$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');//
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+.cour {font-family: courier }
+</style>
+<script>
+
+$(function() { //alert('test'); 
+//var x=0;
+
+$(function() {
+ $( "#ph_availtxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ph_avail"});
+});
+
+$(function() {
+ $( "#ph_cv_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ph_cv_date"});
+});
+
+$(function() {
+ $( "#ph_1st_inqtxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#ph_1st_inq"});
+});
+
+});
+
+</script>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php if( true /*$phguser->access > 1*/ ) { 
+
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('physician',
+                        array('action' => 'edit', 'part' => $part, 'id' => $id)));
+						
+    $form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+<p style="text-align:center; color:red"><?php echo $message; ?></p>
+<input type="hidden" name="basepath" value="<?php echo $this->basePath(); ?>"/>
+<input type="hidden" name="ph_id" value="<?php echo $ar["ph_id"]; ?>"/>
+<input type="hidden" name="ph_workaddr" value="<?php echo $ar["ph_workaddr"]; ?>"/>
+<input type="hidden" name="ph_xchg" value="">
+<input type="hidden" name="n" value="
+<?php
+	if($_GET["srs"]!="")
+	{
+		$i=$_GET["n"];
+		if ($i == "") { $i = 3; } else { $i = $i+2; }
+		echo $i;
+	}	
+?>
+">
+<input type="hidden" name="srs" value="<?php echo $_GET["srs"]; ?>"/>
+<h4>Contact Information</h4>
+<div class="row">
+<div class="span4">
+<strong>Name:</strong><input type="text" name="ctct_name" size="60" maxlength="127" value="<?php echo $ar["ctct_name"]; ?>" />
+</div>
+<div class="span4">
+<strong>Title:</strong><input type="text" name="ctct_title" size="20" maxlength="63" value="<?php echo $ar["ctct_title"]; ?>">
+</div>
+<div class="span4">
+<strong>Status:</strong>
+<select name="ph_status" id="ph_status">
+	<?php
+	//echo var_dump($statuses);
+			foreach ($statuses as $row=>$ar_statuses)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$ar_statuses['st_id']."'";
+				if($ar_statuses['st_id']==$ar["ph_status"])
+					echo "selected";
+				echo ">";				
+				echo $ar_statuses['st_name'];
+				echo "</option>";
+			}
+		?>
+	</select>
+
+</div>
+</div>
+
+<div class="row">
+<div class="span6">
+<strong>Home Address:</strong>
+<table>
+<tr>
+<td>Line 1:</td><td colspan="2"><input type="text" name="ctct_addr_1" size="40" maxlength="63" value='<?php echo $ar["ctct_addr_1"]; ?>' /></td>
+</tr>
+<tr>
+<td>Line 2:</td><td colspan="2"><input type="text" name="ctct_addr_2" size="40" maxlength="63" value='<?php echo $ar["ctct_addr_2"]; ?>' /></td>
+</tr>
+<tr>
+<td>City:</td><td colspan="2"><input type="text" name="ctct_addr_c" size="40" maxlength="63" value='<?php echo $ar["ctct_addr_c"]; ?>' /></td>
+</tr>
+<tr>
+<td>State:</td><td>
+<select name="ctct_st_code" id="ctct_st_code">
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$ar["ctct_st_code"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+</td>
+<td>Zip: <input type="text" name="ctct_addr_z" size="6" maxlength="10" value='<?php echo $ar["ctct_addr_z"]; ?>' style="width: 50px" /></td>
+</tr>
+</table>
+</div>
+
+<div class="span6">
+<strong>Office Address:</strong>
+<table>
+<tr>
+<td>Line 1:</td><td colspan="2"><input type="text" name="ctct_waddr_1" size="40" maxlength="63" value='<?php echo $ar["ctct_waddr_1"]; ?>' /></td>
+</tr>
+<tr>
+<td>Line 2:</td><td colspan="2"><input type="text" name="ctct_waddr_2" size="40" maxlength="63" value='<?php echo $ar["ctct_waddr_2"]; ?>' /></td>
+</tr>
+<tr>
+<td>City:</td><td colspan="2"><input type="text" name="ctct_waddr_c" size="40" maxlength="63" value='<?php echo $ar["ctct_waddr_c"]; ?>' /></td>
+</tr>
+<tr>
+<td>State:</td><td>
+<select name="wctct_st_code" id="wctct_st_code">
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{			
+				echo "<option value='".$key."'";
+				if($key==$ar["wctct_st_code"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+</td>
+<td>Zip: <input type="text" name="ctct_waddr_z" size="6" maxlength="10" value='<?php echo $ar["ctct_waddr_z"]; ?>' style="width: 50px" /></td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Phone (h):
+</div>
+<div class="span2">
+<input type="text" name="ctct_hphone" size="18" maxlength="18" value="<?php echo $ar["ctct_hphone"]; ?>" style="width: 100px">
+</div>
+<div class="span2">
+Phone (w):
+</div>
+<div class="span2">
+<input type="text" name="ctct_phone" size="18" maxlength="18" value="<?php echo $ar["ctct_phone"]; ?>" style="width: 100px">
+</div>
+<div class="span2">
+<b>Ext:</b> <input type="text" name="ctct_ext1" size="18" maxlength="18" value="<?php echo $ar["ctct_ext1"]; ?>" style="width: 50px">
+</div>
+<div class="span2">
+&nbsp;
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Fax (h):
+</div>
+<div class="span2">
+<input type="text" name="ctct_hfax" size="18" maxlength="18" value="<?php echo $ar["ctct_hfax"]; ?>" style="width: 100px">
+</div>
+<div class="span2">
+Fax (w):
+</div>
+<div class="span2">
+<input type="text" name="ctct_fax" size="18" maxlength="18" value="<?php echo $ar["ctct_fax"]; ?>" style="width: 100px">
+</div>
+<div class="span2">
+<b>Ext:</b> <input type="text" name="ctct_ext2" size="18" maxlength="18" value="<?php echo $ar["ctct_ext2"]; ?>" style="width: 50px">
+</div>
+<div class="span2">
+&nbsp;
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Cell phone:
+</div>
+<div class="span2">
+<input type="text" name="ctct_cell" size="18" maxlength="18" value="<?php echo $ar["ctct_cell"]; ?>" style="width: 100px">
+</div>
+<div class="span2">
+Pager:
+</div>
+<div class="span2">
+<input type="text" name="ctct_pager" size="18" maxlength="18" value="<?php echo $ar["ctct_pager"]; ?>" style="width: 100px">
+</div>
+<div class="span2">
+<b>PIN:</b> <input type="text" name="ctct_ext3" size="18" maxlength="18" value="<?php echo $ar["ctct_ext3"]; ?>" style="width: 50px">
+</div>
+<div class="span2">
+&nbsp;
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+E-mail:
+</div>
+<div class="span4">
+<input type="text" name="ctct_email" size="50" maxlength="50" value="<?php echo $ar["ctct_email"]; ?>" ><br/>
+<p style="margin-top:-10px; font-size: 11px;">If email is added, please release to Physician Career</p>
+</div>
+<div class="span2">
+Company Name:
+</div>
+<div class="span4">
+<input type="text" name="ctct_company" size="50" maxlength="50" value="<?php echo $ar["ctct_company"]; ?>" >
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Newsletter:
+</div>
+<div class="span4">
+<input  type="radio" value="1" <?php if($ar["ph_nonewsletter"]!=0) {echo "checked";} ?>  name="ph_nonewsletter"> No, thanks&nbsp;&nbsp;
+<input  type="radio" value="0" <?php if($ar["ph_nonewsletter"]==0) {echo "checked";} ?> name="ph_nonewsletter"> Re-subscribe
+</div>
+<div class="span2">
+Spec. List:
+</div>
+<div class="span4">
+<input  type="radio" value="1" <?php if($ar["ph_nospeclist"]!=0) {echo "checked";} ?>  name="ph_nospeclist"> No, thanks&nbsp;&nbsp;
+<input  type="radio" value="0" <?php if($ar["ph_nospeclist"]==0) {echo "checked";} ?> name="ph_nospeclist"> Re-subscribe
+</div>
+</div>
+<br/>
+<div class="row">
+<div class="span2">
+Email Status:
+</div>
+<div class="span4">
+<input  type="radio" value="1" <?php if($ar["ctct_bounces"]!="0") {echo "checked";} ?>  name="ctct_bounces"> Bounces&nbsp;&nbsp;
+<input  type="radio" value="0" <?php if($ar["ctct_bounces"]==0) {echo "checked";} ?> name="ctct_bounces"> Verified
+</div>
+<div class="span2">
+Locum Tenens:
+</div>
+<div class="span4">
+<input  type="radio" value="1" <?php if($ar["ph_locums"]!=0) {echo "checked";} ?>  name="ph_locums"> Interested&nbsp;&nbsp;
+<input  type="radio" value="0" <?php if($ar["ph_locums"]==0) {echo "checked";} ?> name="ph_locums"> Not interested
+</div>
+</div>
+<hr/>
+
+<h4>Personal Information</h4>
+
+<div class="row">
+<div class="span2">
+Practicing:
+</div>
+<div class="span4">
+<select  size="1" name="ph_practice">
+<?php
+	//echo var_dump($types);
+			foreach ($types as $key=>$val)
+			{					
+				echo "<option value='".$key."'";
+				if($val["pt_id"]==$ar["ph_practice"])
+					echo "selected";
+				echo ">";				
+				echo $val['pt_name'];
+				echo "</option>";
+			}
+		?>
+	</select>
+</select>
+</div>
+<div class="span2">
+DOB:
+</div>
+<div class="span4">
+<input type="text" name="ph_DOB" size="18" maxlength="18" value="<?php if($ar["ph_DOB"]!='' && $ar["ph_DOB"]!='0000-00-00 00:00:00' && $ar["ph_DOB"]!='1970-01-01 00:00:00'){echo date('Y-m-d',strtotime($ar["ph_DOB"]));} ?>" title="Enter a Date, or Month/Year, or just Year" >
+</div>
+</div>
+
+
+<div class="row">
+<div class="span2">
+Gender:
+</div>
+<div class="span4">
+<input  type="radio" value="1" <?php if($ar["ph_sex"]!=0) {echo "checked";} ?>  name="ph_sex"> 
+      Male&nbsp;
+	  <input  type="radio" name="ph_sex" <?php if($ar["ph_sex"]==0) {echo "checked";} ?> value="0"> Female
+</div>
+<div class="span2">
+AMG/IMG/CAN/J1/H1B: 
+</div>
+<div class="span4">
+<select  size="1" name="ph_citizen">
+<option value="---" <?php if($ar["ph_citizen"]==""||$ar["ph_citizen"]=="---"||$ar["ph_citizen"]==null) {echo "selected";} ?> >---</option>
+<option value="AMG" <?php if($ar["ph_citizen"]=="AMG") {echo "selected";} ?> >AMG</option>
+<option value="IMG" <?php if($ar["ph_citizen"]=="IMG") {echo "selected";} ?> >IMG</option>
+<option value="CAN" <?php if($ar["ph_citizen"]=="CAN") {echo "selected";} ?> >CAN</option>
+<option value="J1" <?php if($ar["ph_citizen"]=="J1") {echo "selected";} ?> >J1</option>
+<option value="H1B" <?php if($ar["ph_citizen"]=="H1B") {echo "selected";} ?> >H1B</option>
+<option value="SPON" <?php if($ar["ph_citizen"]=="SPON") {echo "selected";} ?> >SPON</option>
+</select>
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Languages:
+</div>
+<div class="span4">
+<input  type="text" name="ph_lang" size="30" maxlength="64" value="<?php echo $ar["ph_lang"]; ?>">
+</div>
+<div class="span2">
+Verbal Skills:
+</div>
+<div class="span4">
+<select  size="1" name="ph_v_skills">
+        <option <?php if($ar["ph_v_skills"]=="4") {echo "selected";} ?> value="4">Excellent</option>
+        <option <?php if($ar["ph_v_skills"]=="3") {echo "selected";} ?> value="3">Good</option>
+        <option <?php if($ar["ph_v_skills"]=="2") {echo "selected";} ?> value="2">Medium</option>
+        <option <?php if($ar["ph_v_skills"]=="1") {echo "selected";} ?> value="1">Poor</option>
+        <option <?php if($ar["ph_v_skills"]=="0") {echo "selected";} ?> value="0">Unknown</option>
+</select>
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Specialty:
+</div>
+<div class="span4">
+<select  size="1" name="ph_spec_main" class="cour">
+<?php
+	//echo var_dump($specs);
+	$nbsp = array();
+	$nbsp[0] = "&nbsp;&nbsp;&nbsp;";
+	$nbsp[1] = "&nbsp;&nbsp;";
+	$nbsp[2] = "&nbsp;";
+	$nbsp[3] = "";
+	
+			foreach ($specs as $key=>$val)
+			{		//(RS("skill") = "--" and IsNull(RS0("ph_skill")) OR RS0("ph_skill")=RS("skill") OR RS("skill") = "  " and IsNull(RS0("ph_skill"))
+				$code = $val["sp_code"].$nbsp[strlen($val["sp_code"])];
+				echo "<option value='".$code.$val["skill"]."'";
+				if(strtoupper($val["sp_code"])==strtoupper(str_replace(' ','',$ar["ph_spec_main"])) && ($val["skill"]=="--" && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) || $ar["ph_skill"]==$val["skill"] || $ar["ph_skill"] == "  " && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) ))
+				//if($val["sp_code"]==$ar["ph_spec_main"]) //problem with this sometimes when the skills don't match up
+					echo "selected";
+				echo ">";				
+				echo $code."&nbsp;".$val['spec'];
+				echo "</option>";
+			}
+?>
+</select><br/> <?php echo $val["sp_code"]; ?>
+Subspecialty: <input type="text" name="ph_subspec" value='<?php echo $ar["ph_subspec"]; ?>' size="30" maxlength="50" />
+</div>
+<div class="span2">
+Most Recent Certification:
+</div>
+<div class="span4">
+<input type="text" name="ph_spm_bc" size="5" maxlength="4" value="<?php echo $ar["ph_spm_bc"]; ?>" style="width: 50px"> 
+<b>Year:</b> 
+<input type="text" name="ph_spm_year" size="5" maxlength="4" value="<?php echo $ar["ph_spm_year"]; ?>" style="width: 50px">
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Med School:
+</div>
+<div class="span4">
+<input type="text" name="ph_med_school" size="30" maxlength="89"  value="<?php echo $ar["ph_med_school"]; ?>" style="width: 250px">
+</div>
+<div class="span2">
+Licenses:
+</div>
+<div class="span4">
+<input type="text" name="ph_licenses" size="30" maxlength="127" title="Type in State codes, separated by commas, like this: GA,CA,VA" value="<?php echo $ar["ph_licenses"]; ?>">
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+Pref State:
+</div>
+<div class="span4">
+<select name="ph_pref_state" id="ph_pref_state">
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$ar["ph_pref_state"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>
+</div>
+<div class="span2">
+Pref Region:
+</div>
+<div class="span4">
+<select name="ph_pref_region" id="ph_pref_region">
+	<?php
+	//echo var_dump($regs);
+			foreach ($regs as $key=>$val)
+			{
+				echo "<option value='".$key."'";
+				if($val["reg_id"]==$ar["ph_pref_region"])
+					echo "selected";
+				echo ">";				
+				echo $val['reg_name'];
+				echo "</option>";
+			}
+		?>
+	</select>
+</div>
+</div>
+
+<hr/>
+
+<div class="row">
+<div class="span2">
+Link to CV file:
+</div>
+<div class="span4">
+<?php if($ar["cv_id"]==""){ ?>
+<input  type="text" name="ph_cv_url" value="<?php echo $ar["ph_cv_url"]; ?>" style="display:none" />
+<?php } else { ?>
+<a href="<?php echo $this->basePath();?>/download_file.php?id=<?php echo $ar["cv_id"]; ?>" ><?php echo $ar["filename"]; ?></a>
+<?php } ?>
+<button  onclick='window.open("<?php echo $this->basePath();?>/upload.php?ph_id=<?php echo $ar["ph_id"]; ?>","myWindow","width=420,height=270");return false;' >Upload a CV</button>
+</div>
+<div class="span2">
+Old ID#: 
+</div>
+<div class="span4">
+<input  type="text" name="ph_old_id" size="10" maxlength="18" value="<?php echo $ar["ph_old_id"]; ?>">
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+CV Date:
+</div>
+<div class="span4">
+<input type="text" name="ph_cv_datetxt" id="ph_cv_datetxt" class="datefld" value="<?php if($ar["ph_cv_date"]!=""){echo date('m/d/Y', strtotime($ar["ph_cv_date"]));} ?>" />
+<input type="hidden" name="ph_cv_date" id="ph_cv_date" value="<?php echo $ar["ph_cv_date"]; ?>" />
+</div>
+<div class="span2">
+Avail Date:
+</div>
+<div class="span4">
+<input type="text" name="ph_availtxt" id="ph_availtxt" class="datefld" value="<?php if($ar["ph_avail"]!=""){echo date('m/d/Y', strtotime($ar["ph_avail"]));} ?>" />
+<input type="hidden" name="ph_avail" id="ph_avail" value="<?php echo $ar["ph_avail"]; ?>">
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+CV Text
+</div>
+<div class="span8">
+<textarea  rows="3" name="ph_cv_text" cols="35" style="width: 400px"><?php echo $ar["ph_cv_text"]; ?></textarea>
+</div>
+<div class="span2">
+
+</div>
+
+</div>
+
+<div class="row">
+<div class="span2">
+Recruiter:
+</div>
+<div class="span4">
+<select name="ph_recruiter" id="ph_recruiter">
+	<?php
+			foreach ($rec as $key=>$val)
+			{
+				echo "<option value='".$key."'";	
+				if($key==$ar["ph_recruiter"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>
+</div>
+<div class="span2">
+1st Inquiry:
+</div>
+<div class="span4">
+<input type="text" name="ph_1st_inqtxt" id="ph_1st_inqtxt" class="datefld" value="<?php if($ar["ph_1st_inq"]!=""){echo date('m/d/Y', strtotime($ar["ph_1st_inq"]));} ?>" />
+<input type="hidden" name="ph_1st_inq" id="ph_1st_inq" value="<?php echo $ar["ph_1st_inq"]; ?>">
+
+</div>
+</div>
+
+<div class="row">
+<div class="span2">
+<input type="submit" name="submitedit" value="Submit" />
+<input type="reset" name="canceledit" />
+</div>
+<div class="span4">
+
+</div>
+<div class="span2">
+
+</div>
+<div class="span4">
+
+</div>
+</div>
+
+<div class="row">
+<br/>
+<br/>
+<a href="<?php echo $this->basePath(); ?>/physician/view/<?php echo $ar["ph_id"]; ?>">Return to Physician record</a>
+<br/>
+<input type="hidden" name="phemail" value="<?php echo $ar["ctct_email"]; ?>">
+<input type="hidden" name="phid" value="<?php echo $ar["ph_id"]; ?>">
+<input type="hidden" name="phname" value="<?php echo $ar["ctct_name"]; ?>">
+<input type="hidden" name="recid" value="101">
+<input type="hidden" name="nurse" value="0">
+
+<p><!--Send an email CV request (select a recruiter and click button below):--></p>
+<input type="submit" name="cvrequest" value="Request a CV" />
+</div>
+<?php //echo "*".str_replace(' ','',$ar["ph_spec_main"])."*"; ?>
+<?php
+//echo var_dump($ar);
+echo $this->form()->closeTag();
+
+    } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+    } /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

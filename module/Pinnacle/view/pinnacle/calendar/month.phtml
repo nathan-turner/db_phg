@@ -1,0 +1,313 @@
+<?php
+// module/Pinnacle/view/pinnacle/calendar/month.phtml:
+
+$title = 'Month View';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+?>
+<style>
+#sched_activity_div { display: none; }
+.time { width: 60px; }
+.date { width: 100px; }
+.acttable { width: 50%; }
+.acttable th, .acttable td { text-align: left }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');schedact_date
+			//$( "#calendardiv" ).datepicker({altFormat: "yy-mm-dd",  altField: "#cal_date", onSelect: calendarClick()});
+			$( "#schedact_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#schedact_date"});
+			//$( "#calendardiv" ).datepicker( "option", {altFormat: "DD, d MM, yy",  altField: "#cal_date2"} );
+			
+			
+			$( "#datepicker" ).datepicker({              
+                  
+                 //altField: "#alternate,#alternate2,#alternate3,#alternate4,#alternate5,#alternate6",
+				 changeMonth: true,
+				 changeYear: true,
+                  onSelect: function(text, inst){
+					  var d = new Date(text);
+					  var current_date = d.getDate();
+					  //alert($.datepicker.formatDate('yy-mm-dd', d));
+					  var suffix = "";
+					  if (current_date == 1 || current_date == 21 || current_date ==31)
+						 {
+						 suffix = "st";
+						 }
+					  else if (current_date == 2 || current_date == 22)
+						 {
+						 suffix = "nd'";
+						 }
+					  else if (current_date == 3 || current_date == 23)
+						 {
+						 suffix = "rd";
+						 }
+					  else
+						 {
+						 suffix = "th";
+						 }
+
+					//$( "#datepicker" ).datepicker('option', 'altFormat', "DD, MM d"+suffix+", yy");
+					// set each of the alertnate fields based on their title
+					$('.date_alternate').each(function(index) {
+
+						this.value = ($.datepicker.formatDate(this.title, d)).replace('[suffix]',suffix);
+					});
+					loadDate();
+					$("#datehead").html($('#alternate').val());
+				},
+				
+            });
+			
+			
+}
+
+$(function() {
+
+/*$("#datepicker").load(function() {
+alert('test');
+				$('.date_alternate').each(function(index) {
+
+						this.value = ($.datepicker.formatDate(this.title, d)).replace('[suffix]',suffix);
+					});
+
+			});*/
+ 
+});
+
+function loadDate(){ //alert($('#sched_user').val());
+//alert($('#alternate4').val());
+$("#activitiesdiv").html("Loading...");
+//alert(this.timeyn);
+$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath();?>/ajax/getActivity",	///ADD USER DATA
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { date: $('#alternate4').val(), //'2010-12-20',//
+	user: $('#sched_user').val(), 
+	path: <?php echo $this->basePath();?>	//$("#contactlist").val()	
+	},
+	//data: "backref=test",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){ $("#activitiesdiv").html(data.post);  },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+	
+}
+
+function removeAct(id){
+	//alert(id);
+	if(id==0 || id=='')
+	{
+		alert('No ID');
+	}
+	else{
+		if(confirm("Are you sure you want to delete task?")==true)
+		{
+			$.ajax({    
+	type: "GET",
+    url: "<?php echo $this->basePath();?>/ajax/removeActivity",	
+    // The key needs to match your method's input parameter (case-sensitive).
+    //data: JSON.stringify({ "backref": "test" }),
+	data: { id: id, 
+	path: <?php echo $this->basePath();?>	//$("#contactlist").val()	
+	},
+	//data: "backref=test",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){ alert(data.message); loadDate();  },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});
+		}
+	}
+}
+
+
+</script>
+<script type="text/javascript">
+$(function() {
+    $("#sched_cancel_btn").click(function() { $( "#sched_activity_div" ).dialog("close"); });
+	$("#schedulelink").click(function() {	
+	openSchedulePanel();
+	}); 
+	
+	$("#sched_user").change(function() { loadDate(); });
+});
+	  
+function openSchedulePanel(){
+$( "#sched_activity_div" ).dialog({
+height: 520,
+width: 440,
+modal: true
+});
+}
+</script>
+<div class="row">
+    <div class="span4">
+
+<div id="calendardiv">
+</div>
+<div id="datepicker"></div>
+<br>
+
+<input class='date_alternate' title="DD, MM d[suffix], yy" type="hidden" id="alternate" size="45">&nbsp;
+<input class='date_alternate' title="mm/dd/yy" type="hidden" id="alternate2" size="45">&nbsp;
+<input class='date_alternate' title="mm/dd/yy" type="hidden" id="alternate3" size="45">&nbsp;
+<input class='date_alternate' title="yy-mm-dd" type="hidden" id="alternate4" size="45">
+
+<br/>
+		<label>View Schedule for: </label>
+		<select size="1" name="sched_user" id="sched_user">
+		<option value=''>--Select--</option>
+		<?php
+	
+			foreach ($users as $key=>$val)
+			{
+				echo "<option value='".$key."'>";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+		</select>
+<br/><br/>
+<p>
+<a href="#" id="schedulelink">Schedule an Activity</a>
+</p>
+	</div>
+	<div class="span8">
+	
+		<h4 id="datehead"><?php echo date('l, F jS, Y'); ?></h4>
+		
+		<?php 
+		 if($messages!='')
+			echo '<p style="color:red;text-align:center">'.$messages.'</p>'; 
+		
+		?>
+		<div id="activitiesdiv"></div>
+		
+		
+	</div>
+</div>	
+
+
+
+
+<div id="sched_activity_div" class="p0pup" style="">
+<strong>Schedule Activity</strong><br/><br/>
+<form  method="post">
+	 <input type="hidden" name="act_t_x" id="act_tx" value="">
+	 
+	
+	<strong>Activity:</strong>
+	<select size="1" name="activ_type" id="act_t">
+	<?php
+	
+			foreach ($act as $key=>$val)
+			{
+				echo "<option value='".($val['act_code']+$val['act_need_note']*1000)."'>";				
+				echo $val['act_name'];
+				echo "</option>";
+				
+			}
+		?>
+	</select><br/>
+	
+	<label><strong>Date:</strong></label> <input type="text" name="schedact_date" id="schedact_datetxt" value="" class="date"/>
+	<input type="hidden" name="schedact_date" id="schedact_date" value=""/>
+	
+	<label><strong>Time:</strong></label>
+	<select  name="schedact_hrtxt" id="schedact_hrtxt" class="time" >
+		<option value="00">0</option>		
+		<option value="01">1</option>
+		<option value="02">2</option>
+		<option value="03">3</option>
+		<option value="04">4</option>
+		<option value="05">5</option>
+		<option value="06">6</option>
+		<option value="07">7</option>
+		<option value="08">8</option>
+		<option value="09">9</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+		<option value="13">13</option>
+		<option value="14">14</option>
+		<option value="15">15</option>
+		<option value="16">16</option>
+		<option value="17">17</option>
+		<option value="18">18</option>
+		<option value="19">19</option>
+		<option value="20">20</option>
+		<option value="21">21</option>
+		<option value="22">22</option>
+		<option value="23">23</option>
+		<option value="24">24</option>
+		
+		
+		
+	</select>
+	:
+	<select  name="schedact_mintxt" id="schedact_mintxt"  class="time">
+		<option value="00">00</option>
+		<option value="05">05</option>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+		<option value="25">25</option>
+		<option value="30">30</option>
+		<option value="35">35</option>
+		<option value="40">40</option>
+		<option value="45">45</option>
+		<option value="50">50</option>
+		<option value="55">55</option>		
+		
+	</select> <br/>
+	
+	<label><strong>User:</strong></label>
+	<select size="1" name="act_user" id="act_t">
+	
+	<?php
+	
+			foreach ($users as $key=>$val)
+			{
+				echo "<option value='".$key."' ";
+				if($key==$userid)
+					echo "selected";
+				echo " >";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>
+	
+	
+	<label><strong>Notes:</strong></label>
+	<textarea name="sched_act_notes" id="sched_act_notes"></textarea>
+	<br/>
+	
+	<input type="submit" value="Submit" id="sched_submit_btn" name="sched_submit_btn" />
+<input type="button" value="Cancel" id="sched_cancel_btn" />
+</form>	
+	 
+</div>
+
+<script>
+pageLoad();
+loadDate();
+</script>
+<?php
+//echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-act'));

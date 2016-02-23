@@ -1,0 +1,115 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/marketlog.phtml:
+// Marketing report
+
+$title = 'Retainers by Year And Month';
+$this->headTitle($title);
+
+$icnt = 0; $tcnt = 0; $prevm = 0; $prevuname = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'marketlog', 'part' => $part)));
+    $form->get('ord')->setValue($part);
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('ord'));
+?>
+<div class="row">
+    <div class="span3">
+        <?php echo $this->formRow($form->get('yer')); ?>
+    </div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('emp_id')); ?>
+    </div>
+    <div class="span2">
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+    if( $part == 'mark' ) {
+        $sUrl = $this->url('report', array('action' => 'marketlog', 'part' => 'sort'));
+        $sSort= 'Marketer, <a href="'.$sUrl.'">Month</a>';
+    }
+    else {
+        $sUrl = $this->url('report', array('action' => 'marketlog', 'part' => 'mark'));
+        $sSort= 'Month, <a href="'.$sUrl.'">Marketer</a>';
+    }
+?>
+<p class="onscr" style="text-align: center"><b>Sorted by</b>: <?php echo $sSort ?></p>
+
+<table class="table report">
+    <thead><tr>
+        <th> </th>
+        <th>Contract</th>
+        <th>Facility</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Spec</th>
+        <?php if( $part == 'mark'): ?>
+        <th>Date</th>
+        <?php else: ?>
+        <th>Marketer</th>
+        <?php endif ?>
+        <th>Recruiter</th>
+        <th>Type</th>
+        <th>Monthly</th>
+        <th>Total</th>
+    </tr></thead>
+    <tbody>
+        <?php if( $report ) foreach ($report as $row):
+            $tcnt++;
+            if( ($part == 'mark' && $row->mar_name != $prevuname) ||
+                ($part != 'mark' && $row->ctrm != $prevm) ):
+                $icnt =0;
+                $prevuname = $row->mar_name;
+                $prevm = (int) $row->ctrm;
+                $sTopic = ($part=='mark')? $prevuname: $months[$prevm];
+        ?>
+        <tr>
+            <td> </td>
+            <td colspan="10"><b><?php echo $this->escapeHtml($sTopic); ?></b></td>
+        </tr>
+        <?php
+            endif;
+            $icnt++;
+            $spec = $row->ctr_nurse? $row->at_abbr: $row->ctr_spec;
+        ?>
+        <tr>
+            <td><?php echo $icnt ?></td>
+            <td><a href="<?php echo $this->url('contract', array('action'=>'view', 'part'=>'go', 'id' => $row->ctr_id)) ?>"><?php echo $this->escapeHtml($row->ctr_no); ?></a></td>
+            <td><a href="<?php echo $this->url('client', array('action'=>'view', 'part'=>'go', 'id' => $row->cli_id)) ?>"><?php echo $this->escapeHtml($row->ctct_name); ?></a></td>
+            <td><?php echo $this->escapeHtml($row->ctr_location_c) ?></td>
+            <td><?php echo $this->escapeHtml($row->ctr_location_s) ?></td>
+            <td><?php echo $this->escapeHtml($spec); ?></td>
+        <?php if( $part == 'mark'): ?>
+            <td><?php echo $this->escapeHtml($row->formatDate($row->ctr_retain_date)); ?></td>
+        <?php else: ?>
+            <td><?php echo $this->escapeHtml($row->mar_name); ?></td>
+        <?php endif ?>
+            <td><?php echo $this->escapeHtml($row->rec_name); ?></td>
+            <td><?php echo $this->escapeHtml($row->ctr_type); ?></td>
+            <td><?php echo $row->formatMoney($row->ctr_monthly); ?></td>
+            <td><?php echo $row->formatMoney($row->ctr_amount); ?></td>
+        </tr>
+        <?php endforeach;
+        if( $tcnt ): ?>
+        <tr>
+            <td colspan="3"><b>Total retainers:</b></td>
+            <td colspan="8"><b><?php echo $this->escapeHtml($tcnt); ?></b></td>
+        </tr>
+        <?php else: ?>
+        <tr><td colspan="11" class="alert-danger">No retainers in the range!</td></tr>
+        <?php endif ?>
+    </tbody>
+</table>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

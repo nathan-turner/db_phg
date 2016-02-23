@@ -1,0 +1,514 @@
+<?php
+// module/Pinnacle/view/pinnacle/midlevel/placement.phtml:
+// Contract Search
+
+$title = 'Mid-Level Placement';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#phystable { width: 70% }
+#datetable, #spectable, #phystable, .historytable { border: 1px solid black }
+#datetable td, #spectable td, .historytable td { border: 1px solid black }
+#phystable td { border: 1px solid black; background-color: #ffffff; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#physician_pass_div { display: none; }
+#sched_activity_div { display: none; }
+.date { width: 110px; }
+.time { width: 60px; }
+.questions { width: 300px; }
+</style>
+
+<script>
+function pageLoad() { //need to force calendar load            
+			
+			$( "#pl_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#pl_date"});
+			$( "#pl_sent_datetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#pl_sent_date"});
+			
+			
+}
+</script>
+
+
+<h1 ><?php echo $this->escapeHtml($title); ?></h1>
+<br/>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+	
+	$newp = false;
+	if($_GET["newp"]=="yes" || $_POST["newp"]=="yes")
+		$newp=true;
+	
+	if(empty($ar2)||$newp)
+	{
+		$pipl_id = -1; //' new record '
+		//$pl_sent_date = Date()
+		//$pl_date = Date()
+		$pl_ref_emp = 31; //' house '
+		$pl_src_id = -1;
+		$pl_replacement = $_POST["re"]; //$repl;
+		$pl_exp_years = 0;
+		$pl_split_emp = null;
+		$newp = true;
+		$pipl_nurse = 1;
+	}
+	else{
+		$pipl_id = $ar2["pipl_id"];
+		$pipl_cancel = $ar2["pipl_cancel"];
+		$pipl_date_cancel = $ar2["pipl_date_cancel"];
+		$pl_sent_date = $ar2["pl_sent_date"];
+		$pl_date = $ar2["pl_date"];
+		$pl_ref_emp = $ar2["pl_ref_emp"];
+		$pl_src_id = $ar2["pl_src_id"];
+		//if isNull(pl_src_id) then pl_src_id = 0
+		$pl_term = $ar2["pl_term"];
+		$pl_guar_net = $ar2["pl_guar_net"];
+		$pl_guar_gross = $ar2["pl_guar_gross"];
+		$pl_annual = $ar2["pl_annual"];
+		$pl_guar = $ar2["pl_guar"];
+		$pl_incent = $ar2["pl_incent"];
+		$pl_met_coll = $ar2["pl_met_coll"];
+		$pl_met_pro = $ar2["pl_met_pro"];
+		$pl_met_num = $ar2["pl_met_num"];
+		$pl_met_oth = $ar2["pl_met_oth"];
+		$pl_partner = $ar2["pl_partner"];
+		$pl_partner_yrs = $ar2["pl_partner_yrs"];
+		$pl_buyin = $ar2["pl_buyin"];
+		$pl_signing = $ar2["pl_signing"];
+		$pl_based_ass = $ar2["pl_based_ass"];
+		$pl_based_rec = $ar2["pl_based_rec"];
+		$pl_based_sto = $ar2["pl_based_sto"];
+		$pl_based_oth = $ar2["pl_based_oth"];
+		$pl_loan = $ar2["pl_loan"];
+		$pl_vacat = $ar2["pl_vacat"];
+		$pl_cme_wks = $ar2["pl_cme_wks"];
+		$pl_cme = $ar2["pl_cme"];
+		$pl_reloc = $ar2["pl_reloc"];
+		$pl_health = $ar2["pl_health"];
+		$pl_dental = $ar2["pl_dental"];
+		$pl_fam_health = $ar2["pl_fam_health"];
+		$pl_fam_dental = $ar2["pl_fam_dental"];
+		$pl_st_dis = $ar2["pl_st_dis"];
+		$pl_lt_dis = $ar2["pl_lt_dis"];
+		$pl_life = $ar2["pl_life"];
+		$pl_oth_ben = $ar2["pl_oth_ben"];
+		$pl_replacement = $ar2["pl_replacement"];
+        //if isNull($ar2["pl_exp_years")) then pl_exp_years = 0 else pl_exp_years = $ar2["pl_exp_years")
+		if($ar2["pl_exp_years"]=='' || $ar2["pl_exp_years"]==null)
+			$pl_exp_years = 0;
+		else
+			$pl_exp_years = $ar2["pl_exp_years"];
+		$pl_split_emp = $ar2["pl_split_emp"];
+		$pl_source = $ar2["pl_source"];
+		$pipl_nurse = $ar2["pipl_nurse"];
+		$pl_text1 = $ar2["pl_text1"];
+		$pl_text2 = $ar2["pl_text2"];
+		$pl_text3 = $ar2["pl_text3"];
+		$pl_text4 = $ar2["pl_text4"];
+	}
+	
+	if($pl_sent_date=='')
+		$pl_sent_date = date('Y-m-d');
+	if($pl_date=='')
+		$pl_date = date('Y-m-d');
+	
+?>
+
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+<INPUT type="hidden" name="plac_ctr_id" value="<?php echo $ctr_id; ?>">
+<INPUT type="hidden" name="chg_ctr_id" value="<?php echo $ctr_id; ?>">
+<INPUT type="hidden" name="chg_type" value="<?php echo $type; ?>">
+<INPUT type="hidden" name="chg_pipl" value="<?php echo $pipl_id; ?>">
+<INPUT type="hidden" name="chg_id" value="<?php echo $chg_id; ?>">
+
+<div style="margin-right: auto; margin-left:auto">
+<Table border="1" cellspacing=0 cellpadding=2 style="margin-right: auto; margin-left:auto">
+<TR>
+<TD ALIGN="center"><B>ID #</B></TD>
+<TD ALIGN="center"><B>Name</B>
+</TD>
+<TD ALIGN="center"><B>City, State</B></TD>
+<TD ALIGN="center"><B>Category</B></TD>
+<TD ALIGN="center"><B>Contract #</B></TD>
+<TD ALIGN="center"><B>Category</B></TD>
+</TR>
+<tr>
+<td><a href="<?php echo $this->basePath(); ?>/midlevel/view/<?php echo $an_id; ?>"><?php echo $an_id; ?></a></td>
+<td><?php echo $ar["ctct_name"]; ?></td>
+<td><?php echo $ar["ctct_addr_c"].", ".$ar["ctct_st_code"]; ?></td>
+<td><?php echo $ar["at_name"]; ?></td>
+<td><a href="<?php echo $this->basePath(); ?>/contract/view/<?php echo $ar["ctr_id"]; ?>"><?php echo $ar["ctr_no"]; ?></a></td>
+<td><?php echo $ar3["at_name"]; ?></td>
+</tr>
+</table><br/>
+</div>
+
+<p style="text-align:center"><b>&frac12; Placement with:</b> 
+<select  name="pl_split_emp" >
+<option value=""></option>
+<?php
+			foreach ($rec as $key=>$val)
+			{
+				echo "<option value='".$key."'";	
+				if($key==$pl_split_emp) //CHANGE TO...
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+</select>
+</p>
+
+<p class="ctr" style="text-align:center; ">Years of work experience in primary category after training:
+<input type="text" name="pl_exp_years" value="<?php echo $pl_exp_years; ?>" style="width:70px" >
+</p>
+
+<hr/>
+
+<div class="row">
+    <div class="span8">
+		<div class="row">
+			<div class="span2">
+				<label>Contract Sent</label>
+			
+				<input type="text" name="pl_sent_datetxt" id="pl_sent_datetxt" value="<?php echo date('Y-m-d',strtotime($pl_sent_date)); ?>" class="date"/>
+				<input type="hidden" name="pl_sent_date" id="pl_sent_date" value="<?php echo date('Y-m-d',strtotime($pl_sent_date)); ?>"/>
+			</div>
+			<div class="span2">
+				<label>Placement Date </label>
+			
+				<input type="text" name="pl_datetxt" id="pl_datetxt" value="<?php echo date('Y-m-d',strtotime($pl_date)); ?>" class="date"/>
+				<input type="hidden" name="pl_date" id="pl_date" value="<?php echo date('Y-m-d',strtotime($pl_date)); ?>"/><br/><br/><br/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span8">
+				<label>Financial</label>	
+				<hr/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Contract Term</label>
+			
+				<input type="text" name="pl_term" size="13" value="<?php echo $pl_term; ?>" style="width:100px" >
+			</div>
+			<div class="span2">
+				<label>Guarantee</label>
+			
+				<input type="checkbox" value="1" name="pl_guar_net" <?php if($ar2["pl_guar_net"]==1) { echo "checked"; } ?> >&nbsp;Net&nbsp;&nbsp;
+				<input type="checkbox" name="pl_guar_gross" value="1" <?php if($ar2["pl_guar_gross"]==1) { echo "checked"; } ?> >&nbsp;Gross&nbsp;&nbsp;<br/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Annual Salary</label>			
+				<input type="text" name="pl_annual" size="13" value="<?php echo $pl_annual; ?>" style="width:100px" >
+			</div>
+			<div class="span2">
+				<label>Guarantee</label>			
+				<input type="text" name="pl_guar" size="13" value="<?php echo $pl_guar; ?>" style="width:100px" >
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Incentive Compensation:</label>
+			</div>
+			<div class="span2">
+				<input type="radio" name="pl_incent" value="1" <?php if($pl_incent==1) { echo "checked"; }?>>&nbsp;Yes&nbsp;
+				<input type="radio" name="pl_incent" value="0" <?php if($pl_incent!=1) { echo "checked"; }?>>&nbsp;No&nbsp;<br/><br/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Method</label>
+			</div>
+			<div class="span2">
+				<input type="checkbox" name="pl_met_coll" value="1" <?php if($ar2["pl_met_coll"]==1) { echo "checked"; } ?> > Collections
+			</div>
+			<div class="span2">
+				<input type="checkbox" name="pl_met_pro" value="1" <?php if($ar2["pl_met_pro"]==1) { echo "checked"; } ?> > Profit
+			</div>
+			<div class="span2">
+				<input type="checkbox" name="pl_met_num" value="1" <?php if($ar2["pl_met_num"]==1) { echo "checked"; } ?> > # of Visits
+			</div><br/><br/>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Other</label>
+			</div>
+			<div class="span2">
+				<input type="text" name="pl_met_oth"  value="<?php echo $pl_met_oth; ?>"  >
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Partnership</label>
+			</div>
+			<div class="span2">
+				<input type="radio" name="pl_partner" value="1" <?php if($pl_partner==1) { echo "checked"; }?> >&nbsp;Yes&nbsp;
+				<input type="radio" name="pl_partner" value="0" <?php if($pl_partner!=1) { echo "checked"; }?> >&nbsp;No&nbsp;<br/><br/>
+			</div>
+			<div class="span2">
+				<label>Yrs to Partnership </label>
+			</div>
+			<div class="span2">
+				<input type="text" name="pl_partner_yrs" size="10" style="width: 80px" value="<?php echo $pl_partner_yrs; ?>"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Buy-In?</label>			
+				<input type="text" name="pl_buyin" size="13" value="<?php echo $pl_buyin; ?>" style="width:100px" >
+			</div>
+			<div class="span2">
+				<label>Signing Bonus</label>			
+				<input type="text" name="pl_signing" size="13" value="<?php echo $pl_signing; ?>" style="width:100px" >
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Based on</label>							
+			</div>
+			<div class="span2">
+				<input type="checkbox" name="pl_based_ass" value="1" <?php if($ar2["pl_based_ass"]==1) { echo "checked"; } ?> > Assets
+			</div>
+			<div class="span2">
+				<input type="checkbox" name="pl_based_rec" value="1" <?php if($ar2["pl_based_rec"]==1) { echo "checked"; } ?> > Receivables
+			</div>
+			<div class="span2">
+				<input type="checkbox" name="pl_based_sto" value="1" <?php if($ar2["pl_based_sto"]==1) { echo "checked"; } ?> > Stock
+			</div><br/><br/>
+		</div>
+		<div class="row">
+			<div class="span2">
+				<label>Other</label>
+			</div>
+			<div class="span2">
+				<input type="text" name="pl_based_oth"  value="<?php echo $pl_based_oth; ?>"  >
+			</div>
+		</div>
+		
+	
+    </div>  
+	
+	
+	
+	<div class="span4">
+		
+		<div class="row">
+			<div class="span2">
+				<label>Referral From</label>			
+				<select size="1" name="pl_ref_emp" style="width:100px"> 
+					<?php
+					foreach ($users as $key=>$val)
+					{
+						echo "<option value='".$key."'";	
+							if($key==$pl_ref_emp) //CHANGE TO...
+							echo "selected";
+						echo ">";				
+						echo $val;
+						echo "</option>";
+					}
+				?>
+				</select>
+			</div>
+			<div class="span2">
+				<label>Source</label>
+				<select name="pl_src_id" id="plsrcid" size="1" style="width:100px">
+					<option value="744">Call In</option>
+					<option value="742">Database</option>
+					<option value="764">ISC - Internet Sourcing Campaign</option>
+					<option value="743">Recruiter Pass</option>
+					<option value="0"  selected>&nbsp;</option>
+
+				</select><br/>
+				Or: <input type="text" name="pl_source" id="plsource" size=30 value="<?php echo $pl_source; ?>" style="width:90px"/>
+			</div>
+		</div>
+		
+	
+		<div class="row">
+			<div class="span4">
+				<label>Benefits</label>		<hr/>	
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Loan Assistance</label>			
+				<input type="radio" name="pl_loan" value="1" <?php if($pl_loan==1) { echo "checked"; }?>> Yes &nbsp;
+				<input type="radio" name="pl_loan" value="0" <?php if($pl_loan!=1) { echo "checked"; }?>> No<br/>
+			</div>
+			<div class="span2">
+				<label>Vacation (weeks):</label>
+				<input type="text" name="pl_vacat" id="pl_vacat" size="10" value="<?php echo $pl_vacat; ?>" style="width:90px"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>CME Weeks</label>					
+				<input type="text" name="pl_cme_wks"  size="10" value="<?php echo $pl_cme_wks; ?>" style="width:90px"/>
+			</div>
+			<div class="span2">
+				<label>CME $</label>				
+				<input type="text" name="pl_cme"  size="10" value="<?php echo $pl_cme; ?>" style="width:90px"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<label>Relocation $</label>					
+				<input type="text" name="pl_reloc"  size="10" value="<?php echo $pl_reloc; ?>" style="width:90px"/>
+			</div>			
+		</div>
+		
+		<div class="row">
+			<div class="span2">
+				<input type="checkbox" name="pl_health" value="1" <?php if($ar2["pl_health"]==1) { echo "checked"; } ?> /> Health<br/>
+				
+				<input type="checkbox" name="pl_st_dis" value="1" <?php if($ar2["pl_st_dis"]==1) { echo "checked"; } ?> /> ST DIS<br/>
+				
+				<input type="checkbox" name="pl_fam_health" value="1" <?php if($ar2["pl_fam_health"]==1) { echo "checked"; } ?> /> Family Health<br/>
+				
+				<input type="checkbox" name="pl_life" value="1" <?php if($ar2["pl_life"]==1) { echo "checked"; } ?> /> Life<br/>
+			</div>		
+			<div class="span2">
+				<input type="checkbox" name="pl_dental" value="1" <?php if($ar2["pl_dental"]==1) { echo "checked"; } ?> /> Dental<br/>
+				<input type="checkbox" name="pl_lt_dis" value="1" <?php if($ar2["pl_lt_dis"]==1) { echo "checked"; } ?> /> LT DIS<br/>
+				<input type="checkbox" name="pl_fam_dental" value="1" <?php if($ar2["pl_fam_dental"]==1) { echo "checked"; } ?> /> Family Dental<br/>
+			</div>	
+		</div>
+		
+		<div class="row">
+			<div class="span4">
+				<label>Other Benefits</label>					
+				<textarea rows="3" name="pl_oth_ben" cols="30" ><?php echo $pl_oth_ben; ?></textarea>
+			</div>			
+		</div>
+	
+    </div>  
+</div>
+
+<div class="row">
+    <div class="span12">
+	<h2>Success Story Questions</h2>
+	</div>
+</div>
+
+<div class="row">
+    <div class="span6">
+		Why did they need a provider, and what were the special needs/requirements of the facility, if there're any?<br/>
+    <textarea name="pl_text1" cols="70" rows="3" id="pl_text1" class="questions"><?php echo $pl_text1; ?></textarea>
+		
+	</div>
+	
+	<div class="span6">
+		What were the challenges and how did you overcame them?<br/>
+    <textarea name="pl_text3" cols="70" rows="3" id="pl_text3" class="questions"><?php echo $pl_text3; ?></textarea>
+	</div>
+</div>
+
+<div class="row">
+    <div class="span6">
+		How did you initiate sourcing for this opportunity? What were the techniques you used, and what was the most effective?<br/>
+    <textarea name="pl_text2" cols="70" rows="3" id="pl_text2" class="questions"><?php echo $pl_text2; ?></textarea>
+		
+	</div>
+	
+	<div class="span6">
+		Why did the candidate want the position, and how did the candidate exceed client expectations?<br/>
+    <textarea name="pl_text4" cols="70" rows="3" id="pl_text4" class="questions"><?php echo $pl_text4; ?></textarea>
+	</div>
+</div>
+
+
+<input type="hidden" name="ctr_id" value="<?php echo $ar["ctr_id"]; ?>">
+<input type="hidden" name="an_id" value="<?php echo $an_id; ?>">
+<input type="hidden" name="ctr_locs" value="<?php echo $ar["ctct_st_code"]; ?>">
+<input type="hidden" name="ctr_locc" value="<?php echo $ar["ctct_addr_c"]; ?>">
+<input type="hidden" name="ctr_no" value="<?php echo $ar["ctr_no"]; ?>">
+<input type="hidden" name="ph_nm" value="<?php echo $ar["ctct_name"]; ?>" >
+<input type="hidden" name="ctr_spec" value="<?php echo $ar["at_name"]; ?>">
+<input type="hidden" name="ctr_req" value="<?php echo $ar["emp_uname"]; ?>">
+<input type="hidden" name="pl_replacement" value="<?php echo $pl_replacement; ?>">
+<input type="hidden" name="pl_emp_id" value="<?php echo $ar["ctr_recruiter"]; ?>">
+<input type="hidden" name="pipl_nurse" value="<?php echo $pipl_nurse; ?>">
+<input type="hidden" name="pl_id" value="<?php echo $pipl_id; ?>">
+<input type="hidden" name="pl_print" value="0">
+<input type="hidden" name="n" value="<?php echo $_POST["n"]; ?>">
+<input type="hidden" name="srs" value="<?php echo $_POST["srs"]; ?>">
+
+<div class="row">
+    <div class="span16">
+	</div>
+</div>
+	
+<br/><br/>
+
+
+<br/>
+<input type="submit" name="approvebtn" value="Submit" class="btn btn-large" />
+<input type="submit" name="cancelbtn" value="Cancel" class="btn btn-large" />
+
+
+
+
+
+
+
+
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

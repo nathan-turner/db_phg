@@ -1,0 +1,103 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/interview.phtml:
+// Marketing report
+
+$y = substr($part,1,4);
+$title = $months[$id]." $y Interview Report";
+$this->headTitle($title);
+
+$icnt = 0; $tcnt = 0; $prevuname = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'interview')));
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+?>
+<div class="row onscr">
+    <div class="span3">
+        <?php echo $this->formRow($form->get('mon')); ?>
+    </div>
+    <div class="span3">
+        <?php echo $this->formRow($form->get('yer')); ?>
+    </div>
+    <div class="span2">
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+<p class="onscr" style="text-align: center"><b>Sorted by</b>: Recruiter, Date, Contract</p>
+
+<table class="table report">
+    <thead><tr>
+        <th> </th>
+        <th>Date</th>
+        <th>Name</th>
+        <th class="phg-ctr">AMA</th>
+        <th class="phg-ctr">CA</th>
+        <th class="phg-ctr">Ref</th>
+        <th class="phg-ctr">IQ</th>
+        <th class="phg-ctr">Spec</th>
+        <th>Location</th>
+        <th>Contract</th>
+    </tr></thead>
+    <tbody>
+        <?php if( $report ) foreach ($report as $row):
+            $tcnt++;
+            if( $row->emp_uname != $prevuname ):
+                $icnt =0;
+                $prevuname = $row->emp_uname;
+        ?>
+        <tr>
+            <td> </td>
+            <td colspan="9"><b><?php echo $this->escapeHtml($prevuname); ?></b></td>
+        </tr>
+        <?php
+            endif;
+            $icnt++;
+            $nuaction = ($row->pipl_nurse)? 'midlevel':'physician';
+            $nusec = ($row->pipl_nurse)? $row->at_abbr: $row->ph_spec_main;
+        ?>
+        <tr>
+            <td><?php echo $icnt ?></td>
+            <td><?php echo $this->escapeHtml(substr($row->pipl_date,8,2)); ?></td>
+            <td><a href="<?php echo $this->url($nuaction, array('action'=>'view', 'part'=>'go', 'id' => $row->ph_id)) ?>"><?php echo $this->escapeHtml($row->ctct_name); ?></a></td>
+            <td class="phg-ctr"><?php echo $this->escapeHtml($row->ama) ?></td>
+            <td class="phg-ctr"><?php echo $this->escapeHtml($row->cas) ?></td>
+            <td class="phg-ctr"><?php echo $this->escapeHtml($row->ref) ?></td>
+            <td class="phg-ctr"><?php echo $this->escapeHtml($row->iq) ?></td>
+            <td class="phg-ctr"><?php echo $this->escapeHtml($nusec); ?></td>
+            <td><?php echo $this->escapeHtml($row->ctr_location_c.', '.$row->ctr_location_s) ?></td>
+            <td><a href="<?php echo $this->url('contract', array('action'=>'view', 'part'=>'go', 'id' => $row->ctr_id)) ?>"><?php echo $this->escapeHtml($row->ctr_no); ?></a> (<?php echo $this->escapeHtml(trim($row->ctr_type)); ?>)</td>
+        </tr>
+        <?php endforeach;
+        if( $tcnt ): ?>
+        <tr>
+            <td><b><?php echo $this->escapeHtml($tcnt); ?></b></td>
+            <td colspan="9"><b>Interviews for the month</b></td>
+        </tr>
+        <?php else: ?>
+        <tr><td colspan="10" class="alert-danger">No interviews in the range!</td></tr>
+        <?php endif;
+            $mon1 = $id - 1; $mon2 = $id+1; $y1 = $y; $y2 = $y;
+            if( $mon1 < 1 ) { $mon1 = 12; $y1--; }
+            if( $mon2 > 12 ) { $mon2 = 1; $y2++; }
+        ?>
+        <tr class="onscr">
+            <td colspan="2"><a href="<?php echo $this->url('report', array('action'=>'interview', 'part'=>"Y$y1", 'id' => $mon1)) ?>">Previous month</a></td>
+            <td colspan="6"> </td>
+            <td colspan="2" class="phg-rite"><a href="<?php echo $this->url('report', array('action'=>'interview', 'part'=>"Y$y2", 'id' => $mon2)) ?>">Next Month</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

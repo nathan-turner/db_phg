@@ -1,0 +1,117 @@
+<SCRIPT language="javascript">
+<!--
+//var selindex=getqstringvalue("selindex",window.location.search)
+//  if(selindex==""){ selindex = "0" }
+//var specialty_id = getqstringvalue("specialty_id",window.location.search)
+//  if(specialty_id==""){ specialty_id = "020" }
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+var statedisplay=getqstringvalue("statedisplay",window.location.search)
+var sortby=getqstringvalue("sortby",window.location.search)
+  if(sortby==""){ sortby = "state" }
+var selectfield=getqstringvalue("selectfield",window.location.search)
+var selectvalue=getqstringvalue("selectvalue",window.location.search)
+var selectscreen=getqstringvalue("selectscreen",window.location.search)
+var states = getqstringvalue("states",window.location.search)
+var backurl=getqstringvalue("backurl",window.location.search)
+
+writepage(selectscreen)
+
+function doOnLoad(){
+  top.header.MM_nbGroup('down','navbar1','i_r2c6','images/slices/i_r2c6f3.gif',1)
+  top.header.callsniff();
+}
+
+function gotobackurl(){
+  backurl = URLdecode(backurl,"%26","&")
+  backurl = URLdecode(backurl,"%2F","/")
+  backurl = URLdecode(backurl,"%3A",":")
+  backurl = URLdecode(backurl,"%3D","=")
+  backurl = URLdecode(backurl,"%3F","?")
+//  alert(backurl)
+  top.data.location.href = backurl
+}
+
+
+//////////////// URL FUNCTIONS /////////////////////////////
+function getqstringvalue(name,inpara){
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+
+
+///////////////// WRITE PAGE ///////////////////////
+function writepage(selectscreen){
+//alert(selectscreen)
+document.write("<HTML>")
+document.write("<head>")
+document.write("<STYLE>")
+document.write("  BODY {margin:0}")
+document.write("  .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("  .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("  .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("</STYLE>")
+document.write("</head>")
+document.write("<body onLoad=\"doOnLoad();\" bgcolor=#cccccc>")
+document.write("<table border=0 cellpadding=0 cellspacing=0 width=100%>")
+
+document.write("  <tr>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td>")
+document.write("  <td width=20% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=78% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+if(backurl.indexOf("program.htm") > -1){
+  document.write("  <td class=csstext bgcolor=#cccccc><INPUT TYPE=BUTTON ONCLICK=\"javascript:gotobackurl();\" VALUE=\"<< Return\" NAME=returntospecialty CLASS=csstextcenter /></td>")
+}else{
+  document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=22 width=10 /></td>")
+}
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+
+document.write("</table>")
+document.write("</body>")
+document.write("</HTML>")
+}
+
+//-->
+</script>
+
+
+

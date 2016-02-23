@@ -1,0 +1,221 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/fuzionexport.phtml:
+// Summary report
+
+$title = 'Account Summary Report';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+.cour {font-family: courier }
+table { font-size: 12px; padding: 0px; background-color: #eeeeee; }
+table tr { padding: 0px; }
+table td { padding: 1px; }
+</style>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rptdataentry')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="post" name="form1" id="form1" >
+
+	
+	<label>Specialty: </label><select  name="spec" class="cour">
+	<option value=""> All </option>
+   <option value="---"> Mid-Levels </option>
+	<?php	
+	//echo var_dump($specs);
+	$nbsp = array();
+	$nbsp[0] = "&nbsp;&nbsp;&nbsp;";
+	$nbsp[1] = "&nbsp;&nbsp;";
+	$nbsp[2] = "&nbsp;";
+	$nbsp[3] = "";
+	
+			foreach ($specs as $key=>$val)
+			{		//(RS("skill") = "--" and IsNull(RS0("ph_skill")) OR RS0("ph_skill")=RS("skill") OR RS("skill") = "  " and IsNull(RS0("ph_skill"))
+				$code = $val["sp_code"].$nbsp[strlen($val["sp_code"])];
+				echo "<option value='".$code.$val["skill"]."'";
+				if(strtoupper($val["sp_code"])==strtoupper($ar["ph_spec_main"]) && ($val["skill"]=="--" && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) || $ar["ph_skill"]==$val["skill"] || $ar["ph_skill"] == "  " && ($ar["ph_skill"]==""||$ar["ph_skill"]==null) ))
+				//if($val["sp_code"]==$ar["ph_spec_main"])
+					echo "selected";
+				echo ">";				
+				echo $code."&nbsp;".$val['spec'];
+				echo "</option>";
+			}
+?>
+</select>
+
+<label> Recruiter: </label>
+<select size="1" name="req" class="cour">
+<option value=""> All </option>	
+<?php
+foreach ($rec as $key2=>$val2)
+{
+	echo "<option value='".$key2."'>".$val2."</option>";
+	//echo $key2."-".$val2; //var_dump($rec);
+	//echo var_dump($val2);
+}
+?>
+</select>
+
+	
+	<input type="submit" value="Select" id="sortbtn" name="sortbtn" class="btn large" />
+
+<table class="nobg" width="98%" border=1 cellspacing=0 cellpadding=1><thead><tr><td>&nbsp;</td>
+<td class="bld ctr">Account</td><td class="bld ctr">Profile Date</td>
+<td class="bld ctr">Spec</td>
+<td class="bld ctr">#</td>
+<td class="bld ctr">Recruiter</td>
+<td class="bld ctr">Name</td>
+<td class="bld ctr">Presented</td><td class="bld ctr">Interview</td>
+</tr></thead><tbody>	
+<?php
+//$icnt,prevctrid,dPres,dInt,bPend,sName,phid,scls,nurse
+      $icnt = 0;
+	  $phid = 0;
+	  $nurse = false;
+      $prevctrid = 0;
+      $sName = "&nbsp;";
+      $scls = "";
+
+foreach($ar as $id=>$rs)
+{
+	//echo $id."-".$rs["ctr_no"];
+	
+	if($rs["ctr_id"] != $prevctrid || $rs["ph_name"] != $sName)//new row
+	{
+		if($prevctrid != 0)
+		{
+			echo '<td '.$scls.'><a class="ndec" href="/public/';
+			if ($nurse)
+				echo "midlevel/view/".$phid;
+			else
+				echo "physician/view/".$phid;
+			echo '" >'.$sName.'</a>&nbsp;</td><td '.$scls.'>'.$dPres.'</td><td '.$scls.'>'.$dInt.'</td></tr>';
+			$scls = "";				
+		}
+		if($rs["ctr_id"] == $prevctrid) //the same ctr, new doc
+		{
+			echo '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>';
+			if($sReq =='')
+				echo '<td>&nbsp;</td>';
+		}
+		else //new ctr
+		{			
+			$prevctrid = $rs["ctr_id"];
+			$icnt = $icnt+1;
+			
+			if($rs["ctr_pro_date"]!='')
+				$ctr_pro_date=date('m/d/Y',strtotime($rs["ctr_pro_date"]));
+			else 
+				$ctr_pro_date='';
+			echo '<tr><td class="duble">'.$icnt.'</td><td class="duble"><a class="ndec" href="/public/client/view/'.$rs["cli_id"].'">'.$rs["cli_name"].'</a><br>'.$rs["cli_city"].',  '.$rs["cli_state"].'</td>
+                   <td class="duble">'.$ctr_pro_date.'&nbsp;</td><td class="duble">';
+			if($rs["ctr_nurse"])   
+				echo $rs["at_abbr"];
+			else
+				echo $rs["ctr_spec"];
+			echo '</td>';
+				   
+			echo '<td class="duble"><a class="ndec" href="/public/contract/view/'.$prevctrid.'">'.$rs["ctr_no"].'</a> &quot;'.$rs["ctr_type"].'&quot;</td>';
+			if($sReq=='')
+				echo '<td class="duble">'.$rs["emp_uname"].'</td>';  
+                  
+		   $scls = " class='duble'";
+		}
+		
+		$sName = $rs["ph_name"];
+        $phid = $rs["ph_id"];
+		$nurse = $rs["pipl_nurse"];
+        $dInt = "&nbsp;"; 
+		$dPres = "&nbsp;";
+		
+		
+		
+	}	//end new row
+	
+	if($rs["pipl_status"]==2)
+		$dPres = $dPres . " " . date('m/d/Y',strtotime($rs["pipl_date"]));
+	if($rs["pipl_status"]==3)
+        $dInt = $dInt . " " . date('m/d/Y',strtotime($rs["pipl_date"]));   
+
+?>	
+
+<?php	
+}//while
+
+if($prevctrid!=0)
+	{
+		echo '<td '.$scls.'><a class="ndec" href="/public/';
+			if ($nurse)
+				echo "midlevel/view/".$phid;
+			else
+				echo "physician/view/".$phid;
+			echo '" >'.$sName.'</a>&nbsp;</td><td '.$scls.'>'.$dPres.'</td><td '.$scls.'>'.$dInt.'</td></tr>';
+		
+		
+	}
+?>
+</tbody></table>
+
+
+
+
+
+
+</form>
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

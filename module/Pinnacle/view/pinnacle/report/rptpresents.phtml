@@ -1,0 +1,170 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/rptpresents.phtml:
+// Summary report
+
+$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
+
+$currentmo = date('m');
+$currentyr = date('Y');
+
+if($_POST["mon"]=="")
+	$mon = $currentmo;
+else
+	$mon = $_POST["mon"];
+
+$title = $months[$currentmo]." ".$currentyr.' Presents Report';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			//$( "#startdatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#startdate"});
+			//$( "#enddatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#enddate"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+  input, label, select { display:none; }
+  table { font-size: 10pt; }
+}
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'rptpresents')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	//$start  = mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
+	
+	
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="post">
+	<label>Month:</label>
+<select size="1" name="mon">
+<option value=""> (Current) </option>
+   <option <?php if ($mon==1){ echo "selected"; }?> value="1">January</option>
+   <option <?php if ($mon==2){ echo "selected"; }?> value="2">February</option>
+   <option <?php if ($mon==3){ echo "selected"; }?> value="3">March</option>
+   <option <?php if ($mon==4){ echo "selected"; }?> value="4">April</option>
+   <option <?php if ($mon==5){ echo "selected"; }?> value="5">May</option>
+   <option <?php if ($mon==6){ echo "selected"; }?> value="6">June</option>
+   <option <?php if ($mon==7){ echo "selected"; }?> value="7">July</option>
+   <option <?php if ($mon==8){ echo "selected"; }?> value="8">August</option>
+   <option <?php if ($mon==9){ echo "selected"; }?> value="9">September</option>
+   <option <?php if ($mon==10){ echo "selected"; }?> value="10">October</option>
+   <option <?php if ($mon==11){ echo "selected"; }?> value="11">November</option>
+   <option <?php if ($mon==12){ echo "selected"; }?> value="12">December</option>
+                  </select>
+	
+<label>Year:</label>
+<input type="text" name="year" id="year" class="" value="<?php if($_POST["year"]==''){ echo $currentyr;} else{ echo $_POST["year"]; } ?>" />
+	
+	
+<input type="submit" value="Submit" name="submitdate" class="btn" />
+	</form>
+	
+<table class="nobg" width="100%" border=1 cellspacing=0 cellpadding=1><thead><tr><td>&nbsp;</td>
+<td class="bld ctr">Date</td><td class="bld ctr">Name</td>
+<td class="bld ctr">Spec</td>
+<td class="bld ctr">Location</td><td class="bld ctr">Contract #</td>
+</tr></thead><tbody>
+
+<?php
+
+foreach($ar as $key=>$val)
+{
+	if($val["emp_uname"]!= $prevuname)
+	{
+			$scnt = $scnt + $icnt;
+            $icnt = 0;
+            $prevuname = $val["emp_uname"];
+	
+?>	
+<tr><td class="bld" colspan=9><?php echo $prevuname; ?></td></tr>
+
+<?php		
+}//end if
+	$icnt = $icnt + 1;
+?>
+<tr>
+<td class="ctr"><?php echo $icnt; ?>&nbsp;<?php echo $val["emp_uname"]; ?></td>
+<td class="ctr"><?php echo date('Y-m-d',strtotime($val["pipl_date"])); ?></td>
+<td class="ctr"><a class="ndec" href="<?php echo $this->basePath(); ?><?php if($val["pipl_nurse"]==1){ echo "/midlevel/view/".$val["ph_id"];} else { echo "/physician/view/".$val["ph_id"]; } ?>"><?php echo $val["ctct_name"]; ?></a></td>
+<td class="ctr"><?php echo $val["ph_spec_main"]; ?></td>
+<td class="ctr"><?php echo $val["ctr_location_c"]; ?>, <?php echo $val["ctr_location_s"]; ?></td>
+<td class="ctr"><a class="ndec" href="<?php echo $this->basePath(); ?>/contract/view/<?php echo $val["ctr_id"]; ?>"><?php echo $val["ctr_no"]; ?></a></td>
+
+</tr>
+
+
+<?php	
+	
+}
+$scnt = $scnt + $icnt;
+?>
+<tr><td class="bld ctr" colspan=9>Total Presents: <?php echo $scnt; ?></td></tr>
+</tbody></table>
+
+
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

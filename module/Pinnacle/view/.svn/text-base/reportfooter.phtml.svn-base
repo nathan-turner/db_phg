@@ -1,0 +1,24 @@
+<?php
+$parts = array('market' => 'Marketing',
+               'recruit' => 'Recruiting',
+               'locums' => 'Locum Tenens',
+               'admin' => 'Administrative',
+               'fuzion' => 'Physician Career',
+               'source' => 'Sourcing',
+               'vital' => 'Vital Stats',
+               'common' => 'Common',
+);
+if( $phguser->access < 2 ) unset($parts['vital']);
+?>
+<div class="ptonly phg-rite">
+<small>Printed: <?php echo $this->escapeHtml(date('r')); ?></small>
+</div>
+<hr class="onscr">
+<div class="row onscr">
+<?php
+foreach ($parts as $p => $la): ?>
+    <div class="span3">
+        <a href="<?php echo $this->url('report', array('action'=>'list', 'part'=>$p)) ?>"><img src="/img/images/Button1.png"> <?php echo $la ?> Reports</a>
+    </div>
+<?php endforeach ?>
+</div>

@@ -1,0 +1,31 @@
+<?php
+// module/Pinnacle/view/pinnacle/lookup/geozip.phtml:
+
+$title = 'Search Zip Codes';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    Search Zip codes by geo coordinates and distance
+</p>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('lookup'));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formRow($form->get('iplat'));
+echo $this->formRow($form->get('iplong'));
+echo $this->formRow($form->get('miles'));
+echo $this->formRow($form->get('zipcode'));
+echo '<br>';
+echo $this->formSubmit($form->get('submit'));
+echo $this->formReset($form->get('reset'));
+echo $this->form()->closeTag();
+
+foreach ($zips as $zip) {
+ echo $this->escapeHtml($zip) . '<br>';
+}
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-loo'));

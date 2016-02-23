@@ -1,0 +1,48 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/ReportTable.php:
+// Generic TableGateway for reports. May have some other uses, though.
+namespace Pinnacle\Model;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\AbstractTableGateway;
+
+class ReportGen {
+    protected $fieldGen = array();
+    
+    public function __construct(array $fields = null) {
+        if( is_array($fields) ) {
+            foreach ($fields as $field)
+                $this->fieldGen[trim($field," `\t\n\r\0")] = null;
+        }
+    }
+    
+    public function __get($name) {
+        return $this->fieldGen[$name];
+    }
+    public function __set($name,$value) {
+        $this->fieldGen[$name] = $value;
+    }
+
+    public function exchangeArray(array $data) {
+        $this->fieldGen = $data;
+    }
+
+    public function getArrayCopy() {
+        return $this->fieldGen;
+    }
+}    
+
+class ReportTable extends AbstractTableGateway
+{
+    public function __construct(Adapter $adapter, $table, $fieldlist) {
+        $this->adapter = $adapter;
+        $this->table = $table;
+        $fields = explode(',',$fieldlist);
+
+        $this->resultSetPrototype = new ResultSet();
+        $this->resultSetPrototype->setArrayObjectPrototype(new ReportGen($fields));
+
+        $this->initialize();
+    }
+}

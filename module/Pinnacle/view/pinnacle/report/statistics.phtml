@@ -1,0 +1,218 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/statistics.phtml:
+
+$titles = array('sel0' => 'Clients & Contracts', 'sel1' => 'Physicians',
+                'sel2' => 'Mid-Level Providers' );
+$title = $titles[$part];
+$this->headTitle($title);
+
+if( $id < 0 || $id > 99 ) $id = 19;
+$formUrl = $this->url('report', array('action' => 'statistics', 'part' => $part, 'id' => $id));
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<div class="row onscr">
+    <?php foreach ($titles as $p => $v): ?>
+    <div class="span3">
+        <a href="<?php echo $this->url('report', array('action'=>'statistics', 'part'=>$p)) ?>"><img src="/public/img/images/Button1.png"> <?php echo $this->escapeHtml($v) ?>&rsquo; Stats</a>
+    </div>
+    <?php endforeach ?>
+</div>
+<hr>
+
+<?php if( $part === 'sel1' && $report ): ?>
+<!-- <pre><?php // echo var_dump($report) ?></pre> -->
+
+<h3>Total Physicians in the database: <?php echo $this->escapeHtml($report->total); ?></h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->byStatus as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['st_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+
+<h3>Physicians by Specialty:</h3>
+<table class="table">
+    <thead><tr>
+        <th>Code</th>
+        <th>Specialty</th>
+        <th class="phg-rite"><abbr title="Specialty Demographics">S.D.</abbr></th>
+        <th class="phg-rite">Number</th>
+    </tr></thead>
+    <tbody>
+        <?php foreach ($report->bySpecialty as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['ph_spec_main']); ?></td>
+            <td><?php echo $this->escapeHtml($row['sp_name']); ?></td>
+            <td class="phg-rite"> <?php echo $this->escapeHtml($row['sd_gt']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="4"> </td></tr>
+    </tbody>
+</table>
+
+<?php elseif( $part === 'sel2' && $report ): ?>
+<!-- <pre><?php // echo var_dump($report) ?></pre> -->
+
+<h3>Total Mid-Levels in the database: <?php echo $this->escapeHtml($report->total); ?></h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->byStatus as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['st_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+
+<h3>Mid-Levels by Category:</h3>
+<table class="table">
+    <thead><tr>
+        <th>Code</th>
+        <th>Category</th>
+        <th class="phg-rite">Number</th>
+    </tr></thead>
+    <tbody>
+        <?php foreach ($report->bySpecialty as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['an_type']); ?></td>
+            <td><?php echo $this->escapeHtml($row['at_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="3"> </td></tr>
+    </tbody>
+</table>
+
+<?php elseif( $part === 'sel0' && $report ): ?>
+<!-- <pre><?php // echo var_dump($report) ?></pre> -->
+
+<div class="row">
+    <div class="span6">
+        
+<h3>Total Clients in the database: <?php echo $this->escapeHtml($report->totalClients); ?></h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->byStatusClients as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['st_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+
+<h3>Clients by Type:</h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->byTypeClients as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['ct_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+
+<h3>Clients by Source:</h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->bySourceClients as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['cs_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+
+<h3>Clients by System<sup><a href="#syscom">*</a></sup>:</h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->bySystemClients as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['cli_sys']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+        <form action="<?php echo $formUrl; ?>" method="post" name="clisysform">
+        <p><sup><a name="syscom">*</a></sup> Shown are systems with number of clients greater than:
+        <select name="snum" id="demo-select">
+        <option <?php if( 1 == $id ) echo ' selected' ?>>1 </option>
+        <option <?php if( 4 == $id ) echo ' selected' ?>>4 </option>
+        <option <?php if( 9 == $id ) echo ' selected' ?>>9 </option>
+        <option <?php if( 19 == $id ) echo ' selected' ?>>19 </option>
+        <option <?php if( !$id ) echo ' selected' ?>>0 (All) </option>
+    </select> 
+        </p>
+    <input class="btn btn-success" type="submit" name="submit" value="Select" />
+        </form>
+
+    </div>
+    <div class="span6">
+        
+<h3>Total Contracts in the database: <?php echo $this->escapeHtml($report->totalContracts); ?></h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->byStatusContracts as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['st_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+
+<h3>Active Contracts by Specialty:</h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->bySpecialtyContracts as $row):
+                if( ! $row['ctr_spec'] ) $row['sp_name'] = 'Mid-levels';
+        ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['ctr_spec']); ?></td>
+            <td><?php echo $this->escapeHtml($row['sp_name']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+
+<h3>Active Contracts by Type:</h3>
+<table class="table">
+    <tbody>
+        <?php foreach ($report->byTypeContracts as $row): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['ctr_type']); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row['cnt']); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="2"> </td></tr>
+    </tbody>
+</table>
+        
+    </div>
+</div>
+
+<?php endif;
+
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

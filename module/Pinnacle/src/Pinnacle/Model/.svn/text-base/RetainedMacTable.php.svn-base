@@ -1,0 +1,45 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/RetainedMacTable.php:
+namespace Pinnacle\Model;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Select;
+
+class RetainedMacTable extends ReportTable
+{
+    protected $orders = array(
+        'ctr_spec, ctct_st_code, ctct_addr_c, rec_uname, ctct_name', //0
+        'ctr_no',                                                    //1
+        'rec_uname, ctct_st_code, ctct_addr_c, ctct_name, ctr_spec', //2
+        'ctct_addr_c, ctct_st_code, ctct_name, ctr_spec',            //3
+        'ctct_st_code, ctr_spec, ctct_name, ctct_addr_c',            //4
+        'ctct_name, ctr_spec',                                       //5
+        );
+    protected $orderStrings = array(
+        'Specialty, State, City, Recruiter, Facility',               //0
+        'Contract #',                                                //1
+        'Recruiter, State, City, Facility, Specialty',               //2
+        'City, State, Facility, Specialty',                          //3
+        'State, Specialty, Facility, City',                          //4
+        'Facility, Specialty',                                       //5
+        );
+
+    public function __construct(Adapter $adapter) {
+        parent::__construct($adapter,'vRetainedSearchMac',
+                            'ctr_id, ctr_no, ctr_spec, rec_uname, cli_id, ctct_addr_c, ctct_st_code, ctct_name, ctr_type, rec_status, pro_practice, ctr_nurse');
+    }
+
+    public function fetchAll($ord = 0) {
+        $ord = (int) $ord; if( $ord > 5 ) $ord = 0;
+        $select = new Select($this->table);
+        $select->order($this->orders[$ord]);
+        $resultSet = $this->selectWith($select);
+        return $resultSet;
+    }
+    
+    public function getOrderString($ord = 0) {
+        $ord = (int) $ord; if( $ord > 5 ) $ord = 0;
+        return $this->orderStrings[$ord];
+    }
+
+}

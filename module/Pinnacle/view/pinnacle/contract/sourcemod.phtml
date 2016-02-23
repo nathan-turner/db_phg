@@ -1,0 +1,266 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/view.phtml:
+// Client Search
+
+$title = 'Sourcing' ;
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.core.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.widget.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.tabs.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.position.min.js', 'text/javascript');
+
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.js?v=0.3.2', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.css?v=0.3.2', 'text/javascript');
+*/
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+h1 { text-align: center }
+#contact_tbl td { border: 1px solid black; background-color: white; padding: 5px; }
+table h3 { font-size: 14px; line-height: 16px; }
+.ext { width: 50px; }
+.phone { width: 80px; }
+.formtable td { padding-right: 10px; }
+</style>
+<div style="float:right">
+<a href="/contract/managesources">Manage Sources</a>
+</div>
+<?php if($mode=="edit") { ?>
+<h1><?php echo $ar["src_name"]; ?></h1>
+ <?php  
+ } 
+ else{
+ $ar=null;
+ } 
+ if(isset($_POST["submit"])){
+  $ar=null;  
+  $src_price = number_format($_POST["price"],2);
+}else
+{
+	if($mode=="edit")
+		$src_price = number_format($ar["src_price"],2);
+} 
+  //echo implode(",",$_POST["spec"])
+ ?>
+ <p style="text-align: center; color:red"><?php echo $message; ?></p>
+ <div id="addform">
+ <h3><?php echo ucfirst($mode);?> Source</h3>
+ <form action="" method="post">
+ 
+ <table class="formtable">
+ <tr>
+ <td><strong>Name: </strong><input name="srcname" type="text" size="45" maxlength="64" value='<?php echo $_POST["srcname"]; echo $ar["src_name"]; ?>'></td>
+ <td><strong>Initial Rating (0-5):</strong> 
+ <select name="rating" style="width: 60px">
+ <option value="0" <?php if($ar["src_rating"]=="0" || $_POST["rating"]=="0") {echo "selected";} ?> >0</option>
+ <option value="1" <?php if($ar["src_rating"]=="1" || $_POST["rating"]=="1") {echo "selected";} ?> >1</option>
+ <option value="2" <?php if($ar["src_rating"]=="2" || $_POST["rating"]=="2") {echo "selected";} ?> >2</option>
+ <option value="3" <?php if($ar["src_rating"]=="3" || $_POST["rating"]=="3") {echo "selected";} ?> >3</option>
+ <option value="4" <?php if($ar["src_rating"]=="4" || $_POST["rating"]=="4") {echo "selected";} ?> >4</option>
+ <option value="5" <?php if($ar["src_rating"]=="5" || $_POST["rating"]=="5") {echo "selected";} ?> >5</option>
+ </select>
+ </td>
+ <td colspan="2"><strong>Price: </strong><input name="price" type="text" value="<?php  echo $src_price; ?>" size="10" maxlength="12" style="width: 60px"> 
+ <input name="presto" type="checkbox" value="1" <?php if($ar["src_estprice"]=="1" || $_POST["presto"]=="1") {echo "checked";} ?> title="Estimated price"> est.</td>
+ </tr>
+  <tr>
+ <td colspan="2"><strong>Pricing: </strong>
+ <input type="radio" name="monthly" value="1" <?php if($ar["src_monthly"]=="1" || $_POST["monthly"]=="1") {echo "checked";} ?> /> Monthly or 
+	  <input type="radio" name="monthly" value="0" <?php if($ar["src_monthly"]!="1" && $_POST["monthly"]!="1") {echo "checked";} ?>/>
+	  <input name="pricing" type="text" size="25" maxlength="50" value='<?php echo $_POST["pricing"]; echo $ar["src_pricing"]; ?>'/>
+ </td>
+ <td colspan="2" rowspan="2"><strong>Specialty (multiple choice): </strong>
+ <?php 
+ 
+ $spec_arr = explode(',',$ar["src_sp_code"]); 
+ if(!isset($_POST["spec"]))
+	$_POST["spec"] = array();
+ ?>
+ <select size="4" name="spec[]" class="cour" multiple style="width: 400px">
+ <option value="---" <?php if(($ar["src_sp_code"]=="---" || strrpos($ar["src_sp_code"],"---")!==false) || in_array("---",$_POST["spec"])!==false ) {echo "selected";} ?>>Any</option>
+ <?php
+ foreach($spec as $key=>$val)
+ {
+	//$spec_arr = explode(',',$ar["src_sp_code"]);
+	if($key!="---"){
+	echo "<option value='".$key."' ";
+	if((in_array($key,$spec_arr)!==false || $key==$ar["src_sp_code"]) ||  in_array($key,$_POST["spec"])!==false)
+		echo "selected";
+	echo ">".$key." ".$val."</option>";
+	}
+ }
+ ?>
+ </select>
+ </td>
+
+ </tr>
+ <tr>
+    <td colspan="2"><b>Price Quote Required:</b>
+		<input type="radio" name="quota" <?php if($ar["src_quota"]=="1" || $_POST["quota"]=="1") {echo "checked";} ?> value="1"> Yes
+		<input type="radio" name="quota" <?php if($ar["src_quota"]!="1" && $_POST["quota"]!="1") {echo "checked";} ?> value="0"> No
+	</td>
+</tr>
+<tr>
+        <td colspan="2"><b>Include in Marketing Proposal:</b>
+		<input type="radio" name="propos" <?php if($ar["src_proposal"]=="1" || $_POST["propos"]=="1") {echo "checked";} ?> value="1"> Yes
+		<input type="radio" name="propos" <?php if($ar["src_proposal"]!="1" && $_POST["propos"]!="1") {echo "checked";} ?> value="0"> No
+		</td>
+	<td colspan="2"><b>Category</b>:
+	<select size="1" name="srctype">
+	<?php
+ foreach($sourcetypes as $key=>$val)
+ {	
+	echo "<option value='".$val["srt_id"]."' ";
+	if($val["srt_id"]==$ar["src_type"] || $_POST["srctype"]==$val["srt_id"])
+		echo "selected";
+	echo ">".$val["srt_name"]."</option>";
+	
+ }
+ ?>
+	</select>
+	</td>
+</tr>
+<tr>
+	    <td ><b>Target audience</b>: 
+		<input name="target" type="text" size="50" maxlength="127"
+		 value="<?php echo $ar["src_target"]; ?>"></td>
+		<td colspan="3"><b>CV Database:</b>
+		<input type="radio" name="webcv" <?php if($ar["src_webcv"]=="1" || $_POST["webcv"]=="1") {echo "checked";} ?> value="1"> Yes
+		<input type="radio" name="webcv" <?php if($ar["src_webcv"]!="1" && $_POST["webcv"]!="1") {echo "checked";} ?> value="0"> No</td>
+</tr>
+<tr>
+        <td><b>Website Username</b>:
+          <input name="wuser" type="text" size="20" maxlength="50"
+		 value="<?php echo $_POST["wuser"]; echo $ar["src_webuser"]; ?>"></td>
+        <td><b>Website Password</b>:
+          <input name="wpass" type="text" size="25" maxlength="50"
+		 value="<?php echo $_POST["wpass"]; echo $ar["src_webpass"]; ?>"></td>
+        <td><b>Circulation</b>:
+          <input name="circa" type="text" size="20" maxlength="15"
+		 value="<?php echo $_POST["circa"]; echo $ar["src_circulation"]; ?>"></td>
+        <td><b>Published</b>: (issues/year)
+          <input name="publi" type="text" size="3" maxlength="7"
+		 value="<?php echo $_POST["publi"]; echo $ar["src_published"]; ?>"> </td>
+</tr>
+<tr>
+    <td><b>Short Description for Marketing Proposal</b>:</td>
+    <td colspan="3"><textarea name="mpdesc" cols="73" rows="3" style="width: 400px"><?php echo $_POST["mpdesc"]; echo $ar["src_mp_descr"]; ?></textarea></td>
+</tr>	
+<tr>
+        <td ><b>Contact Name</b>:
+          <input name="lfname" type="text" size="25" maxlength="127" value="<?php echo $_POST["lfname"]; echo $ar["ctct_name"]; ?>"></td>
+        <td><b>Title</b>:
+          <input name="titul" type="text" size="25" maxlength="63" value="<?php echo $_POST["titul"]; echo $ar["ctct_title"]; ?>"></td>
+        <td colspan="2"><b>Company</b>:
+          <input name="comp" type="text" size="30" maxlength="127" value="<?php echo $_POST["comp"]; echo $ar["ctct_company"]; ?>"></td>
+</tr>
+<tr align="right">
+        <td><b>Phone</b>:
+          <input name="phone" type="text" size="15" maxlength="20" value="<?php echo $_POST["phone"]; echo $ar["ctct_phone"]; ?>" class="phone"><br><b>Ext</b>:
+          <input name="phext" type="text" size="5" maxlength="6" value="<?php echo $_POST["phext"]; echo $ar["ctct_ext1"]; ?>" class="ext"></td>
+        <td><b>Fax</b>:
+          <input name="fax" type="text" size="15" maxlength="20" value="<?php echo $_POST["fax"]; echo $ar["ctct_fax"]; ?>" class="phone"><br><b>Ext</b>:
+          <input name="fext" type="text" size="5" maxlength="6" value="<?php echo $_POST["fext"]; echo $ar["ctct_ext2"]; ?>" class="ext"></td>
+        <td><b>Phone</b>2:
+          <input name="phone2" type="text" size="15" maxlength="20" value="<?php echo $_POST["phone2"]; echo $ar["ctct_hphone"]; ?>" class="phone"><br><b>Ext</b>:
+          <input name="phext2" type="text" size="5" maxlength="6" value="<?php echo $_POST["phext2"]; echo $ar["ctct_ext3"]; ?>" class="ext"></td>
+        <td><b>Fax</b>2:
+          <input name="fax2" type="text" size="15" maxlength="20" value="<?php echo $_POST["fax2"]; echo $ar["ctct_hfax"]; ?>" class="phone"><br>
+		</td>
+</tr> 
+<tr>
+        <td colspan="1"><b>Email</b>:
+          <input name="email" type="text" size="50" maxlength="64" value="<?php echo $_POST["email"]; echo $ar["ctct_email"]; ?>"></td>
+        <td colspan="3"><b>Web Site</b>:
+          <input name="url" type="text" size="50" maxlength="127" value="<?php echo $_POST["url"]; echo $ar["ctct_url"]; ?>"></td>
+</tr>
+<tr>
+        <td colspan="1"><b>Address1</b>:
+          <input name="addr1" type="text" size="45" maxlength="127" value="<?php echo $_POST["addr1"]; echo $ar["ctct_addr_1"]; ?>"></td>
+        <td colspan="3"><b>Address2</b>:
+          <input name="addr2" type="text" size="45" maxlength="127" value="<?php echo $_POST["addr2"]; echo $ar["ctct_addr_2"]; ?>"></td>
+</tr>
+<tr>
+        <td><b>City</b>:
+          <input name="city" type="text" size="25" maxlength="64" value="<?php echo $_POST["city"]; echo $ar["ctct_addr_c"]; ?>"></td>
+        <td><b>State</b>: 
+		<select size="1" name="state" style="width: 200px">
+		<?php 
+			echo "<option value='--' ";
+				if($ar["ctct_st_code"]=="--" || $_POST["state"]=="--")
+					echo "selected";
+				echo "> </option>";
+			foreach ($states as $a=>$b)
+			{
+				echo "<option value='".$a."' ";
+				if($ar["ctct_st_code"]==$a || $_POST["state"]==$a)
+					echo "selected";
+				echo ">".$b."</option>";
+				
+			}
+		?>
+		</select>
+		</td>
+		<td><b>Zip</b>:
+          <input name="zip" type="text" size="12" maxlength="10" value="<?php echo $_POST["zip"]; echo $ar["ctct_addr_z"]; ?>" style="width: 60px"/></td>
+</tr>		
+  <tr>
+ <td>
+ <input type="hidden" name="src_id" value="<?php echo $ar["src_id"]; ?>">
+	<input type="hidden" name="ctct_id" value="<?php echo $ar["src_ctct_id"]; ?>">
+	<input type="hidden" name="mode" value="<?php echo $mode; ?>">
+ <input type="submit" value="Submit" name="submit" class="btn btn-success btn-large"/></td>
+ <td></td>
+ <td></td>
+ <td></td>
+ </tr>
+  
+ </table>
+ 
+ </form> 
+ </div>
+ 
+
+ 
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    //echo $this->form()->openTag($form);
+	
+	
+?>
+
+
+
+
+
+
+
+
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    //echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+<?php
+
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

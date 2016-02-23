@@ -1,0 +1,37 @@
+<?php
+    if( $messages ) {
+        echo '<div class="alert alert-success"> <button type="button" class="close" data-dismiss="alert">×</button>';
+        foreach($messages as $msg)
+            echo $this->escapeHtml($msg).'<br>';
+        echo '</div>';
+    }
+    if( !$phguser ) {
+?>   
+<div class="hero-unit">
+    <h1>Welcome to <span class="text-info">PHG Database 2.0</span></h1>
+    <p><?php echo sprintf('Congratulations! You have reached PHG Database application, powered by Zend Framework version %s.', \Zend\Version\Version::VERSION) ?></p>
+    <p><a class="btn btn-info btn-large" href="<?php echo $this->url('login');?>">Try to Log in &raquo;</a></p>
+</div>
+<?php
+    } else { // phguser
+?>
+<h1>PHG Database</h1>
+<div class="row">
+
+    <div class="span4">
+        <h2>Calendar</h2>
+        <p><a class="btn btn-success" href="/public/calendar" >Go to Calendar &raquo;</a></p>
+    </div>
+
+    <div class="span4">
+        <h2>Summary Report</h2>
+        <p><a class="btn btn-success" href="/public/report/usersumst2" target="_blank">Go to Summary Report &raquo;</a></p>
+   </div>
+
+   <div class="span4">
+       <h2>Help &amp; Support</h2>
+       <p><?php echo "Are you $phguser->realname?"; ?></p>
+       <p><a class="btn btn-success" href="<?php echo $this->url('logout');?>">Log out &raquo;</a></p>
+   </div>
+</div>
+<?php } ?>

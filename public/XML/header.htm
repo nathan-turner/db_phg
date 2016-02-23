@@ -1,0 +1,299 @@
+<HTML>
+<head>
+
+
+<script src="testbrow.js" language="JavaScript"></script>
+<script language="JavaScript">
+<!--
+var tabname ="images/slices/" + getqstringvalue("tabname",window.location.search)
+var position=getqstringvalue("position",window.location.search)
+//alert("tabname: " + tabname + "\nposition: " + position)
+
+var arrProgids = new Array()
+var arrSpecids = new Array()
+var progidqstring = ""
+var specidqstring = ""
+
+window.status = "GME Library 2012-2013"
+
+///////////////////////////////////////
+var OS,version,useragent,detect,place;
+useragent = navigator.userAgent;
+detect = useragent.toLowerCase();
+var msxml2v30 = false
+var replacemode = false
+var browser = false
+
+function callsniff(){
+  if(checkIt("msie")){
+    getBrowserInfo();
+    if(OS.indexOf("95")>=0){
+      alert("The XML version of the Graduate Medical Education Library will not\ninstall or operate properly on the Windows 95 operating system.\nYou are being automatically transferred to the HTML version.")
+      location.href = "../HTML/default.htm";
+    }else{
+      var bOK = sniff();
+      if(!bOK){ parent.location.href="../default.htm" }
+    }
+  }else{
+    top.location.href = "../HTML/default.htm";
+  }
+}
+////////////////////////////////////////
+
+function savelisting(progid,specid){
+  if(!seeiflistingexists(progid)){
+    arrProgids[arrProgids.length] = progid
+    arrSpecids[arrSpecids.length] = specid
+    alert("Listing saved. Click the 'Saved Listings' tab\nto view the listings you've saved.")
+  }else{
+    alert("You've already saved this listing. Click the 'Saved Listings' tab\nto view the listings you've saved.")
+  }
+}
+
+function deletelisting(progid){
+//  alert("prog length: " + arrProgids.length +"\nspec length: " + arrSpecids.length)
+  var arrprogidnew = new Array()
+  var arrspecidnew = new Array()
+  for(i=0;i<arrProgids.length;i++){
+    if(arrProgids[i]==progid){
+      arrProgids[i] = "empty"
+      arrSpecids[i] = "empty"
+//      arrprogidnew[i] = arrProgids[i]
+//      arrspecidnew[i] = arrSpecids[i]
+    }
+  }
+//  arrProgids = arrprogidnew
+//  arrSpecids = arrspecidnew
+//  alert("prog length: " + arrProgids.length +"\nspec length: " + arrSpecids.length)
+//  for(i=0;i<arrProgids.length;i++){
+//    alert(arrProgids[i])
+//  }
+  opensavedlistings(false)
+}
+
+
+
+
+function seeiflistingexists(progid){
+  bMatch = false
+  for(i=0;i<arrProgids.length;i++){
+    if(arrProgids[i]==progid){ bMatch = true }
+  }
+  return bMatch
+}
+
+function makeqstringsfromarrays(){
+  for(i=0;i<arrProgids.length;i++){
+    if(progidqstring!=""){ progidqstring+="," }
+    if(specidqstring!=""){ specidqstring+="," }
+    progidqstring += arrProgids[i]
+    specidqstring += arrSpecids[i]
+//alert("in makeqstringsfromarays: " + progidqstring)
+  }
+}
+
+function opensavedlistings(getbackurl){
+  if(CheckCookie("gmellicense1213","data","HTML/licagree.htm")=="true"){
+    var backurl = ""
+//  alert(getbackurl)
+    if(getbackurl){
+      backurl = top.data.location.href
+      backurl = URLencode(backurl,"&","%26")
+      backurl = URLencode(backurl,"/","%2F")
+      backurl = URLencode(backurl,":","%3A")
+      backurl = URLencode(backurl,"=","%3D")
+      backurl = URLencode(backurl,"?","%3F")
+    }
+    progidqstring = ""
+    specidqstring = ""
+    makeqstringsfromarrays()
+//    alert("In header.htm -- save.htm?prog_id="+progidqstring+"&specdisplay="+specidqstring+"&backurl="+backurl)
+    top.data.location.href = "save.htm?prog_id="+progidqstring+"&specdisplay="+specidqstring+"&backurl="+backurl
+  }else{
+    top.data.location.href = "../HTML/licagree.htm"
+  }
+}
+
+function loadsection(section){
+  if(CheckCookie("gmellicense1213","data","../HTML/licagree.htm")=="true"){
+    if(section=="intro"){
+      top.btnbar.location.href = "btnbar.htm"
+      top.data.location.href = "../HTML/intro.htm"
+    }
+    if(section=="choosesp"){
+      top.btnbar.location.href = "btnbarsp.htm"
+      top.data.location.href = "xmldata/choosesp.xml"
+    }
+    if(section=="choosest"){
+      top.btnbar.location.href = "btnbarst.htm"
+      top.data.location.href = "choosest.htm"
+    }
+    if(section=="appb"){
+      top.btnbar.location.href = "btnbar.htm"
+      top.data.location.href = "../HTML/cert-basics.htm"
+    }
+    if(section=="licensure"){
+      top.btnbar.location.href = "btnbar.htm"
+      top.data.location.href = "../HTML/medlic.htm"
+    }
+  }else{
+    top.btnbar.location.href = "btnbar.htm"
+  }
+}
+/////////////////////////////////////////////////////////
+function URLencode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+
+function getqstringvalue(name,inpara){
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+/////////////////////////////////////////////////////////
+function MM_findObj(n, d) { //v3.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document); return x;
+}
+/* Functions that swaps down images. */
+function MM_nbGroup(event, grpName) { //v3.0
+//  alert(event, grpName)
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : args[i+1];
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    if ((nbArr = document[grpName]) != null)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = args[i+1];
+      nbArr[nbArr.length] = img;
+  } }
+}
+
+/* Functions that handle preload. */
+function MM_preloadImages() { //v3.0
+ var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+   var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+   if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+var blicagree = false
+//-->
+</script>
+
+
+<STYLE>
+b {font-weight:700;}
+BODY {margin:0}
+.cssAMA {font: 9pt ITCCentury BookCond, Times Roman;text-align:left;color:#ffffff;}
+.cssTitle {font:18pt UniversCond,helvetica,arial,verdana; font-weight:900; color:#ffffff;}
+.cssDate {font:14pt UniversCond,helvetica,arial,verdana; font-weight:700; color:#ccffaa;}
+.cssSubtitle {font:9pt helvetica,UniversCond,arial,verdana; color:#ffffff;}
+.cssIEBody {MARGIN: 0px 0px 0px 5px;}
+</STYLE>
+
+</head>
+<body MARGINWIDTH=0 MARGINHEIGHT=0 bgcolor="#386350" onLoad="MM_preloadImages('images/slices/i_r2c1f2.gif','images/slices/i_r2c1f4.gif','images/slices/i_r2c1f3.gif','images/slices/i_r2c2f2.gif','images/slices/i_r2c2f4.gif','images/slices/i_r2c2f3.gif','images/slices/i_r2c3f2.gif','images/slices/i_r2c3f4.gif','images/slices/i_r2c3f3.gif','images/slices/i_r2c4f2.gif','images/slices/i_r2c4f4.gif','images/slices/i_r2c4f3.gif','images/slices/i_r2c5f2.gif','images/slices/i_r2c5f4.gif','images/slices/i_r2c5f3.gif','images/slices/i_r2c6f2.gif','images/slices/i_r2c6f4.gif','images/slices/i_r2c6f3.gif');">
+
+<table border="0" cellpadding="0" cellspacing="0" width="1200">
+  <tr>
+   <td bgcolor="#386350"><img src="images/slices/shim.gif" width="111" height="1" border="0"></td>
+   <td bgcolor="#386350"><img src="images/slices/shim.gif" width="111" height="1" border="0"></td>
+   <td bgcolor="#386350"><img src="images/slices/shim.gif" width="111" height="1" border="0"></td>
+   <td bgcolor="#386350"><img src="images/slices/shim.gif" width="111" height="1" border="0"></td>
+   <td bgcolor="#386350"><img src="images/slices/shim.gif" width="111" height="1" border="0"></td>
+   <td bgcolor="#386350"><img src="images/slices/shim.gif" width="111" height="1" border="0"></td>
+   <td bgcolor="#386350"><img src="images/slices/shim.gif" width="934" height="1" border="0"></td>
+  </tr>
+
+  <tr valign="top">
+   <td colspan="7" bgcolor="#396856"><img name="header1_r1_c1" src="images/hdr_top.jpg" width="1413" height="106" border="0"></td>
+  </tr>
+  <tr valign="top">
+   <td bgcolor="#386350"><a href="javascript:loadsection('intro');"        onMouseOut="MM_nbGroup('out');"  onMouseOver="MM_nbGroup('over','i_r2c1','images/slices/i_r2c1f2.gif','images/slices/i_r2c1f4.gif',1);"  onClick="MM_nbGroup('down','navbar1','i_r2c1','images/slices/i_r2c1f3.gif',1);" ><img name="i_r2c1" src="images/slices/i_r2c1.gif" width="111" height="25" border="0"></a></td>
+   <td bgcolor="#386350"><a href="javascript:loadsection('choosesp');"   onMouseOut="MM_nbGroup('out');"  onMouseOver="MM_nbGroup('over','i_r2c2','images/slices/i_r2c2f2.gif','images/slices/i_r2c2f4.gif',1);"  onClick="MM_nbGroup('down','navbar1','i_r2c2','images/slices/i_r2c2f3.gif',1);" ><img name="i_r2c2" src="images/slices/i_r2c2.gif" width="111" height="25" border="0"></a></td>
+   <td bgcolor="#386350"><a href="javascript:loadsection('choosest');" onMouseOut="MM_nbGroup('out');"  onMouseOver="MM_nbGroup('over','i_r2c3','images/slices/i_r2c3f2.gif','images/slices/i_r2c3f4.gif',1);"  onClick="MM_nbGroup('down','navbar1','i_r2c3','images/slices/i_r2c3f3.gif',1);" ><img name="i_r2c3" src="images/slices/i_r2c3.gif" width="111" height="25" border="0"></a></td>
+   <td bgcolor="#386350"><a href="javascript:loadsection('appb');"         onMouseOut="MM_nbGroup('out');"  onMouseOver="MM_nbGroup('over','i_r2c4','images/slices/i_r2c4f2.gif','images/slices/i_r2c4f4.gif',1);"  onClick="MM_nbGroup('down','navbar1','i_r2c4','images/slices/i_r2c4f3.gif',1);" ><img name="i_r2c4" src="images/slices/i_r2c4.gif" width="111" height="25" border="0"></a></td>
+   <td bgcolor="#386350"><a href="javascript:loadsection('licensure');"    onMouseOut="MM_nbGroup('out');"  onMouseOver="MM_nbGroup('over','i_r2c5','images/slices/i_r2c5f2.gif','images/slices/i_r2c5f4.gif',1);"  onClick="MM_nbGroup('down','navbar1','i_r2c5','images/slices/i_r2c5f3.gif',1);" ><img name="i_r2c5" src="images/slices/i_r2c5.gif" width="111" height="25" border="0"></a></td>
+   <td bgcolor="#386350"><a href="javascript:opensavedlistings(true);"     onMouseOut="MM_nbGroup('out');"  onMouseOver="MM_nbGroup('over','i_r2c6','images/slices/i_r2c6f2.gif','images/slices/i_r2c6f4.gif',1);"  onClick="MM_nbGroup('down','navbar1','i_r2c6','images/slices/i_r2c6f3.gif',1);" ><img name="i_r2c6" src="images/slices/i_r2c6.gif" width="111" height="25" border="0"></a></td>
+   <td><img src="images/hdr_bot.jpg" width="934" height="26" border="0"></td>
+  </tr>
+
+  <tr>
+    <td colspan="6" height=10 bgcolor="#386350"><img src="images/transpix.gif"></td>
+    <td><img src="images/transpix.gif"></td>
+  </tr>
+
+<!-- <form name=display>
+<textarea name=showtext rows=4 cols=80>body</textarea>
+</form> -->
+
+</table>
+</body>
+
+</HTML>
+

@@ -1,0 +1,63 @@
+<?php
+// module/Pinnacle/view/pinnacle/mail/listexport.phtml:
+
+$title = 'Mailing List';
+$this->headTitle($title . ($list? ' '.$list->name:''));
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+/*
+$formUrl = $this->url('mail', array('action' => 'list', 'part' => 'page', 'id' => $id));
+$formUrl2= $this->url('mail', array('action' => 'listact', 'part' => $part, 'id' => $id));
+$formUrl3= $this->url('mail', array('action' => 'listexport', 'part' => $part, 'id' => $id));
+$this->inlineScript()->appendFile($this->basePath() . '/js/maillist.js', 'text/javascript');
+$firsto = ''; $sessch = '';*/
+
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?> <small><?php echo $this->escapeHtml($list? $list->name:''); ?></small></h1>
+<p>Copy addresses from the frame below and paste them into a spreadsheet or Outlook's BCC: field.</p>
+	<!--<p>This list is for current page displayed on the search screen only. To get more addresses, go back there and move to another page, then repeat.</p>//-->
+	
+<?php	
+foreach ($arr as $key=>$val)
+{
+	$sep=";";
+	if($style==2)
+		$sep=",";
+	if($style==3)
+		$sep="";
+	if($val["ctct_email"]!="" && strpos($val["ctct_email"],'@')!=false && strpos($val["ctct_email"],'www.')===false && strpos($val["ctct_email"],'http')===false){
+		//echo $val["ctct_email"].$sep."<br/>";
+		$list1.=$val["ctct_email"].$sep."<br/>";
+		$list.= $val["ctct_email"].$sep."\r\n";
+	}
+}
+
+?>
+
+<?php if($list!="") { ?>
+<form action="/public/download_csv.php" method="post">
+<input type="hidden" name="list" value="<?php echo $list; ?>" />
+<input type="submit" value="Download CSV" name="csv_submit" />
+</form>
+<?php } ?>
+<br/>
+<?php 
+echo $list1;
+?>
+<br/>
+<br/>
+<br/>
+<?php if($list!="") { ?>
+<form action="/public/download_csv.php" method="post">
+<input type="hidden" name="list" value="<?php echo $list; ?>" />
+<input type="submit" value="Download CSV" name="csv_submit" />
+</form>
+<?php } ?>
+<?php
+//$url = $this->url('resort', array('action'=>'mlid')); // . set / xcept / page / keep
+//$redir = $this->url('login');
+//$scrip = "mlListInit(\"$sessch\", \"$url\", \"$redir\");\n";
+$scrip = "mlListInit(\"$sessch\");\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

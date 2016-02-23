@@ -1,0 +1,278 @@
+<?php
+// module/Pinnacle/view/pinnacle/client/weeklyupdate.phtml:
+// Contract Search
+
+$title = 'Weekly Client Update';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+h4 { text-align: center; }
+.inline { font-weight: bold; /*display: block; float: left; width: 90px;*/ }
+</style>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script style="text/javascript">
+$(function(){
+var allchecked=false;
+   $('#select-all').click(function(event) {   
+        if(this.allchecked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function() {
+                this.checked = false;                        
+            });
+			this.allchecked=false;
+        }
+        else if(!this.allchecked) { //alert(this.allchecked);
+            // Iterate each checkbox
+            $(':checkbox').each(function() {
+                this.checked = true;                        
+            });
+			this.allchecked=true;
+        }
+    });
+});
+</script>
+<script language="JavaScript" type="text/JavaScript"><!--
+var pop_id = "";
+
+function ckall() { alert('test');
+    for(i = 0; i < document.form1.elements.length; i++) {
+        var o = document.form1.elements[i];
+        if( o.tagName == "input" && o.type == "checkbox" ) o.checked = true;
+    }
+}
+
+function unckall() {
+    for(i = 0; i < document.form1.elements.length; i++) {
+        var o = document.form1.elements[i];
+        if( o.tagName == "INPUT" && o.type == "checkbox" ) o.checked = false;
+    }
+}
+
+// -->
+</script>
+
+<?php
+
+?>
+
+<h1 ><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+?>
+
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+
+<p style="text-align:center;">For <?php echo $realname; ?></p>
+
+
+<input type="hidden" name="cli_id" value="<?php echo $cli_id; ?>">
+
+
+<?php
+if($ar && is_array($ar))
+{
+?>
+<p style="text-align:center;"><strong>Please select accounts you want to use in the report:</strong></p>
+<div class="row">
+    <div class="span12">
+	
+<table width="95%" border="1" cellpadding="2" cellspacing="0" class="nobg"><thead>
+<tr>
+    <td class="bld">Facility</td><td class="bld">Contract</td><td align="center"><span class="fakea" id="select-all" >Check All</span></td>
+</tr>
+</thead><tbody>
+
+
+<?php
+foreach($ar as $key=>$val)
+{	
+?>
+<tr>
+      <td><p><a href="/public/client/view/<?php echo $val["cli_id"]; ?>" class="bld" target="_blank"><?php echo $val["ctct_name"]; ?></a>,
+        <br><?php echo $val["ctct_addr_c"]; ?>, <?php echo $val["ctct_st_code"]; ?>
+		<?php if($val["ctr_recruiter"] != $_COOKIE["phguid"]){
+				echo "<sup title='Co-Recruiting'>**</sup>";
+			}
+		?>
+	  </p></td>
+      <td><a href="/public/contract/view/<?php echo $val["ctr_id"]; ?>" target="_blank"><?php echo $val["ctr_no"]; ?></a>
+	  <?php if($val["ctr_nurse"]){ ?>	  
+        <span title="<?php echo $val["at_name"]; ?>"><?php echo $val["at_abbr"]; ?></span> <?php echo $val["cli_child"]; ?>
+	  <?php } else{ ?>	
+	  
+        <span title="<?php echo $val["sp_name"]; ?>"><?php echo $val["ctr_spec"]; ?></span> <?php echo $val["cli_child"]; ?>
+	  <?php } ?>	</td>
+      <td align="center"><input type="checkbox" name="wh_<?php echo $val["cli_id"]; ?>" 
+	  <?php if($val["ctr_nurse"]){ echo "checked"; } ?> value="<?php echo $val["ctr_id"]; ?>" >	  
+      </td>
+</tr>
+<?php
+}	
+?>
+</tbody>
+</table>
+
+<input type="submit" name="submit1" value="Proceed" class="btn"/>
+    </div>
+</div>
+<?php
+}	
+?>
+
+	
+
+
+
+<?php //step 2
+if($arclients && is_array($arclients))
+{
+?>
+
+<?php
+foreach($arclients as $key=>$val)
+{
+$contacts = $val["contacts"];
+?>
+<div class="row">
+    <div class="span8">
+<a href="/public/client/view/<?php echo $val["cli_id"]; ?>" class="bld" target="_blank"><?php echo $val["ctct_name"]; ?></a>,
+<?php echo $val["ctct_addr_c"]; ?>, <?php echo $val["ctct_st_code"]; ?><br/>
+Contract <a href="/public/contract/view/<?php echo $val["ctr_id"]; ?>" target="_blank"><?php echo $val["ctr_no"]; ?></a>
+<?php if($val["ctr_nurse"]){ ?>	 
+	<?php echo $spec=$val["at_name"]; ?>
+<?php } else{ ?>	
+	<?php echo $spec=$val["ctr_spec"]."- ".$val["sp_name"]; ?>
+<?php } ?>	 	
+, <?php echo $val["ctr_location_c"]; ?> <?php echo $val["ctr_location_s"]; ?> <?php echo $val["cli_child"]; ?><br />
+<textarea name="tx_<?php echo $val["ctr_id"]; ?>" cols="75" rows="7" style="width:500px" ><?php echo $val["savedtxt"]; ?></textarea>
+			<input name="cn_<?php echo $val["ctr_id"]; ?>" type="hidden" value="<?php echo $val["ctr_no"]; ?>">
+			<input name="cs_<?php echo $val["ctr_id"]; ?>" type="hidden" value="<?php echo $spec; ?>">
+			<input name="cl_<?php echo $val["ctr_id"]; ?>" type="hidden" value="<?php echo $val["ctr_location_c"].", ".$val["ctr_location_s"]; ?>">
+			<input name="cli_<?php echo $val["ctr_id"]; ?>" type="hidden" value="<?php echo $val["cli_id"]; ?>">
+
+</div>
+<div class="span4">
+
+Select a contact:<br>
+<select  name="sel_<?php echo $val["cli_id"]; ?>" size="3" id="sel_<?php echo $val["cli_id"]; ?>" style="width: 300px" >
+<?php
+foreach($contacts as $k=>$v)
+{
+	//echo var_dump($v)."<br/>";
+	if($v["ctct_email"]!='')
+		echo '<option value="'.$v["ctct_id"].';'.$v["ctct_name"].';'.$v["ctct_email"].'">'.$v["ctct_name"].' - '.$v["ctct_title"].' - '.$v["ctct_email"].'</option>';
+}
+?>
+</select><br/>
+<input type="checkbox" name="ctx_<?php echo $val["cli_id"]; ?>" value="1"> This is main contact<br /><br />
+ 
+ CC to:<br>
+<select  name="se2_<?php echo $val["cli_id"]; ?>" size="3" id="se2_<?php echo $val["cli_id"]; ?>" style="width: 300px" >
+<?php
+foreach($contacts as $k=>$v)
+{
+	//echo var_dump($v)."<br/>";
+	if($v["ctct_email"]!='')
+		echo '<option value="'.$v["ctct_id"].';'.$v["ctct_name"].';'.$v["ctct_email"].'">'.$v["ctct_name"].' - '.$v["ctct_title"].' - '.$v["ctct_email"].'</option>';
+}
+?>
+</select><br/>
+
+CC also to:<br>
+<select  name="se3_<?php echo $val["cli_id"]; ?>" size="3" id="se3_<?php echo $val["cli_id"]; ?>" style="width: 300px" >
+<?php
+foreach($contacts as $k=>$v)
+{
+	//echo var_dump($v)."<br/>";
+	if($v["ctct_email"]!='')
+		echo '<option value="'.$v["ctct_id"].';'.$v["ctct_name"].';'.$v["ctct_email"].'">'.$v["ctct_name"].' - '.$v["ctct_title"].' - '.$v["ctct_email"].'</option>';
+}
+?>
+</select><br/><br/>
+
+</div>
+</div>			
+			<hr/>
+
+
+
+<?php
+}	//end for
+?>
+<input type="submit" name="submit2" value="Proceed/Send" class="btn" onclick="return confirm('Ready to send?');"/>
+&nbsp;&nbsp;
+<input type="submit" name="save" value="Save / Postpone" class="btn"/>
+<?php
+}	//end if step 2
+?>
+
+
+
+<?php //step 3 / send
+if(isset($_POST["submit2"]))
+{
+?>
+
+<p style="text-align:center">Your emails have been sent!</p>
+
+<?php
+}	//end if step 3
+?>
+
+
+<div class="row">
+	<div class="span4">
+		
+	</div>	
+	<div class="span6">
+	
+	</div>	
+</div>
+
+
+
+
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+//pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

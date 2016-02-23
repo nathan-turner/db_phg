@@ -1,0 +1,234 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/view.phtml:
+// Client Search
+
+$title = 'Sources for Contract '.$ar['ctr_no'];
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.core.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.widget.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.tabs.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/include/ui-1.10.0/jquery.ui.position.min.js', 'text/javascript');
+
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.js?v=0.3.2', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/jquery-ui-timepicker-0.3.2/jquery.ui.timepicker.css?v=0.3.2', 'text/javascript');
+*/
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#sourcestable { width: 100%; font-size: 12px; }
+#sourcestable th { border: 1px solid black }
+#sourcestable td { padding: 2px; border: 1px solid #cccccc; text-align: center; }
+.currency { width: 50px }
+#sourcestable input { font-size: 12px; padding: 2px; }
+.addate { width: 80px; }
+</style>
+<script>
+$(function() {
+
+$(function() {
+ $( "#approve_date_" ).datepicker({altFormat: "yy-mm-dd",  altField: "#approve_datetxt_"});
+});
+
+});
+</script>
+
+<h1>Approve Sourcing <?php echo $this->escapeHtml($title); ?> &nbsp; <?php echo $ar2["ctr_no"];	?></h1>
+
+<a href="/contract/view/<?php echo $id;?>">Return to Contract</a>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    //echo $this->form()->openTag($form);
+	
+	/*if(isset($_POST["submit"]))
+		echo "SUBMITTED";
+	
+	echo var_dump($_POST);	*/
+	
+?>
+<br/>
+<h3>
+<?php
+$termd = $ar2["ctr_src_termdt"]; 
+ echo $ar2["ctr_src_term"];
+?>
+-Month Sourcing Campaign Start 
+<?php
+//echo $ar2["ctr_src_termdt"]; 
+echo date('m/d/Y', strtotime($ar2["ctr_src_termdt"]));
+?>
+</h3>
+
+<form method="post" name="src2_form" action="">
+
+<input type="hidden" name="ctr_no" value="<?php echo $ar2["ctr_no"]; ?>" />
+
+<table id="sourcestable">
+<tr>
+<th>Source</th>
+<th>Client Approved</th>
+<th>Price</th>
+<?php
+
+	$month = $ar2["term_month"]; //starting month	
+	for($i=0;$i<$ar2["ctr_src_term"];$i++)
+	{
+		if($month>12)
+			$month=$month-12;
+		$monthName = date("M", mktime(0, 0, 0, $month, 10));		
+		echo '<th>'.$monthName.'</th>';
+		$month++;
+	}
+	$columns = $ar2["ctr_src_term"]+3; //total num of columns
+	//echo $columns;
+?>
+</tr>
+
+<?php
+//echo var_dump($ar);
+
+foreach($ar as $key2=>$val2)
+{
+	//echo $val2;
+	/*foreach ($val2 as $k=>$v)
+	{
+		echo $k."-".$v."<br/>";
+	}*/
+	//echo $val2["csr_id"];
+	//echo "<br/>";
+	$shits="";
+	$isdraft = false;
+	$wasdm = false;
+	if($val2["csr_appr_date"]==null){	
+		$isdraft = true;
+	}
+	$shed = $val2["csr_schedule"];
+	$styr = $val2["csr_startyear"]; 
+	$termd = $ar2["ctr_src_termdt"]; 
+	$term = $ar2["ctr_src_term"]; 
+	$term_month = $ar2["term_month"]; 
+	$mmo = $val2["csr_term"]; 
+	
+	
+	
+	echo "<tr>";
+	echo '<td><a href="source.asp?src_id='.$val2["src_id"].'" target="_blank">'.$val2["src_name"].'</a>'; //update link
+	if($val2["src_type"]==1){
+		$wasdm=true;
+	}	
+	echo '</td>';	
+	echo '<td><input type="hidden" name="csr_id[]" value="'.$val2["csr_id"].'" />';
+	/*if($val2["csr_status"]==5)
+		echo "On Hold";
+	elseif($val2["csr_appr_date"]==null || $val2["csr_appr_date"]=='')
+		echo "Draft";
+	else*/
+		//echo $val2["csr_appr_date"];
+		//echo date("m/d/Y");
+	echo '<input type="text" name="approve_date[]" id="approve_date_'.$val2["csr_id"].'" value="'.date("m/d/Y").'" class="addate" /> &nbsp;';
+	echo '<input type="hidden" name="approve_datetxt[]" id="approve_datetxt_'.$val2["csr_id"].'" value="'.date("Y-m-d").'" />';
+	echo date('m/d/Y', strtotime($val2["csr_appr_date"]));	
+	echo '</td>';
+		
+	echo '<td>';
+	
+	echo '$'.$val2["csr_price"].'';
+	if($val2["src_type"]==1){ //direct mail
+		echo '<br/>+AMA List: $'.$val2["csr_dm_ama"].'';
+	}
+	echo '</td>';
+	
+	for($i=1; $i<=$term; $i++)
+	{
+	$mml = $term_month+$i-1;
+	$mms = chr(64+ $mml); //get weird character system to match db
+	if ($mml > 12){
+		$mml2 = $mml - 12;
+		$styr0 = $styr+1;
+	}
+	else{
+	   $mml2 = $mml;
+	   $styr0 = $styr;
+	}
+	
+	
+	echo '<td>';
+	/*echo $styr."-".date('Y');
+	echo " ";
+	echo $mml."-".date('n');*/
+	if(($styr == date('Y') && $mml< date("n")) || ($styr < date('Y') && $term_month+i-13 < date("n")) || $val2["csr_status"]==5 || !$isdraft )
+	{
+		/*if(strrpos($shed,$mms)!==false || $val2["src_id"]==764)
+		{
+			echo "&radic;";
+		}
+		echo "X";*/
+	}
+	else
+	{
+		$shits.=$mms;
+	
+	}//end else
+	if(strrpos($shed,$mms)!==false) //is char in list of sheduled months
+		echo "&radic;";
+	
+	echo '</td>';
+	
+	} //end for
+	
+	
+	
+	echo "</tr>";
+	
+?>
+<script>
+$(function() {
+
+$(function() {
+ $( "#approve_date_<?php echo $val2["csr_id"];?>" ).datepicker({altFormat: "yy-mm-dd",  altField: "#approve_datetxt_<?php echo $val2["csr_id"];?>"});
+});
+
+});
+</script>
+
+<?php
+}
+
+?>
+</table>
+<br/>
+<p>
+<input type="checkbox" name="donotemail" value="1"> Data Correction - Do not send email notifications
+</p>
+<br/><br/>
+<input type="submit" name="submit" value="Submit" class="btn btn-success btn-large" />
+<input type="reset" name="reset_btn" value="Reset" class="btn btn-danger btn-large" />
+</form>
+<br/>
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    //echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

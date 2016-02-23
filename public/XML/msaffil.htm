@@ -1,0 +1,155 @@
+<SCRIPT LANGUAGE="javascript">
+var inst_id = getqstringvalue("inst_id",window.location.search)
+//inst_id = "010307"
+///////////// START DOCUMENT /////////////////////////////////
+document.write("<HTML><title>Medical School Affiliations</title><head>")
+document.write("        <STYLE>")
+document.write("          BODY {margin:0}")
+document.write("          .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("          .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("          .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("          .cssproghead {font: 10pt Arial, Helvetica, sans-serif;text-align:left;font-weight:700;color:#229922}")
+document.write("          .cssBHEAD {font:12pt UniversCond,helvetica,arial,verdana, sans-serif; font-weight:700;}")
+document.write("          .csslistbox {font: 10pt arial,helvetica,verdana, sans-serif;}")
+document.write("        </STYLE>")
+document.write("</head><body onLoad=\"doOnLoad();\" bgcolor=\"#eeeeee\" LINK=\"#008840\" VLINK=\"#008840\" ALINK=\"#008840\">")
+document.write("<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">")
+document.write(" <tr>")
+document.write("   <td width=\"2%\"  height=\"1\" bgcolor=\"#000000\"><img src=\"images/transpix.gif\" height=\"1\" width=\"5\" /></td>")
+document.write("   <td width=\"10%\" height=\"1\" bgcolor=\"#000000\"><img src=\"images/transpix.gif\" height=\"1\" width=\"5\" /></td>")
+document.write("   <td width=\"3%\"  height=\"1\" bgcolor=\"#000000\"><img src=\"images/transpix.gif\" height=\"1\" width=\"25\" /></td>")
+document.write("   <td width=\"85%\" height=\"1\" bgcolor=\"#000000\"><img src=\"images/transpix.gif\" height=\"1\" width=\"5\" /></td>")
+document.write(" </tr>")
+document.write(" <tr><td colspan=\"4\" height=\"32\" background=\"images/backblnd.jpg\"><img src=\"images/transpix.gif\" /></td></tr>")
+document.write(" <tr><td colspan=\"4\" height=\"1\"  bgcolor=\"#000000\"><img src=\"images/transpix.gif\" /></td></tr>")
+document.write(" <tr><td colspan=\"4\" height=\"1\"  bgcolor=\"#cccccc\"><img src=\"images/transpix.gif\" /></td></tr>")
+document.write(" <tr><td colspan=\"4\" height=\"1\"  bgcolor=\"#ffffff\"><img src=\"images/transpix.gif\" /></td></tr>")
+document.write(" <tr>")
+document.write("   <td><img src=\"images/transpix.gif\" /></td>")
+document.write("   <td class=\"csstextred\" nowrap=\"true\"><b>Affiliation Type</b></td>")
+document.write("   <td><img src=\"images/transpix.gif\" /></td>")
+document.write("   <td class=\"csstextred\" nowrap=\"true\"><b>Medical School<b></td>")
+document.write(" </tr>")
+document.write(" <tr><td colspan=\"4\" height=\"3\"><img src=\"images/transpix.gif\" /></td></tr>")
+document.write(" <tr><td colspan=\"4\" height=\"1\" bgcolor=\"#000066\"><img src=\"images/transpix.gif\" /></td></tr>")
+document.write(" <tr><td colspan=\"4\" height=\"5\"><img src=\"images/transpix.gif\" /></td></tr>")
+
+
+//////// MAKE ONE XML FILE AND PARSE THE NODES ////////////////////////
+var oMSAffilXml=new ActiveXObject("Microsoft.XMLDOM")
+oMSAffilXml.async = false;
+oMSAffilXml.load("xmldata/msaffil.xml")
+
+var oMSAffilXsl = new ActiveXObject("Microsoft.XMLDOM");
+oMSAffilXsl.async = false;
+oMSAffilXsl.load("xsl/mshtml.xsl");
+if (oMSAffilXml.parseError==0){
+///////////////////////////// DATA DUMP: //////////////////////////////////
+//    document.write(oMSAffilXml.transformNode(oMSAffilXsl.documentElement))
+///////////////////////////////////////////////////////////////////////////
+  var elementname = "inst_id"
+  var Nodes = oMSAffilXml.documentElement.selectNodes("affiliation/" + elementname)
+  selectListings(Nodes,elementname,"")
+}
+else{
+  alert("oMSAffilXml: " + oMSAffilXml.parseError.reason)
+}
+
+  document.write("</table>")
+  document.write("</body>")
+  document.write("</HTML>")
+
+
+
+
+//////////////////// PAGE FUNCTIONS ///////////////////////
+function doOnLoad(){
+//alert("IN SPECIALTY.HTM: "btnbarst.htm?statedisplay="+statedisplay+"&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue+"&selectscreen=state")
+//  top.btnbar.location.href = "btnbarst.htm?statedisplay="+statedisplay+"&selectscreen=state&states="+states
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+function selectListings(Nodes,elementname,arrids){
+  for(i=0;i<Nodes.length;i++){
+//alert(Nodes.item(i).text)
+    if(verifyvalue(Nodes.item(i))) {
+      document.write(Nodes.item(i).parentNode.transformNode(oMSAffilXsl.documentElement));
+    }
+  }
+}
+
+function verifyvalue(Node){
+  var bMatch = false
+//  for(y=0;y<arrids.length;y++){
+    if(inst_id.indexOf(Node.text)>=0) {
+      bMatch = true
+    }
+//  }
+  return bMatch
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+function parseqstring(inpara){
+  var arrids = new Array()
+  var startpos = 0
+  var intindex = 0
+  var indexpos = inpara.indexOf(",",startpos)
+  if(indexpos==-1){
+    arrids[0] = inpara
+  }
+  else{
+    while (indexpos!=-1){
+      arrids[intindex] = inpara.slice(startpos,indexpos)
+//      alert(arrids[intindex])
+      intindex++
+      startpos = indexpos + 1
+      indexpos = inpara.indexOf(",",startpos)
+    }
+  arrids[intindex] = inpara.slice(startpos,inpara.length)
+//  alert(arrids[intindex])
+  }
+  return arrids
+}
+
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+///////////////////////////////////////////////////////////////////////////
+
+</SCRIPT>
+
+

@@ -1,0 +1,120 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/ContractsTable.php:
+namespace Pinnacle\Model;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Where;
+use Zend\View\Renderer\PhpRenderer;
+use Zend\Mvc\Controller\AbstractController;
+
+class ContractsTable extends Report\ReportTable
+{
+    public function __construct(Adapter $adapter) {
+        parent::__construct($adapter,'vCtrLookup',
+            '`ctr_id`, `ctr_no`, `ctr_cli`, `ctr_date`, `ctr_date0`, `ctr_spec`, `st_name`, `ctr_recruiter`, `cli_id`, `ctr_type`, `ctr_city`, `ctr_state`, `ctr_status`, `uname`, `ctr_nurse`, `ctr_nu_type`');
+    }
+    
+    /**
+     * @param array $ar     keys: see ContractsForm
+    */
+    public function buildQuery(array $ar = null) {
+        if( is_array($ar) && $ar['emp_id'] ) {
+            $where = new Where();
+            $nduh = 0;
+
+            if( trim($ar['ctr_no']) ) {
+                $like = addslashes(trim($ar['ctr_no']));
+                $where->like('ctr_no',"$like%"); $nduh++;
+            }
+            if( strlen(trim($ar['ctr_cli'])) > 3 ) {
+                $like = addslashes(trim($ar['ctr_cli']));
+                $where->like('ctr_cli',"%$like%"); $nduh++;
+            }
+            if( trim($ar['ctr_city']) ) {
+                $like = addslashes(trim($ar['ctr_city']));
+                $where->like('ctr_city',"$like%"); $nduh++;
+            }
+            if( trim($ar['ctr_type']) ) {
+                $like = addslashes(trim($ar['ctr_type']));
+                $where->like('ctr_type',"$like%"); $nduh++;
+            }
+            if( $ar['ctr_state'] ) { $where->equalTo('ctr_state',$ar['ctr_state']); $nduh++; }
+            if( $ar['ctr_nurse'] ) {
+                if( $ar['nu_type'] && $ar['nu_type'] !== '0000000000' ) {
+                    $like = addslashes(trim($ar['nu_type']));
+                    $where->like('ctr_nu_type',"$like%");
+                }
+                $where->equalTo('ctr_nurse',1); $nduh++;
+            }
+            elseif( $ar['ctr_spec'] ) { $where->equalTo('ctr_spec',$ar['ctr_spec']); $nduh++; }
+            if( $ar['ctr_recruiter'] ) { $where->equalTo('ctr_recruiter',$ar['ctr_recruiter']); $nduh++; }
+            if( $ar['ctr_status'] >= 0 ) { $where->equalTo('ctr_status',$ar['ctr_status']); $nduh++; }
+            if( $ar['date1'] && $ar['date2'] ) { $where->between('ctr_date',$ar['date1'],$ar['date2']);$nduh++; }
+            elseif( $ar['date1'] ) { $where->greaterThanOrEqualTo('ctr_date',$ar['date1']); $nduh++; }
+            elseif( $ar['date2'] ) { $where->lessThanOrEqualTo('ctr_date',$ar['date2']); $nduh++; }
+
+            return $nduh? $where: false; // don't allow empty criteria
+        }
+        return false;
+    }
+
+    public function fetchAll($id = 0, array $ar = null) {
+        $where = $this->buildQuery($ar);
+        if( $where ) {
+            $select = new Select($this->table);
+            $select->where($where);
+            $select->order('ctr_date DESC');
+            $limit = (int) $ar['pg_size']; if( !$limit || $limit > 200 ) $limit = 25;
+            $select->limit($limit);
+            $id--; if( $id < 0 ) $id = 0;
+            $offset = $id * $limit;
+            $select->offset($offset);
+            $resultSet = $this->selectWith($select);
+            return $resultSet;
+        }
+        return false;
+    }
+
+    public function getResortPages(array $ar = null) {
+        $where = $this->buildQuery($ar);
+        if( $where ) {
+            $pgsize = (int) $ar['pg_size']; if( !$pgsize ) $pgsize = 25;
+            $sql = new Sql($this->adapter);
+            $select = $sql->select();
+            $select->from($this->table);
+            $select->where($where);
+            $select->columns(array('*'), false);
+            $str = $sql->getSqlStringForSqlObject($select);
+            $str = str_replace('SELECT * ','SELECT count(*) as cnt ',$str); // awful
+            $rowSet = $this->adapter->query($str)->execute();
+            foreach ($rowSet as $rec)
+                $total = $rec['cnt'];
+            if( $total ) $total += $pgsize;
+            return intval($total / $pgsize);
+        }
+        return 0;
+    }
+    
+    public function getResort(AbstractController $ctrl, $id = 0, array $ar = null) {
+        $res = $this->fetchAll($id,$ar);
+        $a = array();
+        $vm = new PhpRenderer();
+        $urls = $ctrl->url();
+        if( $res ) foreach ($res as $row) {
+            $ar = array();
+            $ar['cliurl'] = $urls->fromRoute('client', array('action'=>'view', 'part'=>'go', 'id' => $row->cli_id));
+            $ar['ctrurl'] = $urls->fromRoute('contract', array('action'=>'view', 'part'=>'go', 'id' => $row->ctr_id));
+            if( !$row->ctr_city ) $row->ctr_city = ' ';
+
+            foreach ($row->getArrayCopy() as $k=>$v)
+                $ar[$k] = $vm->escapeHtml($v);
+            $a[] = $ar;
+        }
+        else $a[] = 'No records in the range';
+        return $a;
+    }
+
+
+}

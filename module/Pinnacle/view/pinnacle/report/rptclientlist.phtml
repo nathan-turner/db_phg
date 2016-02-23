@@ -1,0 +1,255 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/rptclientlist.phtml:
+// Summary report
+
+$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
+
+$currentmo = date('m');
+$currentyr = date('Y');
+
+if($_POST["mon"]=="")
+	$mon = $currentmo;
+else
+	$mon = $_POST["mon"];
+
+$title = 'Client Email Lists';
+
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script language="VBScript"><!--
+function window_onload()
+    on error resume next
+    parent.frames.phgtop.sim_click "rep_a"
+    loading.style.display = "none"
+end function
+
+function stother_onclick()
+	if document.all.stother.checked then
+		document.all.stactive.checked = false
+		document.all.stpast.checked = false
+		document.all.stfuzion.checked = false
+		document.all.ctct7.checked = false
+		document.all.stfupast.checked = false
+	else
+		document.all.stall.checked = false
+	end if
+end function
+
+function ctct7_onclick()
+	if document.all.ctct7.checked then
+		document.all.stactive.checked = false
+		document.all.stpast.checked = false
+		document.all.stfuzion.checked = false
+		document.all.stother.checked = false
+		document.all.stfupast.checked = false
+	else
+		document.all.stother.checked = false
+		document.all.stall.checked = false
+	end if
+end function
+
+function stall_onclick()
+	if document.all.stall.checked then
+		document.all.stactive.checked = true
+		document.all.stpast.checked = true
+		document.all.stfuzion.checked = true
+		document.all.stfupast.checked = true
+		document.all.stother.checked = true
+		document.all.ctct7.checked = true
+	else
+		document.all.stother.checked = false
+	end if
+end function
+
+function statusclick(elem)
+	'' alert elem
+	set v = document.getElementById(elem)
+	if not v.checked then document.all.stall.checked = false
+	document.all.stother.checked = false
+	document.all.ctct7.checked = false
+end function
+
+function ctct5_onclick()
+	if document.all.ctct5.checked then
+		document.all.ctct1.checked = true
+		document.all.ctct2.checked = true
+		document.all.ctct3.checked = true
+		document.all.ctct4.checked = true
+		document.all.ctct6.checked = true
+	end if
+end function
+
+function ctctclick(elem)
+	'' alert elem
+	set v = document.getElementById(elem)
+	if not v.checked then document.all.ctct5.checked = false
+end function
+
+'' -->
+</script>
+
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+.nobg td { padding: 2px; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rptspeclist')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    //echo $this->form()->openTag($form); ///disabled form to enable custom stuff
+	//echo var_dump($arr);
+
+?>
+
+
+<div class="row">
+    <div class="span12">
+	<form action="<?php echo $this->basePath(); ?>/download_clientlist.php" method="post">
+	<input type="hidden" name="spec" value="ALL">
+		
+	
+	<div class="row">	
+	<div class="span2"><label>Status: </label></div>
+	<div class="span10">	
+	<input name="stactive" type="checkbox" id="stactive" onClick="statusclick(&quot;stactive&quot;)" value="1">
+     Active Retained &nbsp; <input name="stpast" type="checkbox" id="stpast" onClick="statusclick(&quot;stpast&quot;)" value="1">
+     Past&nbsp; <input name="stfuzion" type="checkbox" id="stfuzion" onClick="statusclick(&quot;stfuzion&quot;)" value="1">
+     Fuzion Active&nbsp; <input name="stfupast" type="checkbox" id="stfupast" onClick="statusclick(&quot;stfupast&quot;)" value="1">
+     Fuzion Past&nbsp; <input name="ctct7" type="checkbox" id="ctct7" value="1"> 
+	 Search&nbsp;firms&nbsp; <input name="stother" type="checkbox" id="stother" value="1">
+     Other (Potential)&nbsp; <input name="stall" type="checkbox" id="stall" value="1">
+     All records
+	</div>
+	</div>
+	<p>&nbsp;</p>
+	<div class="row">	
+	<div class="span2"><label>Contact: </label></div>
+	<div class="span10">	
+	<input name="ctct6" type="checkbox" id="ctct6" onClick="ctctclick(&quot;ctct6&quot;)" checked value="1">
+     Rec.Primary&nbsp; <input name="ctct1" type="checkbox" id="ctct1" onClick="ctctclick(&quot;ctct1&quot;)" checked value="1">
+     Marketing&nbsp;Primary&nbsp; <input name="ctct2" type="checkbox" id="ctct2" onClick="ctctclick(&quot;ctct2&quot;)" checked value="1"> 
+	 Secondary&nbsp; <input name="ctct3" type="checkbox" id="ctct3" onClick="ctctclick(&quot;ctct3&quot;)" checked value="1">
+	 Fuzion&nbsp;1st&nbsp; <input name="ctct4" type="checkbox" id="ctct4" onClick="ctctclick(&quot;ctct4&quot;)" checked value="1"> 
+	 Fuzion&nbsp;2nd&nbsp; <input name="ctct5" type="checkbox" id="ctct5" checked value="1"> 
+	 All types 
+	</div>
+	</div>
+	<p>&nbsp;</p>
+	<div class="row">	
+	<div class="span2"><label>Campaign Type: </label></div>
+	<div class="span10">	
+	<input name="camp" type="radio" checked value="1"> PHG&nbsp;&nbsp; <input name="camp" type="radio" value="2"> PLT&nbsp;&nbsp;
+	 <input name="camp" type="radio" value="3"> Fuzion
+	</div>
+	</div>
+	<p>&nbsp;</p>
+
+	
+	
+	<div class="row">
+	
+	<div class="span2"><label>Marketer Territory: </label></div>
+	<div class="span3">	
+	<select size="1" name="emp_id">
+	<option value="0" selected> (All) </option>
+		<?php
+				foreach ($mr as $key=>$val)
+				{						
+					echo "<option value='".$key."'>";				
+					echo $val;
+					echo "</option>";					
+				}
+		?>
+	
+	</select>
+	</div>
+	<div class="span2"><label>or State: </label></div>
+	<div class="span3">
+	<select name="stat" id="state">
+	<option value=""> All </option>
+	<?php
+	//echo var_dump($states);
+			foreach ($states as $key=>$val)
+			{
+			//echo var_dump($ar_statuses);
+				echo "<option value='".$key."'";
+				if($key==$ar["ctct_st_code"])
+					echo "selected";
+				echo ">";				
+				echo $val;
+				echo "</option>";
+			}
+		?>
+	</select>&nbsp;
+	
+	<br/>
+	
+	</div>
+	</div>
+
+	<div class="row">
+	<div class="span2">
+	<label>System</label>: 
+	</div>
+	<div class="span8">
+     <input type="text" name="sys" size=35 maxlength=50 value="">
+	</div>
+	</div>
+	
+	<div class="row">
+	<div class="span12">
+	<p><em>If you specify a system or territory, then status and contact checkboxes will select records only within specified system or territory. 
+"Other" status choice will clear all status choices and vice versa. "All" choice will check all contact type choices. If you need to combine, for example, Other and Past clients, you can download one list for Other and another for Past and then merge those lists. </em></p>
+	</div>
+	</div>
+	
+	<br/><br/>
+<input type="submit" value="Submit" name="submitbtn" class="btn" />
+	</form>
+
+<br/><br/>
+	
+
+
+
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+
+<?php
+
+   // echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

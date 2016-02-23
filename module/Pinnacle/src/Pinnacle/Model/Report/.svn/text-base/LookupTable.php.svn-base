@@ -1,0 +1,114 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/Report/LookupTable.php:
+// !!! abstract table !!!
+namespace Pinnacle\Model\Report;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Where;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
+
+class LookupTable extends ReportTable
+{
+    protected $paginator = null;
+    
+    public function __construct(Adapter $adapter) {
+        parent::__construct($adapter,'lstContacts',
+            '`ctct_id`, `ctct_name`, `ctct_title`, `ctct_company`, `ctct_phone`, `ctct_ext1`, `ctct_fax`, `ctct_ext2`, `ctct_cell`, `ctct_pager`, `ctct_ext3`, `ctct_email`, `ctct_addr_1`, `ctct_addr_2`, `ctct_addr_c`, `ctct_addr_z`, `ctct_st_code`, `ctct_url`, `ctct_reserved`, `ctct_reserved2`, `ctct_type`, `ctct_status`, `ctct_user_mod`, `ctct_date_mod`, `ctct_hphone`, `ctct_hfax`, `ctct_backref`, `ctct_email_mod`, `ctct_recruiting`, `ctct_marketing`, `ctct_secondary`, `ctct_bounces`, `ctct_fuzion1`, `ctct_fuzion2`, `ctct_unsub`, `ctct_unsub2`, `ctct_unsub3`');
+    }
+
+    /**
+     * @param array $ar     keys: see LookupForm
+    */
+    public function buildQuery(array $ar = null) {
+        if( is_array($ar) && $ar['emp_id'] ) {
+            if( !$ar['cli_hotlist'] ) $this->table = 'vClientLookupSmall'; // eeeek!
+            $where = new Where();
+            $nduh = 0;
+            if( $ar['cli_id'] ) { $where->equalTo('cli_id',$ar['cli_id']); return $where; }
+            
+            if( trim($ar['ph_lname']) && trim($ar['ph_fname']) ) {
+                $ln = trim($ar['ph_lname']); $fn = trim($ar['ph_fname']);
+                $like1 = addslashes("$ln%, $fn%");
+                $like2 = addslashes("$fn% $ln%");
+                $where->nest->like('ctct_name',$like1)->or->like('ctct_name',$like2)->unnest;
+                $nduh++;
+            }
+            elseif( trim($ar['ph_lname']) ) {
+                $ln = trim($ar['ph_lname']);
+                $like1 = addslashes("$ln%"); // will also find some first names
+                $like2 = addslashes("% $ln%"); // and stuff like III,Jr,Esq,etc
+                $where->nest->like('ctct_name',$like1)->or->like('ctct_name',$like2)->unnest;
+                $nduh++;
+            }
+            elseif( trim($ar['ph_fname']) ) {
+                $fn = trim($ar['ph_fname']);
+                $like1 = addslashes("$fn%"); // will also find last names
+                $like2 = addslashes("%, $fn%"); // and II,III,Jr.,esq.,etc.
+                $where->nest->like('ctct_name',$like1)->or->like('ctct_name',$like2)->unnest;
+                $nduh++;
+            }
+
+            if( trim($ar['cli_city']) ) {
+                $like = addslashes(trim($ar['cli_city']));
+                $where->like('ctct_addr_c',"$like%"); $nduh++;
+            }
+            if( trim($ar['cli_zip']) ) {
+                $like = addslashes(trim($ar['cli_zip']));
+                $where->like('ctct_addr_z',"$like%"); $nduh++;
+            }
+            if( trim($ar['cli_sys']) ) {
+                $like = addslashes(trim($ar['cli_sys']));
+                $where->like('cli_sys',"$like%"); $nduh++;
+            }
+            if( $ar['cli_type'] ) { $where->equalTo('cli_type',$ar['cli_type']); $nduh++; }
+            if( trim($ar['cli_phone']) ) {
+                $like = addslashes(trim($ar['cli_phone']));
+                $where->literal('cast(ctct_phone as varchar) like ?',array("$like%")); $nduh++;
+            }
+            if( $ar['cli_state'] ) { $where->equalTo('ctct_st_code',$ar['cli_state']); $nduh++; }
+            if( $ar['cli_beds'] ) { $where->greaterThanOrEqualTo('cli_beds',$ar['cli_beds']); $nduh++; }
+            if( $ar['cli_status'] >= 0 ) { $where->equalTo('cli_status',$ar['cli_status']); $nduh++; }
+            elseif( $ar['cli_status'] == -2 ) { $where->in('cli_status',array(1,10)); $nduh++; }
+            if( $ar['cli_source'] >= 0 ) { $where->equalTo('cli_source',$ar['cli_source']); $nduh++; }
+            if( $ar['cli_hotlist'] ) {
+                switch( $ar['cli_hotlist'] ) {
+                    case 1: $where->equalTo('ch_hot_prospect',1); break;
+                    case 2: $where->equalTo('ch_lead_1',1); break;
+                    case 4: $where->equalTo('ch_lead_2',1); break;
+                    case 8: $where->equalTo('ch_pending',1); break;
+                }
+                $where->equalTo('ch_emp_id',$ar['emp_id']); $nduh++;
+            }
+           
+            return $nduh? $where: false; // don't allow empty criteria
+        }
+        return false;
+    }
+
+    public function getPages($id = 1, array $ar = null) {
+        if( !$this->paginator ) {
+            $where = $this->buildQuery($ar);
+            if( $where ) {
+                $select = new Select($this->table);
+                $select->where($where);
+                $select->order('ctct_name,ctct_st_code,ctct_addr_c');
+                $limit = (int) $ar['pg_size']; if( !$limit || $limit > 200 ) $limit = 25;
+                $this->initPaginator($select)->setItemCountPerPage($limit);
+            }
+            else return false;
+        }
+        $this->paginator->setCurrentPageNumber($id);
+        return $this->paginator;
+    }
+    
+    protected function initPaginator(Select $query = null) {
+        if( !$this->paginator && $query ) {
+            $padapter = new DbSelect($query, $this->adapter, $this->resultSetPrototype );
+            $this->paginator = new Paginator($padapter);
+        }
+        return $this->paginator;
+    }
+
+}

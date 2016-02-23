@@ -1,0 +1,199 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Controller/ContractController.php:
+namespace Pinnacle\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+use Pinnacle\Form\ContractsForm;
+use Pinnacle\Model\Utility;
+
+class ContractController extends AbstractActionController
+{
+    protected $usersTable;
+    protected $specialtyTable;
+    protected $midcatTable;
+    protected $placementTable;
+    protected $placemonthTable;
+    protected $marketlogTable;
+    protected $interviewTable;
+
+    public function indexAction() {
+        $identity = $this->getServiceLocator()
+            ->get('Application\Model\LoginService')->checkAuth();
+        if (!$identity) {
+            return $this->redirect()->toRoute('login');
+        }
+        $messages = $this->flashMessenger()->hasMessages()?
+            $this->flashMessenger()->getMessages(): null;
+        $form = new ContractsForm($this->getUsersTable(),$this->getSpecialtyTable(),$this->getMidcatTable());
+        return array('phguser' => $identity, 'form' => $form, 'messages' => $messages );
+    }
+
+    public function viewAction() {
+        $identity = $this->getServiceLocator()
+            ->get('Application\Model\LoginService')->checkAuth();
+        if (!$identity) {
+            return $this->redirect()->toRoute('login');
+        }
+
+        $messages = $this->flashMessenger()->hasMessages()?
+            $this->flashMessenger()->getMessages(): null;
+
+        $ar = array('yer'=>date('Y'),'mon'=>date('n'));
+        $part = $this->params()->fromRoute('part', 'Y'.date('Y'));
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $yer = (int) substr($part,1,4);
+        if( $yer && is_numeric($yer) ) $ar['yer'] = $yer;
+        else $part = 'Y'.$ar['yer'];
+        if( $id > 0 && $id < 13 ) $ar['mon'] = $id;
+        else $id = $ar['mon'];
+        
+        $months = Utility::getClass('Pinnacle\Model\DictMonths')->getMonths();
+        
+        $request = $this->getRequest();
+        $form = new InterviewForm($months);
+        $form->setData($ar);
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $ar = $form->getData();
+                $part = 'Y'.$ar['yer'];
+                if( !$ar['mon'] ) $ar['mon'] = date('n');
+                $id = $ar['mon'];
+                return $this->redirect()->toRoute('contract',array('action'=>'interview',
+                                    'part'=>$part,'id'=>$id));
+            }
+            else {
+                if( !$messages ) $messages = array();
+                $messages[] = 'Selection criteria is not valid';
+            }
+        }
+
+        return array('phguser' => $identity, 'part' => $part, 'months' => $months,
+            'contract' => $this->getInterviewTable()->fetchAll($ar), 'form' => $form,
+            'messages' => $messages, 'id' => $id );
+    }
+    
+    public function marketlogAction() {
+        $identity = $this->getServiceLocator()
+            ->get('Application\Model\LoginService')->checkAuth();
+        if (!$identity) {
+            return $this->redirect()->toRoute('login');
+        }
+        $prg = $this->prg();
+        if ($prg instanceof \Zend\Http\PhpEnvironment\Response) return $prg;
+
+        $messages = $this->flashMessenger()->hasMessages()?
+            $this->flashMessenger()->getMessages(): null;
+
+        $part = $this->params()->fromRoute('part', 'sort');
+        $ar = array('yer'=>date('Y'));
+        if( $part == 'mark' ) $ar['ord'] = $part;
+        
+        $months = Utility::getClass('Pinnacle\Model\DictMonths')->getMonths();
+        
+        $form = new MarketlogForm($this->getUsersTable());
+        if( $prg !== false ) {
+            $form->setData($prg);
+            if ($form->isValid()) 
+                $ar = $form->getData();
+            else {
+                if( !$messages ) $messages = array();
+                $messages[] = 'Selection criteria is not valid';
+            }
+        }
+
+        return array('phguser' => $identity, 'part' => $part, 'months' => $months,
+            'contract' => $this->getMarketlogTable()->fetchAll($ar), 'form' => $form,
+            'messages' => $messages );
+    }
+    
+    public function placemonthAction() {
+        $identity = $this->getServiceLocator()
+            ->get('Application\Model\LoginService')->checkAuth();
+        if (!$identity) {
+            return $this->redirect()->toRoute('login');
+        }
+        $prg = $this->prg();
+        if ($prg instanceof \Zend\Http\PhpEnvironment\Response) return $prg;
+
+        $messages = $this->flashMessenger()->hasMessages()?
+            $this->flashMessenger()->getMessages(): null;
+
+        $ar = array('yer'=>date('Y'));
+        
+        $form = new PlacemonthForm($this->getSpecialtyTable());
+        if( $prg !== false ) {
+            $form->setData($prg);
+            if ($form->isValid()) 
+                $ar = $form->getData();
+            else {
+                if( !$messages ) $messages = array();
+                $messages[] = 'Selection criteria is not valid';
+            }
+        }
+
+        return array('phguser' => $identity,
+            'contract' => $this->getPlacemonthTable()->fetchAll($ar), 'form' => $form,
+            'messages' => $messages );
+    }
+
+    public function placementAction() {
+        $identity = $this->getServiceLocator()
+            ->get('Application\Model\LoginService')->checkAuth();
+        if (!$identity) {
+            return $this->redirect()->toRoute('login');
+        }
+        $prg = $this->prg();
+        if ($prg instanceof \Zend\Http\PhpEnvironment\Response) return $prg;
+
+        $messages = $this->flashMessenger()->hasMessages()?
+            $this->flashMessenger()->getMessages(): null;
+
+        $ar = null;
+        $form = new PlacementForm($this->getSpecialtyTable());
+        if( $prg !== false ) {
+            $form->setData($prg);
+            if ($form->isValid()) 
+                $ar = $form->getData();
+            else {
+                if( !$messages ) $messages = array();
+                $messages[] = 'Selection criteria is not valid';
+            }
+        }
+
+        return array('phguser' => $identity,
+            'contract' => $this->getPlacementTable()->fetchAll($ar), 'form' => $form,
+            'messages' => $messages );
+    }
+
+    public function getUsersTable() {
+        return $this->contractTableFactory('usersTable','');
+    }
+    public function getSpecialtyTable() {
+        return $this->contractTableFactory('specialtyTable','');
+    }
+    public function getMidcatTable() {
+        return $this->contractTableFactory('midcatTable','');
+    }
+    public function getPlacementTable() {
+        return $this->contractTableFactory('placementTable');
+    }
+    public function getPlacemonthTable() {
+        return $this->contractTableFactory('placemonthTable');
+    }
+    public function getMarketlogTable() {
+        return $this->contractTableFactory('marketlogTable');
+    }
+    public function getInterviewTable() {
+        return $this->contractTableFactory('interviewTable');
+    }
+
+    protected function contractTableFactory($table,$submodel = 'Contract\\') {
+        if (!$this->$table) {
+            $sm = $this->getServiceLocator();
+            $this->$table = $sm->get("Pinnacle\\Model\\$submodel".ucfirst($table));
+        }
+        return $this->$table;
+    }
+}

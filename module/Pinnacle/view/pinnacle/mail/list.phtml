@@ -1,0 +1,166 @@
+<?php
+// module/Pinnacle/view/pinnacle/mail/list.phtml:
+
+$title = 'Mailing List';
+$this->headTitle($title . ($list? ' '.$list->name:''));
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+
+$formUrl = $this->url('mail', array('action' => 'list', 'part' => 'page', 'id' => $id));
+$formUrl2= $this->url('mail', array('action' => 'listact', 'part' => $part, 'id' => $id));
+$formUrl3= $this->url('mail', array('action' => 'listexport', 'part' => $part, 'id' => $id));
+$formUrl4= $this->url('mail', array('action' => 'listexportp', 'part' => $part, 'id' => $id));
+$this->inlineScript()->appendFile($this->basePath() . '/js/maillist.js', 'text/javascript');
+$firsto = ''; $sessch = '';
+$paginationControl = $this->paginationControl($this->report,'Sliding','pagination',
+                            array('route'=>'mail','action'=>'list','part'=>$part));
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?> <small><?php echo $this->escapeHtml($list? $list->name:''); ?></small></h1>
+
+<div class="row">
+    <div class="span4">
+        <dl class="dl-horizontal">
+            <dt>List Name:</dt>
+            <dd><?php echo $this->escapeHtml($list? $list->name:'N/A'); ?></dd>
+            <dt>Description:</dt>
+            <dd><?php echo $this->escapeHtml($list? $list->description:'N/A'); ?></dd>
+            <dt></dt>
+            <dd><a href="<?php echo $this->url('mail') ?>">Back to all lists</a></dd>
+        </dl>
+    </div>
+    <div class="span1" id="searchstatus">
+    </div>
+    <div class="pull-right span4">
+        <form name="pageform" action="<?php echo $formUrl; ?>" method="post">
+            <label for="my-pgsize">Page Size:</label>
+            <select name="pgsize" id="my-pgsize">
+                <option <?php if($pgsize==25) echo 'selected' ?> value="25">25</option>
+                <option <?php if($pgsize==50) echo 'selected' ?> value="50">50</option>
+                <option <?php if($pgsize==75) echo 'selected' ?> value="75">75</option>
+                <option <?php if($pgsize==100) echo 'selected' ?> value="100">100</option>
+                <option <?php if($pgsize==150) echo 'selected' ?> value="150">150</option>
+                <option <?php if($pgsize==200) echo 'selected' ?> value="200">200</option>
+            </select>
+            <input class="btn btn-success" type="submit" name="submit" value="Select" style="vertical-align: top">
+        </form>
+    </div>
+</div>
+<?php echo $paginationControl ?>
+
+<form class="form-inline" name="resform" id="my-resform" method="post" action="<?php echo $formUrl2 ?>">
+<table class="table report">
+<thead><tr>
+    <th><input type="checkbox" name="uall" id="my-uall" value="" title="Check/Uncheck all"></th>
+    <th>ID#</th>
+    <th>Name</th>
+    <th>Type</th>
+</tr></thead>
+<tbody id="my-tbody">
+<?php foreach ($report as $row) :
+        $firsto .= "$row->ctct_id,";
+		if($row->ctype==3)
+			$physlist .= "$row->ctct_id,";
+		if($row->ctype==2)
+			$clilist .= "$row->ctct_id,";
+		if($row->ctype==15)
+			$midlist .= "$row->ctct_id,";
+        if( $_POST["ch_$row->ctct_id"] ) $sessch .= "ch_$row->ctct_id;";
+?>
+<tr>
+    <td><input name="ch_<?php echo $row->ctct_id ?>" type="checkbox" id="ch_<?php echo $row->ctct_id ?>" value="1" class="onscr my-ckbox" <?php echo $_POST["ch_$row->ctct_id"]?'checked':''; ?> ></td>
+    <td><a href="<?php echo $this->url($row->ctct_asp, array('action'=>'view', 'part'=> 'list', 'id' => $row->ctct_backref)) ?>">
+        <?php echo $this->escapeHtml($row->ctct_backref);?> </a></td>
+    <td><?php echo $this->escapeHtml($row->ctct_name);?></td>
+    <td><?php echo $this->escapeHtml($row->ct_name);?><?php //echo $this->escapeHtml($row->ctype);?></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+<?php echo $paginationControl ?>
+<p class="onscr">
+    <input name="act" id="chactkeep" type="radio" value="KEEP">
+        <label for="chactkeep">Delete Un-checked</label>
+    or
+    <input name="act" type="radio" id="chactdel" value="DEL">
+        <label for="chactdel">Delete Checked</label>;  &nbsp;
+    <input name="actscope" checked type="radio" id="chactsone" value="ONE">
+        <label for="chactsone">Apply to this page only</label> or
+    <input name="actscope" type="radio" id="chactsmany" value="MANY">
+        <label for="chactsmany">Apply to the whole list</label>:
+    <input name="apply" class="btn btn-small btn-warning" type="submit" value="Apply">
+				<br><br>
+    <input name="act" id="chactpage" type="radio" value="PAGE">
+        <label for="chactpage">Delete whole page (this page only)</label> or 
+    <label><input name="act" type="radio" value="REST">
+        Delete all other pages (not this page)</label>:  
+    <input name="apply" class="btn btn-small btn-warning" type="submit" value="Apply">
+    <input name="firsto" type="hidden" id="firsto" value="<?php echo $firsto; ?>">
+    <input name="sesscache" type="hidden" id="sesscach">
+</p>
+</form>
+<form name="pageform" action="<?php echo $formUrl3; ?>" method="post" target="_blank">
+<input name="physlist" type="hidden" id="physlist" value="<?php echo $physlist; ?>">
+<input name="clilist" type="hidden" id="clilist" value="<?php echo $clilist; ?>">
+<input name="midlist" type="hidden" id="midlist" value="<?php echo $midlist; ?>">
+<strong>Export: </strong>
+<?php if($physlist!=""){ ?>
+<a href="<?php echo $formUrl3; ?>?type=3&style=1" target="_blank">Email List (semicolon)</a> /
+<a href="<?php echo $formUrl3; ?>?type=3&style=2" target="_blank">Email List (comma)</a> /
+<a href="<?php echo $formUrl3; ?>?type=3&style=3" target="_blank">Email List (newline)</a><br/>
+<!--<input name="physexport" class="btn btn-small btn-warning" type="submit" value="Email List">//-->
+<?php } ?>
+<?php if($clilist!=""){ ?>
+<a href="<?php echo $formUrl3; ?>?type=2&style=1" target="_blank">Client Email List (semicolon)</a> /
+<a href="<?php echo $formUrl3; ?>?type=2&style=2" target="_blank">Client Email List (comma)</a> /
+<a href="<?php echo $formUrl3; ?>?type=2&style=3" target="_blank">Client Email List (newline)</a><br/>
+<!--<input name="cliexport" class="btn btn-small btn-warning" type="submit" value="Client Email List">//-->
+<?php } ?>
+<?php if($midlist!=""){ ?>
+<a href="<?php echo $formUrl3; ?>?type=15&style=1" target="_blank">Mid-Level Email List (semicolon)</a> /
+<a href="<?php echo $formUrl3; ?>?type=15&style=2" target="_blank">Mid-Level Email List (comma)</a> /
+<a href="<?php echo $formUrl3; ?>?type=15&style=3" target="_blank">Mid-Level Email List (newline)</a><br/>
+<!--<input name="midexport" class="btn btn-small btn-warning" type="submit" value="Mid-Level Email List">//-->
+<?php } ?>
+
+<strong>Locums Export: </strong>
+<?php if($physlist!=""){ ?>
+<a href="<?php echo $formUrl3; ?>?type=3&style=1&locums=1" target="_blank">Email List (semicolon)</a> /
+<a href="<?php echo $formUrl3; ?>?type=3&style=2&locums=1" target="_blank">Email List (comma)</a> /
+<a href="<?php echo $formUrl3; ?>?type=3&style=3&locums=1" target="_blank">Email List (newline)</a><br/>
+<?php } ?>
+<?php if($clilist!=""){ ?>
+<a href="<?php echo $formUrl3; ?>?type=2&style=1&locums=1" target="_blank">Client Email List (semicolon)</a> /
+<a href="<?php echo $formUrl3; ?>?type=2&style=2&locums=1" target="_blank">Client Email List (comma)</a> /
+<a href="<?php echo $formUrl3; ?>?type=2&style=3&locums=1" target="_blank">Client Email List (newline)</a><br/>
+<?php } ?>
+<?php if($midlist!=""){ ?>
+<a href="<?php echo $formUrl3; ?>?type=15&style=1&locums=1" target="_blank">Mid-Level Email List (semicolon)</a> /
+<a href="<?php echo $formUrl3; ?>?type=15&style=2&locums=1" target="_blank">Mid-Level Email List (comma)</a> /
+<a href="<?php echo $formUrl3; ?>?type=15&style=3&locums=1" target="_blank">Mid-Level Email List (newline)</a><br/>
+<?php } ?>
+
+<strong>Phone Export: </strong>
+<?php if($physlist!=""){ ?>
+<a href="<?php echo $formUrl4; ?>?type=3&style=1&locums=1" target="_blank">Phone List (semicolon)</a> /
+<a href="<?php echo $formUrl4; ?>?type=3&style=2&locums=1" target="_blank">Phone List (comma)</a> /
+<a href="<?php echo $formUrl4; ?>?type=3&style=3&locums=1" target="_blank">Phone List (newline)</a><br/>
+<?php } ?>
+<?php if($clilist!=""){ ?>
+<a href="<?php echo $formUrl4; ?>?type=2&style=1&locums=1" target="_blank">Client Phone List (semicolon)</a> /
+<a href="<?php echo $formUrl4; ?>?type=2&style=2&locums=1" target="_blank">Client Phone List (comma)</a> /
+<a href="<?php echo $formUrl4; ?>?type=2&style=3&locums=1" target="_blank">Client Phone List (newline)</a><br/>
+<?php } ?>
+<?php if($midlist!=""){ ?>
+<a href="<?php echo $formUrl4; ?>?type=15&style=1&locums=1" target="_blank">Mid-Level Phone List (semicolon)</a> /
+<a href="<?php echo $formUrl4; ?>?type=15&style=2&locums=1" target="_blank">Mid-Level Phone List (comma)</a> /
+<a href="<?php echo $formUrl4; ?>?type=15&style=3&locums=1" target="_blank">Mid-Level Phone List (newline)</a><br/>
+<?php } ?>
+</form>
+<?php
+//$url = $this->url('resort', array('action'=>'mlid')); // . set / xcept / page / keep
+//$redir = $this->url('login');
+//$scrip = "mlListInit(\"$sessch\", \"$url\", \"$redir\");\n";
+$scrip = "mlListInit(\"$sessch\");\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

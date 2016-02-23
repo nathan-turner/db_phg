@@ -1,0 +1,100 @@
+<?php
+// module/Pinnacle/view/pinnacle/client/view.phtml:
+// Client Search
+
+$title = "Sourcing - Candidates' Responses ";
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<style>
+table { border: 1px solid; background-color: #ffffff; border-collapse: collapse; }
+td { border: 1px solid; }
+</style>
+
+
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    
+    echo $this->form()->openTag($form);
+	
+?>
+
+<div class="row">
+	<div class="span8">
+	<input type="hidden" value="<?php echo $ar['cli_id']; ?>" id="client_id" name="client_id" />
+   
+   <table style="width: 80%">
+	<tr>
+		<th>ID#</th><th>Name</th><th>Spec.</th><th>Date</th><th>Source</th>
+	</tr>
+	
+	<?php
+	//echo var_dump($responses);
+	
+			foreach ($responses as $row=>$ar)
+			{
+				echo "<tr>";				
+				echo "<td><a href='".$this->basePath()."/physician/view/".$ar['ph_id']."'>".$ar['ph_id']."</a></td><td>".$ar['ctct_name']."</td><td>".$ar['ph_spec_main']."</td><td>".$ar['psr_date']."</td><td>".$ar['psr_source']."</td>";
+				echo "</tr>";
+			}
+		?>
+	</table>
+	
+	<h3>Responses by source:</h3>
+	<table style="width: 80%">
+		
+	<?php	
+			foreach ($cnt as $row=>$ar)
+			{
+				echo "<tr>";				
+				echo "<td>".$ar['cnt']."</td><td>".$ar['psr_source']."</td>";
+				echo "</tr>";
+				if($ar['total']!="")
+					$total=$ar['total'];					
+			}			
+		?>
+	</table>
+	<br/>
+<strong>Total Responses:</strong> <?php echo $total; ?>	
+	
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+
+
+
+
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

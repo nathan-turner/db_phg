@@ -1,0 +1,64 @@
+<?php
+// module/Pinnacle/view/pinnacle/booking/index.phtml:
+// Contract Search
+
+$title = 'Bookings Totals';
+$this->headTitle($title);
+
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<a href="<?php echo $this->basePath(); ?>/booking">Back to Bookings</a>
+<?php
+//    $form->setAttribute('action', $this->url('resort', array('action'=>'booking')));
+
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+?>
+<div class="row">
+    <div class="span8" >
+	<p style="float:right">
+	<a href="<?php echo $this->basePath(); ?>/booking/view/add">Create Booking</a>
+	</p>
+	</div>
+</div>
+<div class="row">
+    <div class="span8">
+	
+	<?php	
+		
+		//echo var_dump($arr);
+		
+		if(count($arr)>0)
+		{
+			//echo "test";
+			echo '<table class="table report">';
+			echo "<tr><th>Month</th><th>Hours</th><th>Malpractice</th><th>Bill Per Diem</th><th>Phys Per Diem</th><th>Gross Revenue</th><th>Provider Pay</th><th>Gross Profit</th><th>%</th></tr>";
+			foreach($arr as $key=>$val)
+			{
+				echo "<tr><td>".$val["bookmonth"]."</td><td>".$val["monthhours"]."</td><td>".$val["monthhours"]*$val["bill_malpractice"]."</td><td>".$val["bill_perdiem_total"]."</td><td>".$val["phys_perdiem_total"]."</td><td>".$val["billtotal"]."</td><td>".$val["paytotal"]."</td><td>".$val["grossprofit"]."</td><td>".$val["percent"]."</td></tr>";
+			}
+			
+			
+			echo '</table>';
+		}
+	?>
+        
+    </div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

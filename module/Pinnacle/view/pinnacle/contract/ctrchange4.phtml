@@ -1,0 +1,215 @@
+<?php
+// module/Pinnacle/view/pinnacle/midlevel/view.phtml:
+// Contract Search
+
+$title = 'Contract Change';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+#phystable { width: 70% }
+#datetable, #spectable, #phystable, .historytable { border: 1px solid black }
+#datetable td, #spectable td, .historytable td { border: 1px solid black }
+#phystable td { border: 1px solid black; background-color: #ffffff; }
+.tab { /*common class for tabs*/ margin-left: auto; margin-right: auto; }
+.hiddendiv { display: none; }
+#physician_pass_div { display: none; }
+#sched_activity_div { display: none; }
+.date { width: 110px; }
+.time { width: 60px; }
+.ctr { text-align: center; }
+</style>
+
+<?php
+$type = $_GET["type"];
+$ctr_id = $_GET["ctr_id"];
+$pipl_id = $_GET["pipl_id"];
+$chgid = $_GET["chg_id"];
+$type = $ar["chg_type"];
+//echo $type;
+switch($type)
+{
+	case 0:
+	$title="Cancel Search Request";
+	$head1="Please cancel this search for the following reason:";
+	$head2="Please cancel the Sourcing Campaign.";
+	break;
+	case 1:
+	$title="Place Search on Hold Request";
+	$head1="Please place this search on hold for the following reason:";
+	$head2="Please cancel the Sourcing Campaign.";
+	break;
+	case 2:
+	$title="Reactivate Search Request";
+	$head1="Please reactivate this search.";
+	$head2="Please create a new Sourcing Campaign.";
+	break;
+	case 3:
+	$title="Change of Specialty Request";
+	$head1="Please change the specialty of this search to the following:";
+	$head2="Please cancel Sourcing for old specialty and create a new campaign.";
+	break;
+	case 4:
+	$title="Change of Recruiter Request";
+	$head1="Please change the Recruiter of this search to the following:";
+	$head2="Please change the Sourcing to reflect the new recruiter.";
+	break;
+	case 5:
+	$title="Placement Write Off Request";
+	$head1="Please write off the above placement and begin a replacement search for the following reason:";
+	$head2="Please reactivate the Sourcing.";
+	break;
+	case 6:
+	$title="Zombify Search Request";
+	$head1="Please make this search zombie for the following reason:";
+	$head2="Please keep existing sourcing campaign.";
+	break;
+}
+?>
+
+<h1 ><?php echo $this->escapeHtml($title); ?> Results</h1>
+<br/>
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'midlevels')));
+    //$form->get('submit')->setAttribute('type','button');
+  
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($ar);
+?>
+
+<p style="text-align:center; color: red"><?php echo $message; ?></p>
+
+<INPUT type="hidden" name="chg_ctr_id" value="<?php echo $ctr_id; ?>">
+<INPUT type="hidden" name="chg_type" value="<?php echo $type; ?>">
+<INPUT type="hidden" name="chg_pipl" value="<?php echo $pipl_id; ?>">
+<INPUT type="hidden" name="ctr_no" value="<?php echo $ar["ctr_no"]; ?>">
+<INPUT type="hidden" name="client" value="<?php echo $ar["ctct_name"]; ?>">
+<INPUT type="hidden" name="chg_reason" value="<?php echo $ar["chg_reason"]; ?>">
+<div class="row">
+    <div class="span12">
+	<table border="0" cellpadding="2">
+  <tr>
+    <td><b>Date:</b></td>
+    <td><?php echo $ar["chg_date"]; ?>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><b>Recruiter:</b></td>
+    <td><?php echo $ar["emp_old"]; ?></td>
+  </tr>
+  <tr>
+    <td><b>Contract#:</b></td>   
+	<td><a href="<?php echo $this->basePath(); ?>/contract/view/<?php echo $ar["ctr_id"]; ?>"><?php echo $ar["ctr_no"]; ?></a> <?php if($ar["ctr_nurse"]){ echo " <strong>Mid-Level</strong>"; } ?> </td>
+  
+  </tr>
+  <tr>
+    <td><b>Client:</b></td>
+    <td><?php echo $ar["ctct_name"]; ?></td>
+  </tr>
+  <tr>
+    <td><b>City, State:</b></td>	
+   
+	<td><?php echo $ar["ctr_location_c"]; ?>, <?php echo $ar["ctr_location_s"]; ?></td>
+  </tr>
+  <tr>
+    <td><b>Phone:</b></td>
+    <td><?php echo $ar["ctct_phone"]; ?>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><b>Specialty:</b></td>
+    <!--<td><?php //echo $ar["at_name"]; ?> <?php //echo $ar["sp_name"]; ?>&nbsp;</td>-->	
+	 <td>
+	 <?php if($ar["ctr_nurse"]==1){ echo $ar["at_name"]; } else { echo $ar["sp_code"]."&nbsp;-&nbsp;".$ar["sp_name"]; } ?>
+	 </td>
+  </tr>
+  </table>
+    </div>    
+</div>
+
+<div class="row">
+    <div class="span12">  
+	<br/>
+	<p><label><?php echo $head1; ?><!--Please write off the above placement and begin a replacement search for the following reason:--></label></p>
+	<?php
+		if($type<2 || $type>=5)
+		{
+	?>		
+		<?php echo $ar["chg_reason"]; ?>	
+		<?php } ?>
+		
+		
+		
+    </div>    
+</div>
+
+<div class="row">
+    <div class="span12">
+	<p><?php echo $head2; ?><!--Please reactivate the Sourcing.--></p>
+
+		<label>Comments:</label>
+		<?php echo $ar["chg_comment"]; ?>	
+		
+		
+    </div>    
+</div>
+
+<br/>
+
+<h3 class="ctr">
+<?php if($ar["chg_status"]!='' && $ar["chg_status"]!=0){
+	if($ar["chg_status"]==1 )
+		echo "Approved";
+	else
+		echo "<span class=alert>Rejected</span>";
+	echo " by Mike Broxterman<br> ".$ar["chg_appr_date"];
+}
+else{
+	echo "Decision Pending";
+}
+?> 
+</h3>
+
+
+
+
+
+
+
+
+
+<div style="clear:both">&nbsp;</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+<script>
+pageLoad();
+
+</script>
+<?php
+
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-pro'));

@@ -1,0 +1,79 @@
+<?php
+// module/Pinnacle/view/pinnacle/client/edit.phtml:
+
+$title = 'Add New Client';
+$this->headTitle($title);
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php if( true /*$phguser->access > 1*/ ) { 
+
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('client',
+                        array('action' => 'add', 'part' => $part)));
+						//array('action' => 'edit', 'part' => $part, 'id' => $id)));
+    $form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('cli_id'));
+echo '<div class="row"><div class="span4">';
+echo $this->formRow($form->get('ctct_name'));
+echo $this->formRow($form->get('cli_xid'));
+echo $this->formRow($form->get('ctct_phone'));
+echo $this->formRow($form->get('ctct_ext1'));
+
+echo $this->formRow($form->get('ctct_fax'));
+echo $this->formRow($form->get('ctct_ext2'));
+echo $this->formRow($form->get('ctct_title'));
+echo $this->formRow($form->get('ctct_company'));
+echo $this->formRow($form->get('ctct_email'));
+echo $this->formRow($form->get('ctct_url'));
+echo '</div><div class="span4">';
+
+echo $this->formRow($form->get('ctct_addr_1'));
+echo $this->formRow($form->get('ctct_addr_2'));
+echo $this->formRow($form->get('ctct_addr_c'));
+echo $this->formRow($form->get('ctct_addr_z'));
+echo $this->formRow($form->get('ctct_st_code'));
+echo $this->formRow($form->get('cli_type'));
+echo $this->formRow($form->get('cli_sys'));
+echo $this->formRow($form->get('ctobe'));
+echo $this->formRow($form->get('cdupe'));
+echo $this->formRow($form->get('cli_fed_tax'));
+echo '</div><div class="span4">';
+
+echo $this->formRow($form->get('cli_source'));
+echo $this->formRow($form->get('cli_beds'));
+//echo $this->formRow($form->get('cli_grp'));
+//echo $this->formRow($form->get('st_name'));
+echo $this->formRow($form->get('cli_status'));
+echo $this->formRow($form->get('cli_emp_id'));
+echo '</div><div class="span4">';
+//echo $this->formRow($form->get('cli_rating'));
+//echo $this->formRow($form->get('cs_name'));
+echo $this->formRow($form->get('cli_population'));
+echo $this->formRow($form->get('cli_specialty'));
+echo $this->formRow($form->get('cli_fuzion'));
+echo $this->formRow($form->get('cli_locumactive'));
+echo $this->formRow($form->get('cli_specnote'));
+echo '</div></div>';
+
+echo '<br/><br/>';
+
+echo $this->formSubmit($form->get('submit'));
+echo '&nbsp;&nbsp;<a href="/client/view/'.$id.'" class="btn btn-large btn-danger">Cancel</a>';
+
+
+?>
+<?php
+echo $this->form()->closeTag();
+
+    } else /* $phguser->access <= 1 */ { ?>
+    <div class="alert alert-error">
+        <h3>Access Denied</h3>
+        <p>Database Administrative access required for this page</p>
+    </div>
+<?php
+    } /* $phguser->access <= 1 */
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

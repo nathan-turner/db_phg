@@ -1,0 +1,149 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/monthlyacctreview.phtml:
+// Summary report
+
+$title = 'Monthly Account Review Report';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+//$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+.cour {font-family: courier }
+</style>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rptdataentry')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="post" name="form1" id="form1" >
+
+<table class="nobg" width="100%" border=1 cellspacing=0 cellpadding=1><thead><tr>
+<td>#</td>
+<td class="bld ctr"><a href="?sort=ctr_no">Contract</a></td>
+<td class="bld ctr"><a href="?sort=ctr_spec">Spec</td>
+<td class="bld ctr"><a href="?sort=recruiter">Recruiter</td>
+<td class="bld ctr"><a href="?sort=ctr_location_c">City</td>
+<td class="bld ctr"><a href="?sort=ctr_location_s">State</td>
+<td class="bld ctr"><a href="?sort=ctct_name">Facility</td>
+<td class="bld ctr"><a href="?sort=marketer">Marketer</td>
+<td class="bld ctr"><a href="?sort=activesourcing">Sourcing Status</td>
+<td class="bld ctr"><a href="?sort=st_name">Contract Status</td>
+<td class="bld ctr"><a href="?sort=present_date">Last Present</td>
+</tr></thead><tbody>
+
+	
+<?php
+foreach($ar as $key=>$val)
+{
+	//echo $val["ctr_no"];
+	 $i=$i+1;    
+?>	
+
+<tr>
+<td><?php echo $i; ?>
+</td>
+<td class="">
+<a class="ndec" href="/public/contract/view/<?php echo $val["ctr_id"]; ?>"><?php echo $val["ctr_no"]; ?></a>
+</td>
+<td class="">
+<?php echo $val["ctr_spec"]; ?>
+</td>
+<td class="">
+<?php echo $val["recruiter"]; ?>
+</td>
+<td class="">
+<?php echo $val["ctr_location_c"]; ?>
+</td>
+<td class="">
+<?php echo $val["ctr_location_s"]; ?>
+</td>
+<td class="">
+<?php echo $val["ctct_name"]; ?>
+</td>
+<td class="">
+<?php echo $val["marketer"]; ?>
+</td>
+<td class="">
+<?php echo $val["activesourcing"]; ?> active
+</td>
+<td class="">
+<?php echo $val["st_name"]; ?> 
+</td>
+<?php //echo $val["sincepresent"]; ?>
+<?php if($val["sincepresent"]>2) { ?>
+<td style="color:red">
+<?php } else { ?>
+<td class="">
+<?php }  ?>
+<?php if($val["present_date"]!='') { echo date('Y-m-d', strtotime($val["present_date"])); } ?>
+
+</td>
+</tr>
+
+
+<?php	
+}
+?>
+
+
+
+
+</tbody></table>
+
+
+
+</form>
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

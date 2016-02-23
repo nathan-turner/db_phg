@@ -1,0 +1,187 @@
+<?php
+// module/Pinnacle/view/pinnacle/contract/view.phtml:
+// Client Search
+
+$title = 'Sourcing' ;
+$this->headTitle($title);
+//$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css'); 
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<style>
+h1 { text-align: center }
+#contact_tbl td { border: 1px solid black; background-color: white; padding: 5px; }
+table h3 { font-size: 14px; line-height: 16px; }
+
+</style>
+<script>
+ $(function() {
+function addComment() //add comment
+ {	
+	var id, ctr_id;
+	var comments;
+	id=$("#src_id").val();
+	//ctr_id=$("#ctr_id").val();
+	comments = $("#commenttxt").val();	
+	if(comments!=''){	
+	
+	$.ajax({    
+	type: "GET",
+    url: "/ajax/addComment",	    
+	data: { id: id, ctr_id: ctr_id, note_type:'11', comments: comments },	
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){alert(data.message); $("#commenttxt").val(); window.location.href="/contract/source/"+id; },
+    failure: function(errMsg) {
+        alert(errMsg);
+    }
+	});	
+	}	
+ }
+
+//add comment
+$("#commentsubmit").click(function() {	
+	addComment();
+});
+
+});
+</script>
+<div style="float: right">
+<a href="/contract/sourcemod">Add New Source</a><br/>
+<a href="/contract/sourcemod/<?php echo $ar["src_id"]; ?>">Edit Source</a><br/>
+<a href="/contract/managesources">Manage Sources</a><br/>
+</div>
+<h1><?php echo $ar["src_name"]; ?></h1>
+<hr/>
+<table id="contact_tbl">
+<tr>
+<td><a href="mailto:<?php echo $ar["ctct_email"]; ?>"><?php echo $ar["ctct_name"]; ?></a></td>
+<td><strong>Phone: </strong> <?php echo $ar["ctct_phone"]; ?>
+		  <strong>Ext: </strong> <?php echo $ar["ctct_ext1"]; ?></td>
+</tr>
+<tr>
+<td><?php echo $ar["ctct_title"]; ?></td>
+<td><strong>Fax: </strong> <span class="fakea" onclick='SendFax("<?php echo $ar["ctct_fax"]; ?>")'>
+		    <?php echo $ar["ctct_fax"]; ?></span>
+		  <strong>Ext: </strong> <?php echo $ar["ctct_ext2"]; ?></td>
+</tr>
+<tr>
+<td><strong>Company: </strong><?php echo $ar["ctct_company"]; ?></td>
+<td><strong>Email: </strong><a href="mailto:<?php echo $ar["ctct_email"]; ?>"><?php echo $ar["ctct_email"]; ?></a></td>
+</tr>
+<tr>
+<td><strong>Web: </strong> <a href="<?php echo $ar["ctct_url"]; ?>" target="_blank"><?php echo $ar["ctct_url"]; ?></a></td>
+<td><strong>Address: </strong> <?php echo $ar["ctct_addr_1"]; ?>&nbsp;  <?php echo $ar["ctct_addr_2"]; ?>
+            <br/>
+            <?php echo $ar["ctct_addr_c"]; ?>&nbsp;<?php echo $ar["ctct_st_code"]; ?>
+			&nbsp;<?php echo $ar["ctct_addr_z"]; ?></td>
+</tr>
+
+</table>
+ 
+ <strong>Rating: </strong>
+ <?php
+for($k=1;$k<=$ar["src_rating"];$k++)
+{
+	$table.= '<img src="/img/star.png" alt="*" width="16" height="16" border="0" title="Rating: '.$ar["src_rating"].'">&nbsp;';
+}
+if($ar["src_rating"]<=0)
+	$table.= '<img src="/img/star0.png" alt="*" width="16" height="16" border="0" title="Rating: '.$ar["src_rating"].'">&nbsp;';
+echo $table;			
+ ?>
+ <br/>
+ <strong>Price: </strong>
+ <?php 
+	if((int)$ar["src_price"]==0){ 
+		if($ar["src_quota"]!=1)
+			echo "Free";			
+	}
+	else{
+		echo "$".$ar["src_price"];
+	}
+	if($ar["src_monthly"])
+			echo " monthly";
+	if($ar["src_quota"])
+			echo " (Quote Required)";
+	if($ar["src_estprice"])
+			echo " (est.)";
+ ?><br/>
+
+ <strong>Pricing</strong>: <?php echo $ar["src_pricing"]; ?><br/>
+ <strong>Category</strong>: <?php echo $ar["srt_name"]; ?><br/>
+ <strong>Specialty</strong>:
+ <?php
+ if($ar["src_sp_code"] == "---")
+	echo "Any";
+ else
+	echo $ar["src_sp_code"];
+ ?>
+
+ <hr/>
+ 
+ 
+
+ 
+ <!--NOTES BOX //-->
+<div id="notes-div" class="tab hiddendiv" >
+<h4>NOTES</h4>
+<div style="float: left; width: 70%">
+<input type="hidden" id="src_id" value="<?php echo $ar['src_id']; ?>" />
+<input type="hidden" id="client_id" value="<?php echo $ar['cli_id']; ?>" />
+<label>Enter Comment:</label>
+<textarea name="commenttxt" id="commenttxt" style="width: 90%"></textarea>
+<input type="button" name="commentsubmit" id="commentsubmit" value="Add Comment" />
+<hr/>
+<table>
+<?php
+			foreach ($comments as $row2=>$ar2)
+			{								
+				echo "<tr><td style='vertical-align:top;padding: 10px;'>".$ar2['note_user']."</td><td style='vertical-align:top; padding: 10px;'>".$ar2['note_text']."</td><td style='vertical-align:top;padding: 10px;'>".$ar2['note_dt']."</td></tr>";
+			}
+?>
+</table>
+</div>
+
+</div>
+<!--END NOTES BOX //-->
+ 
+<?php
+    //$form->setAttribute('action', $this->url('resort', array('action'=>'clients')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+    //$maillist = $this->formRow($form->get('mail_list'));
+
+    //echo $this->form()->openTag($form);
+	
+	
+?>
+
+
+
+
+
+
+
+
+
+
+<div style="clear: both; width: 100%">&nbsp;</div>
+<?php
+    //echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+<?php
+
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-cli'));

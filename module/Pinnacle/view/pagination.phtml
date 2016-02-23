@@ -1,0 +1,53 @@
+<?php if( $this->pageCount ): ?>
+<div class="pagination pagination-centered">
+    <ul>
+<?php if( isset($this->previous) ): ?>
+        <li><a href="<?php echo $this->url($this->route, array('id' => $this->previous, 'action' => $this->action, 'part' => $this->part)); ?>" title="Previous Page"><img src="/img/images/ARW06LT.png" alt="Prev Page"></a> </li>
+<?php else: ?>
+        <li class="disabled"><span><img src="/img/images/ARW06LT.png" alt="Prev Page"></span> </li>
+<?php endif;
+if( $this->first < $this->firstPageInRange ):
+  if( $this->first != $this->current ): ?>
+        <li>
+    <a href="<?php echo $this->url($this->route, array('id' => $this->first, 'action' => $this->action, 'part' => $this->part)); ?>">
+        <?php echo $this->first; ?>
+    </a> </li>
+  <?php else: ?>
+        <li class="active"><span><?php echo $this->first; ?> </span></li>
+  <?php endif;
+endif;
+if( $this->first+1 < $this->firstPageInRange ): ?>
+        <li><span>&hellip;</span></li>
+<?php endif ?>
+<?php foreach ($this->pagesInRange as $page): ?>
+  <?php if ($page != $this->current): ?>
+        <li>
+    <a href="<?php echo $this->url($this->route, array('id' => $page, 'action' => $this->action, 'part' => $this->part)); ?>">
+        <?php echo $page; ?>
+    </a> </li>
+  <?php else: ?>
+        <li class="active"><span style="font-weight: bold"><?php echo $page; ?> </span></li>
+  <?php endif; ?>
+<?php endforeach; 
+if( $this->last-1 > $this->lastPageInRange ): ?>
+        <li><span>&hellip;</span></li>
+<?php endif;
+if( $this->last > $this->lastPageInRange ):
+  if( $this->last != $this->current ): ?>
+        <li>
+    <a href="<?php echo $this->url($this->route, array('id' => $this->last, 'action' => $this->action, 'part' => $this->part)); ?>">
+        <?php echo $this->last; ?>
+    </a> </li>
+  <?php else: ?>
+        <li class="active"><span><?php echo $this->last; ?> </span></li>
+  <?php endif;
+endif;
+if (isset($this->next)): ?>
+        <li><a href="<?php echo $this->url($this->route, array('id' => $this->next, 'action' => $this->action, 'part' => $this->part)); ?>" title="Next Page"><img src="/img/images/ARW06RT.png" alt="Next Page"></a> 
+        </li>
+<?php else: ?>
+        <li class="disabled"><span><img src="/img/images/ARW06RT.png" alt="Next Page"></span></li>
+<?php endif; ?>
+    </ul>
+</div>
+<?php endif; ?>

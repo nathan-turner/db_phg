@@ -1,0 +1,38 @@
+<?php
+    if( $messages ) {
+        echo '<div class="alert alert-success"> <button type="button" class="close" data-dismiss="alert">×</button>';
+        foreach($messages as $msg)
+            echo $this->escapeHtml($msg).'<br>';
+        echo '</div>';
+    }
+    if( !$phguser ) {
+?>   
+<div class="hero-unit">
+    <h1>Welcome to <span class="text-info">PHG Database 2.0</span></h1>
+    <p><?php echo sprintf('Congratulations! You have reached PHG Database application, powered by Zend Framework version %s.', \Zend\Version\Version::VERSION) ?></p>
+    <p><a class="btn btn-info btn-large" href="<?php echo $this->url('login');?>">Try to Log in &raquo;</a></p>
+</div>
+<?php
+    } else { // phguser
+?>
+<div class="row">
+
+    <div class="span4">
+        <h2>Follow Development</h2>
+        <p><?php echo sprintf('Zend Framework 2 is under active development. If you are interested in following the development of ZF2, there is a special ZF2 portal on the official Zend Framework website which provides links to the ZF2 %swiki%s, %sdev blog%s, %sissue tracker%s, and much more. This is a great resource for staying up to date with the latest developments!', '<a href="http://framework.zend.com/wiki/display/ZFDEV2/Home">', '</a>', '<a href="http://framework.zend.com/zf2/blog">', '</a>', '<a href="http://framework.zend.com/issues/browse/ZF2">', '</a>') ?></p>
+        <p><a class="btn btn-success" href="http://framework.zend.com/zf2" target="_blank">ZF2 Development Portal &raquo;</a></p>
+    </div>
+
+    <div class="span4">
+        <h2>Discover Modules</h2>
+        <p><?php echo sprintf('The community is working on developing a community site to serve as a repository and gallery for ZF2 modules. The project is available %son GitHub%s. The site is currently live and currently contains a list of some of the modules already available for ZF2.', '<a href="https://github.com/zendframework/modules.zendframework.com">', '</a>') ?></p>
+        <p><a class="btn btn-success" href="http://modules.zendframework.com/" target="_blank">Explore ZF2 Modules &raquo;</a></p>
+   </div>
+
+   <div class="span4">
+       <h2>Help &amp; Support</h2>
+       <p><?php echo "Are you $phguser->realname?"; ?></p>
+       <p><a class="btn btn-success" href="<?php echo $this->url('logout');?>">Log out &raquo;</a></p>
+   </div>
+</div>
+<?php } ?>

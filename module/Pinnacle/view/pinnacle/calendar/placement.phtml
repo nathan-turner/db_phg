@@ -1,0 +1,103 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/placement.phtml:
+// Marketing report
+
+$title = 'Placements by State And Specialty';
+$this->headTitle($title);
+
+$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    $form->setAttribute('action', $this->url('report', array('action' => 'placement')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+?>
+<div class="row">
+    <div class="span3">
+        <?php echo $this->formRow($form->get('st_code')); ?>
+        <?php echo $this->formRow($form->get('date1')); ?>
+    </div>
+    <div class="span4">
+        <?php echo $this->formRow($form->get('spec')); ?>
+        <?php echo $this->formRow($form->get('date2')); ?>
+    </div>
+    <div class="span2"><div style="margin-top: 55px">
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div></div>
+</div>
+<?php
+    echo $this->form()->closeTag();
+?>
+
+<table class="table report">
+    <thead><tr>
+        <th> </th>
+        <th>Facility</th>
+        <th>Marketer</th>
+        <th>Contract</th>
+        <th>Date</th>
+        <th>Spec</th>
+        <th>Placement</th>
+        <th>Date</th>
+        <th title="Search to Placement">S-PL</th>
+        <th>Recruiter</th>
+    </tr></thead>
+    <tbody>
+        <?php if( $report ) foreach ($report as $row):
+            $tcnt++;
+            if( $row->cli_id != $prevcliid ):
+                $icnt++;
+                $prevcliid = (int) $row->cli_id;
+                $scls = '';
+        ?>
+                <tr>
+            <td><?php echo $this->escapeHtml($icnt); ?></td>
+            <td><a href="<?php echo $this->url('client', array('action'=>'view', 'part'=>'go', 'id' => $row->cli_id)) ?>"><?php echo $this->escapeHtml($row->ctct_name); ?></a>,
+                <?php echo $this->escapeHtml($row->ctr_location_c).', '
+                    .$this->escapeHtml($row->ctr_location_s).'. Ph:&nbsp;';
+                    echo $this->escapeHtml($row->formatPhone($row->ctct_phone)).' ';
+                    if( !empty($row->cli_sys) )
+                        echo '<b>System:</b> '.$this->escapeHtml($row->cli_sys);
+                ?>
+            </td>
+            <td><?php echo $this->escapeHtml($row->mark_uname); ?></td>
+            <?php else:
+                $scls = 'class="phg-noline"';
+            ?>
+                <tr>
+                    <td class="phg-noline" colspan="3"> </td>
+            <?php endif;
+            $spec = $row->ctr_nurse? $row->at_abbr: $row->ctr_spec;
+            ?>
+            <td <?php echo $scls ?>><a href="<?php echo $this->url('contract', array('action'=>'view', 'part'=>'go', 'id' => $row->ctr_id)) ?>"><?php echo $this->escapeHtml($row->ctr_no); ?></a></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->formatDate($row->ctr_date)); ?></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($spec); ?></td>
+            <td <?php echo $scls ?>><a href="<?php echo $this->url('report', array('action'=>'placement2', 'part'=>'go', 'id' => $row->pl_id)) ?>"><?php echo $this->escapeHtml($row->st_name); ?></a></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->formatDate($row->pl_date)); ?></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->s2pl); ?></td>
+            <td <?php echo $scls ?>><?php echo $this->escapeHtml($row->emp_uname);
+            if( $row->pl_split_emp ) echo ', '.$this->escapeHtml($row->split_uname);
+            ?></td>
+        </tr>
+        <?php endforeach;
+        if( $tcnt ): ?>
+        <tr>
+            <td colspan="3"><b>Total placements:</b></td>
+            <td colspan="7"><b><?php echo $this->escapeHtml($tcnt); ?></b></td>
+        </tr>
+        <?php else: ?>
+        <tr><td colspan="10" class="alert-danger">No placements in the range!</td></tr>
+        <?php endif ?>
+    </tbody>
+</table>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

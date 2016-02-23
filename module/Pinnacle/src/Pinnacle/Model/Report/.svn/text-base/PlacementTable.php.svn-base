@@ -1,0 +1,40 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/Report/PlacementTable.php:
+namespace Pinnacle\Model\Report;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Where;
+
+class PlacementTable extends ReportTable
+{
+    public function __construct(Adapter $adapter) {
+        parent::__construct($adapter,'vPlacMarketRpt2',
+                            '`pl_id`, `pl_date`, `ctr_id`, `ctr_no`, `ctr_date`, `ctr_spec`, `st_name`, `ctr_location_c`, `ctr_location_s`, `cli_sys`, `mark_uname`, `mark_id`, `emp_uname`, `ctct_name`, `ctct_phone`, `cli_id`, `s2pl`, `pl_annual`, `pl_split_emp`, `split_uname`, `ctr_nurse`, `at_abbr`');
+    }
+
+    /**
+     * @param array $ar     keys: date1, date2, spec (0=All,'---'=Midlevels), st_code (0=All)
+    */
+    public function fetchAll(array $ar = null) {
+        $select = new Select($this->table);
+        if( is_array($ar) ) {
+            $where = new Where();
+            if( $ar['spec'] === '---' ) $where->equalTo('ctr_nurse',1);
+            elseif( $ar['spec'] ) $where->equalTo('ctr_spec',$ar['spec']);
+            
+            if( $ar['st_code'] ) $where->equalTo('ctr_location_s', $ar['st_code'] );
+            
+            if( $ar['date1'] && $ar['date2'] )
+                $where->between('pl_date',$ar['date1'],$ar['date2']);
+            elseif( $ar['date1'] ) $where->greaterThanOrEqualTo('pl_date',$ar['date1']);
+            elseif( $ar['date2'] ) $where->lessThanOrEqualTo('pl_date',$ar['date2']);
+            
+            $select->where($where);
+        }
+        $select->order('ctr_location_s, ctct_name, ctr_spec, pl_date DESC');
+        $resultSet = $this->selectWith($select);
+        return $resultSet;
+    }
+
+}

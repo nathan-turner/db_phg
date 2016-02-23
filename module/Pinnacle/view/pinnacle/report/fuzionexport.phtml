@@ -1,0 +1,223 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/fuzionexport.phtml:
+// Summary report
+
+$title = 'Fuzion Export list';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+$(function(){
+var allchecked=false;
+   $('#select-all').click(function(event) {   
+        if(this.allchecked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function() {
+                this.checked = false;                        
+            });
+			this.allchecked=false;
+        }
+        else if(!this.allchecked) { //alert(this.allchecked);
+            // Iterate each checkbox
+            $(':checkbox').each(function() {
+                this.checked = true;                        
+            });
+			this.allchecked=true;
+        }
+    });
+});
+</script>
+<script language="JavaScript" type="text/JavaScript"><!--
+var pop_id = "";
+
+function loaded() {
+   try { parent.frames.phgtop.sim_click("rep_a"); } catch (e) {
+	// oho! no parent. fixit:
+	document.location = "default.asp?link=fuzionexport.asp";
+   } finally {} //debug
+}
+
+function getele(p1,p2) {
+	return document.form1.elements.item(p1+"_"+p2);
+}
+
+function getid(p1,p2) {
+	return document.getElementById(p1+"_"+p2);
+}
+
+function validator1(theform) {
+// save and send all handler - everything must be filled/ selected.
+   var thereis = false;
+   var s = "";
+   for(i = 0; i < document.form1.elements.length; i++) {
+        var o = document.form1.elements[i];
+        if( o.tagName == "INPUT" && o.type == "checkbox" && o.checked == true ) {
+          s += (o.value + ",");
+          thereis = true;
+        }
+   }
+   if( s != "" ) s = s.slice(0,-1);
+   document.form1.whitel.value = s;
+   return thereis;
+}
+
+function ckall() { alert('test');
+    for(i = 0; i < document.form1.elements.length; i++) {
+        var o = document.form1.elements[i];
+        if( o.tagName == "input" && o.type == "checkbox" ) o.checked = true;
+    }
+}
+
+function unckall() {
+    for(i = 0; i < document.form1.elements.length; i++) {
+        var o = document.form1.elements[i];
+        if( o.tagName == "INPUT" && o.type == "checkbox" ) o.checked = false;
+    }
+}
+
+// -->
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Click on the ID# to go to a physician record. After you return to this list, please check physicians you already exported and click 
+<strong>Remove</strong> button:</p>
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rptdataentry')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="post" name="form1" id="form1" >
+	
+<?php
+$i=0;
+foreach($ar as $key=>$val)
+{
+	$keys[]=$val["ph_id"]; //array for id's to add to source
+	$i++;
+}
+$ids = join(",",$keys);
+
+if($i<=0){
+?>
+<h2 class="alert">No physicians to export!</h2>
+	 <p><a href="?V2=YES"><strong>Click here</strong> to check out physicians without CVs</a>!</p>
+ <p><a href="?V2=no_email"><strong>Click here</strong> to check out physicians without email</a>!</p>
+<?php
+}
+else
+{
+?>	
+	<table id=PhiTable width="85%" border="1" cellpadding="2" cellspacing="0" class="nobg"><thead>
+<tr>
+    <td class="bld">ID #</td><td class="bld">Name</td><td class="bld ctr">Specialty</td><td align="center"><span 
+
+class="fakea"
+      id="select-all" >Check All</span></td>
+</tr>
+</thead><tbody>
+
+
+<?php
+foreach($ar as $key=>$val)
+{
+	
+?>	
+<tr>
+      <td align="center" id="hreftd"><a href="<?php echo $this->basePath(); ?>/physician/view/<?php echo $val["ph_id"]; ?>?srs=<?php echo $ids; ?>" target="_blank"><?php echo $val["ph_id"]; ?></a></td>
+      <td><?php echo $val["ctct_name"]; ?></td>
+	  <td><?php echo $val["ph_spec_main"]; ?></td>
+      <td align="center"><input type="checkbox" name="wh[]" value="<?php echo $val["ph_id"]; ?>">
+	 <select name="sel_<?php echo $val["ph_id"]; ?>">
+	    <option value="0" selected> Exported</option>
+	    <option value="1"> No email</option>
+	    <option value="2"> No specialty</option>
+	    <option value="3"> No contact info</option>
+		<option value="5"> No Medical School</option>	
+		<option value="6"> No Residency Info</option>	    
+		<option value="8"> Duplicate (no data added)</option>
+		<option value="9"> Duplicate (data updated)</option>
+		<option value="10"> Redi Data</option>
+		<option value="4"> Other (please explain)</option>	
+	 </select>
+	 Other: <input maxlength=100 name="oth_<?php echo $val["ph_id"]; ?>" />(Explain further)
+      </td>
+  </tr>
+
+
+<?php	
+}
+?>
+
+</tbody></table>
+
+
+<input type="hidden" name="whitel" value=""><input type="hidden" name="V2" value="<?php echo $_GET["v2"]; ?>">
+<br/><br/>
+<input type="submit" value="Remove" id="removebtn" name="removebtn" class="btn large" />
+
+<?php
+} //end else
+?>
+
+</form>
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

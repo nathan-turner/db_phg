@@ -1,0 +1,126 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/monmor.phtml:
+
+$title = 'Monday Morning Meeting Report';
+$this->headTitle($title);
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+
+if( $report ): ?>
+
+<style>
+@media print {
+	body { font-size: 12px; }
+	.report td { padding: 0px; }
+	
+	hr, footer { display: none; }
+}
+.report td { padding: 0px; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<div class="row">
+    <div class="span6">
+        <h3><?php echo $this->escapeHtml($report->monday); ?></h3>
+    </div>
+	<!--
+    <div class="span3">
+        <ul class="phg-bullet">
+            <li>John's Weekly Comments</li>
+            <li>Weekly Hot Topic</li>
+        </ul>
+    </div>
+    <div class="span3">
+        <ul class="phg-bullet">
+            <li>Administration Review</li>
+            <li>Quality Review</li>
+        </ul>
+    </div>-->
+</div>
+
+<div class="row">
+    <div class="span6">
+
+        <!--<h2>Marketing</h2>
+        <ul class="phg-bullet">
+            <li>Meetings Review</li>
+            <li>Pendings Comments</li>
+            <li>Pendings Predictions</li>
+            <li>Comments</li>
+        </ul>-->
+        
+<h3>Meetings</h3>
+<table class="table report">
+    <tbody>
+        <?php
+        $prevuname = '';
+        foreach ($report->meetings as $row):
+        ?>
+        <tr>
+            <td><?php
+            if( $row['emp_uname'] != $prevuname ) {
+                $prevuname = $row['emp_uname'];
+                echo $this->escapeHtml($row['emp_realname']);
+            } else echo ' ';
+            ?></td>
+            <td><?php echo $this->escapeHtml($row['cm_date']); ?></td>
+            <td><?php if( $row['cm_nomeet'] ): ?>
+            <small title="Conference Call"><b><sup>C</sup><span style="font-size: 7pt">C</span></b></small><?php endif ?>
+            <a href="<?php echo $this->url('client', array('action'=>'view', 'part'=>'go', 'id' => $row['cli_id'])) ?>"><?php echo $this->escapeHtml($row['ctct_addr_c']); ?>, <?php echo $this->escapeHtml($row['ctct_st_code']); ?></a>
+            </td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="3"> </td></tr>
+    </tbody>
+</table>
+<p>Team prediction: __________</p>
+
+    </div>
+    <div class="span6">
+
+       <!-- <h2 style="page-break-before:always">Recruiting</h2>
+        <ul class="phg-bullet">
+            <li>Interview Status</li>
+            <li>Placement Predictions</li>
+            <li>Profiles Done</li>
+            <li>Placement Story</li>
+        </ul>-->
+
+
+<h3>Pendings</h3>
+<table class="table report">
+    <tbody>
+        <?php
+        $prevuname = '';
+        foreach ($report->pendings as $row):
+            if( $row['emp_uname'] != $prevuname ) {
+                $prevuname = $row['emp_uname'];
+                echo '<tr><td colspan="3"><b>'.$this->escapeHtml($row['emp_realname']).
+                    '</b></td></tr>';
+            }
+            $nuaction = ($row['pipl_nurse'])? 'midlevel':'physician';
+            $nusec = ($row['pipl_nurse'])? 'at_abbr':'ph_spec_main';
+        ?>
+        <tr>
+            <td><a href="#<?php //echo $this->url($nuaction, array('action'=>'view', 'part'=>'go', 'id' => $row['ph_id'])) ?>"><?php echo $this->escapeHtml($row['ctct_name']); ?></a></td>
+            <td><?php echo $this->escapeHtml($row[$nusec]); ?></td>
+            <td><?php if( !empty($row['ctr_location_c']) ): ?>
+            <a href="#<?php //echo $this->url('contract', array('action'=>'view', 'part'=>'go', 'id' => $row['ctr_id'])) ?>"><?php echo $this->escapeHtml($row['ctr_location_c']); ?>, <?php echo $this->escapeHtml($row['ctr_location_s']); ?></a>
+            <?php endif ?>
+            </td>
+        </tr>
+        <?php endforeach ?>
+        <tr><td colspan="3"> </td></tr>
+    </tbody>
+</table>
+<p>Team prediction: __________</p>
+<p>Total Presents for the month: <?php echo $this->escapeHtml($report->presents); ?></p>
+        
+    </div>
+</div>
+
+<?php endif;
+
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

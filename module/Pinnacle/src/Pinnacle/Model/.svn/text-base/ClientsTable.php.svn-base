@@ -1,0 +1,146 @@
+<?php
+// module/Pinnacle/src/Pinnacle/Model/ClientsTable.php:
+namespace Pinnacle\Model;
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Where;
+use Zend\View\Renderer\PhpRenderer;
+use Zend\Mvc\Controller\AbstractController;
+
+class ClientsTable extends Report\ReportTable
+{
+
+    public function __construct(Adapter $adapter) {
+        parent::__construct($adapter,'vClientLookup',
+            '`cli_id`, `ctct_name`, `ctct_addr_c`, `ctct_phone`, `ctct_st_code`, `st_name`, `cli_sys`, `cli_beds`, `cli_type`, `cli_status`, `cli_source`, `ctct_addr_z`, `city_state`, ctct_id, `cli_locumactive`'); // `ch_emp_id`, `ch_hot_prospect`, `ch_pending`, `ch_lead_1`, `ch_lead_2`, 
+    }
+    
+    /**
+     * @param array $ar     keys: see ClientsForm
+    */
+    public function buildQuery(array $ar = null) {
+        if( is_array($ar) && $ar['emp_id'] ) {
+            if( !$ar['cli_hotlist'] ) $this->table = 'vClientLookupSmall'; // eeeek!
+            $where = new Where();
+            $nduh = 0;
+            if( $ar['cli_id'] ) { $where->equalTo('cli_id',$ar['cli_id']); return $where; }
+            
+            if( strlen(trim($ar['cli_name'])) > 3 ) {
+                $like = addslashes(trim($ar['cli_name']));
+                $where->like('ctct_name',"%$like%"); $nduh++;
+            }
+            if( trim($ar['cli_city']) ) {
+                $like = addslashes(trim($ar['cli_city']));
+                $where->like('ctct_addr_c',"$like%"); $nduh++;
+            }
+            if( trim($ar['cli_zip']) ) {
+                $like = addslashes(trim($ar['cli_zip']));
+                $where->like('ctct_addr_z',"$like%"); $nduh++;
+            }
+            if( trim($ar['cli_sys']) ) {
+                $like = addslashes(trim($ar['cli_sys']));
+                $where->like('cli_sys',"$like%"); $nduh++;
+            }
+            if( $ar['cli_type'] ) { $where->equalTo('cli_type',$ar['cli_type']); $nduh++; }
+            if( trim($ar['cli_phone']) ) {
+                $like = addslashes(trim($ar['cli_phone']));
+                $where->literal('cast(ctct_phone as varchar) like ?',array("$like%")); $nduh++;
+            }
+            if( $ar['cli_state'] ) { $where->equalTo('ctct_st_code',$ar['cli_state']); $nduh++; }
+            if( $ar['cli_beds'] ) { $where->greaterThanOrEqualTo('cli_beds',$ar['cli_beds']); $nduh++; }
+            if( $ar['cli_status'] >= 0 ) { $where->equalTo('cli_status',$ar['cli_status']); $nduh++; }
+            elseif( $ar['cli_status'] == -2 ) { $where->in('cli_status',array(1,10)); $nduh++; }
+            elseif( $ar['cli_status'] == -3 ) { $where->equalTo('cli_locumactive',1); $nduh++; }
+            if( $ar['cli_source'] >= 0 ) { $where->equalTo('cli_source',$ar['cli_source']); $nduh++; }
+            if( $ar['cli_hotlist'] ) {
+                switch( $ar['cli_hotlist'] ) {
+                    case 1: $where->equalTo('ch_hot_prospect',1); break;
+                    case 2: $where->equalTo('ch_lead_1',1); break;
+                    case 4: $where->equalTo('ch_lead_2',1); break;
+                    case 8: $where->equalTo('ch_pending',1); break;
+                }
+                $where->equalTo('ch_emp_id',$ar['emp_id']); $nduh++;
+            }
+           
+            return $nduh? $where: false; // don't allow empty criteria
+        }
+        return false;
+    }
+
+    public function fetchAll($id = 0, array $ar = null) {
+        $where = $this->buildQuery($ar);
+        if( $where ) {
+            $select = new Select($this->table);
+            $select->where($where);
+            $select->order('city_state, ctct_name');
+            $limit = (int) $ar['pg_size']; if( !$limit || $limit > 200 ) $limit = 25;
+            $select->limit($limit);
+            $id--; if( $id < 0 ) $id = 0;
+            $offset = $id * $limit;
+            $select->offset($offset);
+            $resultSet = $this->selectWith($select);
+            return $resultSet;
+        }
+        return false;
+    }
+
+    public function getResortPages(array $ar = null) {
+        $where = $this->buildQuery($ar);
+        if( $where ) {
+            $pgsize = (int) $ar['pg_size']; if( !$pgsize ) $pgsize = 25;
+            $sql = new Sql($this->adapter);
+            $select = $sql->select();
+            $select->from($this->table);
+            $select->where($where);
+            $select->columns(array('*'), false);
+            $str = $sql->getSqlStringForSqlObject($select);
+            $str = str_replace('SELECT * ','SELECT count(*) as cnt ',$str); // awful
+            $rowSet = $this->adapter->query($str)->execute();
+            foreach ($rowSet as $rec)
+                $total = $rec['cnt'];
+            if( $total ) $total += $pgsize;
+            return intval($total / $pgsize);
+        }
+        return 0;
+    }
+    
+    public function saveResortPages($uid,$lid,array $ar = null) {
+        $where = $this->buildQuery($ar);
+        $uid = (int) $uid; $lid = (int) $lid;
+        if( $where && $uid && $lid ) {
+            $sql = new Sql($this->adapter);
+            $select = $sql->select();
+            $select->from($this->table);
+            $select->where($where);
+            $select->columns(array('*'), false);
+            $str = $sql->getSqlStringForSqlObject($select);
+            $param = "INSERT IGNORE INTO custlistsus (owneruid,listid,ctype,memberuid) SELECT $uid,$lid,2,ctct_id ";
+            $str = str_replace('SELECT * ',$param,$str); // awful
+            $result = $this->adapter->query($str,Adapter::QUERY_MODE_EXECUTE);
+            return $result;
+        }
+        return 0;
+    }
+
+    public function getResort(AbstractController $ctrl, $id = 0, array $ar = null) {
+        $res = $this->fetchAll($id,$ar);
+        $a = array();
+        $vm = new PhpRenderer();
+        $urls = $ctrl->url();
+        if( $res ) foreach ($res as $row) {
+            $ar = array();
+            $ar['cliurl'] = $urls->fromRoute('client', array('action'=>'view', 'part'=>'go', 'id' => $row->cli_id));
+            if( !$row->city_state ) $row->city_state = ' ';
+
+            foreach ($row->getArrayCopy() as $k=>$v)
+                $ar[$k] = $vm->escapeHtml($v);
+            $a[] = $ar;
+        }
+        else $a[] = 'No records in the range';
+        return $a;
+    }
+
+
+}

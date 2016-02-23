@@ -1,0 +1,86 @@
+<?php
+// module/Pinnacle/view/pinnacle/mail/massemail.phtml:
+
+$title = 'Emails';
+$this->headTitle($title);
+$this->inlineScript()->appendFile($this->basePath() . '/js/maillist.js', 'text/javascript');
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+<p style="text-align:center; color:red"><?php echo $message; ?></p>
+<?php
+   /* $form->setAttribute('action', $this->url('resort', array('action'=>'mdesedit')));
+    $form->get('uid')->setValue($phguser->uid);
+    $form->get('description')->setLabelAttributes(array('style'=> 'vertical-align: top; margin-top: 5px'));
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('uid'));
+    echo $this->formHidden($form->get('list_id')); // #my-list
+    echo $this->formHidden($form->get('shared'));*/
+?>
+    <!--<button type="button" class="close" data-dismiss="alert" title="Cancel">&times;</button>//-->
+    <div class="row" style="vertical-align: top">
+        <div class="span3">
+			<a href="<?php echo $this->basePath(); ?>/mail/addemail">Create Email</a>
+            
+        </div>
+        <div class="span6">
+            <?php //echo $this->formRow($form->get('description')); ?>
+        </div>
+        <div class="span1">
+            <?php //echo $this->formButton($form->get('editbutton')); ?>
+        </div>
+    </div>
+	
+	<table class="table">
+<thead><tr>    
+    <th>Title</th>
+    <th>Subject</th>
+    <th>Sent Date</th>
+    <th>From Addr.</th>
+</tr></thead>
+<tbody id="my-tbody">
+	<?php
+		foreach($ar as $row): ?>
+		
+		<tr id="my-row">
+    
+    <td><?php echo $row["emailtitle"];?> </td>
+    <td><?php echo $row["subject"];?></td>
+    <td><?php echo $row["lastsent"];?></td>
+    <td><?php echo $row["fromaddr"];?></td>
+    <td><a href="<?php echo $this->basePath(); ?>/mail/editemail/<?php echo $row["emailid"];?>" data-list-id="<?php echo $this->escapeHtml($row->list_id);?>" class="my-listedit btn btn-small"><i class="icon-pencil"></i> Edit</a>
+        <a href="<?php echo $this->basePath(); ?>/send_grid.php?id=<?php echo $row["emailid"];?>" onclick="return confirm('Are you sure you want to send?');" data-list-id="<?php echo $this->escapeHtml($row->list_id);?>" class="btn btn-small "><i class="icon-envelope "></i> Send</a>
+		<a href="<?php echo $this->basePath(); ?>/mail/deletemail/<?php echo $row["emailid"];?>" onclick="return confirm('Are you sure you want to delete?');" data-list-id="<?php echo $this->escapeHtml($row->list_id);?>" class="my-listdel btn btn-small btn-danger"><i class="icon-trash icon-white"></i> Delete</a>
+		
+    
+    </td>
+</tr>
+	<?php	
+		endforeach;
+	?>
+	</tbody>
+</table>
+	
+<?php
+    //echo $this->form()->closeTag();
+?>
+
+
+
+
+
+
+
+<?php
+$url = $this->url('resort', array('action'=>'mdes')); // . add / edit / del
+$lurl = $this->url('mail', array('action'=>'list', 'part' => 'L')); // . lid/1
+$redir = $this->url('login');
+$scrip = "mlMainInit(\"$lurl\", \"$url\", \"$redir\");\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-mis'));

@@ -1,0 +1,598 @@
+<?xml version="1.0"?>
+ <?xml-stylesheet type="text/xml" href="../xsl/choosest.xsl"?>
+ <?xml-stylesheet type="text/xsl" href="../xsl/choosest.xsl"?>
+
+
+<listing_cities>
+
+<state>
+<state_name>California</state_name>
+
+<state_abbrev>CA</state_abbrev>
+
+
+   <city>
+
+     <city_name>Camp Pendleton</city_name>
+
+     <state_name>California</state_name>
+
+     <state_abbrev>CA</state_abbrev>
+
+        <institution>
+
+        <institution_name>Naval Hospital (Camp Pendleton)</institution_name>
+
+        <institution_id>050320</institution_id>
+
+        </institution>
+
+
+   </city>
+
+   <city>
+
+     <city_name>San Diego</city_name>
+
+     <state_name>California</state_name>
+
+     <state_abbrev>CA</state_abbrev>
+
+        <institution>
+
+        <institution_name>Naval Medical Center (San Diego)</institution_name>
+
+        <institution_id>050386</institution_id>
+
+        </institution>
+
+
+        <institution>
+
+        <institution_name>University of California (San Diego) Medical Center</institution_name>
+
+        <institution_id>050434</institution_id>
+
+        </institution>
+
+   </city>
+
+
+
+
+
+
+
+   <city>
+
+
+     <city_name>Travis AFB</city_name>
+
+     <state_name>California</state_name>
+
+
+
+        <institution>
+
+        <institution_name>David Grant Medical Center</institution_name>
+
+        <institution_id>050499</institution_id>
+
+        </institution>
+
+
+   </city>
+</state>
+
+<state>
+
+<state_name>Florida</state_name>
+<state_abbrev>FL</state_abbrev>
+
+
+   <city>
+
+     <city_name>Eglin AFB</city_name>
+
+     <state_name>Florida</state_name>
+
+     <state_abbrev>FL</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>US Air Force Regional Hospital</institution_name>
+
+        <institution_id>110722</institution_id>
+
+        </institution>
+
+   </city>
+
+   <city>
+
+     <city_name>Jacksonville</city_name>
+
+     <state_name>Florida</state_name>
+
+     <state_abbrev>FL</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>Naval Hospital (Jacksonville)</institution_name>
+
+        <institution_id>110256</institution_id>
+
+        </institution>
+
+   </city>
+
+   <city>
+
+
+     <city_name>Pensacola</city_name>
+
+     <state_name>Florida</state_name>
+
+
+
+        <institution>
+
+        <institution_name>Naval Hospital (Pensacola)</institution_name>
+
+        <institution_id>110159</institution_id>
+
+        </institution>
+
+        <institution>
+
+        <institution_name>Navy Medicine Operational Training Center</institution_name>
+
+        <institution_id>110108</institution_id>
+
+
+        </institution>
+
+        <institution>
+
+        <institution_name>United States Army School of Aviation Medicine</institution_name>
+
+        <institution_id>119150</institution_id>
+
+        </institution>
+
+   </city>
+
+</state>
+
+<state>
+<state_name>Georgia</state_name>
+
+<state_abbrev>GA</state_abbrev>
+
+   <city>
+
+
+     <city_name>Fort Benning</city_name>
+
+     <state_name>Georgia</state_name>
+
+
+
+        <institution>
+
+        <institution_name>Martin Army Community Hospital</institution_name>
+
+        <institution_id>120357</institution_id>
+
+        </institution>
+
+
+   </city>
+
+
+
+   <city>
+
+
+     <city_name>Fort Gordon</city_name>
+
+     <state_name>Georgia</state_name>
+
+
+
+        <institution>
+
+        <institution_name>Dwight David Eisenhower Army Medical Center</institution_name>
+
+        <institution_id>120492</institution_id>
+
+        </institution>
+
+
+   </city>
+</state>
+
+<state>
+
+<state_name>Hawaii</state_name>
+<state_abbrev>HI</state_abbrev>
+
+
+   <city>
+
+     <city_name>Tripler AMC</city_name>
+
+     <state_name>Hawaii</state_name>
+
+     <state_abbrev>HI</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>Tripler Army Medical Center</institution_name>
+
+        <institution_id>140426</institution_id>
+
+        </institution>
+
+   </city>
+
+</state>
+
+<state>
+<state_name>Maryland</state_name>
+
+<state_abbrev>MD</state_abbrev>
+
+   <city>
+
+
+     <city_name>Bethesda</city_name>
+
+     <state_name>Maryland</state_name>
+
+
+
+
+
+
+        <institution>
+
+        <institution_name>National Capital Consortium</institution_name>
+
+        <institution_id>108020</institution_id>
+
+
+        </institution>
+
+   </city>
+
+</state>
+<state>
+
+<state_name>Michigan</state_name>
+
+<state_abbrev>MI</state_abbrev>
+
+   <city>
+
+     <city_name>Royal Oak</city_name>
+
+     <state_name>Michigan</state_name>
+
+     <state_abbrev>MI</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>William Beaumont Hospital</institution_name>
+
+        <institution_id>250396</institution_id>
+
+        </institution>
+
+   </city>
+
+</state>
+
+<state>
+
+<state_name>Mississippi</state_name>
+<state_abbrev>MS</state_abbrev>
+
+
+   <city>
+
+     <city_name>Keesler AFB</city_name>
+
+     <state_name>Mississippi</state_name>
+
+     <state_abbrev>MS</state_abbrev>
+
+        <institution>
+
+        <institution_name>Keesler Medical Center</institution_name>
+
+        <institution_id>270371</institution_id>
+
+
+        </institution>
+
+   </city>
+
+</state>
+<state>
+
+<state_name>Nevada</state_name>
+
+<state_abbrev>NV</state_abbrev>
+
+   <city>
+
+
+     <city_name>Nellis AFB</city_name>
+
+     <state_name>Nevada</state_name>
+
+
+
+        <institution>
+
+        <institution_name>Mike O'Callaghan Federal Hospital</institution_name>
+
+        <institution_id>318041</institution_id>
+
+        </institution>
+
+
+   </city>
+</state>
+
+<state>
+
+<state_name>New York</state_name>
+<state_abbrev>NY</state_abbrev>
+
+
+   <city>
+
+     <city_name>West Point</city_name>
+
+     <state_name>New York</state_name>
+
+     <state_abbrev>NY</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>Keller Army Community Hospital</institution_name>
+
+        <institution_id>357271</institution_id>
+
+        </institution>
+
+   </city>
+
+</state>
+<state>
+
+<state_name>North Carolina</state_name>
+
+<state_abbrev>NC</state_abbrev>
+
+
+
+
+
+
+
+   <city>
+
+
+     <city_name>Camp Lejeune</city_name>
+
+     <state_name>North Carolina</state_name>
+
+
+
+        <institution>
+
+        <institution_name>Naval Hospital-Camp Lejeune</institution_name>
+
+        <institution_id>360509</institution_id>
+
+        </institution>
+
+
+   </city>
+   <city>
+
+
+     <city_name>Fort Bragg</city_name>
+
+     <state_name>North Carolina</state_name>
+
+
+
+        <institution>
+
+        <institution_name>Womack Army Medical Center</institution_name>
+
+        <institution_id>360101</institution_id>
+
+        </institution>
+
+
+   </city>
+</state>
+
+<state>
+
+<state_name>Ohio</state_name>
+<state_abbrev>OH</state_abbrev>
+
+
+   <city>
+
+     <city_name>Wright-Patterson AFB</city_name>
+
+     <state_name>Ohio</state_name>
+
+     <state_abbrev>OH</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>USAF School of Aerospace Medicine</institution_name>
+
+        <institution_id>480493</institution_id>
+
+        </institution>
+
+   </city>
+
+</state>
+
+<state>
+
+<state_name>Texas</state_name>
+<state_abbrev>TX</state_abbrev>
+
+
+   <city>
+
+     <city_name>El Paso</city_name>
+
+     <state_name>Texas</state_name>
+
+     <state_abbrev>TX</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>William Beaumont Army Medical Center</institution_name>
+
+        <institution_id>480318</institution_id>
+
+        </institution>
+
+   </city>
+
+   <city>
+
+     <city_name>Fort Hood</city_name>
+
+     <state_name>Texas</state_name>
+
+     <state_abbrev>TX</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>Darnall Army Medical Center</institution_name>
+
+        <institution_id>480199</institution_id>
+
+        </institution>
+
+   </city>
+
+   <city>
+
+     <city_name>Fort Sam Houston</city_name>
+
+     <state_name>Texas</state_name>
+
+     <state_abbrev>TX</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>San Antonio Uniformed Services Health Education Consortium</institution_name>
+
+        <institution_id>488068</institution_id>
+
+        </institution>
+
+   </city>
+
+</state>
+
+<state>
+
+<state_name>Virginia</state_name>
+<state_abbrev>VA</state_abbrev>
+
+
+   <city>
+
+     <city_name>Portsmouth</city_name>
+
+     <state_name>Virginia</state_name>
+
+     <state_abbrev>VA</state_abbrev>
+
+
+        <institution>
+
+        <institution_name>Naval Medical Center (Portsmouth)</institution_name>
+
+        <institution_id>510314</institution_id>
+
+        </institution>
+
+   </city>
+
+</state>
+
+<state>
+<state_name>Washington</state_name>
+
+<state_abbrev>WA</state_abbrev>
+
+   <city>
+
+
+     <city_name>Bremerton</city_name>
+
+     <state_name>Washington</state_name>
+
+
+
+        <institution>
+
+        <institution_name>Naval Hospital (Bremerton)</institution_name>
+
+        <institution_id>547003</institution_id>
+
+        </institution>
+
+
+   </city>
+   <city>
+
+
+     <city_name>Tacoma</city_name>
+
+     <state_name>Washington</state_name>
+
+
+
+
+
+
+        <institution>
+
+        <institution_name>Madigan Healthcare System</institution_name>
+
+        <institution_id>540393</institution_id>
+
+
+        </institution>
+
+   </city>
+
+</state>
+</listing_cities>

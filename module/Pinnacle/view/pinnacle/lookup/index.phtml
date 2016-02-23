@@ -1,0 +1,214 @@
+<?php
+// module/Pinnacle/view/pinnacle/lookup/index.phtml:
+
+$title = 'Basic Lookup';
+$this->headTitle($title);
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+$this->headScript()->appendFile($this->basePath() . '/js/tabs.js', 'text/javascript');
+$this->headLink()->prependStylesheet($this->basePath() .'/css/tabs.css');
+
+//if(isset($report))
+//if(isset($_POST) || $id>0)
+if(isset($report) && $report!=false)
+$paginationControl = $this->paginationControl($this->report,'Sliding','pagination',
+                            array('route'=>'lookup','part'=>$part));
+?>
+<style>
+table { width: 100%; border:1px solid black; background-color:#ffffff; }
+tr, td { border:1px solid black; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+<?php
+//$form = $this->form;
+//$form->setAttribute('action', $this->url('lookup'));
+//$form->prepare();
+?>
+<form action="" method="post">
+<p style="text-align:center; color: red"><?php echo $messages; ?></p>
+  <ul class='tabs'>
+    <li><a href='#tab1'>By Name</a></li>
+	<li><a href='#tab2'>By Phone/Fax</a></li>
+    <li><a href='#tab3'>By Email</a></li>
+    <li><a href='#tab4'>By Address</a></li>	
+  </ul>
+  
+  
+ <div id='tab1'>
+<div class="row">
+    <div class="span4">
+        <label>Name:</label> <input type="text" name="name" id="name" value="<?php echo $_POST["name"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span4">
+        
+		<input type="radio" name="type" id="client" value="1" <?php if($_POST["type"]==1){ echo "checked"; }?>/> Client
+		<input type="radio" name="type" id="doctor" value="2" <?php if($_POST["type"]==2){ echo "checked"; }?>/> Physician
+		<input type="radio" name="type" id="both" value="3" <?php if($_POST["type"]==3||$_POST["type"]==''){ echo "checked"; }?>/> Both
+    </div>
+	<div class="span4">
+        
+    </div>
+</div> 
+<br/>
+<input type="submit" value="Search" name="ntype_0" id="submit" class="btn btn-large" />
+ </div>
+
+ <div id='tab2'>
+<div class="row">
+    <div class="span4">
+        <label>Phone:</label> <input type="text" name="phone" id="phone" value="<?php echo $_POST["phone"];?>" />
+    </div>
+</div>
+<input type="submit" value="Search" name="ntype_1" id="submit" class="btn btn-large" />
+ </div>
+ 
+ <div id='tab3'>
+<div class="row">
+    <div class="span4">
+        <label>Email:</label> <input type="text" name="email" id="email" value="<?php echo $_POST["email"];?>" />
+    </div>
+</div>
+<input type="submit" value="Search" name="ntype_2" id="submit" class="btn btn-large" />
+ </div>
+ 
+ <div id='tab4'>
+ <div class="row">
+    <div class="span4">
+        <label>Address:</label> <input type="text" name="address" id="address" value="<?php echo $_POST["address"];?>" />
+    </div>
+
+    <div class="span4">
+        <label>City:</label> <input type="text" name="city" id="city" value="<?php echo $_POST["city"];?>" />
+    </div>
+</div>
+<div class="row">
+    <div class="span4">
+        <label>State:</label> 
+		<select type="text" name="state"  >
+		<?php 
+		//echo var_dump($marketers);
+		foreach ($states as $key=>$val)
+		{
+			echo "<option value='".$key."' ";
+			if($_POST["state"]==$key)
+				echo "selected";
+			echo ">".$val."</option>";
+		}
+		?>
+		</select>
+    </div>
+	<div class="span4">
+        <label>Zip:</label> <input type="text" name="zip" id="zip" value="<?php echo $_POST["zip"];?>" />
+    </div>
+</div>
+<input type="submit" value="Search" name="ntype_3" id="submit" class="btn btn-large" />
+ </div>
+
+<br/>
+ <div class="row">
+    <div class="span4">
+	
+        <label>Sort:</label> 
+		<select size="1" name="SOrder">
+        <option  value="0">Unsorted</option>
+        <option  value="1">By Name</option>
+        <option  value="2">By City, State</option>
+        <option  value="3">By State, City</option>
+        <option  value="4">By Contact Type</option>
+      </select>
+    </div>
+ </div>
+ 
+ 
+ 
+ 
+</form>
+
+<?php echo $paginationControl ?>
+
+
+<?php 
+if(isset($report)&& $report!=false){
+?>
+<table class="nobg" >
+<tr>
+<th>ID#</th><th>Name/Facility</th><th>Title</th><th>City, State</th><th>Type</th>
+</tr>
+<?php 
+$srslink="";
+$clientsrslink="";
+$physrslink="";
+$midsrslink="";
+//$report2=$report;
+/*foreach ($report2 as $row2) :
+ $srslink .= $row2->ctct_backref.",";
+endforeach;*/
+//echo var_dump($report->paginator->ctct_backref);
+
+
+foreach ($report as $row) :
+/*
+switch($row->ctct_type)
+{
+	
+}     */  
+$placemark=""; 
+if($arr[$row->ctct_type][1]=='client'){
+	$clientsrslink .= $row->ctct_backref.",";
+	$placemark='{CSRS}';
+}
+if($arr[$row->ctct_type][1]=='physician'){
+	$physsrslink .= $row->ctct_backref.",";
+	$placemark='{PSRS}';
+}
+if($arr[$row->ctct_type][1]=='midlevel'){
+	$midsrslink .= $row->ctct_backref.",";
+	$placemark='{MSRS}';
+}
+
+$table.='<tr>
+    <td><a href="'.$this->basePath()."/".$arr[$row->ctct_type][1]."/view/".$row->ctct_backref.$placemark.'">
+        '.$this->escapeHtml($row->ctct_backref).'</a></td>
+    <td>'.$this->escapeHtml($row->ctct_name).'</td>
+	<td>'.$this->escapeHtml($row->ctct_title).'</td>
+    <td>'.$row->ctct_st_code.", ".$this->escapeHtml($row->ctct_addr_c).'</td>
+	<td>'.$arr[$row->ctct_type][0].'</td>
+</tr>';
+
+?>
+<!--<tr>
+    <td><a href="<?php //echo $this->basePath()."/".$arr[$row->ctct_type][1]."/view/".$row->ctct_backref.$srslink; ?>">
+        <?php //echo $this->escapeHtml($row->ctct_backref);?> </a></td>
+    <td><?php //echo $this->escapeHtml($row->ctct_name);?></td>
+    <td><?php //echo $row->ctct_st_code.", ".$this->escapeHtml($row->ctct_addr_c);?></td>
+	<td><?php //echo $arr[$row->ctct_type][0];?></td>
+</tr>-->
+<?php endforeach; ?>
+<?php
+if($clientsrslink!="")
+	$clientsrslink="?srs=".$clientsrslink;
+if($physsrslink!="")
+	$physsrslink="?srs=".$physsrslink;
+if($midsrslink!="")
+	$midsrslink="?srs=".$midsrslink;
+$table=str_replace('{CSRS}',$clientsrslink, $table);
+$table=str_replace('{PSRS}',$physsrslink, $table);
+$table=str_replace('{MSRS}',$midsrslink, $table);
+	echo $table;
+?>
+</table>
+<?php
+}
+?>
+
+<?php
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-loo'));

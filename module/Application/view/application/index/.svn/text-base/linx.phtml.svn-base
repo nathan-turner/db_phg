@@ -1,0 +1,57 @@
+<h1>Useful links</h1>
+<div class="row">
+    <div class="span5">
+    <h2>Electronic Leave Requests</h2>
+    <ul class="phg-bullet">
+    <li><a href="http://www.formstack.com/forms/?531231-QUscnvq2Zs" target="_blank">Recruiting Form</a></li>
+    <li><a href="http://www.formstack.com/forms/?531668-QUscnvq2Zs" target="_blank">Marketing Form</a></li>
+    <li><a href="http://www.formstack.com/forms/?531669-QUscnvq2Zs" target="_blank">Administrative Form</a></li>
+    <li><a href="http://www.formstack.com/forms/?980551-QUscnvq2Zs" target="_blank">Locums Form</a></li>
+    </ul>
+    </div>
+    <div class="span5">
+        <h2>PHG Websites</h2>
+    <ul class="phg-bullet">
+    <li><a href="http://www.phg.com/" target="_blank"><b>Pinnacle Health Group</b></a></li>
+    <li><a href="http://physiciancareer.com/" target="_blank"><b>Physician Career</b></a></li>
+    <li><a href="http://admin.fuzionhg.com/" target="_blank"><b>Fuzion Admin</b></a></li>
+    </ul>
+</div>
+</div>
+<hr>
+    <h2>Miscellaneous sites:</h2>
+<div class="row">
+    <div class="span5">
+<ul class="phg-bullet">
+<li><a href="http://www.m-w.com/" target="_blank"><b>Merriam-Webster's</b> Collegiate® Dictionary</a></li>
+<li><a href="http://www.medterms.com/" target="_blank"><b>MedTerms.com</b> Medical Dictionary</a></li>
+<li><a href="http://decoder.americom.com/" target="_blank"><b>AmeriCom</b> Long Distance Area Decoder</a></li>
+<li><a href="http://www.napr.com/" target="_blank">The National Association of Physician Recruiters (<b>NAPR</b>)</a></li>
+<li><a href="https://www.med-pub.com/mms_noww/login.asp" target="_blank">MMS Dr. Lookup</a></li>
+<li><a href="http://www.yellowpages.com/" target="_blank"><b>The Real Yellow Pages</b> Online</a></li>
+<li><a href="http://www.anywho.com/" target="_blank"><b>AnyWho</b> - White and Yellow Pages Online, and more</a></li>
+<li><a href="http://www.mapquest.com/" target="_blank"><b>MapQuest</b>: Driving Directions, Maps &amp; Live Traffic Reports</a></li>
+<li><a href="http://www.usps.com/" target="_blank"><b>USPS</b> - The United States Postal Service</a></li>
+<li><a href="http://www.ama-assn.org/ama/pub/education-careers/becoming-physician/medical-licensure/state-medical-boards.shtml" target="_blank">Medical Boards</a></li>
+<li><a href="http://www.ama-assn.org/aps/amahg.htm" target="_blank"><b>AMA</b> Online Doctor Finder</a></li>
+<!--<li><a href="http://www.artofsearch.com/site_templates/HECC/index.asp?aff=HECC&SPLD=HECC" target="_blank"><b>ART</b> of search</a></li>-->
+<li><a href="http://www.visalaw.com/IMG/resources.html" target="_blank">Visalaw.com Health Care <b>Immigration News</b></a></li>
+<li><a href="http://www.visalaw.com/h03jan/16jan03.html" target="_blank">Visalaw.com Immigration - Physicians Licensing Requirements By State - January 2003</a></li>
+</ul>
+    </div>
+    <div class="span5">
+<ul class="phg-bullet">
+<li><a href="http://www.usvisainfo.com/pageDisplay.php?docID=12" target="_blank">State Departments of Health Contacts (J1 Waiver)</a></li>
+<li><a href="http://bphc.hrsa.gov/databases/newhpsa/newhpsa.cfm" target="_blank">Health Professional Shortage Areas Database Query</a></li>
+<li><a href="http://www.profilesdatabase.com/" target="_blank">IM Residends 2004 Profiles Database</a></li>
+<li><a href="/XML/default.htm" target="_blank"><b>GMED</b> 2012-2013 Directory</a></li>
+<li><a href="/docs/Guide.pdf" target="_blank">Physician Recruitment and Employment</a></li>
+<li><a href="/docs/2006_Revised_Pinnacle_Licensure.pdf" target="_blank">2006 <b>Pinnacle</b> Licensure</a></li>
+<li><a href="http://www.ama-assn.org/ama/noindex/category/11871.html" target="_blank"><b>Medical liability crisis map</b>
+ A Complete Reference Guide</a></li>
+<li><a href="http://www.acnpweb.org/files/public/UCSF_Chart_2007.pdf" target="_blank"><b>Scope of Practice</b> - NP-by-State Chart</a></li>
+</ul>
+    </div>
+</div>
+<?php
+$this->inlineScript()->appendScript('$("#phg-nav-mis").addClass("active"); $("#phg-nav-act").removeClass("active");', 'text/javascript');

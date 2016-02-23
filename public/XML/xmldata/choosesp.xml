@@ -1,0 +1,1036 @@
+<?xml version="1.0"?>
+ <?xml-stylesheet type="text/xm" href="../xsl/choosesp.xsl"?>
+ <?xml-stylesheet type="text/xsl" href="../xsl/choosesp.xsl"?>
+<specialty_listings>
+
+<specialty>
+<specialty_id>020</specialty_id>
+<spec_ltr_code>AI</spec_ltr_code>
+<specialty_name ProgReq="Spec_AI.htm">Allergy and Immunology</specialty_name>
+<census>72</census>
+</specialty>
+
+<specialty>
+<specialty_id>040</specialty_id>
+<spec_ltr_code>AN</spec_ltr_code>
+<specialty_name ProgReq="Spec_AN.htm">Anesthesiology</specialty_name>
+<census>130</census>
+   <subspecialty>
+<specialty_id>041</specialty_id>
+<spec_ltr_code>ACA</spec_ltr_code>
+<specialty_name>Adult Cardiothoracic Anesthesiology (Anesthesiology)</specialty_name>
+<census>56</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>042</specialty_id>
+<spec_ltr_code>PAN</spec_ltr_code>
+<specialty_name>Pediatric Anesthesiology (Anesthesiology)</specialty_name>
+<census>46</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>045</specialty_id>
+<spec_ltr_code>CCA</spec_ltr_code>
+<specialty_name>Critical Care Medicine (Anesthesiology)</specialty_name>
+<census>48</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>060</specialty_id>
+<spec_ltr_code>CRS</spec_ltr_code>
+<specialty_name ProgReq="Spec_CRS.htm">Colon and Rectal Surgery</specialty_name>
+<census>52</census>
+</specialty>
+
+<specialty>
+<specialty_id>080</specialty_id>
+<spec_ltr_code>D</spec_ltr_code>
+<specialty_name ProgReq="Spec_Der.htm">Dermatology</specialty_name>
+<census>114</census>
+   <subspecialty>
+<specialty_id>081</specialty_id>
+<spec_ltr_code>PRD</spec_ltr_code>
+<specialty_name>Procedural Dermatology (Dermatology)</specialty_name>
+<census>46</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>100</specialty_id>
+<spec_ltr_code>DMP</spec_ltr_code>
+<specialty_name>Dermatopathology (Dermatology)</specialty_name>
+<census>54</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>110</specialty_id>
+<spec_ltr_code>EM</spec_ltr_code>
+<specialty_name ProgReq="Spec_EM.htm">Emergency Medicine</specialty_name>
+<census>158</census>
+   <subspecialty>
+<specialty_id>114</specialty_id>
+<spec_ltr_code>PE</spec_ltr_code>
+<specialty_name>Pediatric Emergency Medicine (Emergency Medicine)</specialty_name>
+<census>19</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>116</specialty_id>
+<spec_ltr_code>ESM</spec_ltr_code>
+<specialty_name>Sports Medicine (Emergency Medicine)</specialty_name>
+<census>4</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>118</specialty_id>
+<spec_ltr_code>ETX</spec_ltr_code>
+<specialty_name>Medical Toxicology (Emergency Medicine)</specialty_name>
+<census>28</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>119</specialty_id>
+<spec_ltr_code>UME</spec_ltr_code>
+<specialty_name>Undersea and Hyperbaric Medicine (Emergency Medicine)</specialty_name>
+<census>6</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>120</specialty_id>
+<spec_ltr_code>FP</spec_ltr_code>
+<specialty_name ProgReq="Spec_FP.htm">Family Medicine</specialty_name>
+<census>452</census>
+   <subspecialty>
+<specialty_id>125</specialty_id>
+<spec_ltr_code>FPG</spec_ltr_code>
+<specialty_name>Geriatric Medicine (Family Medicine)</specialty_name>
+<census>42</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>127</specialty_id>
+<spec_ltr_code>FSM</spec_ltr_code>
+<specialty_name>Sports Medicine (Family Medicine)</specialty_name>
+<census>111</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>130</specialty_id>
+<spec_ltr_code>MG</spec_ltr_code>
+<specialty_name ProgReq="Spec_MG.htm">Medical Genetics</specialty_name>
+<census>50</census>
+   <subspecialty>
+<specialty_id>131</specialty_id>
+<spec_ltr_code>MBG</spec_ltr_code>
+<specialty_name>Medical Biochemical Genetics (Medical Genetics)</specialty_name>
+<census>11</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>140</specialty_id>
+<spec_ltr_code>IM</spec_ltr_code>
+<specialty_name ProgReq="Spec_IM.htm">Internal Medicine</specialty_name>
+<census>380</census>
+   <subspecialty>
+<specialty_id>141</specialty_id>
+<spec_ltr_code>CD</spec_ltr_code>
+<specialty_name>Cardiovascular Disease (Internal Medicine)</specialty_name>
+<census>187</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>142</specialty_id>
+<spec_ltr_code>CCM</spec_ltr_code>
+<specialty_name>Critical Care Medicine (Internal Medicine)</specialty_name>
+<census>34</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>143</specialty_id>
+<spec_ltr_code>END</spec_ltr_code>
+<specialty_name>Endocrinology, Diabetes, and Metabolism (Internal Medicine)</specialty_name>
+<census>129</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>144</specialty_id>
+<spec_ltr_code>GE</spec_ltr_code>
+<specialty_name>Gastroenterology (Internal Medicine)</specialty_name>
+<census>157</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>145</specialty_id>
+<spec_ltr_code>HEM</spec_ltr_code>
+<specialty_name>Hematology (Internal Medicine)</specialty_name>
+<census>4</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>146</specialty_id>
+<spec_ltr_code>ID</spec_ltr_code>
+<specialty_name>Infectious Disease (Internal Medicine)</specialty_name>
+<census>144</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>147</specialty_id>
+<spec_ltr_code>ON</spec_ltr_code>
+<specialty_name>Oncology (Internal Medicine)</specialty_name>
+<census>14</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>148</specialty_id>
+<spec_ltr_code>NEP</spec_ltr_code>
+<specialty_name>Nephrology (Internal Medicine)</specialty_name>
+<census>143</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>149</specialty_id>
+<spec_ltr_code>PUD</spec_ltr_code>
+<specialty_name>Pulmonary Disease (Internal Medicine)</specialty_name>
+<census>20</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>150</specialty_id>
+<spec_ltr_code>RHU</spec_ltr_code>
+<specialty_name>Rheumatology (Internal Medicine)</specialty_name>
+<census>112</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>151</specialty_id>
+<spec_ltr_code>IMG</spec_ltr_code>
+<specialty_name>Geriatric Medicine (Internal Medicine)</specialty_name>
+<census>104</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>152</specialty_id>
+<spec_ltr_code>IC</spec_ltr_code>
+<specialty_name>Interventional Cardiology (Internal Medicine)</specialty_name>
+<census>137</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>154</specialty_id>
+<spec_ltr_code>ICE</spec_ltr_code>
+<specialty_name>Clinical Cardiac Electrophysiology (Internal Medicine)</specialty_name>
+<census>100</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>155</specialty_id>
+<spec_ltr_code>HO</spec_ltr_code>
+<specialty_name>Hematology and Oncology (Internal Medicine)</specialty_name>
+<census>134</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>156</specialty_id>
+<spec_ltr_code>PCC</spec_ltr_code>
+<specialty_name>Pulmonary Disease and Critical Care Medicine (Internal Medicine)</specialty_name>
+<census>137</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>158</specialty_id>
+<spec_ltr_code>THP</spec_ltr_code>
+<specialty_name>Transplant Hepatology (Internal Medicine)</specialty_name>
+<census>36</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>159</specialty_id>
+<spec_ltr_code>AHF</spec_ltr_code>
+<specialty_name>Advanced Heart Failure and Transplant Cardiology</specialty_name>
+<census>0</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>160</specialty_id>
+<spec_ltr_code>NS</spec_ltr_code>
+<specialty_name ProgReq="Spec_NS.htm">Neurological Surgery</specialty_name>
+<census>101</census>
+   <subspecialty>
+<specialty_id>163</specialty_id>
+<spec_ltr_code>ESS</spec_ltr_code>
+<specialty_name>Endovascular Surgical Neuroradiology (Neurological Surgery)</specialty_name>
+<census>2</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>180</specialty_id>
+<spec_ltr_code>N</spec_ltr_code>
+<specialty_name ProgReq="Spec_N.htm">Neurology</specialty_name>
+<census>128</census>
+   <subspecialty>
+<specialty_id>182</specialty_id>
+<spec_ltr_code>ENR</spec_ltr_code>
+<specialty_name>Endovascular Surgical Neuroradiology (Neurology)</specialty_name>
+<census>2</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>183</specialty_id>
+<spec_ltr_code>NMN</spec_ltr_code>
+<specialty_name>Neuromuscular Medicine (Neurology)</specialty_name>
+<census>30</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>185</specialty_id>
+<spec_ltr_code>CHN</spec_ltr_code>
+<specialty_name>Child Neurology (Neurology)</specialty_name>
+<census>68</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>186</specialty_id>
+<spec_ltr_code>NDN</spec_ltr_code>
+<specialty_name>Neurodevelopmental Disabilities (Neurology)</specialty_name>
+<census>9</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>187</specialty_id>
+<spec_ltr_code>CN</spec_ltr_code>
+<specialty_name>Clinical Neurophysiology (Neurology)</specialty_name>
+<census>94</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>188</specialty_id>
+<spec_ltr_code>VN</spec_ltr_code>
+<specialty_name>Vascular Neurology (Neurology)</specialty_name>
+<census>72</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>190</specialty_id>
+<spec_ltr_code>MGP</spec_ltr_code>
+<specialty_name ProgReq="Spec_MGP.htm">Molecular Genetic Pathology (Medical Genetics and Pathology)</specialty_name>
+<census>33</census>
+</specialty>
+
+<specialty>
+<specialty_id>200</specialty_id>
+<spec_ltr_code>NM</spec_ltr_code>
+<specialty_name ProgReq="Spec_NM.htm">Nuclear Medicine</specialty_name>
+<census>54</census>
+</specialty>
+
+<specialty>
+<specialty_id>220</specialty_id>
+<spec_ltr_code>OBG</spec_ltr_code>
+<specialty_name ProgReq="Spec_OG.htm">Obstetrics and Gynecology</specialty_name>
+<census>242</census>
+   <subspecialty>
+<specialty_id>221</specialty_id>
+<spec_ltr_code>FPR</spec_ltr_code>
+<specialty_name>Female Pelvic and Reconstructive Surgery (Obstetrics and Gynecology)</specialty_name>
+<census>0</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>240</specialty_id>
+<spec_ltr_code>OPH</spec_ltr_code>
+<specialty_name ProgReq="Spec_OPH.htm">Ophthalmology</specialty_name>
+<census>117</census>
+   <subspecialty>
+<specialty_id>241</specialty_id>
+<spec_ltr_code>OPR</spec_ltr_code>
+<specialty_name>Ophthalmic Plastic and Reconstructive Surgery</specialty_name>
+<census>5</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>260</specialty_id>
+<spec_ltr_code>ORS</spec_ltr_code>
+<specialty_name ProgReq="Spec_OS.htm">Orthopaedic Surgery</specialty_name>
+<census>141</census>
+   <subspecialty>
+<specialty_id>261</specialty_id>
+<spec_ltr_code>OAR</spec_ltr_code>
+<specialty_name>Adult Reconstructive Orthopaedics (Orthopaedic Surgery)</specialty_name>
+<census>17</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>262</specialty_id>
+<spec_ltr_code>OFA</spec_ltr_code>
+<specialty_name>Foot and Ankle Orthopaedics (Orthopaedic Surgery)</specialty_name>
+<census>8</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>263</specialty_id>
+<spec_ltr_code>HSO</spec_ltr_code>
+<specialty_name>Hand Surgery (Orthopaedic Surgery)</specialty_name>
+<census>53</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>265</specialty_id>
+<spec_ltr_code>OP</spec_ltr_code>
+<specialty_name>Pediatric Orthopaedics (Orthopaedic Surgery)</specialty_name>
+<census>22</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>267</specialty_id>
+<spec_ltr_code>OSS</spec_ltr_code>
+<specialty_name>Orthopaedic Surgery of the Spine (Orthopaedic Surgery)</specialty_name>
+<census>18</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>268</specialty_id>
+<spec_ltr_code>OSM</spec_ltr_code>
+<specialty_name>Orthopaedic Sports Medicine (Orthopaedic Surgery)</specialty_name>
+<census>86</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>269</specialty_id>
+<spec_ltr_code>OTR</spec_ltr_code>
+<specialty_name>Orthopaedic Trauma (Orthopaedic Surgery)</specialty_name>
+<census>9</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>270</specialty_id>
+<spec_ltr_code>OMO</spec_ltr_code>
+<specialty_name>Musculoskeletal Oncology (Orthopaedic Surgery)</specialty_name>
+<census>11</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>280</specialty_id>
+<spec_ltr_code>OTO</spec_ltr_code>
+<specialty_name ProgReq="Spec_OTO.htm">Otolaryngology</specialty_name>
+<census>105</census>
+   <subspecialty>
+<specialty_id>286</specialty_id>
+<spec_ltr_code>NO</spec_ltr_code>
+<specialty_name>Neurotology (Otolaryngology)</specialty_name>
+<census>17</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>288</specialty_id>
+<spec_ltr_code>PDO</spec_ltr_code>
+<specialty_name>Pediatric Otolaryngology (Otolaryngology)</specialty_name>
+<census>15</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>300</specialty_id>
+<spec_ltr_code>PTH</spec_ltr_code>
+<specialty_name ProgReq="Spec_PTH.htm">Pathology-Anatomic and Clinical</specialty_name>
+<census>145</census>
+   <subspecialty>
+<specialty_id>301</specialty_id>
+<spec_ltr_code>SP</spec_ltr_code>
+<specialty_name>Selective Pathology (Pathology)</specialty_name>
+<census>67</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>305</specialty_id>
+<spec_ltr_code>BBK</spec_ltr_code>
+<specialty_name>Blood Banking/Transfusion Medicine (Pathology)</specialty_name>
+<census>47</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>306</specialty_id>
+<spec_ltr_code>PCH</spec_ltr_code>
+<specialty_name>Chemical Pathology (Pathology)</specialty_name>
+<census>2</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>307</specialty_id>
+<spec_ltr_code>PCP</spec_ltr_code>
+<specialty_name>Cytopathology (Pathology)</specialty_name>
+<census>91</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>310</specialty_id>
+<spec_ltr_code>FOP</spec_ltr_code>
+<specialty_name>Forensic Pathology (Pathology)</specialty_name>
+<census>36</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>311</specialty_id>
+<spec_ltr_code>HMP</spec_ltr_code>
+<specialty_name>Hematology (Pathology)</specialty_name>
+<census>83</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>314</specialty_id>
+<spec_ltr_code>MM</spec_ltr_code>
+<specialty_name>Medical Microbiology (Pathology)</specialty_name>
+<census>13</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>315</specialty_id>
+<spec_ltr_code>NP</spec_ltr_code>
+<specialty_name>Neuropathology (Pathology)</specialty_name>
+<census>33</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>316</specialty_id>
+<spec_ltr_code>PP</spec_ltr_code>
+<specialty_name>Pediatric Pathology (Pathology)</specialty_name>
+<census>25</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>320</specialty_id>
+<spec_ltr_code>PD</spec_ltr_code>
+<specialty_name ProgReq="Spec_PED.htm">Pediatrics</specialty_name>
+<census>198</census>
+   <subspecialty>
+<specialty_id>321</specialty_id>
+<spec_ltr_code>ADL</spec_ltr_code>
+<specialty_name>Adolescent Medicine (Pediatrics)</specialty_name>
+<census>26</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>323</specialty_id>
+<spec_ltr_code>CCP</spec_ltr_code>
+<specialty_name>Pediatric Critical Care Medicine (Pediatrics)</specialty_name>
+<census>63</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>324</specialty_id>
+<spec_ltr_code>PEM</spec_ltr_code>
+<specialty_name>Pediatric Emergency Medicine (Pediatrics)</specialty_name>
+<census>49</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>325</specialty_id>
+<spec_ltr_code>PDC</spec_ltr_code>
+<specialty_name>Pediatric Cardiology (Pediatrics)</specialty_name>
+<census>54</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>326</specialty_id>
+<spec_ltr_code>PDE</spec_ltr_code>
+<specialty_name>Pediatric Endocrinology (Pediatrics)</specialty_name>
+<census>67</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>327</specialty_id>
+<spec_ltr_code>PHO</spec_ltr_code>
+<specialty_name>Pediatric Hematology/Oncology (Pediatrics)</specialty_name>
+<census>66</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>328</specialty_id>
+<spec_ltr_code>PN</spec_ltr_code>
+<specialty_name>Pediatric Nephrology (Pediatrics)</specialty_name>
+<census>39</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>329</specialty_id>
+<spec_ltr_code>NPM</spec_ltr_code>
+<specialty_name>Neonatal-Perinatal Medicine (Pediatrics)</specialty_name>
+<census>96</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>330</specialty_id>
+<spec_ltr_code>PDP</spec_ltr_code>
+<specialty_name>Pediatric Pulmonology (Pediatrics)</specialty_name>
+<census>49</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>331</specialty_id>
+<spec_ltr_code>PPR</spec_ltr_code>
+<specialty_name>Pediatric Rheumatology (Pediatrics)</specialty_name>
+<census>30</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>332</specialty_id>
+<spec_ltr_code>PG</spec_ltr_code>
+<specialty_name>Pediatric Gastroenterology (Pediatrics)</specialty_name>
+<census>56</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>333</specialty_id>
+<spec_ltr_code>PSM</spec_ltr_code>
+<specialty_name>Pediatric Sports Medicine (Pediatrics)</specialty_name>
+<census>13</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>335</specialty_id>
+<spec_ltr_code>PDI</spec_ltr_code>
+<specialty_name>Pediatric Infectious Diseases (Pediatrics)</specialty_name>
+<census>60</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>336</specialty_id>
+<spec_ltr_code>DBP</spec_ltr_code>
+<specialty_name>Developmental-Behavioral Pediatrics (Pediatrics)</specialty_name>
+<census>34</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>338</specialty_id>
+<spec_ltr_code>PTP</spec_ltr_code>
+<specialty_name>Pediatric Transplant Hepatology (Pediatrics)</specialty_name>
+<census>5</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>339</specialty_id>
+<spec_ltr_code>CAP</spec_ltr_code>
+<specialty_name>Child Abuse Pediatrics (Pediatrics)</specialty_name>
+<census>14</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>340</specialty_id>
+<spec_ltr_code>PM</spec_ltr_code>
+<specialty_name ProgReq="Spec_PM.htm">Physical Medicine and Rehabilitation</specialty_name>
+<census>77</census>
+   <subspecialty>
+<specialty_id>342</specialty_id>
+<spec_ltr_code>PRS</spec_ltr_code>
+<specialty_name>Sports Medicine (Physical Medicine and Rehabilitation)</specialty_name>
+<census>11</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>343</specialty_id>
+<spec_ltr_code>NMP</spec_ltr_code>
+<specialty_name>Neuromuscular Medicine (Physical Medicine and Rehabilitation)</specialty_name>
+<census>0</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>345</specialty_id>
+<spec_ltr_code>SCI</spec_ltr_code>
+<specialty_name>Spinal Cord Injury Medicine (Physical Medicine and Rehabilitation)</specialty_name>
+<census>18</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>346</specialty_id>
+<spec_ltr_code>RPM</spec_ltr_code>
+<specialty_name>Pediatric Rehabilitation Medicine (Physical Medicine and Rehabilitation)</specialty_name>
+<census>18</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>360</specialty_id>
+<spec_ltr_code>PS</spec_ltr_code>
+<specialty_name ProgReq="Spec_PS.htm">Plastic Surgery</specialty_name>
+<census>71</census>
+   <subspecialty>
+<specialty_id>361</specialty_id>
+<spec_ltr_code>CFS</spec_ltr_code>
+<specialty_name>Craniofacial Surgery (Plastic Surgery)</specialty_name>
+<census>5</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>362</specialty_id>
+<spec_ltr_code>PSI</spec_ltr_code>
+<specialty_name>Plastic Surgery-Integrated</specialty_name>
+<census>45</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>363</specialty_id>
+<spec_ltr_code>HSP</spec_ltr_code>
+<specialty_name>Hand Surgery (Plastic Surgery)</specialty_name>
+<census>15</census>
+   </subspecialty>
+</specialty>
+
+
+<specialty>
+<specialty_id>381</specialty_id>
+<spec_ltr_code>AM</spec_ltr_code>
+<specialty_name ProgReq="Spec_AM.htm">Preventive Medicine: Aerospace Medicine</specialty_name>
+<census>5</census>
+</specialty>
+
+<specialty>
+<specialty_id>382</specialty_id>
+<spec_ltr_code>GPM</spec_ltr_code>
+<specialty_name ProgReq="Spec_GPM.htm">Preventive Medicine: General Preventive Medicine</specialty_name>
+<census>27</census>
+</specialty>
+
+<specialty>
+<specialty_id>383</specialty_id>
+<spec_ltr_code>OM</spec_ltr_code>
+<specialty_name ProgReq="Spec_OM.htm">Preventive Medicine: Occupational Medicine</specialty_name>
+<census>26</census>
+</specialty>
+
+<specialty>
+<specialty_id>384</specialty_id>
+<spec_ltr_code>PH</spec_ltr_code>
+<specialty_name ProgReq="Spec_PH.htm">Preventive Medicine: Public Health and General Preventive Medicine</specialty_name>
+<census>15</census>
+</specialty>
+
+<specialty>
+<specialty_id>380</specialty_id>
+<spec_ltr_code>PM</spec_ltr_code>
+<specialty_name ProgReq="Spec_PM.htm">Preventive Medicine: Subspecialties</specialty_name>
+<census></census>
+   <subspecialty>
+<specialty_id>398</specialty_id>
+<spec_ltr_code>UM</spec_ltr_code>
+<specialty_name>Undersea and Hyperbaric Medicine (Preventive Medicine)</specialty_name>
+<census>2</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>399</specialty_id>
+<spec_ltr_code>PTX</spec_ltr_code>
+<specialty_name>Medical Toxicology (Preventive Medicine)</specialty_name>
+<census>2</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>400</specialty_id>
+<spec_ltr_code>P</spec_ltr_code>
+<specialty_name ProgReq="Spec_P.htm">Psychiatry</specialty_name>
+<census>182</census>
+   <subspecialty>
+<specialty_id>401</specialty_id>
+<spec_ltr_code>ADP</spec_ltr_code>
+<specialty_name>Addiction Psychiatry (Psychiatry)</specialty_name>
+<census>45</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>405</specialty_id>
+<spec_ltr_code>CHP</spec_ltr_code>
+<specialty_name>Child and Adolescent Psychiatry (Psychiatry)</specialty_name>
+<census>124</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>406</specialty_id>
+<spec_ltr_code>PFP</spec_ltr_code>
+<specialty_name>Forensic Psychiatry (Psychiatry)</specialty_name>
+<census>38</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>407</specialty_id>
+<spec_ltr_code>PYG</spec_ltr_code>
+<specialty_name>Geriatric Psychiatry (Psychiatry)</specialty_name>
+<census>54</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>409</specialty_id>
+<spec_ltr_code>PYM</spec_ltr_code>
+<specialty_name>Psychosomatic Medicine (Psychiatry)</specialty_name>
+<census>54</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>420</specialty_id>
+<spec_ltr_code>DR</spec_ltr_code>
+<specialty_name ProgReq="Spec_RD.htm">Radiology-Diagnostic</specialty_name>
+<census>187</census>
+   <subspecialty>
+<specialty_id>421</specialty_id>
+<spec_ltr_code>AR</spec_ltr_code>
+<specialty_name>Abdominal Radiology (Radiology-Diagnostic)</specialty_name>
+<census>10</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>422</specialty_id>
+<spec_ltr_code>ESN</spec_ltr_code>
+<specialty_name>Endovascular Surgical Neuroradiology (Radiology)</specialty_name>
+<census>3</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>423</specialty_id>
+<spec_ltr_code>RNR</spec_ltr_code>
+<specialty_name>Neuroradiology (Radiology-Diagnostic)</specialty_name>
+<census>85</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>424</specialty_id>
+<spec_ltr_code>PDR</spec_ltr_code>
+<specialty_name>Pediatric Radiology (Radiology-Diagnostic)</specialty_name>
+<census>46</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>425</specialty_id>
+<spec_ltr_code>NR</spec_ltr_code>
+<specialty_name>Nuclear Radiology (Radiology-Diagnostic)</specialty_name>
+<census>19</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>426</specialty_id>
+<spec_ltr_code>MSR</spec_ltr_code>
+<specialty_name>Musculoskeletal Radiology (Radiology-Diagnostic)</specialty_name>
+<census>14</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>427</specialty_id>
+<spec_ltr_code>VIR</spec_ltr_code>
+<specialty_name>Vascular and Interventional Radiology (Radiology-Diagnostic)</specialty_name>
+<census>92</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>430</specialty_id>
+<spec_ltr_code>RO</spec_ltr_code>
+<specialty_name ProgReq="Spec_RO.htm">Radiation Oncology</specialty_name>
+<census>87</census>
+</specialty>
+
+<specialty>
+<specialty_id>440</specialty_id>
+<spec_ltr_code>GS</spec_ltr_code>
+<specialty_name ProgReq="Spec_GS.htm">Surgery-General</specialty_name>
+<census>250</census>
+   <subspecialty>
+<specialty_id>442</specialty_id>
+<spec_ltr_code>CCS</spec_ltr_code>
+<specialty_name>Surgical Critical Care (General Surgery)</specialty_name>
+<census>102</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>443</specialty_id>
+<spec_ltr_code>HSS</spec_ltr_code>
+<specialty_name>Hand Surgery (General Surgery)</specialty_name>
+<census>1</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>445</specialty_id>
+<spec_ltr_code>PDS</spec_ltr_code>
+<specialty_name>Pediatric Surgery (General Surgery)</specialty_name>
+<census>41</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>446</specialty_id>
+<spec_ltr_code>ASO</spec_ltr_code>
+<specialty_name>Advanced Surgical Oncology (General Surgery)</specialty_name>
+<census>0</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>450</specialty_id>
+<spec_ltr_code>VS</spec_ltr_code>
+<specialty_name>Vascular Surgery (General Surgery)</specialty_name>
+<census>104</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>451</specialty_id>
+<spec_ltr_code>VSI</spec_ltr_code>
+<specialty_name>Vascular Surgery-Integrated</specialty_name>
+<census>36</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>460</specialty_id>
+<spec_ltr_code>TS</spec_ltr_code>
+<specialty_name ProgReq="Spec_TS.htm">Thoracic Surgery</specialty_name>
+<census>58</census>
+   <subspecialty>
+<specialty_id>461</specialty_id>
+<spec_ltr_code>TSI</spec_ltr_code>
+<specialty_name>Thoracic Surgery-Integrated</specialty_name>
+<census>16</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>466</specialty_id>
+<spec_ltr_code>CHS</spec_ltr_code>
+<specialty_name>Congenital Cardiac Surgery (Thoracic Surgery)</specialty_name>
+<census>9</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>480</specialty_id>
+<spec_ltr_code>U</spec_ltr_code>
+<specialty_name ProgReq="Spec_U.htm">Urology</specialty_name>
+<census>122</census>
+   <subspecialty>
+<specialty_id>485</specialty_id>
+<spec_ltr_code>UP</spec_ltr_code>
+<specialty_name>Pediatric Urology (Urology)</specialty_name>
+<census>25</census>
+   </subspecialty>
+   <subspecialty>
+<specialty_id>486</specialty_id>
+<spec_ltr_code>UPR</spec_ltr_code>
+<specialty_name>Female Pelvic and Reconstructive Surgery (Urology)</specialty_name>
+<census>0</census>
+   </subspecialty>
+</specialty>
+
+<specialty>
+<specialty_id>520</specialty_id>
+<spec_ltr_code>SME</spec_ltr_code>
+<specialty_name ProgReq="Spec_SME.htm">Sleep Medicine</specialty_name>
+<census>72</census>
+</specialty>
+
+<specialty>
+<specialty_id>530</specialty_id>
+<spec_ltr_code>PMM</spec_ltr_code>
+<specialty_name ProgReq="Spec_PMM.htm">Pain Medicine</specialty_name>
+<census>92</census>
+</specialty>
+
+<specialty>
+<specialty_id>540</specialty_id>
+<spec_ltr_code>HPM</spec_ltr_code>
+<specialty_name ProgReq="Spec_HPM.htm">Hospice and Palliative Medicine</specialty_name>
+<census>78</census>
+</specialty>
+
+<specialty>
+<specialty_id>700</specialty_id>
+<spec_ltr_code>MPD</spec_ltr_code>
+<specialty_name ProgReq="Spec_MPD.htm">Internal Medicine/Pediatrics</specialty_name>
+<census>80</census>
+</specialty>
+
+<specialty>
+<specialty_id>705</specialty_id>
+<spec_ltr_code>MEM</spec_ltr_code>
+<specialty_name ProgReq="Spec_MEM.htm">Internal Medicine/Emergency Medicine</specialty_name>
+<census>12</census>
+</specialty>
+
+<specialty>
+<specialty_id>710</specialty_id>
+<spec_ltr_code>MPM</spec_ltr_code>
+<specialty_name ProgReq="Spec_MPM.htm">Internal Medicine/Physical Medicine and Rehabilitation</specialty_name>
+<census>0</census>
+</specialty>
+
+<specialty>
+<specialty_id>715</specialty_id>
+<spec_ltr_code>MP</spec_ltr_code>
+<specialty_name ProgReq="Spec_MP.htm">Internal Medicine/Psychiatry</specialty_name>
+<census>11</census>
+</specialty>
+
+<specialty>
+<specialty_id>720</specialty_id>
+<spec_ltr_code>FPP</spec_ltr_code>
+<specialty_name ProgReq="Spec_FPP.htm">Psychiatry/Family Medicine</specialty_name>
+<census>7</census>
+</specialty>
+
+<specialty>
+<specialty_id>725</specialty_id>
+<spec_ltr_code>EMP</spec_ltr_code>
+<specialty_name ProgReq="Spec_EMP.htm">Pediatrics/Emergency Medicine</specialty_name>
+<census>3</census>
+</specialty>
+
+<specialty>
+<specialty_id>726</specialty_id>
+<spec_ltr_code>PDA</spec_ltr_code>
+<specialty_name ProgReq="Spec_PDA.htm">Pediatrics/Anesthesiology</specialty_name>
+<census>4</census>
+</specialty>
+
+<specialty>
+<specialty_id>730</specialty_id>
+<spec_ltr_code>CPP</spec_ltr_code>
+<specialty_name ProgReq="Spec_CPP.htm">Pediatrics/Psychiatry/Child and Adolescent Psychiatry</specialty_name>
+<census>10</census>
+</specialty>
+
+<specialty>
+<specialty_id>735</specialty_id>
+<spec_ltr_code>PPM</spec_ltr_code>
+<specialty_name ProgReq="Spec_PPM.htm">Pediatrics/Physical Medicine and Rehabilitation</specialty_name>
+<census>4</census>
+</specialty>
+
+<specialty>
+<specialty_id>740</specialty_id>
+<spec_ltr_code>IFP</spec_ltr_code>
+<specialty_name ProgReq="Spec_IFP.htm">Internal Medicine/Family Medicine</specialty_name>
+<census>2</census>
+</specialty>
+
+<specialty>
+<specialty_id>745</specialty_id>
+<spec_ltr_code>MN</spec_ltr_code>
+<specialty_name ProgReq="Spec_MN.htm">Internal Medicine/Neurology</specialty_name>
+<census>2</census>
+</specialty>
+
+<specialty>
+<specialty_id>751</specialty_id>
+<spec_ltr_code>IPM</spec_ltr_code>
+<specialty_name ProgReq="Spec_IPM.htm">Internal Medicine/Preventive Medicine</specialty_name>
+<census>7</census>
+</specialty>
+
+<specialty>
+<specialty_id>752</specialty_id>
+<spec_ltr_code>FMP</spec_ltr_code>
+<specialty_name ProgReq="Spec_FMP.htm">Family Medicine/Preventive Medicine</specialty_name>
+<census>2</census>
+</specialty>
+
+<specialty>
+<specialty_id>755</specialty_id>
+<spec_ltr_code>PYN</spec_ltr_code>
+<specialty_name ProgReq="Spec_PYN.htm">Psychiatry/Neurology</specialty_name>
+<census>6</census>
+</specialty>
+
+<specialty>
+<specialty_id>760</specialty_id>
+<spec_ltr_code>NRN</spec_ltr_code>
+<specialty_name ProgReq="Spec_NRN.htm">Neurology/Diagnostic Radiology/Neuroradiology</specialty_name>
+<census>0</census>
+</specialty>
+
+<specialty>
+<specialty_id>765</specialty_id>
+<spec_ltr_code>PMG</spec_ltr_code>
+<specialty_name ProgReq="Spec_PMG.htm">Pediatrics/Medical Genetics</specialty_name>
+<census>15</census>
+</specialty>
+
+<specialty>
+<specialty_id>766</specialty_id>
+<spec_ltr_code>MDG</spec_ltr_code>
+<specialty_name ProgReq="Spec_MDG.htm">Internal Medicine/Medical Genetics</specialty_name>
+<census>4</census>
+</specialty>
+
+<specialty>
+<specialty_id>770</specialty_id>
+<spec_ltr_code>DNN</spec_ltr_code>
+<specialty_name ProgReq="Spec_DNN.htm">Diagnostic Radiology/Nuclear Medicine/Nuclear Radiology</specialty_name>
+<census>0</census>
+</specialty>
+
+<specialty>
+<specialty_id>775</specialty_id>
+<spec_ltr_code>IEC</spec_ltr_code>
+<specialty_name ProgReq="Spec_IEC.htm">Internal Medicine/Emergency Medicine/Critical Care Medicine</specialty_name>
+<census>3</census>
+</specialty>
+
+<specialty>
+<specialty_id>780</specialty_id>
+<spec_ltr_code>INM</spec_ltr_code>
+<specialty_name ProgReq="Spec_INM.htm">Internal Medicine/Nuclear Medicine</specialty_name>
+<census>0</census>
+</specialty>
+
+<specialty>
+<specialty_id>785</specialty_id>
+<spec_ltr_code>IMD</spec_ltr_code>
+<specialty_name ProgReq="Spec_IMD.htm">Internal Medicine/Dermatology</specialty_name>
+<census>9</census>
+</specialty>
+
+<specialty>
+<specialty_id>790</specialty_id>
+<spec_ltr_code>PDM</spec_ltr_code>
+<specialty_name ProgReq="Spec_PDM.htm">Pediatrics/Dermatology</specialty_name>
+<census>0</census>
+</specialty>
+
+<specialty>
+<specialty_id>795</specialty_id>
+<spec_ltr_code>EFM</spec_ltr_code>
+<specialty_name ProgReq="Spec_EFM.htm">Emergency Medicine/Family Medicine</specialty_name>
+<census>2</census>
+</specialty>
+
+<specialty>
+<specialty_id>999</specialty_id>
+<spec_ltr_code>TY</spec_ltr_code>
+<specialty_name ProgReq="Spec_TY.htm">Transitional Year</specialty_name>
+<census>111</census>
+</specialty>
+</specialty_listings>

@@ -1,0 +1,278 @@
+<SCRIPT LANGUAGE="javascript">
+  var inprogid=getqstringvalue("prog_id",window.location.search)
+//alert(inprogid)
+  var arrinprogid = new Array()
+  arrinprogid = parseqstring(inprogid)
+//  alert(arrinprogid[2])
+var btnbar=getqstringvalue("btnbar",window.location.search)
+  if(btnbar==""){ sortby = "sp" }
+var sortby=getqstringvalue("sortby",window.location.search)
+  if(sortby==""){ sortby = "state" }
+var selectfield=getqstringvalue("selectfield",window.location.search)
+var selectvalue=getqstringvalue("selectvalue",window.location.search)
+var extrasort=getqstringvalue("extrasort",window.location.search)
+var statedisplay=getqstringvalue("statedisplay",window.location.search)
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+var states = getqstringvalue("states",window.location.search)
+  var arrids = new Array()
+  arrids = parseqstring(specdisplay)
+//alert("\selectfield: " + selectfield + "\nselectvalue: " + selectvalue)
+//alert(window.location.search)
+///////////////////////////////////////////////////////////////////////////
+  document.write("<HTML><head>")
+  document.write("        <STYLE>")
+  document.write("          BODY {margin:0}")
+  document.write("          .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+  document.write("          .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+  document.write("          .csstextblue {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#000099;}")
+  document.write("          .csstextgreen {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#006A4D;}")
+  document.write("          .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+  document.write("          .cssproghead {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#006A4D}")
+  document.write("          .cssprogsubhead {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#ffffff;background-color:#241773;}")
+  document.write("          .cssprogsubheadb {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#000099;background-color:#bbd4c1;}")
+  document.write("        </STYLE>")
+  document.write("</head><body onLoad=\"doOnLoad();\" bgcolor=\"#ffffff\" LINK=\"#006A4D\" VLINK=\"#773377\" ALINK=\"#aa4433\">")
+
+
+///////////////////////////// DATA DUMP: //////////////////////////////////
+//    document.write(oProgXml.transformNode(oProgXsl.documentElement))   //
+///////////////////////////////////////////////////////////////////////////
+var elementname = "prog_id"
+var Nodes
+
+/// MERGE XML DATA ///
+var oProgSetupXml=new ActiveXObject("Microsoft.XMLDOM")
+oProgSetupXml.async = false;
+
+var oProgSetupXsl = new ActiveXObject("Microsoft.XMLDOM");
+oProgSetupXsl.async = false;
+oProgSetupXsl.load("xsl/pgsetup.xsl");
+
+var body = ""
+///////// FIRST, TACK TOGETHER THE SPECIALTY XML FILES YOU'LL NEED ////////////
+for(i=0;i<arrids.length;i++){
+//  alert("specdisplay: " + specdisplay + "\nxmldata/" + arrids[i]+".xml")
+  oProgSetupXml.load("xmldata/" + arrids[i]+".xml")
+  if (oProgSetupXml.parseError==0){
+    body += oProgSetupXml.transformNode(oProgSetupXsl.documentElement)
+  }
+  else{
+    alert("in oProgSetupXml: " + oProgSetupXml.parseError.reason)
+  }
+}
+body = "<listings>" + body + "</listings>"
+//top.header.document.forms[0].showtext.value = body
+//alert(body)
+//document.write(body)
+
+//////// NEXT, MAKE ONE XML FILE AND PARSE THE NODES ////////////////////////
+oProgXml=new ActiveXObject("Microsoft.XMLDOM")
+oProgXml.async = false;
+oProgXml.loadXML(body)
+
+var oProgXsl = new ActiveXObject("Microsoft.XMLDOM");
+oProgXsl.async = false;
+oProgXsl.load("xsl/program.xsl");
+
+if (oProgXml.parseError==0){
+///////////////////////////// DATA DUMP: //////////////////////////////////
+//    document.write(oProgXml.transformNode(oProgXsl.documentElement))
+///////////////////////////////////////////////////////////////////////////
+  var Nodes = oProgXml.documentElement.selectNodes("program/"+elementname)
+////  var Node = oProgXml.documentElement.selectSingleNode("program/"+elementname)
+  selectListings(Nodes,elementname,inprogid)
+}
+else{
+  alert("oProgXml: " + oProgXml.parseError.reason)
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+function doOnLoad(){
+//  alert("btnbar"+ btnbar + ".htm?specdisplay=" + specdisplay + "&statedisplay=" + statedisplay + "&sortby=" + sortby + "&selectscreen=program&states="+states+"&selectfield="+selectfield+"&selectvalue="+selectvalue)
+  top.btnbar.location.href = "btnbar"+ btnbar + ".htm?specdisplay=" + specdisplay + "&statedisplay=" + statedisplay+"&extrasort="+extrasort + "&sortby=" + sortby + "&selectscreen=program&states="+states+"&selectfield="+selectfield+"&selectvalue="+selectvalue
+}
+
+function openampfile(filename){
+  var winpop = window.open("ampfile.htm?ampfile="+escape(filename), "amp", "menubar=0, toolbar=0, scrollbars=1, resizable=0, width=450, height=225");
+  winpop.focus();
+}
+
+
+
+function selectListings(Nodes,elementname,inprogid){
+  var arrNodes = new Array()
+  var arrcounter = 0
+  var arrprogidsrendered = new Array()
+  var bRendered = false
+  var bShowDuplicateAlert = false
+
+  for(i=0;i<Nodes.length;i++){
+//alert(Nodes.item(i).text + "\n" + inprogid.indexOf(Nodes.item(i).text))
+    for(y=0;y<arrinprogid.length;y++){
+      bRendered = false
+      if(arrinprogid[y].indexOf(Nodes.item(i).text)>=0) {
+      //// CHECK FOR PROG_ID ALREADY RENDERED ////
+        for(x=0;x<arrprogidsrendered.length;x++){
+//alert("In check: " + arrprogidsrendered.length + "\narrprogidsrendered[x]: " + arrprogidsrendered[x] + "\narrinprogid[y]: " + arrinprogid[y])
+          if(arrprogidsrendered[x]==arrinprogid[y]){
+            bRendered = true
+            bShowDuplicateAlert = true
+            x = arrprogidsrendered.length
+          }
+        }
+        if(!bRendered){
+          arrNodes[arrcounter] = Nodes.item(i)
+//alert(arrprogidsrendered.length + "\nNodes.item(i).text: " + Nodes.item(i).text + "\narrNodes[arrcounter]: " + arrNodes[arrcounter])
+          arrprogidsrendered[arrprogidsrendered.length] = Nodes.item(i).text
+          arrcounter++
+          arrinprogid[y]=""
+        }
+      }
+    }
+  }
+  writeListingsfromarray(arrNodes)
+  if(bShowDuplicateAlert){
+    alert("DUPLICATE ALERT:\nIf there appear to be fewer programs than you checked on the previous screen,\nthe reason is that two or more of the checked boxes are for the identical program.\n\(For example, one institution may be the \"primary clinical site\" and a second\ninstitution a \"major participant\" in the same program.\)")
+  }
+}
+
+
+function writeListingsfromarray(arrNodes){
+//  alert(arrNodes[0].text)
+//  var arrNodenames = new Array()
+  var arrWorkingnodes = new Array()
+  for(i=0;i<arrNodes.length;i++){
+    arrWorkingnodes[i] = arrNodes[i]
+//    arrNodenames[i] = arrNodes[i].text
+  }
+  document.write("<table border=\"1\"><tr>")
+  var currparent = arrNodes[0].parentNode
+  arrWorkingnodes[0] = currparent.firstChild
+  writelabel(arrWorkingnodes[0]);
+  for(i=0;i<arrNodes.length;i++){
+    currparent = arrNodes[i].parentNode
+    arrWorkingnodes[i] = currparent.firstChild
+    document.write(arrWorkingnodes[i].transformNode(oProgXsl.documentElement));
+  }
+
+  document.write("</tr>")
+
+  var nextnode
+  var testnode = arrWorkingnodes[0].nextSibling
+//alert(arrWorkingnodes[0].nextSibling.nodeName)
+  while(testnode.nextSibling){
+    //////// CHECK FOR ELEMENTS THAT ARE MERGED, TO AVOID ADDING A BLANK ROW ///////
+    if((testnode.nodeName!="website") && (testnode.nodeName!="dir_email") && (testnode.nodeName!="dir_phone") && (testnode.nodeName!="dir_fax")){
+      addsectionlabel(testnode.nodeName, (arrNodes.length + 1))
+      document.write("<tr>")
+      writelabel(testnode);
+    }
+    for(i=0;i<arrNodes.length;i++){
+      nextnode = arrWorkingnodes[i].nextSibling
+      //////// CHECK FOR ELEMENTS THAT ARE MERGED, TO AVOID ADDING A BLANK ROW ///////
+      if((testnode.nodeName!="website") && (testnode.nodeName!="dir_email") && (testnode.nodeName!="dir_phone") && (testnode.nodeName!="dir_fax")){
+        document.write(nextnode.transformNode(oProgXsl.documentElement));
+      }
+      arrWorkingnodes[i] = nextnode
+    }
+    //////// CHECK FOR ELEMENTS THAT ARE MERGED, TO AVOID ADDING A BLANK ROW ///////
+    if((testnode.nodeName!="website") && (testnode.nodeName!="dir_email") && (testnode.nodeName!="dir_phone") && (testnode.nodeName!="dir_fax")){
+      document.write("</tr>")
+    }
+    testnode = arrWorkingnodes[0].nextSibling
+  }
+
+  document.write("<tr>")
+    addsectionlabel(testnode.nodeName, (arrNodes.length + 1))
+    writelabel(testnode);
+    for(i=0;i<arrNodes.length;i++){
+    nextnode = arrWorkingnodes[i].nextSibling
+    document.write(nextnode.transformNode(oProgXsl.documentElement)); //ONE LAST TIME, TO GET FINAL ONE
+  }
+  document.write("</tr>")
+  document.write("</table></body></HTML>")
+}
+
+
+function writelabel(workingnode){
+  //////// LABELS //////////
+  var arrattr = workingnode.attributes; 
+  var n_attr = arrattr.length
+  if(workingnode.nodeName=="most_taxing"){
+    document.write("<td class=\"csstextgreen\" valign=\"top\"><a href=\"javascript:openampfile('"+arrattr.item(1).text+"')\"><b>"+arrattr.item(0).text+"</b></a><br /><img src=\"images/transpix.gif\" width=\"35\" height=\"1\" /><a href=\"javascript:openampfile('duration')\"><b>Duration</b></a></td>")
+  }else if (workingnode.nodeName!="duration"){
+//  alert(workingnode.nodeName + ": " + n_attr)
+    if(n_attr==2){
+//  alert(arrattr.length + "\n" + arrattr.item(0).text + "\n" + arrattr.item(1).text)
+      document.write("<td class=\"csstextgreen\" valign=\"top\"><a href=\"javascript:openampfile('"+arrattr.item(1).text+"')\"><b>"+arrattr.item(0).text+"</b></a></td>")
+    }
+    if(n_attr==1){
+      document.write("<td class=\"csstextgreen\" valign=\"top\"><b>"+arrattr.item(0).text+"</b></td>")
+    }
+    if(n_attr==0){
+      document.write("<td class=\"csstextgreen\" valign=\"top\"></td>")
+    }
+  }
+}
+
+function addsectionlabel(testnode, numlistings){
+//  alert(testnode)
+  if(testnode=="prog_name") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Program Information</b></center></td></tr>") }
+  if(testnode=="hours_week") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Work Schedule</b></center></td></tr>") }
+  if(testnode=="salary") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Employment Policies/Benefits</b></center></td></tr>") }
+  if(testnode=="major_med") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Insurance and Leave</b></center></td></tr>") }
+  if(testnode=="med_profess") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Educational Curriculum</b></center></td></tr>") }
+  if(testnode=="MPH_MBA_PhD") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Additional Training</b></center></td></tr>") }
+  if(testnode=="exam_req") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Resident Evaluation</b></center></td></tr>") }
+  if(testnode=="int_model") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Other Information</b></center></td></tr>") }
+  if(testnode=="sponsor") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubhead\"><center><b>Contact Information</b></center></td></tr>") }
+
+  ////////////// SUBHEAD B /////////////////
+//  if(testnode=="FREIDA") { document.write("<tr><td colspan="+(numlistings+1)+" class=\"cssprogsubheadb\">&nbsp;</td></tr>") }
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+function parseqstring(inpara){
+  var arrids = new Array()
+  var startpos = 0
+  var intindex = 0
+  var indexpos = inpara.indexOf(",",startpos)
+  if(indexpos==-1){
+    arrids[0] = inpara
+  }
+  else{
+    while (indexpos!=-1){
+      arrids[intindex] = inpara.slice(startpos,indexpos)
+//      alert(arrids[intindex])
+      intindex++
+      startpos = indexpos + 1
+      indexpos = inpara.indexOf(",",startpos)
+    }
+  arrids[intindex] = inpara.slice(startpos,inpara.length)
+//  alert(arrids[intindex])
+  }
+  return arrids
+}
+
+function getqstringvalue(name,inpara){
+
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      return inpara.substring(indexvalue,indexvalueend)
+  }
+  else{
+    return ""
+  }
+}
+///////////////////////////////////////////////////////////////////////////
+
+</SCRIPT>
+
+

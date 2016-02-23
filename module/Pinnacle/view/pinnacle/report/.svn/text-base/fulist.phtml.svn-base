@@ -1,0 +1,45 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/fulist.phtml:
+// let's try something different
+
+$title = 'Fuzion Client List - '.date('m/d/Y');
+$this->headTitle($title);
+
+$icnt = 0; $part = 'sort'; $scrip = '';
+
+$this->inlineScript()->appendFile($this->basePath() . '/js/fulist.js', 'text/javascript');
+$i = 0;
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p><b>Sorted by</b>: <span id="fu-sorto"><?php echo $this->escapeHtml($order[$id]); ?></span></p>
+
+
+<p class="onscr"><small>Click on the column heading to sort in that order</small></p>
+<table class="table report">
+    <thead><tr>
+        <th> </th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort1)">Facility</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort2)">City, State</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort3)">Status</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort4)">Account</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort5)">Date Signed</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort6)">Length</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort7)">Renewal Date</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort8)">Invoice Date</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort9)">Start Date</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort10)">Amount</a></th>
+    </tr></thead>
+    <tbody id="fu-tbody">
+        <tr><td colspan="11"><i>Loading... Please Wait...</i> </td></tr>
+    </tbody>
+</table>
+
+<?php
+$url = $this->url('resort', array('action'=>'fulist','id'=>$id));
+$scrip .= "fuInit(\"#fu-tbody\",\"#fu-sorto\", $id, \"$url\");\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

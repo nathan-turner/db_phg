@@ -1,0 +1,166 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/list.phtml:
+// based on index
+$parts = array('market' => 'Marketing',
+               'recruit' => 'Recruiting',
+               'locums' => 'Locum Tenens',
+               'admin' => 'Administrative',
+               'fuzion' => 'Physician Career',
+               'source' => 'Sourcing',
+               'vital' => 'Vital Stats',
+               'common' => 'Common');
+if( $phguser->access < 2 ) unset($parts['vital']);
+
+$spart = $parts[$part];
+if( !$spart ) { $part = 'common'; $spart = $parts[$part]; }
+
+$title = $spart.' Reports';
+$this->headTitle($title);
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php if( $part === 'market' ): ?>
+<ul class="phg-bullet">
+<li><a href="rpt_marketing.asp">Past &amp; Present Clients Report</a></li>
+<li><a href="rpt_mo_update.asp">Monthly Client Update Report</a></li>
+<li><a href="rpt_schcalls.asp">Scheduled Calls by Marketer</a></li>
+<li><a href="rpt_hotlists.asp?filter=p&mark=yes">Pendings by Marketer</a></li>
+<li><a href="rpt_hotlists.asp?filter=1&mark=yes">Lead List 1 by Marketer</a></li>
+<li><a href="rpt_hotlists.asp?filter=2&mark=yes">Lead List 2 by Marketer</a></li>
+<li><a href="rpt_meetings.asp">Meetings by Marketer</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'placement')) ?>">Placements by State &amp; Specialty</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'placemonth')) ?>">Placements by Year &amp; Month</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'marketlog')) ?>">Retainers by Year &amp; Month</a></li>
+<li><a href="rpt_syspresents.asp">System Activity Report</a></li>
+<li><a href="rpt_syspresents2.asp">Monthly System Report</a></li>
+<li><a href="wkupdateM.asp">Monthly Client Satisfaction Survey</a></li>
+</ul>
+
+<?php elseif( $part === 'recruit' ): ?>
+<ul class="phg-bullet">
+<li><a href="rpt_acc_summ.asp">Account Summary Report</a></li>
+<li><a href="rpt_mo_upd_sum.asp">Monthly Client Update Report (Summary)</a></li>
+<li><a href="rpt_hotlists.asp?filter=h">Hot Docs by Recruiter</a></li>
+<li><a href="rpt_hotlists.asp?filter=p">Pendings by Recruiter</a></li>
+<li><a href="rpt_hotlists.asp?filter=1">Lead List 1 by Recruiter</a></li>
+<li><a href="rpt_hotlists.asp?filter=2">Lead List 2 by Recruiter</a></li>
+<li><a href="rpt_pass_track.asp">Pass Quality</a></li>
+<li><a href="rpt_hotlists.asp?filter=s">Passes by Recruiter</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'interview')) ?>">Monthly Interview Report</a></li>
+<li><a href="rpt_presents.asp">Monthly Presents Report</a></li>
+<li><a href="rpt_presents_cont.asp">Monthly Contingency Presents Report</a></li>
+<li><a href="rpt_hptdoclimited.asp">HOT DOC Report</a></li>
+<li><a href="wkupdateRS.asp">Weekly Client Update Report</a></li>
+</ul>
+
+<?php elseif( $part === 'locums' ): ?>
+Locum Tenens
+
+<?php elseif( $part === 'admin' ): ?>
+<ul class="phg-bullet">
+<li><a href="rpt_mo_progress.asp">Monthly Progress Reports</a></li>
+<li><a href="rpt_ctr_pastdue.asp">Monday Profile Date Report</a></li>
+<li><a href="rpt_dataentry.asp">Data Entry Stats Report</a></li>
+<li><a href="rpt_acc_summ2.asp">Account Summary Report with Notes</a></li>
+<li><a href="rpt_locum_cli.asp">Passes to Locums - Clients</a></li>
+<li><a href="rpt_locum_ph.asp">Passes to Locums - Physicians</a></li>
+<li><a href="rpt_locum_clifrom.asp">Passes from Locums - Clients</a></li>
+<li><a href="rpt_locum_phfrom.asp">Passes from Locums - Physicians</a></li>
+<li><a href="rpt_wku_monitor.asp">Weekly Updates Report</a></li>
+</ul>
+
+<?php elseif( $part === 'fuzion' ): ?>
+<ul class="phg-bullet">
+<li><a href="fuzionexport.asp">Fuzion Export List</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'fulist')) ?>">Fuzion Client List</a></li>
+</ul>
+
+<?php elseif( $part === 'source' ): ?>
+<h3>Missing Data</h3>
+<ul class="phg-bullet">
+<li><a href="rpt_src_descr.asp">Missing Descriptions</a></li>
+<li><a href="rpt_src_noth.asp">Expired Sourcing/No Sourcing</a></li>
+<li><a href="rpt_src_pend.asp">Drafts/Pendings not yet approved</a></li>
+<li><a href="rpt_src_nophg.asp">NO <b>www.phg.com</b> ordered</a></li>
+</ul>
+<h3>Reports</h3>
+<ul class="phg-bullet">
+<li><a href="rpt_src_isc.asp">ISC Report</a></li>
+<li><a href="rpt_src_can.asp">Cancellations by Month</a></li>
+<li><a href="rpt_src_cat.asp">Sourcing Schedule by Category</a></li>
+<li><a href="rpt_src_speclist.asp">Specialty Email List</a></li>
+<li><a href="rpt_src_clientlist.asp">Client Email List</a></li>
+<li><a href="rpt_src_schedmail.asp">Hospital Weekly Mailer</a></li>
+<li><i>More coming soon...</i></li>
+<!--
+<li><a href="rpt_src_sch.asp">Scheduled Canpaigns by Month/Category</a></li>
+<li><a href="rpt_src_adds.asp">Additions by Month/Category</a></li>
+-->
+</ul>
+<h3>Import</h3>
+<ul class="phg-bullet">
+<li><a href="importdoc.asp">Import Physicians</a></li>
+<li><a href="importnur.asp">Import Mid-levels</a></li>
+</ul>
+
+<?php elseif( $part === 'vital' ): ?>
+<h3>1. Account Management</h3>
+<ul class="phg-bullet">
+<li><a href="rpt_presents_vs.asp">Presents Monthly</a></li>
+<li><a href="rpt_searches_vs.asp">Retained Search Changes</a></li>
+<li><a href="rpt_accounts_vs.asp">Retained Accounts and Clients per Recruiter</a></li>
+<li><a href="rpt_aging_vs.asp">Account Aging Report</a></li>
+</ul>
+<h3>2. Quality Control</h3>
+<ul class="phg-bullet">
+<li><a href="rpt_weekly_vs.asp">Weekly Updates Summary</a></li>
+<li><a href="rpt_notes_vs.asp">Notes per Marketer Summary</a></li>
+<li><a href="rpt_ratings_vs.asp">Client Satisfaction Ratings</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'interview')) ?>">Interview Report</a></li>
+<li><a href="rpt_acc_watch.asp">Account Watch List</a></li>
+<li><a href="rpt_retention_vs.asp">Physician Retention</a></li>
+</ul>
+<h3>3. Production</h3>
+<ul class="phg-bullet">
+<li><a href="<?php echo $this->url('report', array('action'=>'usersumst', 'part'=>'this')) ?>">Summary Statistics</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'usersumst', 'part'=>'prev')) ?>">Summary Statistics</a> (Previous Month)</li>
+<li><a href="rpt_markrec_vs.asp">Marketer/Recruiter Statistics</a></li>
+<li><a href="rpt_s2pl_vs.asp">Search to Placement by Specialty</a></li>
+<li><a href="rpt_dataentry.asp">Data Entry Stats Report</a></li>
+<li><a href="rpt_dataentry_vs.asp">Data Entry Records Report</a></li>
+<li><!--<a href="rpt_agingun_vs.asp"> FUTURE-->Aging of unplaced accounts by Specialty<!--</a>--></li>
+</ul>
+<h3>4. Sourcing &amp; Leads</h3>
+<ul class="phg-bullet">
+<li><a href="rpt_source_vs.asp">DM Counts and Responses Report</a></li>
+<li><a href="rpt_placsrc_vs.asp">Placement Sources Report</a></li>
+<li><a href="rpt_dm_vs.asp">Direct Mail - 1st and 2nd mailers</a></li>
+<li><!--<a href="rpt_response_vs.asp"> FUTURE-->Response Rate by Specialty and mailer type<!--</a>--></li>
+<li><a href="rpt_plactyp_vs.asp">Placement Type Report</a></li>
+<li>New docs in the database by month</li>
+<li><a href="rpt_src_descr.asp">Missing Descriptions</a></li>
+<li><a href="rpt_src_noth.asp">No Sourcing</a></li>
+<li><a href="rpt_src_pend.asp">Drafts/Pendings not yet approved</a></li>
+<li><a href="rpt_src_nophg.asp">NO <b>www.phg.com</b> ordered</a></li>
+</ul>
+
+<?php else: ?>
+<ul class="phg-bullet">
+<li><a href="<?php echo $this->url('report', array('action'=>'retained')) ?>">Retained Search List</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'retained', 'part'=>'mac')) ?>">Retained Search List - Profile</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'specdemo')) ?>">Specialty Demographics Report (03/19/12)</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'statistics', 'part'=>'sel0')) ?>">Database Statistics: Clients &amp; Contracts</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'statistics', 'part'=>'sel1')) ?>">Database Statistics: Physicians</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'statistics', 'part'=>'sel2')) ?>">Database Statistics: Mid-Level</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'usersumst', 'part'=>'this')) ?>">Performance: Summary</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'userstats')) ?>">Performance: Individual</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'usersumst', 'part'=>'prev')) ?>">Performance Summary - Previous Month</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'phone', 'part'=>'yest')) ?>">Phone Report Yesterday</a> / <a href="<?php echo $this->url('report', array('action'=>'phone', 'part'=>'today')) ?>">Today</a></li>
+<li><a href="<?php echo $this->url('report', array('action'=>'monmor')) ?>">Monday Morning Meeting Report</a></li>
+</ul>
+
+<?php endif;
+
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

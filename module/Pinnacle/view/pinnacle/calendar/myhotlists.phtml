@@ -1,0 +1,155 @@
+<?php
+// module/Pinnacle/view/pinnacle/calendar/myhotlists.phtml:
+// Summary report
+
+$months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
+
+//if(!isset($_GET["mark"]))
+			//$_GET["mark"]=$_POST["mark"];
+		//$market = $_GET["mark"];
+		//if(!isset($_GET["filter"]))
+			//$_GET["filter"]=$_POST["filter"];
+$filter = $_GET["filter"];
+
+ /*if InStr(Session("dept"),"R") > 0 then
+      Response.Write("<!-- Recruiting -->")
+   elseif InStr(Session("dept"),"M") > 0 then
+      Response.Write("<!-- Marketing -->")
+      market = true
+   end if
+   if InStr(Session("dept"),"A") > 0 then
+      Response.Write("<!-- Admin -->")
+      allctr = true
+   end if*/
+ 
+if($_COOKIE["dept"]=="R")
+	$market=false;
+elseif($_COOKIE["dept"]=="M")
+	$market=true;
+if($_COOKIE["dept"]=="A")
+	$allctr = true;
+
+if($market)
+	$title = 'Marketing ';
+else
+	$title = 'Recruiting ';
+	
+
+switch($filter){	
+	case "p":
+		$vis="Pendings";
+		break;
+	case "h":
+		if($market=="yes"||$market)
+			$vis="Hot Prospects";
+		else
+			$vis="Hot Docs";
+		$vis="Pendings";
+		break;
+	case "1":
+		$vis="Lead List 1";
+		break;
+	case "2":
+		$vis="Lead List 2";
+		break;
+	case "s":
+		$vis="Passes (last 4 months)";
+		break;
+	default:
+		$vis="Pendings";
+		break;
+	
+}//end switch
+$title.=$vis." Report";
+$sempid = $_COOKIE["userid"];
+
+   
+   
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+
+
+//if( $messages )
+    //echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			//$( "#startdatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#startdate"});
+			//$( "#enddatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#enddate"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+table td{ padding: 2px; }
+label { display: inline; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rpthotlists')));
+    //$form->get('submit')->setAttribute('class','btn btn-success btn-large');
+    //$form->prepare();
+
+    //echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	
+
+
+
+
+
+ <?php echo $table; ?>
+
+ 
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    //echo $this->form()->closeTag();
+?>
+
+<?php
+//echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+//echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

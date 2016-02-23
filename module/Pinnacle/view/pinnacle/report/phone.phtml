@@ -1,0 +1,100 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/phone.phtml:
+
+$title = 'Phone Report - '.($part !== 'today'?$date:'Today');
+$this->headTitle($title);
+
+$numc=0;$sumc=0;$sumi=0;$sumo=0;$times=0;$timsi=0;$timso=0;$days=0;$mcda='';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<div class="onscr">
+    <?php if( $part !== 'today' ) {
+            $form->setAttribute('action', $this->url('report', array('action' => 'phone',   'part' => $part)));
+            $form->setAttribute('class', 'form-inline');
+            $dateel = $form->get('date1');
+            $dateel->setValue($date);
+            $form->prepare();
+            echo $this->form()->openTag($form);
+            echo $this->formLabel($dateel).' ';
+            echo $this->formDate($dateel).' ';
+            echo $this->formSubmit($form->get('submit'));
+            echo $this->form()->closeTag();
+        } // form
+    ?>
+</div>
+
+<table class="table report">
+    <thead><tr>
+        <th>User</th>
+        <th class="phg-rite">Calls-In</th>
+        <th class="phg-rite">Calls-Out</th>
+        <th class="phg-rite">Calls Total</th>
+        <th class="phg-rite">Time-In</th>
+        <th class="phg-rite">Time-Out</th>
+        <th class="phg-rite">Time Total</th>
+    </tr></thead>
+    <tbody>
+        <?php if( $report ) foreach ($report as $row):
+            $numc++;
+            $sumc += $row->call_numin + $row->call_numout;
+            $sumi += $row->call_numin;
+            $sumo += $row->call_numout;
+            $ttime = $row->call_timein + $row->call_timeout;
+            $times += $ttime;
+            $timsi += $row->call_timein;
+            $timso += $row->call_timeout;
+            if( $row->call_date > $mcda ) $mcda = $row->call_date;
+            $s = $row->call_timein % 60; $m = intval(($row->call_timein % 3600)/60);
+            $h = intval($row->call_timein / 3600);
+            $tmi = sprintf("%d:%02d:%02d",$h,$m,$s);
+            $s = $row->call_timeout % 60; $m = intval(($row->call_timeout % 3600)/60);
+            $h = intval($row->call_timeout / 3600);
+            $tmo = sprintf("%d:%02d:%02d",$h,$m,$s);
+            $s = $ttime % 60; $m = intval(($ttime % 3600)/60);
+            $h = intval($ttime / 3600);
+            $tmt = sprintf("%d:%02d:%02d",$h,$m,$s);
+        ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row->emp_realname); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row->call_numin); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row->call_numout); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($row->call_numin + $row->call_numout); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($tmi); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($tmo); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($tmt); ?></td>
+        </tr>
+        <?php endforeach;
+        $days = intval($times/86400);
+        $times %= 86400;
+        $s = $times % 60; $m = intval(($times % 3600)/60); $h = intval($times / 3600);
+        $tmt = sprintf("%02d:%02d:%02d",$h,$m,$s);
+        $s = $timsi % 60; $m = intval(($timsi % 3600)/60); $h = intval($timsi / 3600);
+        $tmi = sprintf("%d:%02d:%02d",$h,$m,$s);
+        $s = $timso % 60; $m = intval(($timso % 3600)/60); $h = intval($timso / 3600);
+        $tmo = sprintf("%d:%02d:%02d",$h,$m,$s);
+        if( $numc ): ?>
+        <tr>
+            <td><b>Total</b></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($sumi); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($sumo); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($sumc); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($tmi); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml($tmo); ?></td>
+            <td class="phg-rite"><?php echo $this->escapeHtml("$days:$tmt"); ?></td>
+        </tr>
+        <?php else: ?>
+        <tr><td colspan="7" class="alert-danger">No Calls!</td></tr>
+        <?php endif ?>
+    </tbody>
+</table>
+<?php if( $part === 'today' ): ?>
+<p><small>Last Updated: <?php echo $this->escapeHtml($mcda); ?>. <!--Go to <a href="<?php //echo $this->url('report', array('action' => 'userstats')) ?>">your statistics page</a> to check for update.--></small></p>
+<p><small>View old database phone report if results are out of date. <a href="http://db.phg.com/pinnacle/rpt_phone.asp?today=yes">Click here</a></p>
+<?php
+endif;
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

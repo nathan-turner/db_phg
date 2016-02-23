@@ -1,0 +1,49 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/retained.phtml:
+
+$title = 'Retained Search List - '.date('m/d/Y');
+$this->headTitle($title);
+
+$icnt = 0; $scrip = '';
+$this->inlineScript()->appendFile($this->basePath() . '/js/retained.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p><b>Sorted by</b>: <span id="fu-sorto"><?php echo $this->escapeHtml($order[$id]); ?></span></p>
+
+<!-- <h3 class="onscr"><a href="http://pinnaclelocumtenens.com/jobs.php5" target="_blank">Locum Tenens jobs are here</a></h3> -->
+
+<p class="onscr"><small>Click on the column heading to sort in that order</small></p>
+<table class="table report">
+    <thead><tr>
+        <th> </th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort1)">Spec</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort2)">Contract</a></th>
+<?php if( $part != 'mac' ): ?>
+<th class="onscr">Profile</th>
+<?php endif ?>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort3)">Recruiter</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort4)">City</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort5)">State</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort6)">Facility</a></th>
+<?php if( $part != 'mac' ): ?>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort7)">Marketer</a></th>
+<th><a href="javascript:fuBody('#fu-tbody','#fu-sorto',fuSort8)">Rating</a></th>
+<?php else: ?>
+<th>Practice description from Profile</th>
+<?php endif ?>
+    </tr></thead>
+    <tbody id="fu-tbody">
+        <tr><td colspan="<?php echo ($part=='mac'? 8:10); ?>"><i>Loading... Please Wait...</i> </td></tr>
+    </tbody>
+</table>
+
+<?php
+$url = $this->url('resort',
+                  array('action'=>'retained', 'id'=>$id + ($part==='mac'?10:0)));
+$scrip .= "retInit(\"#fu-tbody\",\"#fu-sorto\", $id, \"$part\", \"$url\");\n";
+$this->inlineScript()->appendScript($scrip, 'text/javascript');
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

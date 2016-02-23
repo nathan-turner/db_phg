@@ -1,0 +1,407 @@
+<SCRIPT language="javascript">
+<!--
+var specialty_id = getqstringvalue("specialty_id",window.location.search)
+  if(specialty_id==""){ specialty_id = "020" }
+var specdisplay=getqstringvalue("specdisplay",window.location.search)
+var arrspecdisplay = new Array()
+arrspecdisplay = parseqstring(specdisplay)
+//alert (arrspecdisplay[0])
+var sortby=getqstringvalue("sortby",window.location.search)
+  if(sortby==""){ sortby = "state" }
+var selectfield=getqstringvalue("selectfield",window.location.search)
+var selectvalue=getqstringvalue("selectvalue",window.location.search)
+var selectscreen=getqstringvalue("selectscreen",window.location.search)
+var extrasort=getqstringvalue("extrasort",window.location.search)
+var nodecount=getqstringvalue("nodecount",window.location.search)
+var backurl=getqstringvalue("backurl",window.location.search)
+//alert("\selectfield: " + selectfield + "\nselectvalue: " + selectvalue + "\nselectscreen: " + selectscreen + "\nspecdisplay: " + specdisplay + "\nsortby: " + sortby)
+writepage(selectscreen)
+
+function doOnLoad(){
+  top.header.MM_nbGroup('down','navbar1','i_r2c2','images/slices/i_r2c2f3.gif',1)
+  top.header.callsniff();
+  top.header.callsniff();
+}
+
+///////////// CHOOSE SPECIALTY FUNCTIONS //////////////////////
+function openprogreq(filename,inspecialty_id){
+  var backurl = top.data.location.href
+  specialty_id = inspecialty_id
+//  alert(specialty_id)
+  backurl = URLencode(backurl,"&","%26")
+  backurl = URLencode(backurl,"/","%2F")
+  backurl = URLencode(backurl,":","%3A")
+  backurl = URLencode(backurl,"=","%3D")
+  backurl = URLencode(backurl,"?","%3F")
+
+  top.data.location.href = filename
+//  alert("../btnbarsp.htm?selectscreen=progreq&backurl="+backurl + "&specialty_id=" + specialty_id)
+  location.href = "../btnbarsp.htm?selectscreen=progreq&specialty_id=" + specialty_id    ////&backurl="+backurl + "&specialty_id=" + specialty_id
+}
+
+function showspecialtyscreen(){
+  var qstring = ""
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].selectspeccheckbox.checked || top.data.document.forms[i].selectspeccheckbox.checked=="true"){
+      if(qstring!=""){ qstring+="," }
+      qstring += top.data.document.forms[i].name
+//      alert(qstring)
+    }
+  }
+
+  if(qstring != ""){
+//    alert("speclty.htm?specdisplay="+qstring)
+    top.data.location.href="speclty.htm?specdisplay="+qstring
+  }
+  else{
+    alert("Please check at least one Specialty.")
+  }
+}
+
+function showmilitary(){
+  top.data.location.href="speclty.htm?specdisplay=milprog"
+}
+
+
+function openwindow(strfile){
+  var winpop = window.open(strfile, "View", "width=700, height=475, menubar=1, toolbar=1, scrollbars=1, resizable=1");
+  winpop.focus();
+}
+
+//function showxmlhelp(){
+//  top.data.location.href="../Tour/XML_Tour.htm"
+//}
+
+
+
+
+///////// PROGRAM REQUIREMENTS FUNCTIONS ////////
+function returnfromprogreq(){
+  backurl = URLdecode(backurl,"%26","&")
+  backurl = URLdecode(backurl,"%2F","/")
+  backurl = URLdecode(backurl,"%3A",":")
+  backurl = URLdecode(backurl,"%3D","=")
+  backurl = URLdecode(backurl,"%3F","?")
+//  alert(backurl)
+  top.data.location.href = backurl
+}
+
+//////// SPECIALTY SCREEN FUNCTIONS ////////
+
+function clearall(){
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].name!="fspec"){
+      top.data.document.forms[i].detailcheckbox.checked = 0
+    }
+  }
+}
+
+
+function showdetails(){
+  var qstring = ""
+
+  for(i=0;i<top.data.document.forms.length;i++){
+    if(top.data.document.forms[i].name!="fspec"){
+      if(top.data.document.forms[i].detailcheckbox.checked || top.data.document.forms[i].detailcheckbox.checked=="true"){
+        if(qstring!=""){ qstring+="," }
+        qstring += top.data.document.forms[i].name
+//        alert(qstring)
+      }
+    }
+  }
+
+  if(qstring != ""){
+//    alert("program.htm?specdisplay=" + specdisplay+ "&extrasort="+extrasort + "&sortby=" + sortby+"&prog_id="+qstring + "&btnbar=sp"
+    top.data.location.href="program.htm?specdisplay=" + specdisplay+ "&extrasort="+extrasort + "&sortby=" + sortby+"&prog_id="+qstring + "&btnbar=sp&selectfield="+selectfield+"&selectvalue="+selectvalue
+  }
+  else{
+    alert("Please check at least one Program.")
+  }
+}
+
+
+function doextrasort(){
+  var sortby = document.fspecialty.extrasort.value
+  if(sortby!=""){
+//    alert("speclty.htm?specdisplay=" + specdisplay+ "&extrasort="+sortby+ "&sortby="+sortby)
+    top.data.location.href="speclty.htm?specdisplay=" + specdisplay+ "&extrasort="+sortby+ "&sortby="+sortby
+//    sort(sortby)
+  }
+}
+
+
+function sort(sortby){
+//  alert("speclty.htm?specdisplay=" + specdisplay+ "&extrasort="+extrasort+ "&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue)
+  top.data.location.href="speclty.htm?specdisplay=" + specdisplay+ "&extrasort="+extrasort+ "&sortby="+sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue
+}
+
+function reselect(fieldname,fieldvalue){
+//  alert("speclty.htm?sortby="+sortby+"&selectfield="+fieldname+"&selectvalue="+fieldvalue)
+  top.data.location.href="speclty.htm?specdisplay=" + specdisplay+ "&extrasort="+extrasort+ "&sortby="+sortby+"&selectfield="+fieldname+"&selectvalue="+fieldvalue
+}
+
+
+///////// PROGRAM SCREEN FUNCTIONS ////////
+function returntospecialty(){
+  top.data.location.href = "speclty.htm?specdisplay=" + specdisplay+ "&extrasort="+extrasort + "&sortby=" + sortby+"&selectfield="+selectfield+"&selectvalue="+selectvalue
+}
+
+
+
+
+//////////////// URL FUNCTIONS /////////////////////////////
+function getqstringvalue(name,inpara){
+  var indexname = inpara.indexOf(name)
+  if(indexname!=-1){
+    var indexvalue    = inpara.indexOf("=",inpara.indexOf(name)) + 1
+    var indexvalueend = inpara.indexOf("&",indexvalue)
+    if(indexvalueend==-1){
+      indexvalueend=inpara.length
+    }
+      var strscrub = URLdecode(inpara.substring(indexvalue,indexvalueend),"%20"," ")
+      return strscrub
+  }
+  else{
+    return ""
+  }
+}
+
+function parseqstring(inpara){
+  var arrids = new Array()
+  var startpos = 0
+  var intindex = 0
+  var indexpos = inpara.indexOf(",",startpos)
+  if(indexpos==-1){
+    arrids[0] = inpara
+  }
+  else{
+    while (indexpos!=-1){
+      arrids[intindex] = inpara.slice(startpos,indexpos)
+//      alert(arrids[intindex])
+      intindex++
+      startpos = indexpos + 1
+      indexpos = inpara.indexOf(",",startpos)
+    }
+  arrids[intindex] = inpara.slice(startpos,inpara.length)
+//  alert(arrids[intindex])
+  }
+  return arrids
+}
+
+
+/////// CAN USE escape(); unescape(); /////////
+function URLencode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+function URLdecode(strvalue,charin,charreplace){
+  var strstart,strend
+  var startpos = 0
+  var indexpos = strvalue.indexOf(charin,startpos)
+  while (indexpos!=-1){
+    strstart = strvalue.slice(0,indexpos)
+//alert("strstart: " + strstart)
+    strend = strvalue.slice(indexpos + charin.length, strvalue.length)
+//alert("strend: " + strend)
+    strvalue = strstart + charreplace + strend
+//alert(strvalue)
+    startpos = indexpos
+    indexpos = strvalue.indexOf(charin,startpos)
+  }
+  return strvalue
+}
+
+
+
+///////////////// WRITE PAGE ///////////////////////
+function writepage(selectscreen){
+//alert(selectscreen)
+document.write("<HTML>")
+document.write("<head>")
+document.write("<STYLE>")
+document.write("  BODY {margin:0}")
+document.write("  .csstext {font: 9pt Arial, Helvetica, sans-serif;text-align:left;}")
+document.write("  .csstextred {font: 9pt Arial, Helvetica, sans-serif;text-align:left;color:#dd0000;}")
+document.write("  .csstextcenter {font: 9pt Arial, Helvetica, sans-serif;text-align:center;}")
+document.write("</STYLE>")
+document.write("</head>")
+document.write("<body onLoad=\"doOnLoad();\" bgcolor=#cccccc>")
+document.write("<table border=0 cellpadding=0 cellspacing=0 width=100%><form name=\"fspecialty\"")
+
+
+if(selectscreen=="choosesp"){
+document.write("  <tr>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=90% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=1 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("    <td colspan=6 class=csstext bgcolor=#cccccc>")
+document.write("  <table border=0 cellpadding=0 cellspacing=0>")
+document.write("  <tr>")
+document.write("  <td width=2% height=1><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("  <td width=18%  height=1><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=5%  height=1><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=25% height=1><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=5%  height=1><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=45% height=1><img src=images/transpix.gif height=1 width=10 /></td></tr>")
+document.write("  <tr>")
+document.write("  <td><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:showspecialtyscreen();\" VALUE=\"View Programs\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:showmilitary();\" VALUE=\"View Military Programs\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:openwindow('../Tour/XML_Tour.htm');\" VALUE=\"User Help for XML\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td><img src=images/transpix.gif height=1 width=10 /></td></tr>")
+document.write("  </table>")
+document.write("    </td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=6 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=6 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=6 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+if(selectscreen=="specialty"){
+document.write("  <tr>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=5%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td width=70% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><INPUT TYPE=BUTTON ONCLICK=\"javascript:top.data.location.href='xmldata/choosesp.xml#"+arrspecdisplay[0]+"';\" VALUE=\"<< Return\" NAME=return CLASS=csstextcenter /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><INPUT TYPE=BUTTON ONCLICK=\"javascript:top.data.location.href='speclty.htm?specdisplay="+specdisplay+"';\" VALUE=\"&nbsp;&nbsp;Reset&nbsp;&nbsp;\" NAME=showalllistings CLASS=csstextcenter /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=15 /></td>")
+document.write("    <td class=csstext nowrap>Count: <font class=csstextred><b>" + nodecount + "</b></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=15 /></td>")
+document.write("    <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:showdetails();\" VALUE=\"View Program Details\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("<td class=csstext><SELECT name=\"extrasort\" onChange=\"javascript:doextrasort();\" class=csstext  SIZE=1 />")
+document.write("<option value=\"\"><< Additional Sort Parameters >></option>")
+document.write("<option value=\"\">-----------------------------------------------</option>")
+document.write("<option value=\"setting\""); if(extrasort=="setting"){ document.write(" SELECTED"); } document.write(">Setting</option>")
+document.write("<option value=\"prog_length\""); if(extrasort=="prog_length"){ document.write(" SELECTED"); } document.write(">Program length (years)</option>")
+document.write("<option value=\"years_required\""); if(extrasort=="years_required"){ document.write(" SELECTED"); } document.write(">Program years required</option>")
+document.write("<option value=\"positions\""); if(extrasort=="positions"){ document.write(" SELECTED"); } document.write(">Program size</option>")
+//document.write("<option value=\"positions_gy1\""); if(extrasort=="positions_gy1"){ document.write(" SELECTED"); } document.write(">GY-1 positions</option>")
+document.write("<option value=\"prev_yrs_req\""); if(extrasort=="prev_yrs_req"){ document.write(" SELECTED"); } document.write(">Prior GME years required</option>")
+document.write("<option value=\"hours_week\""); if(extrasort=="hours_week"){ document.write(" SELECTED"); } document.write(">Average hours/week duty</option>")
+document.write("<option value=\"hours_consec\""); if(extrasort=="hours_consec"){ document.write(" SELECTED"); } document.write(">Max hours consecutive duty</option>")
+document.write("<option value=\"most_taxing\""); if(extrasort=="most_taxing"){ document.write(" SELECTED"); } document.write(">Most taxing call schedule</option>")
+document.write("<option value=\"moonlighting\""); if(extrasort=="moonlighting"){ document.write(" SELECTED"); } document.write(">Moonlighting allowed</option>")
+document.write("<option value=\"salary\""); if(extrasort=="salary"){ document.write(" SELECTED"); } document.write(">Salary, program year 1</option>")
+document.write("<option value=\"child\""); if(extrasort=="child"){ document.write(" SELECTED"); } document.write(">On-site child care</option>")
+document.write("<option value=\"pt_shared\""); if(extrasort=="pt_shared"){ document.write(" SELECTED"); } document.write(">Part-time/shared positions</option>")
+document.write("<option value=\"multi_start\""); if(extrasort=="multi_start"){ document.write(" SELECTED"); } document.write(">Multi-start dates</option>")
+document.write("<option value=\"qual_imp\""); if(extrasort=="qual_imp"){ document.write(" SELECTED"); } document.write(">Continuous quality improvement</option>")
+document.write("<option value=\"international\""); if(extrasort=="international"){ document.write(" SELECTED"); } document.write(">International experience</option>")
+document.write("<option value=\"retreats\""); if(extrasort=="retreats"){ document.write(" SELECTED"); } document.write(">Resident/fellow retreats</option>")
+document.write("<option value=\"offcampus\""); if(extrasort=="offcampus"){ document.write(" SELECTED"); } document.write(">Off-campus electives</option>")
+document.write("<option value=\"hospice\""); if(extrasort=="hospice"){ document.write(" SELECTED"); } document.write(">Hospice/home care exp</option>")
+document.write("<option value=\"cultcomp\""); if(extrasort=="cultcomp"){ document.write(" SELECTED"); } document.write(">Cultural competence awareness</option>")
+document.write("<option value=\"research\""); if(extrasort=="research"){ document.write(" SELECTED"); } document.write(">Research</option>")
+document.write("<option value=\"nonenglish\""); if(extrasort=="nonenglish"){ document.write(" SELECTED"); } document.write(">Non-English language instruction</option>")
+document.write("<option value=\"alt_comp\""); if(extrasort=="alt_comp"){ document.write(" SELECTED"); } document.write(">Alternative/complementary med</option>")
+document.write("<option value=\"research\""); if(extrasort=="research"){ document.write(" SELECTED"); } document.write(">Research rotation/duration</option>")
+document.write("<option value=\"MPH_MBA\""); if(extrasort=="MPH_MBA"){ document.write(" SELECTED"); } document.write(">MPH/MBA training</option>")
+document.write("<option value=\"PhD\""); if(extrasort=="PhD"){ document.write(" SELECTED"); } document.write(">PhD training</option>")
+document.write("<option value=\"additional_trng\""); if(extrasort=="additional_trng"){ document.write(" SELECTED"); } document.write(">Offers additional training</option>")
+document.write("<option value=\"req_add_trng\""); if(extrasort=="req_add_trng"){ document.write(" SELECTED"); } document.write(">Requires additional training</option>")
+document.write("<option value=\"add_trng_length\""); if(extrasort=="add_trng_length"){ document.write(" SELECTED"); } document.write(">Additional training length</option>")
+document.write("<option value=\"military\""); if(extrasort=="military"){ document.write(" SELECTED"); } document.write(">Military</option>")
+document.write("<option value=\"subspec\""); if(extrasort=="subspec"){ document.write(" SELECTED"); } document.write(">Subspecialty codes</option>")
+document.write("<option value=\"FREIDA\""); if(extrasort=="FREIDA"){ document.write(" SELECTED"); } document.write(">FREIDA Listing</option>")
+document.write("</SELECT>")
+document.write("    </td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=10 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=10 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=10 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=10 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+if(selectscreen=="program"){
+document.write("  <tr>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td>")
+document.write("  <td width=20% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=78% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:returntospecialty();\" VALUE=\"<< Return\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+if(selectscreen=="progreq"){
+document.write("  <tr>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td>")
+document.write("  <td width=20% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=2%  height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td width=78% height=3 bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=5 /></td>")
+document.write("    <td class=csstext bgcolor=#cccccc><INPUT TYPE=BUTTON ONCLICK=\"javascript:top.data.location.href='xmldata/choosesp.xml#"+specialty_id+"';\" VALUE=\"<< Return\" NAME=return CLASS=csstextcenter /></td>")
+//document.write("  <td class=csstext><INPUT TYPE=BUTTON ONCLICK=\"javascript:returnfromprogreq();\" VALUE=\"<< Return\" NAME=showdetail CLASS=csstextcenter /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  <td class=csstext bgcolor=#cccccc><img src=images/transpix.gif height=1 width=10 /></td>")
+document.write("  </tr>")
+document.write("  <tr><td height=3 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 colspan=4 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+if(selectscreen==""){
+document.write("  <tr><td width=100%  height=3 bgcolor=#cccccc><img src=images/transpix.gif width=5 height=1 /></td></tr>")
+document.write("  <tr><td bgcolor=#cccccc><img src=images/transpix.gif height=23 width=10 /></td></tr>")
+document.write("  <tr><td height=3 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#cccccc><img src=images/transpix.gif /></td></tr>")
+document.write("  <tr><td height=1 bgcolor=#666666><img src=images/transpix.gif /></td></tr>")
+}
+
+
+
+
+
+document.write("</form></table>")
+document.write("</body>")
+document.write("</HTML>")
+}
+
+//-->
+</script>
+
+
+

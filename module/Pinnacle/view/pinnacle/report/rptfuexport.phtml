@@ -1,0 +1,124 @@
+<?php
+// module/Pinnacle/view/pinnacle/report/rptfuexport.phtml:
+// Summary report
+
+$title = 'Rejected Physician Review List';
+$this->headTitle($title);
+
+$this->headLink()->prependStylesheet($this->basePath() . '/js/vendor/datepicker/css/datepicker.css');
+
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.10.0.min.js', 'text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.3/jquery-ui.js', 'text/javascript');
+
+//$this->headScript()->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.min.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/JSON-js-master/json2.js', 'text/javascript');
+/*
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/datepicker.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/eye.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/utils.js', 'text/javascript');
+$this->headScript()->appendFile($this->basePath() . '/js/vendor/datepicker/js/booking_layout.js?ver=1.0.2', 'text/javascript');*/
+
+$this->headLink()->prependStylesheet('http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css');
+$this->headLink()->prependStylesheet('/resources/demos/style.css');
+
+
+$icnt = 0; $tcnt = 0; $prevcliid = 0; $scls = '';
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script style="text/javascript">
+function pageLoad() { //need to force calendar load            
+			//alert('test');
+			$( "#startdatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#startdate"});
+			$( "#enddatetxt" ).datepicker({altFormat: "yy-mm-dd",  altField: "#enddate"});
+			//$('#schedact_timetxt').timepicker();//{ 'timeFormat': 'H:i' });
+}
+</script>
+<style>
+h1 { font-size: 16px; }
+.alert_bld { font-weight: bold; color: red; }
+.bleu_bld { font-weight: bold; color: navy; }
+.bld { font-weight: bold; color: black; }
+table { background-color: #ffffff; }
+label { display: inline; }
+.nobg td { padding: 5px; }
+</style>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+    //$form->setAttribute('action', $this->url('report', array('action' => 'rptfuexport')));
+    
+    //$form->prepare();
+
+    //echo $this->form()->openTag($form);
+	//echo var_dump($arr);
+	
+	$start  = mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
+	
+	$end = time();
+	//echo var_dump($ar);
+	$iisiser;
+	$iis1;
+	$iis2;
+	$iis3;
+	$iis4;
+	$iis5;
+	$iis6;
+	$iis7;
+	$iis8;
+	$iis9;
+    $isiser;
+	$is1;
+	$is2;
+	$is3;
+	$is4;
+	$is5;
+	$is6;
+	$is7;
+	$is8;
+	$is9;
+       $iisiser = 0; 
+	   $isiser = 0;
+?>
+
+
+
+
+
+<div class="row">
+    <div class="span12">
+	<form action="" method="get">
+	<label>Start Date:</label>
+<input type="text" name="startdatetxt" id="startdatetxt" class="datefld" value="<?php if($_POST["startdatetxt"]==''){ echo date('m/d/Y', $start);}else{ echo date('m/d/Y', strtotime($_POST["startdatetxt"])); } //if($ar["ph_avail"]!=""){echo date('m/d/Y', strtotime($ar["ph_avail"]));} ?>" />
+<input type="hidden" name="startdate" id="startdate" value="<?php if($_POST["startdatetxt"]==''){ echo date('Y-m-d', $start);} else { echo date('Y-m-d', strtotime($_POST["startdatetxt"]));} //echo $ar["ph_avail"]; ?>">	
+
+<label>End Date:</label>
+<input type="text" name="enddatetxt" id="enddatetxt" class="datefld" value="<?php if($_POST["enddatetxt"]==''){ echo date('m/d/Y', $end);} else{ echo date('m/d/Y', strtotime($_POST["enddatetxt"])); }//if($ar["ph_avail"]!=""){echo date('m/d/Y', strtotime($ar["ph_avail"]));} ?>" />
+<input type="hidden" name="enddate" id="enddate" value="<?php if($_POST["enddatetxt"]==''){ echo date('Y-m-d', $end);} else { echo date('Y-m-d', strtotime($_POST["enddatetxt"]));}//echo $ar["ph_avail"]; ?>">	
+	
+<input type="submit" value="Submit" name="submitdate" class="btn" />
+
+	
+<?php echo $table; ?>
+
+	</form><br/><br/>
+</div>
+</div>
+ 
+
+
+<div style="clear:both;">&nbsp;</div>
+<script>
+pageLoad();
+</script>
+<?php
+
+    //echo $this->form()->closeTag();
+?>
+
+<?php
+echo $this->partial('reportfooter.phtml', array('phguser' => $phguser));
+echo $this->partial('sysfooter.phtml', array('menuid' => 'phg-nav-rep'));

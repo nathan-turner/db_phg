@@ -1,0 +1,16 @@
+<?php
+// module/Pinnacle/view/pinnacle/client/index.phtml:
+// Client Search
+
+$title = 'Clients Lookup';
+$this->headTitle($title);
+$this->inlineScript()->appendFile($this->basePath() . '/js/clients.js', 'text/javascript');
+
+if( $messages )
+    echo $this->partial('flashheader.phtml', array('messages' => $messages));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+
+
