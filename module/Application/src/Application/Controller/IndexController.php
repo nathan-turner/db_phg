@@ -1,9 +1,7 @@
 <?php
 /**
  * Pinnacle Health Group (http://phg.com/)
- *
- * @link      http://db.phg.local/
- * @copyright Copyright (c) 2012 Sergey Latkin
+ * 
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 // module/Application/src/Application/Controller/IndexController.php:

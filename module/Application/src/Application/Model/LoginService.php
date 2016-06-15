@@ -2,8 +2,6 @@
 /**
  * Pinnacle Health Group (http://phg.com/)
  *
- * @link      http://db.phg.local/
- * @copyright Copyright (c) 2012 Sergey Latkin
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 // module/Application/src/Application/Model/LoginService.php:
@@ -21,9 +19,9 @@ class LoginService extends AuthenticationService {
     protected $dbAdapter = null;
     //const COOKIE_SALT = '';
     //const PWD_SALT = '';
-	const COOKIE_SALT = 'Чимчибири атумбу';
-    const PWD_SALT = 'Умбикири арандаш';
-    const USER_TABLE = 'lstemployees';  // identity abstraction:
+	const COOKIE_SALT = '';
+    const PWD_SALT = '';
+    const USER_TABLE = 'tbl';  // identity abstraction:
     const USER_NAME = 'emp_uname';      // username
     const USER_REAL = 'emp_realname';   // realname
     const USER_ID = 'emp_id';           // uid
